@@ -45,7 +45,7 @@ public class Warehouse {
             else if (getShelf(shelf).getShelf().get(0)!=resources.get(0))return false; //wrong resource type
             else return true; //right resource type
         }
-
+        //TODO controllare che non ci siano le stesse risorse già in un altro shelf
     }
 
     public void placeOnShelf(String shelf, ArrayList<Resource> resources){
