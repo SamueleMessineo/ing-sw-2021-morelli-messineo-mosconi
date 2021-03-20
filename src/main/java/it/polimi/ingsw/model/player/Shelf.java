@@ -20,7 +20,14 @@ public class Shelf {
         return maxSize;
     }
 
+    public boolean checkTypeonsistency(Resource resource){
+        if (shelf.isEmpty()) return true;
+        else return (resource == shelf.get(0));
+    }
+
     public void addResource(Resource resource){
-        shelf.add(resource);
+        if(checkTypeonsistency(resource)) {
+            shelf.add(resource);
+        }
     }
 }
