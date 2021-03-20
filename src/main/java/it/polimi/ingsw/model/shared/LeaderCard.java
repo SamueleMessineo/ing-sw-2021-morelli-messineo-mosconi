@@ -4,11 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class LeaderCard {
-    private Map<Resource,Integer> resourceRequirements;
-    private Map<CardType,Integer> cardRequirements;
-    private int score;
-    private String effectScope;
-    private Resource effectObject;
+    private final Map<Resource,Integer> resourceRequirements;
+    private final Map<CardType,Integer> cardRequirements;
+    private final int score;
+    private final String effectScope;
+    private final Resource effectObject;
 
     public LeaderCard(Map<Resource,Integer> resourceRequirements, Map<CardType,Integer> cardRequirements,
                       int score, String effectScope, Resource effectObject) {

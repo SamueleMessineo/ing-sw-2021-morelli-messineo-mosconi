@@ -4,11 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class DevelopmentCard {
-    private int level;
-    private CardType cardType;
-    private Map<Resource,Integer> cost;
-    private ProductionPower  productionPower;
-    private int score;
+    private final int level;
+    private final CardType cardType;
+    private final Map<Resource,Integer> cost;
+    private final ProductionPower  productionPower;
+    private final int score;
 
     public DevelopmentCard(int level, CardType cardType, Map<Resource,Integer> cost,
                            ProductionPower productionPower, int score){
@@ -21,5 +21,21 @@ public class DevelopmentCard {
 
     public Map<Resource,Integer> getCost(){
         return cost;
+    }
+
+    public int getLevel() {
+        return level;
+    }
+
+    public CardType getCardType() {
+        return cardType;
+    }
+
+    public ProductionPower getProductionPower() {
+        return productionPower;
+    }
+
+    public int getScore() {
+        return score;
     }
 }

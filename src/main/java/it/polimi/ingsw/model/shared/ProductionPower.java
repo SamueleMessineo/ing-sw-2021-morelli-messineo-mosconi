@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProductionPower {
-    private List<Resource> input;
-    private List<Resource> output;
+    private final List<Resource> input;
+    private final List<Resource> output;
 
     public ProductionPower(List<Resource> input, List<Resource> output){
         this.input=input;

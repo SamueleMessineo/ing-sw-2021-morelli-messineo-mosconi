@@ -1,8 +1,8 @@
 package it.polimi.ingsw.model.shared;
 
 public class PopesFavorTile {
-    private int score;
-    private PopesFavorTileState state;
+    private final int score;
+    private final PopesFavorTileState state;
 
     public PopesFavorTile(int score){
         this.state=PopesFavorTileState.INACTIVE;
