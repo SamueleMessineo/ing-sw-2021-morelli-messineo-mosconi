@@ -25,7 +25,7 @@ public class CardsMarket {
                 break;
             default: col = 100000;
         }
-        // TODO: reverse -> card level 1 green is 8 not 0
-        return cardsGrid.get((level - 1) * 4 + col);
+        
+        return cardsGrid.get((3 - level) * 4 + col);
     }
 }
