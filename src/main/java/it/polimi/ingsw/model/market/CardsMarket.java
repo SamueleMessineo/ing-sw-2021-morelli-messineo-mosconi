@@ -5,6 +5,9 @@ import it.polimi.ingsw.model.shared.CardType;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Holds the 12 stacks of cards that can be bought by the players during their turn.
+ */
 public class CardsMarket {
     private final List<MarketCardStack> cardsGrid = new ArrayList<>();
 
@@ -12,6 +15,12 @@ public class CardsMarket {
         return cardsGrid;
     }
 
+    /**
+     * Get a stack of cards based on it's level and type.
+     * @param level the level of the stack to retrieve.
+     * @param type the type of the stack to retrieve.
+     * @return The MarketCardStack with the given level and type.
+     */
     public MarketCardStack getStackByLevelAndType(int level, CardType type) {
         int col;
         switch (type) {
