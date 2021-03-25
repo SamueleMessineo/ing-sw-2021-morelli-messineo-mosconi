@@ -11,9 +11,9 @@ public class MarbleStructure {
     private final ArrayList<Marble> marbles;
     private Marble extraMarble;
 
-    public MarbleStructure() {
-        this.marbles = new ArrayList<>();
-        this.extraMarble = Marble.BLUE;
+    public MarbleStructure(ArrayList<Marble> marbles, Marble extraMarble) {
+        this.marbles = marbles;
+        this.extraMarble = extraMarble;
     }
 
     /**
@@ -53,7 +53,7 @@ public class MarbleStructure {
      */
     public List<Marble> getRow(int rowIndex) {
         rowIndex = (rowIndex - 1) * 4;
-        return marbles.subList(rowIndex, rowIndex + 3);
+        return marbles.subList(rowIndex, rowIndex + 4);
     }
 
     /**
@@ -84,9 +84,9 @@ public class MarbleStructure {
      * @return The original row before it gets shifted.
      */
     public List<Marble> shiftRow(int rowIndex) {
-        rowIndex = (rowIndex - 1) * 4;
-        Marble newExtraMarble = marbles.get(rowIndex + 3);
         List<Marble> oldRow = getRow(rowIndex);
+        rowIndex = (rowIndex - 1) * 4;
+        Marble newExtraMarble = marbles.get(rowIndex);
 
         for (int i = 0; i < 3; i++) {
             marbles.set(rowIndex + i, marbles.get(rowIndex + i + 1));
@@ -94,7 +94,6 @@ public class MarbleStructure {
 
         marbles.set(rowIndex + 3, extraMarble);
         extraMarble = newExtraMarble;
-
         return oldRow;
     }
 }
