@@ -14,7 +14,8 @@ public class Strongbox {
 
     public Map<Resource,Integer> getResources() { return resources; }
 
-    public void useResources(Map<Resource,Integer> resource){
-        // TODO creare Metodo rimuova risorse della Map resuorces da this.resources
+    public void useResources(Map<Resource,Integer> res){
+        this.resources.forEach((resource,integer)->
+                this.resources.put(resource,integer - res.get(resource)));
     }
 }
