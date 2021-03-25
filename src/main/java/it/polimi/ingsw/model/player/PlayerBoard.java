@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.shared.*;
 import java.util.ArrayList;
 
 public class PlayerBoard {
+
     private Warehouse warehouse;
     private PlayerCardStack[] cardStacks = new PlayerCardStack[3];
     private Strongbox strongbox;
@@ -15,6 +16,7 @@ public class PlayerBoard {
         this.strongbox = strongbox;
 
     }
+
 
     public Warehouse getWarehouse() {
         return warehouse;

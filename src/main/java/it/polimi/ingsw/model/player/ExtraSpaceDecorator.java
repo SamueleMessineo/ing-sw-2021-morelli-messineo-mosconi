@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.shared.Resource;
 
 import java.util.ArrayList;
 
+
 public class ExtraSpaceDecorator extends Warehouse {
     private Warehouse warehouse;
     private Shelf extraShelf;
@@ -14,6 +15,11 @@ public class ExtraSpaceDecorator extends Warehouse {
         this.type = type;
     }
 
+    /**
+     *
+     * @param shelf
+     * @return
+     */
     @Override
     public Shelf getShelf(String shelf) {
         if (shelf.toLowerCase().trim().equals("top")) return warehouse.getShelf("top");
@@ -23,6 +29,11 @@ public class ExtraSpaceDecorator extends Warehouse {
         else return null;
     }
 
+    /**
+     *
+     * @param shelf
+     * @return
+     */
     @Override
     public ArrayList<Resource> getResources(String shelf) {
         if (shelf.toLowerCase().trim().equals("top")) return warehouse.getShelf("top").getShelf();
@@ -32,6 +43,12 @@ public class ExtraSpaceDecorator extends Warehouse {
         else return null;
     }
 
+    /**
+     *
+     * @param shelf
+     * @param resources
+     * @return
+     */
     @Override
     public boolean canPlaceOnShelf(String shelf, ArrayList<Resource> resources) {
         if (!shelf.toLowerCase().trim().equals("extra")) return super.canPlaceOnShelf(shelf, resources);
@@ -48,6 +65,10 @@ public class ExtraSpaceDecorator extends Warehouse {
     //place on shelf non ci dovrebbe essere bisogno di ovveridarlo
     //idem get resources
 
+    /**
+     *
+     * @param resources
+     */
     @Override
     public void useResources(ArrayList<Resource> resources) {
         for (Resource r :
