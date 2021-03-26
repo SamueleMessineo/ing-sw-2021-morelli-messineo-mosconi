@@ -2,14 +2,19 @@ package it.polimi.ingsw.model.player;
 
 import it.polimi.ingsw.model.shared.Resource;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class Strongbox {
 
     private Map<Resource, Integer> resources;
 
-    public Strongbox(Map<Resource,Integer> resources){
-        this.resources=resources;
+    public Strongbox(){
+        this.resources=new HashMap<Resource, Integer>();
+        resources.put(Resource.COIN, 0);
+        resources.put(Resource.SERVANT, 0);
+        resources.put(Resource.STONE, 0);
+        resources.put(Resource.SHIELD, 0);
     }
 
     public Map<Resource,Integer> getResources() { return resources; }
