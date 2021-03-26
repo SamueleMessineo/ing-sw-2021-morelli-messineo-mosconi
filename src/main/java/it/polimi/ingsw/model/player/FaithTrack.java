@@ -11,8 +11,8 @@ public class FaithTrack {
     public FaithTrack() {
         this.position = 0;
         this.popesFavorTiles.add(0, new PopesFavorTile(2));
-        this.popesFavorTiles.add(1, new PopesFavorTile(2));
-        this.popesFavorTiles.add(2, new PopesFavorTile(2));
+        this.popesFavorTiles.add(1, new PopesFavorTile(3));
+        this.popesFavorTiles.add(2, new PopesFavorTile(4));
     }
 
     public int getPosition() {
