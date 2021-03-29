@@ -23,4 +23,6 @@ public class Strongbox {
         this.resources.forEach((resource,integer)->
                 this.resources.put(resource,integer - res.get(resource)));
     }
+
+
 }
