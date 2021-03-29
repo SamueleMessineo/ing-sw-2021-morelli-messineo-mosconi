@@ -2,17 +2,18 @@ package it.polimi.ingsw.model.player;
 
 import it.polimi.ingsw.model.shared.Resource;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Shelf {
     private Resource resourceType=null;
     private int resourceNumber=0;
-    private int maxSize;
+    private final int maxSize;
+    private final boolean fixed;
 
-    public Shelf(int maxSize) {
+    public Shelf(int maxSize, boolean fixed) {
         this.maxSize = maxSize;
+        this.fixed = fixed;
     }
 
     public Resource getResourceType() {
@@ -23,8 +24,12 @@ public class Shelf {
         return resourceNumber;
     }
 
-    public Map<Resource, Integer> getContents() {
+    public Map<Resource, Integer> getResources() {
         Map<Resource, Integer> contents = new HashMap<>();
+        contents.put(Resource.SHIELD, 0);
+        contents.put(Resource.COIN, 0);
+        contents.put(Resource.SERVANT, 0);
+        contents.put(Resource.STONE, 0);
         contents.put(resourceType, resourceNumber);
         return contents;
     }
@@ -33,13 +38,41 @@ public class Shelf {
         return maxSize;
     }
 
-    public void addResources(ArrayList<Resource> resources){
-        if (canPlace(resources)) {
-            resourceNumber += resources.size();
+    public void addResources(Map<Resource, Integer> resources){
+//        if (canPlace(rType, rNumber)) {
+//            resourceNumber += rNumber;
+//        }
+        if (resources.keySet().toArray().length == 1) {
+            Map.Entry<Resource, Integer> entry = resources.entrySet().iterator().next();
+            if ((resourceType == null || resourceType.equals(entry.getKey())) && entry.getValue() <= maxSize - resourceNumber) {
+                resourceNumber += entry.getValue();
+                resourceType = entry.getKey();
+            }
         }
     }
 
-    public boolean canPlace(ArrayList<Resource> resources) {
-        return (resourceNumber == 0 || resources.get(0) == resourceType) && resources.size() <= maxSize - resourceNumber;
+    public boolean canPlace(Map<Resource, Integer> resources) {
+        if (resources.keySet().toArray().length == 1) {
+            Map.Entry<Resource, Integer> entry = resources.entrySet().iterator().next();
+            return (resourceNumber == 0 || entry.getKey().equals(resourceType))
+                    && entry.getValue() <= maxSize - resourceNumber;
+        }
+        return false;
+    }
+
+    public void useResources(Map<Resource, Integer> resources) {
+
+        if (resources.keySet().toArray().length == 1) {
+            Map.Entry<Resource, Integer> entry = resources.entrySet().iterator().next();
+            if (entry.getKey().equals(resourceType) && entry.getValue() <= resourceNumber) {
+                resourceNumber -= entry.getValue();
+                if (resourceNumber == 0 && !fixed) resourceType = null;
+            }
+        }
+
+//        if (resourceNumber != 0 && rType.equals(resourceType) && rNumber <= resourceNumber) {
+//            resourceNumber -= rNumber;
+//            if (resourceNumber == 0 && !fixed) resourceType = null;
+//        }
     }
 }
