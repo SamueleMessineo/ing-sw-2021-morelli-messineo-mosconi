@@ -5,7 +5,7 @@ import it.polimi.ingsw.model.shared.Resource;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Strongbox {
+public class Strongbox implements Storage {
 
     private Map<Resource, Integer> resources;
 
@@ -19,10 +19,13 @@ public class Strongbox {
 
     public Map<Resource,Integer> getResources() { return resources; }
 
-    public void useResources(Map<Resource,Integer> res){
+    @Override
+    public void addResources(Map<Resource, Integer> resources) {
+
+    }
+
+    public void useResources(Map<Resource,Integer> res) {
         this.resources.forEach((resource,integer)->
                 this.resources.put(resource,integer - res.get(resource)));
     }
-
-
 }

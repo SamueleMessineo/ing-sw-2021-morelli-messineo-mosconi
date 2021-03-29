@@ -5,7 +5,7 @@ import it.polimi.ingsw.model.shared.Resource;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Shelf {
+public class Shelf implements Storage {
     private Resource resourceType=null;
     private int resourceNumber=0;
     private final int maxSize;

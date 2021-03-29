@@ -10,6 +10,6 @@ public interface Storage {
 
     public void addResources(Map<Resource, Integer> resources);
 
-    public int useResources(Map<Resource, Integer> resources);
+    public void useResources(Map<Resource, Integer> resources);
 
 }
