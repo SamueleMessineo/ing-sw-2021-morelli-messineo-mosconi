@@ -2,85 +2,78 @@ package it.polimi.ingsw.model.player;
 
 import it.polimi.ingsw.model.shared.Resource;
 
-import java.util.ArrayList;
-
+//import java.util.Arrays;
+//import java.util.HashMap;
+//import java.util.List;
+//import java.util.Map;
 
 public class ExtraSpaceDecorator extends Warehouse {
-    private Warehouse warehouse;
-    private Shelf extraShelf;
-    private Resource type;
+    private final Warehouse warehouse;
+//    private final Resource resourceType;
+//    private int resourceNumber;
 
     public ExtraSpaceDecorator(Warehouse warehouse, Resource type) {
         this.warehouse = warehouse;
-        this.type = type;
+//        resourceType = type;
+//        resourceNumber = 0;
+        warehouse.getShelves().add(new Shelf(2, true));
+        warehouse.getShelfNames().add("extra" + (warehouse.getShelfNames().size() - 2));
     }
 
-    /**
-     *
-     * @param shelf
-     * @return
-     */
-    @Override
-    public Shelf getShelf(String shelf) {
-        if (shelf.toLowerCase().trim().equals("top")) return warehouse.getShelf("top");
-        else if (shelf.toLowerCase().trim().equals("middle")) return warehouse.getShelf("middle");
-        else if (shelf.toLowerCase().trim().equals("bottom")) return warehouse.getShelf("bottom");
-        else if (shelf.toLowerCase().trim().equals("extra")) return warehouse.getShelf("extra");
-        else return null;
-    }
-
-    /**
-     *
-     * @param shelf
-     * @return
-     */
-    @Override
-    public ArrayList<Resource> getResources(String shelf) {
-        if (shelf.toLowerCase().trim().equals("top")) return warehouse.getShelf("top").getShelf();
-        else if (shelf.toLowerCase().trim().equals("middle")) return warehouse.getShelf("middle").getShelf();
-        else if (shelf.toLowerCase().trim().equals("bottom")) return warehouse.getShelf("bottom").getShelf();
-        else if (shelf.toLowerCase().trim().equals("extra")) return warehouse.getShelf("extra").getShelf();
-        else return null;
-    }
-
-    /**
-     *
-     * @param shelf
-     * @param resources
-     * @return
-     */
-    @Override
-    public boolean canPlaceOnShelf(String shelf, ArrayList<Resource> resources) {
-        if (!shelf.toLowerCase().trim().equals("extra")) return super.canPlaceOnShelf(shelf, resources);
-        else {
-            for (Resource r :
-                    resources) {
-                if (r != type) return false;
-            }
-            if (extraShelf.getMaxSize() - extraShelf.getShelf().size() <= resources.size()) return true;
-            else return false;
-        }
-    }
-
-    //place on shelf non ci dovrebbe essere bisogno di ovveridarlo
-    //idem get resources
-
-    /**
-     *
-     * @param resources
-     */
-    @Override
-    public void useResources(ArrayList<Resource> resources) {
-        for (Resource r :
-                resources) {
-            if (warehouse.getShelf("shelf").getShelf().get(0) == resources.get(0))
-                warehouse.getShelf("shelf").getShelf().remove(0);
-            else if (warehouse.getShelf("middle").getShelf().get(0) == resources.get(0))
-                warehouse.getShelf("middle").getShelf().remove(0);
-            else if (warehouse.getShelf("bottom").getShelf().get(0) == resources.get(0))
-                warehouse.getShelf("bottom").getShelf().remove(0);
-            else if (warehouse.getShelf("extra").getShelf().get(0) == resources.get(0)) extraShelf.getShelf().remove(0);
-            else System.out.println("risorse non disponibili");
-        }
-    }
+//    @Override
+//    public Shelf getShelf(String shelf) {
+//        if (shelf.toLowerCase().trim().equals("extra")) {
+//            Shelf extraShelf = new Shelf(2, true);
+//            extraShelf.addResources(resourceType, resourceNumber);
+//            return extraShelf;
+//        }
+//        return warehouse.getShelf(shelf);
+//    }
+//
+//    @Override
+//    public Map<Resource, Integer> getResources() {
+//        Map<Resource, Integer> warehouseResources = new HashMap<>(warehouse.getResources());
+//        warehouseResources.put(resourceType, warehouseResources.get(resourceType) + resourceNumber);
+//        return warehouseResources;
+//    }
+//
+//    @Override
+//    public boolean canPlaceOnShelf(String shelf, Resource rType, int rNumber) {
+//        if (shelf.toLowerCase().trim().equals("extra")) {
+//            if (rType.equals(resourceType) && resourceNumber + rNumber <= 2) return true;
+//        }
+//        return warehouse.canPlaceOnShelf(shelf, rType, rNumber);
+//    }
+//
+//    @Override
+//    public void placeOnShelf(String shelf, Resource rType, int rNumber) {
+//        if (shelf.toLowerCase().trim().equals("extra")) {
+//            if (rType.equals(resourceType) && resourceNumber + rNumber <= 2) resourceNumber += rNumber;
+//        }
+//        warehouse.placeOnShelf(shelf, rType, rNumber);
+//    }
+//
+//    @Override
+//    public int useResources(Map<Resource, Integer> resources) {
+//        return -1;
+//    }
+//
+//    @Override
+//    public Map<Resource, Integer> getShelfResources(String shelf) {
+//        if (shelf.toLowerCase().trim().equals("extra")) {
+//            Map<Resource, Integer> extraShelfResources = new HashMap<>();
+//            extraShelfResources.put(Resource.SHIELD, 0);
+//            extraShelfResources.put(Resource.COIN, 0);
+//            extraShelfResources.put(Resource.SERVANT, 0);
+//            extraShelfResources.put(Resource.STONE, 0);
+//            extraShelfResources.put(resourceType, resourceNumber);
+//            return extraShelfResources;
+//        }
+//        return warehouse.getShelfResources(shelf);
+//    }
+//
+//    @Override
+//    public void switchShelves(String firstShelfName, String secondShelfName) {
+//
+//    }
 }
