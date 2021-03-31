@@ -72,17 +72,6 @@ public class Warehouse {
         }
     }
 
-    public int useResources(Map<Resource, Integer> resources){
-//        // ha senso questo metodo?
-//        for (Resource r :
-//             resources) {
-//            if (topShelf.getShelf().get(0) == resources.get(0))topShelf.getShelf().remove(0);
-//            else  if (middleShelf.getShelf().get(0) == resources.get(0))middleShelf.getShelf().remove(0);
-//            else  if (bottomShelf.getShelf().get(0) == resources.get(0))bottomShelf.getShelf().remove(0);
-//            else System.out.println("risorse non disponibili");
-//        }
-        return -1;
-    }
 
     public Map<Resource, Integer> getResources(){
         Map<Resource, Integer> allResources = new HashMap<>();

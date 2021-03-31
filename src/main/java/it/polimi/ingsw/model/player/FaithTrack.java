@@ -1,21 +1,26 @@
 package it.polimi.ingsw.model.player;
 import it.polimi.ingsw.model.shared.PopesFavorTile;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * The FaithTrack class stores the logic of the homonymous game component
  */
 public class FaithTrack {
     private int position;
-    private int lastCheckPoint;
     private ArrayList<PopesFavorTile> popesFavorTiles = new ArrayList<>();
+    private final List<Integer> VP = Arrays.asList(0,1,2,4,6,9,12,16,20);
 
     public FaithTrack() {
         this.position = 0;
         this.popesFavorTiles.add(0, new PopesFavorTile(2));
         this.popesFavorTiles.add(1, new PopesFavorTile(3));
         this.popesFavorTiles.add(2, new PopesFavorTile(4));
+
+
     }
 
     /**
@@ -28,8 +33,8 @@ public class FaithTrack {
     /**
      * @return player's last checkpoint as an int
      */
-    public int getLastCheckPoint() {
-        return lastCheckPoint;
+    public int getVP() {
+        return VP.get(position/3);
     }
 
     /**
