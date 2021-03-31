@@ -38,12 +38,11 @@ public class MarbleStructure {
      * @return The list of marbles corresponding to the requested column.
      */
     public List<Marble> getColumn(int colIndex) {
-        colIndex -= 1;
         List<Marble> column = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             column.add(marbles.get(colIndex + 4*i));
         }
-        return column;
+        return new ArrayList<>(column);
     }
 
     /**
@@ -52,8 +51,8 @@ public class MarbleStructure {
      * @return The list of marbles corresponding to the requested row.
      */
     public List<Marble> getRow(int rowIndex) {
-        rowIndex = (rowIndex - 1) * 4;
-        return marbles.subList(rowIndex, rowIndex + 4);
+        rowIndex = (rowIndex) * 4;
+        return new ArrayList<>(marbles.subList(rowIndex, rowIndex + 4));
     }
 
     /**
@@ -63,9 +62,8 @@ public class MarbleStructure {
      * @return The original column before it gets shifted.
      */
     public List<Marble> shiftColumn(int colIndex) {
-        colIndex -= 1;
-        Marble newExtraMarble = marbles.get(colIndex);
         List<Marble> oldColumn = getColumn(colIndex);
+        Marble newExtraMarble = marbles.get(colIndex);
 
         for (int i = 0; i < 2; i++) {
             marbles.set(colIndex + (i * 4), marbles.get(colIndex + ((i + 1) * 4)));
@@ -85,7 +83,7 @@ public class MarbleStructure {
      */
     public List<Marble> shiftRow(int rowIndex) {
         List<Marble> oldRow = getRow(rowIndex);
-        rowIndex = (rowIndex - 1) * 4;
+        rowIndex = (rowIndex) * 4;
         Marble newExtraMarble = marbles.get(rowIndex);
 
         for (int i = 0; i < 3; i++) {
