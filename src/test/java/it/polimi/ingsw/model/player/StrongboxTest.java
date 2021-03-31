@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
 
 public class StrongboxTest {
 
-    Strongbox strongbox;
+    private Strongbox strongbox;
 
     @Before
     public void setUp() throws Exception {

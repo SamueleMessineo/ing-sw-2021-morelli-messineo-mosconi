@@ -20,7 +20,6 @@ public class FaithTrack {
         this.popesFavorTiles.add(1, new PopesFavorTile(3));
         this.popesFavorTiles.add(2, new PopesFavorTile(4));
 
-
     }
 
     /**
