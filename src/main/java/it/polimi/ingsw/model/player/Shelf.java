@@ -30,7 +30,9 @@ public class Shelf implements Storage {
         contents.put(Resource.COIN, 0);
         contents.put(Resource.SERVANT, 0);
         contents.put(Resource.STONE, 0);
-        contents.put(resourceType, resourceNumber);
+        if (resourceType != null) {
+            contents.put(resourceType, resourceNumber);
+        }
         return contents;
     }
 
@@ -39,9 +41,6 @@ public class Shelf implements Storage {
     }
 
     public void addResources(Map<Resource, Integer> resources){
-//        if (canPlace(rType, rNumber)) {
-//            resourceNumber += rNumber;
-//        }
         if (resources.keySet().toArray().length == 1) {
             Map.Entry<Resource, Integer> entry = resources.entrySet().iterator().next();
             if ((resourceType == null || resourceType.equals(entry.getKey())) && entry.getValue() <= maxSize - resourceNumber) {
@@ -69,10 +68,5 @@ public class Shelf implements Storage {
                 if (resourceNumber == 0 && !fixed) resourceType = null;
             }
         }
-
-//        if (resourceNumber != 0 && rType.equals(resourceType) && rNumber <= resourceNumber) {
-//            resourceNumber -= rNumber;
-//            if (resourceNumber == 0 && !fixed) resourceType = null;
-//        }
     }
 }
