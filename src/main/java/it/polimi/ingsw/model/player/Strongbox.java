@@ -20,8 +20,9 @@ public class Strongbox implements Storage {
     public Map<Resource,Integer> getResources() { return resources; }
 
     @Override
-    public void addResources(Map<Resource, Integer> resources) {
-
+    public void addResources(Map<Resource, Integer> res) {
+        this.resources.forEach((resource,integer)->
+                this.resources.put(resource,integer + res.get(resource)));
     }
 
     public void useResources(Map<Resource,Integer> res) {

@@ -8,6 +8,7 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
+//100% covered
 public class MarbleStructureTest {
 
     private MarbleStructure structure;
@@ -32,41 +33,70 @@ public class MarbleStructureTest {
 
     @Test
     public void getColumn() {
-        ArrayList<Marble> expected = new ArrayList<>();
-        expected.add(Marble.BLUE);
-        expected.add(Marble.BLUE);
-        expected.add(Marble.WHITE);
-        assertEquals(expected, structure.getColumn(1));
+        ArrayList<Marble> expected0 = new ArrayList<>();
+        expected0.add(Marble.BLUE);
+        expected0.add(Marble.BLUE);
+        expected0.add(Marble.WHITE);
+        assertEquals(expected0, structure.getColumn(0));
+
+        ArrayList<Marble> expected1 = new ArrayList<>();
+        expected1.add(Marble.GREY);
+        expected1.add(Marble.PURPLE);
+        expected1.add(Marble.GREY);
+        assertEquals(expected1, structure.getColumn(1));
+
+        ArrayList<Marble> expected2 = new ArrayList<>();
+        expected2.add(Marble.BLUE);
+        expected2.add(Marble.BLUE);
+        expected2.add(Marble.BLUE);
+        assertEquals(expected2, structure.getColumn(2));
+
+        ArrayList<Marble> expected3 = new ArrayList<>();
+        expected3.add(Marble.YELLOW);
+        expected3.add(Marble.GREY);
+        expected3.add(Marble.GREY);
+        assertEquals(expected3, structure.getColumn(3));
     }
 
     @Test
     public void getRow() {
-        ArrayList<Marble> expected = new ArrayList<>();
-        expected.add(Marble.BLUE);
-        expected.add(Marble.GREY);
-        expected.add(Marble.BLUE);
-        expected.add(Marble.YELLOW);
-        assertEquals(expected, structure.getRow(1));
+        ArrayList<Marble> expected0 = new ArrayList<>();
+        expected0.add(Marble.BLUE);
+        expected0.add(Marble.GREY);
+        expected0.add(Marble.BLUE);
+        expected0.add(Marble.YELLOW);
+        assertEquals(expected0, structure.getRow(0));
+
+        ArrayList<Marble> expected1 = new ArrayList<>();
+        expected1.add(Marble.BLUE);
+        expected1.add(Marble.PURPLE);
+        expected1.add(Marble.BLUE);
+        expected1.add(Marble.GREY);
+        assertEquals(expected1, structure.getRow(1));
+
+        ArrayList<Marble> expected2 = new ArrayList<>();
+        expected2.add(Marble.WHITE);
+        expected2.add(Marble.GREY);
+        expected2.add(Marble.BLUE);
+        expected2.add(Marble.GREY);
+        assertEquals(expected2, structure.getRow(2));
     }
 
     @Test
     public void shiftColumn() {
+        for (int i = 0; i<=3; i++) {
+            List<Marble> oldColumn = structure.getColumn(i);
+            assertEquals(oldColumn,structure.shiftColumn(i));
+
+        }
     }
 
     @Test
     public void shiftRow() {
-//        List<Marble> oldRow = structure.getRow(1);
-//        System.out.println(oldRow);
-//        structure.shiftRow(1);
-//        System.out.println(oldRow);
-//        oldRow = structure.getRow(1);
-//        System.out.println(oldRow);
-//        ArrayList<Marble> expected = new ArrayList<>();
-//        expected.add(Marble.BLUE);
-//        expected.add(Marble.GREY);
-//        expected.add(Marble.BLUE);
-//        expected.add(Marble.YELLOW);
-//        assertEquals(expected, oldRow);
-//        assertEquals(structure.getExtraMarble(), Marble.BLUE);
+        for (int i = 0; i <= 2; i++) {
+            List<Marble> oldRow = structure.getRow(i);
+            assertEquals(oldRow, structure.shiftRow(i));
+
+        }
     }
 }
