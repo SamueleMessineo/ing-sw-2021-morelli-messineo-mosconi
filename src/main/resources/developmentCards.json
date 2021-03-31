@@ -1,0 +1,7 @@
+{
+  "level": 1,
+  "cardType": "GREEN",
+  "cost": {"SHIELD": 2},
+  "productionPower":{"input": {"COIN": 1}, "output": {"FAITH":1}},
+  "score": 1
+}
