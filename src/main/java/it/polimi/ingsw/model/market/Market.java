@@ -1,9 +1,19 @@
 package it.polimi.ingsw.model.market;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
 import it.polimi.ingsw.model.shared.CardType;
+import it.polimi.ingsw.model.shared.DevelopmentCard;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.io.FileNotFoundException;
+
 
 /**
  * Holds the two structures that make up the game market:
@@ -16,12 +26,57 @@ public class Market {
     /**
      * Holds the 12 stacks of cards that can be bought by the players during their turn.
      */
-    private final List<MarketCardStack> cardsGrid = new ArrayList<>();
+    private List<MarketCardStack> cardsGrid = new ArrayList<>();
 
 
 
     public Market() {
+
         marbleStructure = new MarbleStructure(new ArrayList<>(), Marble.BLUE);
+    }
+
+    public void setCards() throws FileNotFoundException{
+        GsonBuilder builder = new GsonBuilder();
+        Gson gson = builder.create();
+
+        BufferedReader reader = new BufferedReader(new FileReader("src/main/resources/developmentCards.json"));
+
+        Type listType = new TypeToken<List<DevelopmentCard>>() {}.getType();
+
+        List<DevelopmentCard> developmentCards = gson.fromJson(reader, listType);
+
+
+            for (int j = 1; j < 4; j++) {
+                cardsGrid.add(new MarketCardStack(j, CardType.GREEN));
+            }
+            for (int j = 1; j < 4; j++) {
+                cardsGrid.add(new MarketCardStack(j, CardType.YELLOW));
+            }
+            for (int j = 1; j < 4; j++) {
+                cardsGrid.add(new MarketCardStack(j, CardType.PURPLE));
+            }
+            for (int j = 1; j < 4; j++) {
+               cardsGrid.add(new MarketCardStack(j, CardType.BLUE));
+            }
+
+
+
+
+        int i=0;
+        int j = 4;
+        for (int k = 0; k < 12; k++) {
+
+            MarketCardStack cardStack = cardsGrid.get(k);
+            cardStack.addAll(developmentCards.subList(i, j));
+
+            Collections.shuffle(cardStack);
+
+            j+=4;
+            i+=4;
+        }
+
+
+
     }
 
 

@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.market.Market;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.shared.SoloActionType;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 
 /**
@@ -17,7 +18,7 @@ public class Game {
     private ArrayList<SoloActionType> soloActionTypes;
 
 
-    public Game() {
+    public Game()  {
         this.players = new ArrayList<Player>();
         this.market = new Market();
         //TODO single soloActionType for single player

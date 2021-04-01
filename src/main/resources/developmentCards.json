@@ -19,6 +19,25 @@
     "level": 1,
     "cardType": "GREEN",
     "cost": {
+      "SHIELD": 2,
+      "COIN": 2
+    },
+    "productionPower": {
+      "input": {
+        "STONE": 1,
+        "SERVANT": 1
+      },
+      "output": {
+        "FAITH": 1,
+        "COIN": 2
+      }
+    },
+    "score": 4
+  },
+  {
+    "level": 1,
+    "cardType": "GREEN",
+    "cost": {
       "SHIELD": 1,
       "STONE": 1,
       "SERVANT": 1
@@ -50,80 +69,6 @@
       }
     },
     "score": 3
-  },
-  {
-    "level": 3,
-    "cardType": "GREEN",
-    "cost": {
-      "SHIELD": 2,
-      "SERVANT": 2
-    },
-    "productionPower": {
-      "input": {
-        "COIN": 1,
-        "SERVANT": 1
-      },
-      "output": {
-        "FAITH": 1,
-        "SHIELD": 2,
-        "STONE": 2
-      }
-    },
-    "score": 10
-  },
-  {
-    "level": 3,
-    "cardType": "GREEN",
-    "cost": {
-      "SHIELD": 7
-    },
-    "productionPower": {
-      "input": {
-        "SERVANT": 1
-      },
-      "output": {
-        "FAITH": 3,
-        "COIN": 1
-      }
-    },
-    "score": 11
-  },
-  {
-    "level": 3,
-    "cardType": "GREEN",
-    "cost": {
-      "SHIELD": 4,
-      "COIN": 4
-    },
-    "productionPower": {
-      "input": {
-        "STONE": 1
-      },
-      "output": {
-        "SHIELD": 1,
-        "COIN": 3
-      }
-    },
-    "score": 12
-  },
-  {
-    "level": 1,
-    "cardType": "GREEN",
-    "cost": {
-      "SHIELD": 2,
-      "COIN": 2
-    },
-    "productionPower": {
-      "input": {
-        "STONE": 1,
-        "SERVANT": 1
-      },
-      "output": {
-        "FAITH": 1,
-        "COIN": 2
-      }
-    },
-    "score": 4
   },
   {
     "level": 2,
@@ -211,6 +156,65 @@
     },
     "score": 9
   },
+  {
+    "level": 3,
+    "cardType": "GREEN",
+    "cost": {
+      "SHIELD": 2,
+      "SERVANT": 2
+    },
+    "productionPower": {
+      "input": {
+        "COIN": 1,
+        "SERVANT": 1
+      },
+      "output": {
+        "FAITH": 1,
+        "SHIELD": 2,
+        "STONE": 2
+      }
+    },
+    "score": 10
+  },
+  {
+    "level": 3,
+    "cardType": "GREEN",
+    "cost": {
+      "SHIELD": 7
+    },
+    "productionPower": {
+      "input": {
+        "SERVANT": 1
+      },
+      "output": {
+        "FAITH": 3,
+        "COIN": 1
+      }
+    },
+    "score": 11
+  },
+  {
+    "level": 3,
+    "cardType": "GREEN",
+    "cost": {
+      "SHIELD": 4,
+      "COIN": 4
+    },
+    "productionPower": {
+      "input": {
+        "STONE": 1
+      },
+      "output": {
+        "SHIELD": 1,
+        "COIN": 3
+      }
+    },
+    "score": 12
+  },
+
+
+
+
   {
     "level": 1,
     "cardType": "YELLOW",
@@ -302,6 +306,41 @@
     "level": 2,
     "cardType": "YELLOW",
     "cost": {
+      "STONE": 3,
+      "SERVANT": 3
+    },
+    "productionPower": {
+      "input": {
+        "SHIELD": 1
+      },
+      "output": {
+        "COIN": 2,
+        "FAITH": 1
+      }
+    },
+    "score": 8
+  },
+  {
+    "level": 2,
+    "cardType": "YELLOW",
+    "cost": {
+      "STONE": 5
+    },
+    "productionPower": {
+      "input": {
+        "SHIELD": 2
+      },
+      "output": {
+        "FAITH": 2,
+        "SERVANT": 2
+      }
+    },
+    "score": 7
+  },
+  {
+    "level": 2,
+    "cardType": "YELLOW",
+    "cost": {
       "SHIELD": 2,
       "STONE": 3
     },
@@ -388,41 +427,7 @@
     },
     "score": 9
   },
-  {
-    "level": 2,
-    "cardType": "YELLOW",
-    "cost": {
-      "STONE": 3,
-      "SERVANT": 3
-    },
-    "productionPower": {
-      "input": {
-        "SHIELD": 1
-      },
-      "output": {
-        "COIN": 2,
-        "FAITH": 1
-      }
-    },
-    "score": 8
-  },
-  {
-    "level": 2,
-    "cardType": "YELLOW",
-    "cost": {
-      "STONE": 5
-    },
-    "productionPower": {
-      "input": {
-        "SHIELD": 2
-      },
-      "output": {
-        "FAITH": 2,
-        "SERVANT": 2
-      }
-    },
-    "score": 7
-  },
+
   {
     "level": 1,
     "cardType": "PURPLE",
