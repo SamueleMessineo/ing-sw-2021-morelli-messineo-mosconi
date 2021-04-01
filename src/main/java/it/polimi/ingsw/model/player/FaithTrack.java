@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model.player;
 import it.polimi.ingsw.model.shared.PopesFavorTile;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -11,7 +10,8 @@ import java.util.List;
  */
 public class FaithTrack {
     private int position;
-    private ArrayList<PopesFavorTile> popesFavorTiles = new ArrayList<>();
+    private final int maxposition=24;
+    private final ArrayList<PopesFavorTile> popesFavorTiles = new ArrayList<>();
     private final List<Integer> VP = Arrays.asList(0,1,2,4,6,9,12,16,20);
 
     public FaithTrack() {
@@ -22,6 +22,12 @@ public class FaithTrack {
 
     }
 
+    /**
+     * @return the max_position in the Faithtrack
+     */
+    public int getMaxposition() {
+        return maxposition;
+    }
     /**
      * @return the position of the player in the Faithtrack as an int
      */
@@ -47,7 +53,8 @@ public class FaithTrack {
      * Move the player on the next spot of the FaithTrack
      */
     public void move(){
-        position++;
+        if(position<maxposition)
+            position++;
     }
 
     /**
