@@ -65,19 +65,36 @@ public class Warehouse {
 
             Resource tempResourceType = firstShelf.getResourceType();
             int tempResourceNumber = firstShelf.getResourceNumber();
-            firstShelf.useResources(new HashMap<>(){{put(tempResourceType, tempResourceNumber);}});
-            firstShelf.addResources(new HashMap<>(){{put(secondShelf.getResourceType(), secondShelf.getResourceNumber());}});
-            secondShelf.useResources(new HashMap<>(){{put(secondShelf.getResourceType(), secondShelf.getResourceNumber());}});
-            secondShelf.addResources(new HashMap<>(){{put(tempResourceType, tempResourceNumber);}});
+            if (tempResourceType != null) {
+                firstShelf.useResources(new HashMap<>() {{
+                    put(tempResourceType, tempResourceNumber);
+                }});
+            }
+            if (secondShelf.getResourceType() != null) {
+                firstShelf.addResources(new HashMap<>() {{
+                    put(secondShelf.getResourceType(), secondShelf.getResourceNumber());
+                }});
+                secondShelf.useResources(new HashMap<>(){{put(secondShelf.getResourceType(), secondShelf.getResourceNumber());}});
+            }
+            if (tempResourceType != null) {
+                secondShelf.addResources(new HashMap<>(){{put(tempResourceType, tempResourceNumber);}});
+            }
         }
     }
 
 
     public Map<Resource, Integer> getResources(){
-        Map<Resource, Integer> allResources = new HashMap<>();
+        Map<Resource, Integer> allResources = new HashMap<>(){{
+            put(Resource.COIN, 0);
+            put(Resource.STONE, 0);
+            put(Resource.SHIELD, 0);
+            put(Resource.SERVANT, 0);
+        }};
         for (Shelf shelf : shelves) {
-            allResources.put(shelf.getResourceType(),
-                    allResources.get(shelf.getResourceType()) + shelf.getResourceNumber());
+            if (shelf.getResourceType() != null) {
+                allResources.put(shelf.getResourceType(),
+                        allResources.get(shelf.getResourceType()) + shelf.getResourceNumber());
+            }
         }
 
         return allResources;
