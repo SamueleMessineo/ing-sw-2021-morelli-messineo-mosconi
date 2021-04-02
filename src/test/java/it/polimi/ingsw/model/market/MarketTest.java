@@ -24,7 +24,7 @@ public class MarketTest {
 
     @Before
     public void setUp() throws FileNotFoundException{
-        structure.setCards();
+        //structure.setCards();
     }
   //  @Test
 //    public void getCardsGrid(){

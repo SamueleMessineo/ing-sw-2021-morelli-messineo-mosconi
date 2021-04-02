@@ -35,32 +35,14 @@ public class Market {
         marbleStructure = new MarbleStructure(new ArrayList<>(), Marble.BLUE);
     }
 
-    public void setCards() throws FileNotFoundException{
-        GsonBuilder builder = new GsonBuilder();
-        Gson gson = builder.create();
-
-        BufferedReader reader = new BufferedReader(new FileReader("src/main/resources/developmentCards.json"));
-
-        Type listType = new TypeToken<List<DevelopmentCard>>() {}.getType();
-
-        List<DevelopmentCard> developmentCards = gson.fromJson(reader, listType);
-
+    public void setCards(ArrayList<DevelopmentCard> developmentCards){
 
             for (int j = 3; j > 0; j--) {
                 cardsGrid.add(new MarketCardStack(j, CardType.GREEN));
-
                 cardsGrid.add(new MarketCardStack(j, CardType.BLUE));
-
                 cardsGrid.add(new MarketCardStack(j, CardType.YELLOW));
-
-
                 cardsGrid.add(new MarketCardStack(j, CardType.PURPLE));
-
-
             }
-
-
-
 
         int i=0;
         int j = 4;
