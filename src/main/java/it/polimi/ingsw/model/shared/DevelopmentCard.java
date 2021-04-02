@@ -38,4 +38,9 @@ public class DevelopmentCard {
     public int getScore() {
         return score;
     }
+
+    @Override
+    public String toString() {
+        return cardType + "\n" + level + "\n" + cost + "\n" + productionPower + "\n" + score;
+    }
 }

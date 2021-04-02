@@ -44,4 +44,9 @@ public class LeaderCard {
     public int getCardRequirementsLevel() {
         return cardRequirementsLevel;
     }
+
+    @Override
+    public String toString() {
+        return (resourceRequirements +"\n" + cardRequirementsLevel + "\n" + cardRequirementsLevel + "\n" + score + "\n" +effectScope + "\n" +effectObject);
+    }
 }
