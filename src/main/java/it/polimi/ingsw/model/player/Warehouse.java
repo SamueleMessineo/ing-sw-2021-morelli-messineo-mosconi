@@ -17,7 +17,7 @@ public class Warehouse {
     public Warehouse() {
         for (int i = 1; i <= 3; i++) {
 //            shelves[i-1] = new Shelf(i);
-            shelves.add(new Shelf(i, false));
+            shelves.add(new Shelf(i));
         }
     }
 
@@ -39,6 +39,11 @@ public class Warehouse {
     //@ if (shelf == "bottom" => result.size <= 3)
     public Shelf getShelf(String shelf){
         return shelves.get(getShelfIndex(shelf));
+    }
+
+    public void addNewShelf(String newShelfName, Shelf shelf) {
+        shelves.add(shelf);
+        shelfNames.add(newShelfName);
     }
 
     public Map<Resource, Integer> getShelfResources(String shelf){

@@ -16,7 +16,7 @@ public class ShelfTest {
 
     @Test
     public void getResourceType() {
-        Shelf shelf = new Shelf(3, false);
+        Shelf shelf = new Shelf(3);
         assertNull(shelf.getResourceType());
         shelf.addResources(new HashMap<>(){{
             put(Resource.COIN, 2);
@@ -26,7 +26,7 @@ public class ShelfTest {
 
     @Test
     public void getResourceNumber() {
-        Shelf shelf = new Shelf(3, false);
+        Shelf shelf = new Shelf(3);
         assertEquals(0, shelf.getResourceNumber());
         shelf.addResources(new HashMap<>(){{
             put(Resource.COIN, 2);
@@ -36,7 +36,7 @@ public class ShelfTest {
 
     @Test
     public void getResources() {
-        Shelf shelf = new Shelf(3, false);
+        Shelf shelf = new Shelf(3);
         Map<Resource, Integer> resources = new HashMap<>();
         resources.put(Resource.SHIELD, 0);
         resources.put(Resource.COIN, 0);
@@ -47,13 +47,13 @@ public class ShelfTest {
 
     @Test
     public void getMaxSize() {
-        Shelf shelf = new Shelf(3, false);
+        Shelf shelf = new Shelf(3);
         assertEquals(3, shelf.getMaxSize());
     }
 
     @Test
     public void addResources() {
-        Shelf shelf = new Shelf(3, false);
+        Shelf shelf = new Shelf(3);
         Map<Resource, Integer> resources = new HashMap<>();
         resources.put(Resource.SHIELD, 0);
         resources.put(Resource.COIN, 2);
@@ -69,7 +69,7 @@ public class ShelfTest {
 
     @Test
     public void canPlace() {
-        Shelf shelf = new Shelf(3, false);
+        Shelf shelf = new Shelf(3);
 
         Map<Resource, Integer> newResources = new HashMap<>();
         newResources.put(Resource.STONE, 2);
@@ -85,7 +85,7 @@ public class ShelfTest {
 
     @Test
     public void useResources() {
-        Shelf shelf = new Shelf(3, false);
+        Shelf shelf = new Shelf(3);
 
         Map<Resource, Integer> newResources = new HashMap<>();
         newResources.put(Resource.STONE, 2);

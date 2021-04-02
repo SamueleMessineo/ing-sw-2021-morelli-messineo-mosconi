@@ -9,11 +9,15 @@ public class Shelf implements Storage {
     private Resource resourceType=null;
     private int resourceNumber=0;
     private final int maxSize;
-    private final boolean fixed;
+    private boolean fixed = false;
 
-    public Shelf(int maxSize, boolean fixed) {
+    public Shelf(int maxSize) {
         this.maxSize = maxSize;
-        this.fixed = fixed;
+    }
+
+    public Shelf (int maxSize, Resource initialResourceType) {
+        this.maxSize = maxSize;
+        resourceType = initialResourceType;
     }
 
     public Resource getResourceType() {
