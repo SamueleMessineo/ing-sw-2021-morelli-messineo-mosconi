@@ -82,6 +82,7 @@ public class Game {
     public void addPlayer(String username){
         Player newPlayer=new Player(username);
         players.add(newPlayer);
+        giveLeaderCardsToPlayer(newPlayer);
     }
 
     public void removePlayer(Player player){
@@ -92,5 +93,6 @@ public class Game {
         player.setLeaderCards(new ArrayList<LeaderCard>(leaderCards.subList(0,4)));
         leaderCards.removeAll(leaderCards.subList(0,4));
     }
+
 
 }
