@@ -9,14 +9,16 @@ public class LeaderCard {
     private final int score;
     private final String effectScope;
     private final Resource effectObject;
+    private final int cardRequirementsLevel;
 
     public LeaderCard(Map<Resource,Integer> resourceRequirements, Map<CardType,Integer> cardRequirements,
-                      int score, String effectScope, Resource effectObject) {
+                      int score, String effectScope, Resource effectObject, int cardRequirementsLevel) {
     this.resourceRequirements=resourceRequirements;
     this.cardRequirements=cardRequirements;
     this.score=score;
     this.effectScope=effectScope;
     this.effectObject=effectObject;
+    this.cardRequirementsLevel= cardRequirementsLevel;
     }
 
     public Map<Resource,Integer> getResourceRequirements(){
