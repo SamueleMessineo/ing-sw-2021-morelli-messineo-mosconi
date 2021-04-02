@@ -28,8 +28,15 @@ public class Player {
         return username;
     }
 
-    public int getScore() {
-        return score;
+    public int getVP() {
+        int totalVP = 0;
+        totalVP += playerBoard.getPoints();
+        totalVP += faithTrack.getVP();
+        for (LeaderCard playedLeaderCard : playedLeaderCards) {
+            totalVP += playedLeaderCard.getScore();
+        }
+
+        return totalVP;
     }
 
     public void updateScore(int score) {
