@@ -1,45 +1,46 @@
 [
   {
-
     "cardRequirements": {
       "GREEN": 1,
       "YELLOW": 1
     },
+    "cardRequirementsLevel": 0,
     "score": 2,
     "effectScope": "Market",
     "effectObject":"SERVANT"
   },
 
   {
-
     "cardRequirements": {
       "BLU": 1,
       "PURPLE": 1
     },
+    "cardRequirementsLevel": 0,
     "score": 2,
     "effectScope": "Market",
     "effectObject":"SHIELD"
   },
+
   {
-
-
     "cardRequirements": {
       "GREEN": 1,
       "BLU": 1
     },
+    "cardRequirementsLevel": 0,
     "score": 2,
     "effectScope": "Market",
     "effectObject":"STONE"
   },
 
   {
-  "cardRequirements": {
+    "cardRequirements": {
     "YELLOW": 1,
     "PURPLE": 1
-  },
-  "score": 2,
-  "effectScope": "Market",
-  "effectObject":"COIN"
+    },
+    "cardRequirementsLevel": 0,
+    "score": 2,
+    "effectScope": "Market",
+    "effectObject":"COIN"
   },
 
   {
@@ -71,104 +72,104 @@
   },
 
   {
-
-  "resourceRequirements": {
+    "resourceRequirements": {
     "SHIELD": 5
-  },
-  "score": 3,
-  "effectScope": "Storage",
-  "effectObject":"COIN"
+    },
+    "score": 3,
+    "effectScope": "Storage",
+    "effectObject":"COIN"
   },
 
   {
-  "cardRequirements": {
+    "cardRequirements": {
     "YELLOW": 2
-  },
-  "score": 5,
-  "effectScope": "Marbles",
-  "effectObject":"SERVANT"
-  },
+    },
+    "cardRequirementsLevel": 0,
+    "score": 5,
+    "effectScope": "Marbles",
+    "effectObject":"SERVANT"
+    },
 
   {
-  "cardRequirements": {
+    "cardRequirements": {
     "GREEN": 2,
     "PURPLE": 1
-  },
-  "score": 5,
-  "effectScope": "Marbles",
-  "effectObject":"SHIELD"
-  },
-
-  {
-  "cardRequirements": {
-    "BLU": 2,
-    "YELLOW": 1
-  },
-  "score": 5,
-  "effectScope": "Marbles",
-  "effectObject":"STONE"
+    },
+    "cardRequirementsLevel": 0,
+    "score": 5,
+    "effectScope": "Marbles",
+    "effectObject":"SHIELD"
   },
 
   {
-  "cardRequirements": {
-    "PURPLE": 2,
-    "GREEN": 1
-  },
-  "score": 5,
-  "effectScope": "Marbles",
-  "effectObject":"COIN"
+    "cardRequirements": {
+      "BLU": 2,
+      "YELLOW": 1
+    },
+    "cardRequirementsLevel": 0,
+    "score": 5,
+    "effectScope": "Marbles",
+    "effectObject":"STONE"
   },
 
   {
-  "cardRequirements": {
-    "GREEN": 2
+    "cardRequirements": {
+      "PURPLE": 2,
+      "GREEN": 1
+    },
+    "cardRequirementsLevel": 0,
+    "score": 5,
+    "effectScope": "Marbles",
+    "effectObject":"COIN"
   },
-  "score": 1,
-  "effectScope": "Market",
-  "effectObject":"COIN"
-},{
 
-  "resourceRequirements": {
-    "SHIELD": 2
+  {
+    "cardRequirements": {
+     "GREEN": 2
+    },
+    "cardRequirementsLevel": 0,
+    "score": 1,
+    "effectScope": "Market",
+    "effectObject":"COIN"
   },
-  "cardRequirements": {
-    "GREEN": 2
-  },
-  "score": 1,
-  "effectScope": "Market",
-  "effectObject":"COIN"
-},{
 
-  "resourceRequirements": {
-    "SHIELD": 2
+  {
+    "cardRequirements": {
+      "YELLOW": 1
+    },
+    "cardRequirementsLevel": 2,
+    "score": 4,
+    "effectScope": "Production",
+    "effectObject":"STONE"
   },
-  "cardRequirements": {
-    "GREEN": 2
-  },
-  "score": 1,
-  "effectScope": "Market",
-  "effectObject":"COIN"
-},{
 
-  "resourceRequirements": {
-    "SHIELD": 2
+  {
+    "cardRequirements": {
+      "GREEN": 1
+    },
+    "cardRequirementsLevel": 2,
+    "score": 4,
+    "effectScope": "Production",
+    "effectObject":"COIN"
   },
-  "cardRequirements": {
-    "GREEN": 2
-  },
-  "score": 1,
-  "effectScope": "Market",
-  "effectObject":"COIN"
-},{
 
-  "resourceRequirements": {
-    "SHIELD": 2
+  {
+    "cardRequirements": {
+     "BLU": 1
+    },
+    "cardRequirementsLevel": 2,
+    "score": 4,
+    "effectScope": "Production",
+    "effectObject":"SERVANT"
   },
-  "cardRequirements": {
-    "GREEN": 2
-  },
-  "score": 1,
-  "effectScope": "Market",
-  "effectObject":"COIN"
-}
+
+  {
+    "cardRequirements": {
+      "PURPLE": 1
+    },
+    "cardRequirementsLevel": 2,
+    "score": 4,
+    "effectScope": "Production",
+    "effectObject":"STONE"
+  }
 ]
