@@ -40,4 +40,8 @@ public class LeaderCard {
     public Resource getEffectObject(){
         return effectObject;
     }
+
+    public int getCardRequirementsLevel() {
+        return cardRequirementsLevel;
+    }
 }
