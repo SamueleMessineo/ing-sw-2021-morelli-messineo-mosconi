@@ -12,7 +12,7 @@
 
   {
     "cardRequirements": {
-      "BLU": 1,
+      "BLUE": 1,
       "PURPLE": 1
     },
     "cardRequirementsLevel": 0,
@@ -24,7 +24,7 @@
   {
     "cardRequirements": {
       "GREEN": 1,
-      "BLU": 1
+      "BLUE": 1
     },
     "cardRequirementsLevel": 0,
     "score": 2,
@@ -103,7 +103,7 @@
 
   {
     "cardRequirements": {
-      "BLU": 2,
+      "BLUE": 2,
       "YELLOW": 1
     },
     "cardRequirementsLevel": 0,
@@ -155,7 +155,7 @@
 
   {
     "cardRequirements": {
-     "BLU": 1
+     "BLUE": 1
     },
     "cardRequirementsLevel": 2,
     "score": 4,
