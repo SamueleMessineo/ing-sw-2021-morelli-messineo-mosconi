@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.player;
 
 import it.polimi.ingsw.model.shared.CardType;
+import it.polimi.ingsw.model.shared.DevelopmentCard;
 import it.polimi.ingsw.model.shared.LeaderCard;
 import it.polimi.ingsw.model.shared.Resource;
 
@@ -61,15 +62,29 @@ public class Player {
 
     public boolean canPlayLeader(int leaderIndex) {
         LeaderCard leader = leaderCards.get(leaderIndex);
+        Map<CardType,Integer> cardRequirements=leader.getCardRequirements();
+        int cardRequirementsLevel= leader.getCardRequirementsLevel();
 
+        //Resource for play the LeaderCard
         Map<Resource, Integer> resourceRequirements = leader.getResourceRequirements();
         Map<Resource, Integer> allResources = playerBoard.getResources();
         for (Resource resource : allResources.keySet()) {
             if (allResources.get(resource) < resourceRequirements.get(resource)) return false;
         }
 
-        Map<CardType, Integer> cardRequirements = leader.getCardRequirements();
-
+        //CardRequirements for play the LeaderCard
+        for(CardType cardType: cardRequirements.keySet()){
+            boolean found=false;
+           for(PlayerCardStack playerCardStack: playerBoard.getCardStacks()){
+               for(DevelopmentCard playerCard: playerCardStack){
+                   if(playerCard.getCardType()==cardType &&
+                           (playerCard.getLevel()==cardRequirementsLevel || cardRequirementsLevel==0))
+                       found=true;
+               }
+           }
+           if(found == false)
+               return false;
+        }
         return true;
     }
 }
