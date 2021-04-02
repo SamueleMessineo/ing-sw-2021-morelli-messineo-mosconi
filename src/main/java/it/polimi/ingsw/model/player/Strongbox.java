@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Strongbox implements Storage {
+    // TODO test
 
     private Map<Resource, Integer> resources;
 

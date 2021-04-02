@@ -45,7 +45,7 @@ public class PlayerBoard {
     }
 
     public int getPoints() {
-        System.out.println("Mettodo da implementare successivamente");
+        // TODO
         return -1;
     }
 

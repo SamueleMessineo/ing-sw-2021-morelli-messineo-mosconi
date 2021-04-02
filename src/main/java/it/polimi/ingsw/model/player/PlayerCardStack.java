@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.shared.DevelopmentCard;
 import java.util.ArrayList;
 
 public class PlayerCardStack {
+    // TODO extends Stack class
 
     private ArrayList<DevelopmentCard> cards = new ArrayList<>();
 
