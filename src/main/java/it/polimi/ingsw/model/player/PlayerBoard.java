@@ -7,8 +7,8 @@ import java.util.Map;
 public class PlayerBoard {
 
     private Warehouse warehouse;
-    private ArrayList<PlayerCardStack> cardStacks = new ArrayList<>();
-    private Strongbox strongbox;
+    private final ArrayList<PlayerCardStack> cardStacks = new ArrayList<>();
+    private final Strongbox strongbox;
     private ArrayList<ProductionPower> extraProductionPowers = new ArrayList<>();
 
     public PlayerBoard() {
@@ -19,22 +19,17 @@ public class PlayerBoard {
         strongbox = new Strongbox();
     }
 
-
     public Warehouse getWarehouse() {
         return warehouse;
     }
-
 
     public ArrayList<PlayerCardStack> getCardStacks() {
         return cardStacks;
     }
 
-
-
     public Strongbox getStrongbox() {
         return strongbox;
     }
-
 
     public ArrayList<ProductionPower> getExtraProductionPowers() {
         return extraProductionPowers;
@@ -45,8 +40,20 @@ public class PlayerBoard {
     }
 
     public int getPoints() {
-        // TODO
-        return -1;
+        Map<Resource, Integer> allResources = getResources();
+        int points = 0;
+        for (Resource resourceType : allResources.keySet()) {
+            points += allResources.get(resourceType);
+        }
+        points /= 5;
+
+        for (PlayerCardStack playerCardStack : cardStacks) {
+            for (DevelopmentCard playerCard : playerCardStack) {
+                points += playerCard.getScore();
+            }
+        }
+
+        return points;
     }
 
     public void expandWarehouse(Resource resource){
