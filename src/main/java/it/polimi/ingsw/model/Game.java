@@ -18,6 +18,7 @@ public class Game {
     private ArrayList<SoloActionType> soloActionTypes;
 
 
+
     public Game()  {
         this.players = new ArrayList<Player>();
         this.market = new Market();

@@ -1,0 +1,190 @@
+[
+  {
+
+    "cardRequirements": {
+      "GREEN": 1,
+      "YELLOW": 1
+    },
+    "score": 2,
+    "effectScope": "Market",
+    "effectObject":"SERVANT"
+  },
+
+  {
+
+
+    "cardRequirements": {
+      "BLU": 1,
+      "PURPLE": 1
+    },
+    "score": 2,
+    "effectScope": "Market",
+    "effectObject":"SERVANT"
+  },
+  {
+
+    "resourceRequirements": {
+      "SHIELD": 2
+    },
+    "cardRequirements": {
+      "GREEN": 2
+    },
+    "score": 1,
+    "effectScope": "Market",
+    "effectObject":"COIN"
+  },{
+
+  "resourceRequirements": {
+    "SHIELD": 2
+  },
+  "cardRequirements": {
+    "GREEN": 2
+  },
+  "score": 1,
+  "effectScope": "Market",
+  "effectObject":"COIN"
+},{
+
+  "resourceRequirements": {
+    "SHIELD": 2
+  },
+  "cardRequirements": {
+    "GREEN": 2
+  },
+  "score": 1,
+  "effectScope": "Market",
+  "effectObject":"COIN"
+},{
+
+  "resourceRequirements": {
+    "SHIELD": 2
+  },
+  "cardRequirements": {
+    "GREEN": 2
+  },
+  "score": 1,
+  "effectScope": "Market",
+  "effectObject":"COIN"
+},{
+
+  "resourceRequirements": {
+    "SHIELD": 2
+  },
+  "cardRequirements": {
+    "GREEN": 2
+  },
+  "score": 1,
+  "effectScope": "Market",
+  "effectObject":"COIN"
+},{
+
+  "resourceRequirements": {
+    "SHIELD": 2
+  },
+  "cardRequirements": {
+    "GREEN": 2
+  },
+  "score": 1,
+  "effectScope": "Market",
+  "effectObject":"COIN"
+},{
+
+  "resourceRequirements": {
+    "SHIELD": 2
+  },
+  "cardRequirements": {
+    "GREEN": 2
+  },
+  "score": 1,
+  "effectScope": "Market",
+  "effectObject":"COIN"
+},{
+
+  "resourceRequirements": {
+    "SHIELD": 2
+  },
+  "cardRequirements": {
+    "GREEN": 2
+  },
+  "score": 1,
+  "effectScope": "Market",
+  "effectObject":"COIN"
+},{
+
+  "resourceRequirements": {
+    "SHIELD": 2
+  },
+  "cardRequirements": {
+    "GREEN": 2
+  },
+  "score": 1,
+  "effectScope": "Market",
+  "effectObject":"COIN"
+},{
+
+  "resourceRequirements": {
+    "SHIELD": 2
+  },
+  "cardRequirements": {
+    "GREEN": 2
+  },
+  "score": 1,
+  "effectScope": "Market",
+  "effectObject":"COIN"
+},{
+
+  "resourceRequirements": {
+    "SHIELD": 2
+  },
+  "cardRequirements": {
+    "GREEN": 2
+  },
+  "score": 1,
+  "effectScope": "Market",
+  "effectObject":"COIN"
+},{
+
+  "resourceRequirements": {
+    "SHIELD": 2
+  },
+  "cardRequirements": {
+    "GREEN": 2
+  },
+  "score": 1,
+  "effectScope": "Market",
+  "effectObject":"COIN"
+},{
+
+  "resourceRequirements": {
+    "SHIELD": 2
+  },
+  "cardRequirements": {
+    "GREEN": 2
+  },
+  "score": 1,
+  "effectScope": "Market",
+  "effectObject":"COIN"
+},{
+
+  "resourceRequirements": {
+    "SHIELD": 2
+  },
+  "cardRequirements": {
+    "GREEN": 2
+  },
+  "score": 1,
+  "effectScope": "Market",
+  "effectObject":"COIN"
+},{
+
+  "resourceRequirements": {
+    "SHIELD": 2
+  },
+  "cardRequirements": {
+    "GREEN": 2
+  },
+  "score": 1,
+  "effectScope": "Market",
+  "effectObject":"COIN"
+}
+]

@@ -46,17 +46,17 @@ public class Market {
         List<DevelopmentCard> developmentCards = gson.fromJson(reader, listType);
 
 
-            for (int j = 1; j < 4; j++) {
+            for (int j = 3; j > 0; j--) {
                 cardsGrid.add(new MarketCardStack(j, CardType.GREEN));
-            }
-            for (int j = 1; j < 4; j++) {
+
+                cardsGrid.add(new MarketCardStack(j, CardType.BLUE));
+
                 cardsGrid.add(new MarketCardStack(j, CardType.YELLOW));
-            }
-            for (int j = 1; j < 4; j++) {
+
+
                 cardsGrid.add(new MarketCardStack(j, CardType.PURPLE));
-            }
-            for (int j = 1; j < 4; j++) {
-               cardsGrid.add(new MarketCardStack(j, CardType.BLUE));
+
+
             }
 
 
