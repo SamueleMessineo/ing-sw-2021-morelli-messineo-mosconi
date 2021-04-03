@@ -74,23 +74,32 @@ public class Player {
 
         //Resource for play the LeaderCard
         Map<Resource, Integer> resourceRequirements = leader.getResourceRequirements();
-        Map<Resource, Integer> allResources = playerBoard.getResources();
-        for (Resource resource : allResources.keySet()) {
-            if (allResources.get(resource) < resourceRequirements.get(resource)) return false;
+        if(!resourceRequirements.isEmpty() && resourceRequirements!=null){
+            Map<Resource, Integer> allResources = playerBoard.getResources();
+            for (Resource resource : allResources.keySet()) {
+                if (allResources.get(resource) < resourceRequirements.get(resource)) return false;
+            }
         }
 
         //CardRequirements for play the LeaderCard
-        for(CardType cardType: cardRequirements.keySet()){
-            boolean found=false;
-           for(PlayerCardStack playerCardStack: playerBoard.getCardStacks()){
-               for(DevelopmentCard playerCard: playerCardStack){
-                   if(playerCard.getCardType()==cardType &&
-                           (playerCard.getLevel()==cardRequirementsLevel || cardRequirementsLevel==0))
-                       found=true;
-               }
-           }
-           if(found == false)
-               return false;
+        if(cardRequirements!=null && !cardRequirements.isEmpty())
+        {
+            for(CardType cardType: cardRequirements.keySet()){
+                int i = cardRequirements.get(cardType);
+                boolean found = false;
+                for(PlayerCardStack playerCardStack: playerBoard.getCardStacks()){
+                    for(DevelopmentCard playerCard: playerCardStack){
+                        if(playerCard.getCardType()==cardType &&
+                                (playerCard.getLevel()==cardRequirementsLevel || cardRequirementsLevel==0)) {
+                            i--;
+                        }
+                    }
+                }
+                if(i==0)
+                    found = true;
+                if(found == false)
+                    return false;
+            }
         }
         return true;
     }
