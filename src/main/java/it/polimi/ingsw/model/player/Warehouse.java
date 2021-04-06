@@ -52,6 +52,7 @@ public class Warehouse {
 
     //@requires resources.size <= 3 && forAll (Resource i in resources;;i=resources.get(0));
     public boolean canPlaceOnShelf(String shelf, Map<Resource, Integer> resources){
+        // TODO check that other shelves don't have same resource type
         Shelf currentShelf = shelves.get(getShelfIndex(shelf));
         return currentShelf.canPlace(resources);
     }
