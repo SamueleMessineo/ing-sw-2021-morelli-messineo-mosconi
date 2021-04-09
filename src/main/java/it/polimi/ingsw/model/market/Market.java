@@ -1,19 +1,11 @@
 package it.polimi.ingsw.model.market;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
 import it.polimi.ingsw.model.shared.CardType;
 import it.polimi.ingsw.model.shared.DevelopmentCard;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.io.FileNotFoundException;
-
 
 /**
  * Holds the two structures that make up the game market:
@@ -24,30 +16,28 @@ public class Market {
     private final MarbleStructure marbleStructure;
 
     /**
-     * Holds the 12 stacks of cards that can be bought by the players during their turn.
+     * The 12 stacks of cards that can be bought by the players during their turn.
      */
-    private List<MarketCardStack> cardsGrid = new ArrayList<>();
-
-
+    private final List<MarketCardStack> cardsGrid = new ArrayList<>();
 
     public Market() {
-
         marbleStructure = new MarbleStructure(new ArrayList<>(), Marble.BLUE);
+        for (int j = 3; j > 0; j--) {
+            cardsGrid.add(new MarketCardStack(j, CardType.GREEN));
+            cardsGrid.add(new MarketCardStack(j, CardType.BLUE));
+            cardsGrid.add(new MarketCardStack(j, CardType.YELLOW));
+            cardsGrid.add(new MarketCardStack(j, CardType.PURPLE));
+        }
     }
 
+    /**
+     * Places the development cards in their respective stacks inside the cardsGrid.
+     * @param developmentCards list of all development cards.
+     */
     public void setCards(ArrayList<DevelopmentCard> developmentCards){
-
-            for (int j = 3; j > 0; j--) {
-                cardsGrid.add(new MarketCardStack(j, CardType.GREEN));
-                cardsGrid.add(new MarketCardStack(j, CardType.BLUE));
-                cardsGrid.add(new MarketCardStack(j, CardType.YELLOW));
-                cardsGrid.add(new MarketCardStack(j, CardType.PURPLE));
-            }
-
         int i=0;
         int j = 4;
         for (int k = 0; k < 12; k++) {
-
             MarketCardStack cardStack = cardsGrid.get(k);
             cardStack.addAll(developmentCards.subList(i, j));
 
@@ -56,11 +46,7 @@ public class Market {
             j+=4;
             i+=4;
         }
-
-
-
     }
-
 
     public MarbleStructure getMarbleStructure() {
         return marbleStructure;
