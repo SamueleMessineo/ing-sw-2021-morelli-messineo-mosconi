@@ -57,7 +57,8 @@ public class PlayerBoard {
     }
 
     public void expandWarehouse(Resource resource){
-        this.warehouse = new ExtraSpaceDecorator(warehouse, resource);
+        this.warehouse.addNewShelf("extra" + (this.warehouse.getShelfNames().size()-2),
+                new Shelf(2, resource));
     }
 
     public void activateProduction(){

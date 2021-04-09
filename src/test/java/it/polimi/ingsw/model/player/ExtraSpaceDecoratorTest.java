@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model.player;
 
 import it.polimi.ingsw.model.shared.Resource;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -14,7 +13,8 @@ public class ExtraSpaceDecoratorTest {
 
     @Test
     public void firstDecoration() {
-        warehouse = new ExtraSpaceDecorator(warehouse, Resource.COIN);
+        warehouse.addNewShelf("extra" + (warehouse.getShelfNames().size()-2),
+                new Shelf(2, Resource.COIN));
         ArrayList<String> names = new ArrayList<>(){{
             add("top");
             add("middle");
@@ -28,8 +28,10 @@ public class ExtraSpaceDecoratorTest {
 
     @Test
     public void doubleDecoration() {
-        warehouse = new ExtraSpaceDecorator(warehouse, Resource.COIN);
-        warehouse = new ExtraSpaceDecorator(warehouse, Resource.SHIELD);
+        warehouse.addNewShelf("extra" + (warehouse.getShelfNames().size()-2),
+                new Shelf(2, Resource.COIN));
+        warehouse.addNewShelf("extra" + (warehouse.getShelfNames().size()-2),
+                new Shelf(2, Resource.SHIELD));
         ArrayList<String> names = new ArrayList<>(){{
             add("top");
             add("middle");
