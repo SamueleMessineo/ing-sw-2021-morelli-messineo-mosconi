@@ -1,4 +1,4 @@
-# Masters of Renaissance
+![game banner](./banner.png)
 
 Final project for the Software Engineering course at Polytechnic of Milan, 2021.
 
