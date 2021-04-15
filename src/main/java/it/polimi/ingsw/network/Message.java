@@ -2,6 +2,6 @@ package it.polimi.ingsw.network;
 
 import java.io.Serializable;
 
-public abstract class Message implements Serializable {
-    public void accept(MessageHandler handler) {};
+public interface Message extends Serializable {
+    String getType();
 }

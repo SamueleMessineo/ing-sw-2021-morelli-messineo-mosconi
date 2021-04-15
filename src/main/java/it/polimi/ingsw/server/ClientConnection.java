@@ -1,12 +1,14 @@
 package it.polimi.ingsw.server;
 
-import it.polimi.ingsw.network.Message;
-import it.polimi.ingsw.network.MessageHandler;
-import it.polimi.ingsw.network.MessageTypeHandler;
+import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.network.*;
+import it.polimi.ingsw.network.game.GameMessage;
+import it.polimi.ingsw.network.setup.SetupMessage;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.net.Socket;
 
 public class ClientConnection implements Runnable{
@@ -29,8 +31,19 @@ public class ClientConnection implements Runnable{
 
     @Override
     public void run() {
+        System.out.println("running client connection");
         while (true) {
             Message m = receiveMessage();
+            System.out.println("message received");
+            System.out.println(m);
+            switch (m.getType()) {
+                case "GAME":
+                    ((GameMessage) m).accept(new GameMessageHandler());
+                    break;
+                case "SETUP":
+                    ((SetupMessage) m).accept(new SetupMessageHandler());
+                    break;
+            }
         }
     }
 
@@ -38,8 +51,7 @@ public class ClientConnection implements Runnable{
         Message m = null;
         try {
             m = (Message) inputStream.readObject();
-            MessageTypeHandler handler = new MessageTypeHandler();
-            m.accept(handler);
+
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
