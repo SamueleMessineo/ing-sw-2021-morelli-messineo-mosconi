@@ -1,8 +1,8 @@
 package it.polimi.ingsw.client;
 
-import it.polimi.ingsw.network.messages.Message;
-import it.polimi.ingsw.network.messages.game.EndTurnMessage;
-import it.polimi.ingsw.network.messages.game.SelectCardMessage;
+import it.polimi.ingsw.network.Message;
+import it.polimi.ingsw.network.game.EndTurnMessage;
+import it.polimi.ingsw.network.game.SelectCardMessage;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.net.Socket;

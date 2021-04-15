@@ -1,6 +1,6 @@
 package it.polimi.ingsw.server;
 
-import it.polimi.ingsw.controller.MessageHandler;
+import it.polimi.ingsw.network.GameMessageHandler;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -16,7 +16,7 @@ public class Server {
     private final ServerSocket serverSocket;
     List<ClientConnection> pendingConnections = new ArrayList<>();
 
-    private final MessageHandler handler = new MessageHandler();
+    private final GameMessageHandler handler = new GameMessageHandler();
 
     public Server() throws IOException {
         this.serverSocket = new ServerSocket(PORT);
