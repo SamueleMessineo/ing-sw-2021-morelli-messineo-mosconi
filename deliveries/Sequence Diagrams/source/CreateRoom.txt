@@ -1,0 +1,30 @@
+title CreateRoom Event
+
+participant Client
+participant ClientConnection
+participant SetupMessageHandler
+participant ServerController
+participant Server
+
+activate Server
+activate ServerController
+activate Client
+activate ClientConnection
+
+Client->ClientConnection:CreateRoomMessage
+ClientConnection->SetupMessageHandler: handle(CreateRoomMessage)
+activate SetupMessageHandler
+SetupMessageHandler->ServerController: createRoom(...)
+deactivate SetupMessageHandler
+
+ServerController-->ClientConnection: sendMessage(Invalid ParametersError)
+
+ClientConnection-->Client:InvalidParametersError
+
+ServerController->Server:remove ClientConnection \nfrom pending list
+ServerController->Server:Create new Room
+ServerController->Server:Add Player to Room
+
+ServerController-->ClientConnection:OK
+
+Client<--ClientConnection:OK
