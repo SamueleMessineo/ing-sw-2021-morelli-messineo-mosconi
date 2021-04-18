@@ -12,4 +12,6 @@ public class GameMessageHandler {
     public void handle(EndTurnMessage message) {
         System.out.println(message.getName());
     }
+
+
 }

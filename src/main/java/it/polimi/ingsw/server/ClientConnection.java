@@ -17,6 +17,8 @@ public class ClientConnection implements Runnable{
     private final Server server;
     private ObjectInputStream inputStream;
     private ObjectOutputStream outputStream;
+    private final SetupMessageHandler setupMessageHandler;
+    private final GameMessageHandler gameMessageHandler;
 
     public ClientConnection(Socket socket, Server server) {
         this.socket = socket;
@@ -27,21 +29,21 @@ public class ClientConnection implements Runnable{
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        this.gameMessageHandler=new GameMessageHandler();
+        this.setupMessageHandler=new SetupMessageHandler(server, this);
     }
 
     @Override
     public void run() {
-        System.out.println("running client connection");
         while (true) {
             Message m = receiveMessage();
-            System.out.println("message received");
-            System.out.println(m);
             switch (m.getType()) {
                 case "GAME":
-                    ((GameMessage) m).accept(new GameMessageHandler());
+                    ((GameMessage) m).accept(gameMessageHandler);
                     break;
                 case "SETUP":
-                    ((SetupMessage) m).accept(new SetupMessageHandler());
+                    ((SetupMessage) m).accept(setupMessageHandler);
                     break;
             }
         }
