@@ -1,0 +1,42 @@
+title PlayerJoinToPublicRoom Event
+
+participant Client
+participant ClientConnection
+participant SetupMessageHandler
+participant ServerController
+participant Room
+participant Game
+participant Server
+
+activate Server
+activate ServerController
+activate Client
+activate ClientConnection
+
+Client->ClientConnection:JoinPublicRoomMessage
+
+ClientConnection->SetupMessageHandler:handle(JoinPublicRoom)
+activate SetupMessageHandler
+SetupMessageHandler->ServerController:addPlayerToPublicRoom(...)
+deactivate SetupMessageHandler
+
+ServerController ->Server:get ArrayList of Rooms
+
+ServerController <--Server:List<Room>
+
+ServerController ->Room:\n\n\n        Stream().filter: get a room with\nplayers number equals to player number past
+activate Room
+ServerController <--Room:room
+ServerController ->Room:getGame()
+ServerController <--Room:game()
+deactivate Room
+
+ServerController->Game: addPlayer(username)
+activate Game
+Game --> ServerController:       game\n//with add Player
+deactivate Game
+
+ServerController-->ClientConnection: sendMessage(Invalid ParametersError)
+ClientConnection-->Client:InvalidParametersError
+ServerController-->ClientConnection:OK
+Client<--ClientConnection:OK
