@@ -4,6 +4,7 @@ import it.polimi.ingsw.network.Message;
 import it.polimi.ingsw.network.game.GameMessage;
 import it.polimi.ingsw.network.game.SelectCardMessage;
 import it.polimi.ingsw.network.setup.CreateRoomMessage;
+import it.polimi.ingsw.network.setup.JoinPublicRoomMessage;
 
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -16,5 +17,7 @@ public class Client {
         ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
         CreateRoomMessage createRoomMessage=new CreateRoomMessage(false, 4, "prova");
         outputStream.writeObject(createRoomMessage);
+        JoinPublicRoomMessage joinPublicRoomMessage = new JoinPublicRoomMessage(2, "username");
+        outputStream.writeObject(joinPublicRoomMessage);
     }
 }

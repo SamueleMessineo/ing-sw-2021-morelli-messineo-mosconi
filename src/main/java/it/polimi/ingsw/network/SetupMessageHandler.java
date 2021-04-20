@@ -21,7 +21,7 @@ public class SetupMessageHandler {
     }
 
     public void handle(JoinPublicRoomMessage joinPublicRoomMessage) {
-        System.out.println(joinPublicRoomMessage.getNumberOfPlayers());
+       serverController.addPlayerToPublicRoom(joinPublicRoomMessage.getNumberOfPlayers(), joinPublicRoomMessage.getUsername());
     }
 
     public void handle(JoinPrivateRoomMessage joinPrivateRoomMessage) {

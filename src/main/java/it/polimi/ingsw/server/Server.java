@@ -3,6 +3,7 @@ package it.polimi.ingsw.server;
 import it.polimi.ingsw.controller.ServerController;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.network.GameMessageHandler;
+import it.polimi.ingsw.network.setup.Room;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -22,7 +23,7 @@ public class Server {
     List<ClientConnection> pendingConnections = new ArrayList<>();
     private final ServerController serverController=new ServerController(this);
     private final GameMessageHandler handler = new GameMessageHandler();
-    private Map<String , Game > rooms = new HashMap<>();
+    private Map<String , Room> rooms = new HashMap<>();
 
     public Server() throws IOException {
         this.serverSocket = new ServerSocket(PORT);
@@ -36,11 +37,11 @@ public class Server {
         return pendingConnections;
     }
 
-    public void addRoom(String roomId, Game game){
-        rooms.put(roomId,game);
+    public void addRoom(String roomId, Room room){
+        rooms.put(roomId,room);
     }
 
-    public Map<String, Game> getRooms() {
+    public Map<String, Room> getRooms() {
         return rooms;
     }
 
