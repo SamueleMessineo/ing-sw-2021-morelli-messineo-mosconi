@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.shared.DevelopmentCard;
 import it.polimi.ingsw.model.shared.LeaderCard;
 import it.polimi.ingsw.model.shared.Resource;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -37,6 +38,8 @@ public class Player {
 
         return totalVP;
     }
+
+
 
     public void updateScore(int score) {
         this.score += score;

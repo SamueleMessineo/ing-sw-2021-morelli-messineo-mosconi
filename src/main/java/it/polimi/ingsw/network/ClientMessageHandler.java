@@ -2,7 +2,7 @@ package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.client.Client;
 import it.polimi.ingsw.client.ServerConnection;
-import it.polimi.ingsw.network.client.RoomDettailsMessage;
+import it.polimi.ingsw.network.client.RoomDetailsMessage;
 
 public class ClientMessageHandler {
     ServerConnection serverConnection;
@@ -11,7 +11,7 @@ public class ClientMessageHandler {
         this.serverConnection = serverConnection;
     }
 
-    public void handle(RoomDettailsMessage roomDettailsMessage){
-        serverConnection.getClient().getUi().displayRoomDettails(roomDettailsMessage.getPlayers(), roomDettailsMessage.getPlayersNum(), roomDettailsMessage.getRoomId());
+    public void handle(RoomDetailsMessage roomDetailsMessage){
+        serverConnection.getClient().getUi().displayRoomDettails(roomDetailsMessage.getPlayers(), roomDetailsMessage.getPlayersNum(), roomDetailsMessage.getRoomId());
     }
 }

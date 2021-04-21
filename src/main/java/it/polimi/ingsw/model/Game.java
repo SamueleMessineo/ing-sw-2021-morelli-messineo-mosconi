@@ -60,6 +60,8 @@ public class Game {
         return players;
     }
 
+
+
     private void loadResources() throws FileNotFoundException{
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();

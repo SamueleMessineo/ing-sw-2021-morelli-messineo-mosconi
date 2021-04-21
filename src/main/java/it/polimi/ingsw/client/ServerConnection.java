@@ -22,12 +22,13 @@ public class ServerConnection{
         this.socket = socket;
         this.client = client;
         this.clientMessageHandler = new ClientMessageHandler(client, this);
-        System.out.println("costructor");
+
 
         try {
-            inputStream  = new ObjectInputStream(socket.getInputStream());
+
             outputStream = new ObjectOutputStream(socket.getOutputStream());
-            System.out.println("ok");
+            inputStream  = new ObjectInputStream(socket.getInputStream());
+
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -36,10 +37,11 @@ public class ServerConnection{
 
     public void waitForMessages() {
         while (true) {
-            System.out.println("running");
-            sendMessage(new CreateRoomMessage(false, 2, "Mac"));
+
+            sendMessage(new CreateRoomMessage(false, 2, "MacBook"));
 
             Message m = receiveMessage();
+
 
             ((ClientMessage) m).accept(clientMessageHandler);
 
@@ -51,7 +53,9 @@ public class ServerConnection{
     public Message receiveMessage() {
         Message m = null;
         try {
+
             m = (Message) inputStream.readObject();
+
 
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -66,6 +70,7 @@ public class ServerConnection{
 
     public void sendMessage(Message m) {
         try {
+
             outputStream.writeObject(m);
         } catch (IOException e) {
             e.printStackTrace();

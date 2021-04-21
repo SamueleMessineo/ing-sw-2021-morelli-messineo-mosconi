@@ -22,15 +22,11 @@ public class Client {
     public void run() throws IOException {
         socket = new Socket("localhost", 31415);
         ui = new CLI();
-        System.out.println("sopra");
+
         ServerConnection serverConnection = new ServerConnection(socket, this);
-        System.out.println("entro");
         ExecutorService executor = Executors.newCachedThreadPool();
         executor.submit(serverConnection::waitForMessages);
-        serverConnection.sendMessage(new CreateRoomMessage(false, 2, "Mac"));
-
-
-
+        //TODO serverConnection.send should be called here rather than in serverConnection.waitForMessage
     }
 
     public UI getUi() {

@@ -6,5 +6,5 @@ import java.util.ArrayList;
 
 public interface UI {
 
-    public void displayRoomDettails(ArrayList<Player> players, int playersNum, String RoomId);
+    public void displayRoomDettails(ArrayList<String> players, int playersNum, String RoomId);
 }

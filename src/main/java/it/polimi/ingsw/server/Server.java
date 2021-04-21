@@ -48,13 +48,15 @@ public class Server {
             System.out.println("waiting for client connection...");
             try {
                 Socket clientSocket = serverSocket.accept();
-                System.out.println("client connected");
+
                 ClientConnection clientConnection = new ClientConnection(clientSocket, this);
 
                 ExecutorService executor = Executors.newCachedThreadPool();
 
                 pendingConnections.add(clientConnection);
                 executor.submit(clientConnection);
+
+                break;
             } catch (IOException e) {
                 System.out.println("Connection error");
             }

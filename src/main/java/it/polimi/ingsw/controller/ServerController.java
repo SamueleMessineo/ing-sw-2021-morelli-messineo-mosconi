@@ -1,7 +1,8 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.network.client.RoomDettailsMessage;
+import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.network.client.RoomDetailsMessage;
 import it.polimi.ingsw.network.setup.Room;
 
 import it.polimi.ingsw.server.ClientConnection;
@@ -28,7 +29,13 @@ public class ServerController {
 
         server.addRoom(roomId,room);
 
-        clientConnection.sendMessage(new RoomDettailsMessage(room.getGame().getPlayers(), room.getNumberOfPlayers(), roomId));
+        ArrayList<String> players = new ArrayList<>();
+        for (Player player:
+                room.getGame().getPlayers()) {
+            players.add(player.getUsername());
+
+        }
+        clientConnection.sendMessage(new RoomDetailsMessage(players, room.getNumberOfPlayers(), roomId));
     }
 
     public void addPlayerByRoomId(String username,String roomId){
