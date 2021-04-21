@@ -15,9 +15,10 @@ public class Client {
     public void run() throws IOException {
         Socket socket = new Socket("localhost", 31415);
         ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
-        CreateRoomMessage createRoomMessage=new CreateRoomMessage(false, 4, "prova");
+        CreateRoomMessage createRoomMessage=new CreateRoomMessage(false, 2, "Mac");
         outputStream.writeObject(createRoomMessage);
-        JoinPublicRoomMessage joinPublicRoomMessage = new JoinPublicRoomMessage(2, "username");
-        outputStream.writeObject(joinPublicRoomMessage);
+
+
+
     }
 }

@@ -42,6 +42,11 @@ public class Player {
         this.score += score;
     }
 
+    @Override
+    public String toString() {
+        return username;
+    }
+
     public boolean isPlaying() {
         return playing;
     }
