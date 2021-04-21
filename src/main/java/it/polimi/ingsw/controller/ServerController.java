@@ -1,6 +1,7 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.network.client.RoomDettailsMessage;
 import it.polimi.ingsw.network.setup.Room;
 
 import it.polimi.ingsw.server.ClientConnection;
@@ -27,7 +28,7 @@ public class ServerController {
 
         server.addRoom(roomId,room);
 
-        System.out.println("room creata");
+        clientConnection.sendMessage(new RoomDettailsMessage(room.getGame().getPlayers(), room.getNumberOfPlayers(), roomId));
     }
 
     public void addPlayerByRoomId(String username,String roomId){

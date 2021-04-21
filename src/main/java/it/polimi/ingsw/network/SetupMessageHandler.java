@@ -18,9 +18,12 @@ public class SetupMessageHandler {
     public void handle(CreateRoomMessage createRoomMessage) {
         serverController.createRoom(createRoomMessage.isPrivateRoom(), createRoomMessage.getUsername(),
                                     createRoomMessage.getNumberOfPlayers(), clientConnection);
+
+
     }
 
     public void handle(JoinPublicRoomMessage joinPublicRoomMessage) {
+
        serverController.addPlayerToPublicRoom(joinPublicRoomMessage.getNumberOfPlayers(), joinPublicRoomMessage.getUsername());
     }
 
