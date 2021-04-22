@@ -24,10 +24,10 @@ public class SetupMessageHandler {
 
     public void handle(JoinPublicRoomMessage joinPublicRoomMessage) {
 
-       serverController.addPlayerToPublicRoom(joinPublicRoomMessage.getNumberOfPlayers(), joinPublicRoomMessage.getUsername());
+       serverController.addPlayerToPublicRoom(joinPublicRoomMessage.getNumberOfPlayers(), joinPublicRoomMessage.getUsername(), clientConnection);
     }
 
     public void handle(JoinPrivateRoomMessage joinPrivateRoomMessage) {
-       serverController.addPlayerByRoomId(joinPrivateRoomMessage.getUsername(),joinPrivateRoomMessage.getRoomId());
+       serverController.addPlayerByRoomId(joinPrivateRoomMessage.getUsername(),joinPrivateRoomMessage.getRoomId(), clientConnection);
     }
 }

@@ -12,6 +12,6 @@ public class ClientMessageHandler {
     }
 
     public void handle(RoomDetailsMessage roomDetailsMessage){
-        serverConnection.getClient().getUi().displayRoomDettails(roomDetailsMessage.getPlayers(), roomDetailsMessage.getPlayersNum(), roomDetailsMessage.getRoomId());
+        serverConnection.getClient().getUi().displayRoomDetails(roomDetailsMessage.getPlayers(), roomDetailsMessage.getPlayersNum(), roomDetailsMessage.getRoomId());
     }
 }

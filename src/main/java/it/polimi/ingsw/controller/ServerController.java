@@ -29,23 +29,21 @@ public class ServerController {
 
         server.addRoom(roomId,room);
 
-        ArrayList<String> players = new ArrayList<>();
-        for (Player player:
-                room.getGame().getPlayers()) {
-            players.add(player.getUsername());
+        sendRoomDetails(roomId, room, clientConnection);
 
-        }
-        clientConnection.sendMessage(new RoomDetailsMessage(players, room.getNumberOfPlayers(), roomId));
     }
 
-    public void addPlayerByRoomId(String username,String roomId){
+    public void addPlayerByRoomId(String username,String roomId, ClientConnection clientConnection){
         if(server.getRooms().get(roomId).getGame().getPlayers().stream().noneMatch(player -> player.getUsername().equals(username))){
             server.getRooms().get(roomId).getGame().addPlayer(username);
         }
 
+        sendRoomDetails(roomId, server.getRooms().get(roomId), clientConnection);
+
+
     }
 
-    public void addPlayerToPublicRoom(int numberOfPlayers, String username){
+    public void addPlayerToPublicRoom(int numberOfPlayers, String username, ClientConnection clientConnection){
 
         List<Room> rooms = new ArrayList<>(server.getRooms().values());
         System.out.println(rooms.size());
@@ -53,7 +51,17 @@ public class ServerController {
         if(room.getGame().getPlayers().stream().noneMatch(player -> player.getUsername().equals(username))){
             room.getGame().addPlayer(username);
         }
+        sendRoomDetails(server.getRooms().entrySet().stream().filter(room1 -> room1.equals(room)).iterator().next().getKey(), room, clientConnection);
 
+    }
 
+    public void sendRoomDetails(String roomId, Room room, ClientConnection clientConnection){
+        ArrayList<String> players = new ArrayList<>();
+        for (Player player:
+                room.getGame().getPlayers()) {
+            players.add(player.getUsername());
+
+        }
+        clientConnection.sendMessage(new RoomDetailsMessage(players, room.getNumberOfPlayers(), roomId));
     }
 }

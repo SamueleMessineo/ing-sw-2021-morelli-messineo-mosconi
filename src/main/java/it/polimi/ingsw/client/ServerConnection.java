@@ -38,7 +38,7 @@ public class ServerConnection{
     public void waitForMessages() {
         while (true) {
 
-            sendMessage(new CreateRoomMessage(false, 2, "MacBook"));
+
 
             Message m = receiveMessage();
 
