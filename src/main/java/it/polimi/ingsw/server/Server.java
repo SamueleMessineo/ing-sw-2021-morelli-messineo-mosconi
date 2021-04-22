@@ -21,7 +21,7 @@ public class Server {
     List<ClientConnection> pendingConnections = new ArrayList<>();
     private final ServerController serverController=new ServerController(this);
     private final GameMessageHandler handler = new GameMessageHandler();
-    private Map<String , Room> rooms = new HashMap<>();
+    private Map<Integer , Room> rooms = new HashMap<>();
 
     public Server() throws IOException {
         this.serverSocket = new ServerSocket(PORT);
@@ -35,11 +35,11 @@ public class Server {
         return pendingConnections;
     }
 
-    public void addRoom(String roomId, Room room){
+    public void addRoom(int roomId, Room room){
         rooms.put(roomId,room);
     }
 
-    public Map<String, Room> getRooms() {
+    public Map<Integer, Room> getRooms() {
         return rooms;
     }
 

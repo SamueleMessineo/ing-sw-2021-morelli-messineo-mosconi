@@ -10,9 +10,9 @@ import java.util.ArrayList;
 public class RoomDetailsMessage extends ClientMessage {
     private final ArrayList<String> players;
     private final int playersNum;
-    private final String roomId;
+    private final int roomId;
 
-    public RoomDetailsMessage(ArrayList<String> players, int playersNum, String roomId) {
+    public RoomDetailsMessage(ArrayList<String> players, int playersNum, int roomId) {
         this.players = players;
         this.playersNum = playersNum;
         this.roomId = roomId;
@@ -28,7 +28,7 @@ public class RoomDetailsMessage extends ClientMessage {
         return playersNum;
     }
 
-    public String getRoomId() {
+    public int getRoomId() {
         return roomId;
     }
 

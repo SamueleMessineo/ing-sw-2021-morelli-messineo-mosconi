@@ -4,16 +4,16 @@ import it.polimi.ingsw.network.SetupMessageHandler;
 
 public class JoinPrivateRoomMessage extends SetupMessage{
 
-    private final String roomId;
+    private final int roomId;
     private final String username;
 
 
-    public JoinPrivateRoomMessage(String roomId, String username) {
+    public JoinPrivateRoomMessage(int roomId, String username) {
         this.roomId = roomId;
         this.username=username;
     }
 
-    public String getRoomId() {
+    public int getRoomId() {
         return roomId;
     }
 

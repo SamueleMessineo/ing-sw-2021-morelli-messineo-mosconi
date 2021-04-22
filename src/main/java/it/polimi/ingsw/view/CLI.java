@@ -70,7 +70,7 @@ public class CLI implements UI {
             }
             if (selection == 1) {
                 output.println("Insert roomId");
-                String roomId = input.nextLine();
+                int roomId = input.nextInt();
                 client.sendMessage(new JoinPrivateRoomMessage(roomId, username));
             }
             else {
@@ -89,7 +89,7 @@ public class CLI implements UI {
     }
 
     @Override
-    public void displayRoomDetails(ArrayList<String> players, int playersNum, String RoomId) {
+    public void displayRoomDetails(ArrayList<String> players, int playersNum, int RoomId) {
         output.println("Game details:");
         output.println(players);
         output.println(playersNum);

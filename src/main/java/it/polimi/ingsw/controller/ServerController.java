@@ -14,6 +14,7 @@ import java.util.UUID;
 
 public class ServerController {
     private final Server server;
+    private int roomId = 999;
 
     public ServerController(Server server) {
         this.server = server;
@@ -23,22 +24,26 @@ public class ServerController {
         List<ClientConnection> clientConnections=server.getPendingConnections();
         clientConnections.remove(clientConnection);
 
-        String roomId=UUID.randomUUID().toString();
+
         Room room =  new Room(new Game(), numberOfPlayers, privateRoom, clientConnection);
         room.getGame().addPlayer(username);
 
-        server.addRoom(roomId,room);
+        int currentRoomId = getRoomId();
+        server.addRoom(currentRoomId,room);
 
-        sendRoomDetails(roomId, room, clientConnection);
+        sendRoomDetails(currentRoomId, room, clientConnection);
 
     }
 
-    public void addPlayerByRoomId(String username,String roomId, ClientConnection clientConnection){
-        if(server.getRooms().get(roomId).getGame().getPlayers().stream().noneMatch(player -> player.getUsername().equals(username))){
-            server.getRooms().get(roomId).getGame().addPlayer(username);
-        }
+    public void addPlayerByRoomId(String username,int roomId, ClientConnection clientConnection){
+        if (server.getRooms().get(roomId) != null){
+            if(server.getRooms().get(roomId).getGame().getPlayers().stream().noneMatch(player -> player.getUsername().equals(username))){
+                server.getRooms().get(roomId).getGame().addPlayer(username);
+            } //TODO else KO message
 
-        sendRoomDetails(roomId, server.getRooms().get(roomId), clientConnection);
+            sendRoomDetails(roomId, server.getRooms().get(roomId), clientConnection);
+        } //TODO else KO message
+
 
 
     }
@@ -47,7 +52,9 @@ public class ServerController {
 
         List<Room> rooms = new ArrayList<>(server.getRooms().values());
         System.out.println(rooms.size());
-        Room room = rooms.stream().filter(room1 -> room1.getNumberOfPlayers() == numberOfPlayers).findAny().get();
+        Room room = rooms.stream().filter(room1 -> room1.getNumberOfPlayers() == numberOfPlayers).findAny().orElseThrow();
+        //TODO gestire bene il caso in cui non ci siano room con quel numero di giocatori;
+        //si potrebbe chiamare il metodo createRoom passando questo user
         if(room.getGame().getPlayers().stream().noneMatch(player -> player.getUsername().equals(username))){
             room.getGame().addPlayer(username);
         }
@@ -55,7 +62,7 @@ public class ServerController {
 
     }
 
-    public void sendRoomDetails(String roomId, Room room, ClientConnection clientConnection){
+    public void sendRoomDetails(int roomId, Room room, ClientConnection clientConnection){
         ArrayList<String> players = new ArrayList<>();
         for (Player player:
                 room.getGame().getPlayers()) {
@@ -63,5 +70,11 @@ public class ServerController {
 
         }
         clientConnection.sendMessage(new RoomDetailsMessage(players, room.getNumberOfPlayers(), roomId));
+    }
+
+    private int getRoomId(){
+        roomId++;
+        if (roomId > 9999)roomId=1000;
+        return roomId;
     }
 }
