@@ -37,16 +37,9 @@ public class ServerConnection{
 
     public void waitForMessages() {
         while (true) {
-
-
-
             Message m = receiveMessage();
-
-
             ((ClientMessage) m).accept(clientMessageHandler);
-
-
-            break;
+            //break;
         }
     }
 
