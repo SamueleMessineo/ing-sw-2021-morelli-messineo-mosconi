@@ -2,16 +2,14 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.network.client.ErrorMessage;
 import it.polimi.ingsw.network.client.RoomDetailsMessage;
 import it.polimi.ingsw.network.setup.Room;
 
 import it.polimi.ingsw.server.ClientConnection;
 import it.polimi.ingsw.server.Server;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ServerController {
@@ -38,31 +36,45 @@ public class ServerController {
     }
 
     public void addPlayerByRoomId(String username,int roomId, ClientConnection clientConnection){
-        if (server.getRooms().get(roomId) != null){
-            if(server.getRooms().get(roomId).getGame().getPlayers().stream().noneMatch(player -> player.getUsername().equals(username))){
-                server.getRooms().get(roomId).getGame().addPlayer(username);
-                List<ClientConnection> clientConnections=server.getPendingConnections();
-                clientConnections.remove(clientConnection);
-                server.getRooms().get(roomId).addConnection(clientConnection);
-            } //TODO else KO message
 
-            sendRoomDetails(roomId, server.getRooms().get(roomId), clientConnection);
-        } //TODO else KO message
-
-
-
+        if (server.getRooms().get(roomId) == null) {
+            clientConnection.sendMessage(new ErrorMessage("room not found."));
+            return;
+        }
+        if (server.getRooms().get(roomId).getGame().getPlayers().stream().anyMatch(player -> player.getUsername().equals(username))) {
+            clientConnection.sendMessage(new ErrorMessage("username is taken."));
+            return;
+        }
+        Room room = server.getRooms().get(roomId);
+        if (room.isFull()) {
+            clientConnection.sendMessage(new ErrorMessage("room is full."));
+            return;
+        }
+        room.getGame().addPlayer(username);
+        List<ClientConnection> clientConnections=server.getPendingConnections();
+        clientConnections.remove(clientConnection);
+        room.addConnection(clientConnection);
+        sendRoomDetails(roomId, room, clientConnection);
     }
 
     public void addPlayerToPublicRoom(int numberOfPlayers, String username, ClientConnection clientConnection){
 
         List<Room> rooms = new ArrayList<>(server.getRooms().values());
-        System.out.println(rooms.size());
-        Room room = rooms.stream().filter(room1 -> room1.getNumberOfPlayers() == numberOfPlayers && !room1.isPrivate()).findAny().orElseThrow();
-        System.out.println(room);
-        //TODO gestire bene il caso in cui non ci siano room con quel numero di giocatori;
-        //si potrebbe chiamare il metodo createRoom passando questo user
-        if(room.getGame().getPlayers().stream().noneMatch(player -> player.getUsername().equals(username))){
 
+        if (numberOfPlayers == 0) {
+            Random r = new Random();
+            numberOfPlayers = r.nextInt(4)+1;
+        }
+        Room room;
+        try {
+            int finalNumberOfPlayers = numberOfPlayers;
+            room = rooms.stream().filter(room1 -> room1.getNumberOfPlayers() == finalNumberOfPlayers && !room1.isPrivate()).findAny().orElseThrow();
+        } catch (NoSuchElementException e) {
+            createRoom(false, username, numberOfPlayers, clientConnection);
+            return;
+        }
+
+        if(room.getGame().getPlayers().stream().noneMatch(player -> player.getUsername().equals(username))){
             room.getGame().addPlayer(username);
             List<ClientConnection> clientConnections = server.getPendingConnections();
             clientConnections.remove(clientConnection);
@@ -75,20 +87,14 @@ public class ServerController {
                     currentRoomId = entry.getKey();
                 }
             }
-
             sendRoomDetails(currentRoomId, room, clientConnection);
         }
-
-
     }
 
     public void sendRoomDetails(int roomId, Room room, ClientConnection clientConnection){
-
         ArrayList<String> players = new ArrayList<>();
-        for (Player player:
-                room.getGame().getPlayers()) {
+        for (Player player : room.getGame().getPlayers()) {
             players.add(player.getUsername());
-
         }
         room.sendAll(new RoomDetailsMessage(players, room.getNumberOfPlayers(), roomId));
     }

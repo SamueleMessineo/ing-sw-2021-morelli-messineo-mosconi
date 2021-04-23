@@ -6,7 +6,9 @@ import java.util.ArrayList;
 
 public interface UI {
 
-    public void displayRoomDetails(ArrayList<String> players, int playersNum, int RoomId);
+    void displayRoomDetails(ArrayList<String> players, int playersNum, int RoomId);
 
-    public void setup();
+    void setup();
+
+    void displayError(String body);
 }

@@ -2,16 +2,24 @@ package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.client.Client;
 import it.polimi.ingsw.client.ServerConnection;
+import it.polimi.ingsw.network.client.ErrorMessage;
 import it.polimi.ingsw.network.client.RoomDetailsMessage;
+import it.polimi.ingsw.view.UI;
 
 public class ClientMessageHandler {
-    ServerConnection serverConnection;
+    private final ServerConnection serverConnection;
+    private final UI ui;
 
     public ClientMessageHandler(Client client, ServerConnection serverConnection){
         this.serverConnection = serverConnection;
+        this.ui = serverConnection.getClient().getUi();
     }
 
     public void handle(RoomDetailsMessage roomDetailsMessage){
-        serverConnection.getClient().getUi().displayRoomDetails(roomDetailsMessage.getPlayers(), roomDetailsMessage.getPlayersNum(), roomDetailsMessage.getRoomId());
+        ui.displayRoomDetails(roomDetailsMessage.getPlayers(), roomDetailsMessage.getPlayersNum(), roomDetailsMessage.getRoomId());
+    }
+
+    public void handle(ErrorMessage message) {
+        ui.displayError(message.getBody());
     }
 }

@@ -31,11 +31,14 @@ public class Room {
         return isPrivate;
     }
 
+    public boolean isFull() {
+        return connections.size() >= numberOfPlayers;
+    }
+
     public void addConnection(ClientConnection clientConnection){
         if (connections.size() < numberOfPlayers){
             connections.add(clientConnection);
         }
-
     }
 
     public void sendAll(Message m){

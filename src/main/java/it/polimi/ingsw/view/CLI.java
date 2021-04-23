@@ -25,10 +25,7 @@ public class CLI implements UI {
         output= new PrintStream(System.out);
     }
 
-    public void run(){}
-
     public void setup(){
-        int selection;
         output.println("Good morning Sir,");
         output.println("how shall I call you?");
         username = input.nextLine();
@@ -36,7 +33,7 @@ public class CLI implements UI {
         output.println("Only online game available for now");
 
         output.println("Do wou want to create a room or join an existing one?");
-        selection = askIntegerInput("1: create\n2: join", 1, 2);
+        int selection = askIntegerInput("1: create\n2: join", 1, 2);
 
         if (selection == 1) {
             int playersNum = askIntegerInput("How many players is this game for?",1,4);
@@ -58,6 +55,16 @@ public class CLI implements UI {
                 client.sendMessage(new JoinPublicRoomMessage(playersNumber, username));
             }
         }
+    }
+
+    @Override
+    public void displayError(String body) {
+        System.out.println("ERROR!");
+        System.out.println(body);
+
+        System.out.println("press enter to retry...");
+        input.nextLine();
+        setup();
     }
 
     @Override
