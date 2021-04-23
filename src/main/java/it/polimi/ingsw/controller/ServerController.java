@@ -10,7 +10,9 @@ import it.polimi.ingsw.server.Server;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class ServerController {
     private final Server server;
@@ -60,22 +62,28 @@ public class ServerController {
         //TODO gestire bene il caso in cui non ci siano room con quel numero di giocatori;
         //si potrebbe chiamare il metodo createRoom passando questo user
         if(room.getGame().getPlayers().stream().noneMatch(player -> player.getUsername().equals(username))){
-            System.out.println("valid username");
+
             room.getGame().addPlayer(username);
             List<ClientConnection> clientConnections = server.getPendingConnections();
             clientConnections.remove(clientConnection);
             room.addConnection(clientConnection);
-            int roomId = 1;
-            sendRoomDetails(1000, room, clientConnection);
+
+            int currentRoomId = -1;
+            for (Map.Entry<Integer, Room> entry: server.getRooms().entrySet())
+            {
+                if (room.equals(entry.getValue())) {
+                    currentRoomId = entry.getKey();
+                }
+            }
+
+            sendRoomDetails(currentRoomId, room, clientConnection);
         }
 
 
     }
 
     public void sendRoomDetails(int roomId, Room room, ClientConnection clientConnection){
-        System.out.println("send details");
-        System.out.println(roomId);
-        System.out.println(room);
+
         ArrayList<String> players = new ArrayList<>();
         for (Player player:
                 room.getGame().getPlayers()) {
