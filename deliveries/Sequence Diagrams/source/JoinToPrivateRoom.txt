@@ -1,0 +1,64 @@
+title PlayerJoinToPrivateRoom Event
+
+participant Client
+participant ServerConnection
+participant ClientConnection
+participant JoinPrivateRoomMessage
+participant SetupMessageHandler
+participant ServerController
+participant Room
+participant Game
+participant Server
+participant [
+
+activate Server
+activate ServerController
+activate Client
+activate ServerConnection
+activate ClientConnection
+
+[-> Client:sendMessage(new \nJoinPrivateRoomMessage\n(roomId,username))
+Client->ServerConnection:sendMessage\n(JoinPrivateRoom ...)
+
+ ServerConnection ->ClientConnection:receiveMessage()
+ 
+ ClientConnection ->JoinPrivateRoomMessage:accept\n(setupMessageHandler)
+ 
+ activate JoinPrivateRoomMessage
+
+JoinPrivateRoomMessage->SetupMessageHandler:handle(JoinPrivateRoom...)
+deactivate JoinPrivateRoomMessage
+activate SetupMessageHandler
+SetupMessageHandler->ServerController:addPlayerByRoomId(...)
+deactivate SetupMessageHandler
+
+ServerController-->ClientConnection:sendErrorMessage\n(Invalid ParametersError)
+
+ClientConnection-->Client:InvalidParametersError
+
+
+ ServerController ->Server:\n\ngetPendingConnections()\nand remove clientConnection
+ 
+ ServerController ->Room:addConnection\n(clientConnection)
+
+ServerController ->Server:getRooms.getRoom(roomId)
+
+ServerController <--Server:room
+
+
+
+ServerController ->Room:getGame()
+activate Room
+
+ServerController <--Room:game()
+
+
+ServerController->Game: addPlayer(username)
+activate Game
+Game --> ServerController:       game\n//with add Player
+deactivate Game
+)
+
+ ServerController ->Room:\nsendRoomDetails()
+Room-->[:sendAll(new RoomDetailsMessage())
+ deactivate Room
