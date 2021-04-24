@@ -16,6 +16,7 @@ import java.util.*;
 public class ServerController {
     private final Server server;
     private int roomId = 999;
+    private GameController GameController;
 
     public ServerController(Server server) {
         this.server = server;
@@ -124,18 +125,21 @@ public class ServerController {
 
     private void startGame(Room room){
         room.sendAll(new StringMessage("Game is starting!"));
-        GameController gameController = new GameController(room);
-        room.setGameController(gameController);
+        GameController classicGameController = new ClassicGameController(room);
+        room.setGameController(classicGameController);
         for (ClientConnection client:
              room.getConnections()) {
-            client.setGameMessageHandler(new GameMessageHandler(gameController, client));
+            client.setGameMessageHandler(new GameMessageHandler(classicGameController, client));
         }
 
-        if(room.getNumberOfPlayers()==1){
-            gameController.startSingleGame();
-        }else {
-            gameController.startGame();
-        }
+        ((ClassicGameController) classicGameController).startGame();
+    }
 
+    private void startSoloGame(Room room){
+        ClientConnection clientConnection = room.getConnections().get(0);
+        GameController soloGameController = new SoloGameController(room);
+        room.setGameController(soloGameController);
+        clientConnection.setGameMessageHandler(new GameMessageHandler(soloGameController, clientConnection));
+        ((SoloGameController) soloGameController).startGame();
     }
 }

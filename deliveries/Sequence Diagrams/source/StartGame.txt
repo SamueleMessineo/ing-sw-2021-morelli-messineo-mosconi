@@ -19,9 +19,9 @@ ServerController ->Room:sendAll(new StringMessage ("Game is starting!"))
 ServerController ->GameController: new GameController()
 activate GameController
 
-ServerController<--GameController: gameController()
+ServerController<--GameController: classicGameController()
 
-ServerController ->Room:setGameController(gameController)
+ServerController ->Room:setGameController(classicGameController)
 
 ServerController ->GameController:start()
 
