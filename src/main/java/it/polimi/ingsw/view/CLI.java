@@ -2,6 +2,8 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.client.Client;
 import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.model.shared.LeaderCard;
+import it.polimi.ingsw.network.game.DropInitialLeaderCards;
 import it.polimi.ingsw.network.setup.CreateRoomMessage;
 import it.polimi.ingsw.network.setup.JoinPrivateRoomMessage;
 import it.polimi.ingsw.network.setup.JoinPublicRoomMessage;
@@ -29,7 +31,7 @@ public class CLI implements UI {
         output.println("Good morning Sir,");
         output.println("how shall I call you?");
         username = input.nextLine();
-        output.println("Welcome" + username + ", nice to meet you");
+        output.println("Welcome " + username + ", nice to meet you");
         output.println("Only online game available for now");
 
         output.println("Do wou want to create a room or join an existing one?");
@@ -103,4 +105,26 @@ public class CLI implements UI {
     public void displayString(String body){
         output.println(body);
     }
+
+    @Override
+    public void selectLeaderCards(ArrayList<LeaderCard> leaderCards) {
+        displayLeaderCards(leaderCards);
+        int selection1;
+        int selection2;
+        do {
+            selection1 = askIntegerInput("select the first card to drop", 1,4)-1;
+            selection2 = askIntegerInput("select the second card to drop", 1,4)-1;
+            if(selection1==selection2)output.println("You must select two distinct cards");
+        } while (selection1 == selection2);
+
+        client.sendMessage(new DropInitialLeaderCards(selection1, selection2));
+
+    }
+
+    public void displayLeaderCards(ArrayList<LeaderCard> leaderCards){
+        for (int i = 0; i < leaderCards.size(); i++) {
+            output.println("Carta numero "+ (i+1) +":" + leaderCards.get(i));
+        }
+    }
+
 }

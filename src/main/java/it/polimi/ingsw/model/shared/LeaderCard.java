@@ -1,9 +1,10 @@
 package it.polimi.ingsw.model.shared;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class LeaderCard {
+public class LeaderCard implements Serializable {
     private final Map<Resource,Integer> resourceRequirements;
     private final Map<CardType,Integer> cardRequirements;
     private final int score;

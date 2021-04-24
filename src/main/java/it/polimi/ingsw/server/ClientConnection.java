@@ -18,7 +18,7 @@ public class ClientConnection implements Runnable{
     private ObjectInputStream inputStream;
     private ObjectOutputStream outputStream;
     private final SetupMessageHandler setupMessageHandler;
-    private final GameMessageHandler gameMessageHandler;
+    private GameMessageHandler gameMessageHandler;
 
     public ClientConnection(Socket socket, Server server) {
         this.socket = socket;
@@ -31,7 +31,6 @@ public class ClientConnection implements Runnable{
             e.printStackTrace();
         }
 
-        this.gameMessageHandler=new GameMessageHandler();
         this.setupMessageHandler=new SetupMessageHandler(server, this);
     }
 
@@ -75,5 +74,9 @@ public class ClientConnection implements Runnable{
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void setGameMessageHandler(GameMessageHandler gameMessageHandler) {
+        this.gameMessageHandler = gameMessageHandler;
     }
 }

@@ -63,7 +63,6 @@ public class ServerConnection{
 
     public void sendMessage(Message m) {
         try {
-
             outputStream.writeObject(m);
         } catch (IOException e) {
             e.printStackTrace();

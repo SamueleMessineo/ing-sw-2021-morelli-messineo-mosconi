@@ -2,6 +2,7 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.network.GameMessageHandler;
 import it.polimi.ingsw.network.client.ErrorMessage;
 import it.polimi.ingsw.network.client.RoomDetailsMessage;
 import it.polimi.ingsw.network.client.StringMessage;
@@ -11,7 +12,6 @@ import it.polimi.ingsw.server.ClientConnection;
 import it.polimi.ingsw.server.Server;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class ServerController {
     private final Server server;
@@ -126,6 +126,16 @@ public class ServerController {
         room.sendAll(new StringMessage("Game is starting!"));
         GameController gameController = new GameController(room);
         room.setGameController(gameController);
-        gameController.start();
+        for (ClientConnection client:
+             room.getConnections()) {
+            client.setGameMessageHandler(new GameMessageHandler(gameController, client));
+        }
+
+        if(room.getNumberOfPlayers()==1){
+            gameController.startSingleGame();
+        }else {
+            gameController.startGame();
+        }
+
     }
 }

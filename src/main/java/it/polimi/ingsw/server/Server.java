@@ -20,7 +20,6 @@ public class Server {
     private final ServerSocket serverSocket;
     List<ClientConnection> pendingConnections = new ArrayList<>();
     private final ServerController serverController=new ServerController(this);
-    private final GameMessageHandler handler = new GameMessageHandler();
     private Map<Integer , Room> rooms = new HashMap<>();
 
     public Server() throws IOException {

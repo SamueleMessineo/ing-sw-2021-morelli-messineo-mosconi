@@ -55,4 +55,8 @@ public class Room {
     public void setGameController(GameController gameController) {
         this.gameController = gameController;
     }
+
+    public ArrayList<ClientConnection> getConnections() {
+        return connections;
+    }
 }
