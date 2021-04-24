@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.network.client.ErrorMessage;
 import it.polimi.ingsw.network.client.RoomDetailsMessage;
+import it.polimi.ingsw.network.client.StringMessage;
 import it.polimi.ingsw.network.setup.Room;
 
 import it.polimi.ingsw.server.ClientConnection;
@@ -33,6 +34,10 @@ public class ServerController {
 
         sendRoomDetails(currentRoomId, room, clientConnection);
 
+        if (room.isFull()){
+            startGame(room);
+        }
+
     }
 
     public void addPlayerByRoomId(String username,int roomId, ClientConnection clientConnection){
@@ -55,6 +60,9 @@ public class ServerController {
         clientConnections.remove(clientConnection);
         room.addConnection(clientConnection);
         sendRoomDetails(roomId, room, clientConnection);
+        if (room.isFull()){
+            startGame(room);
+        }
     }
 
     public void addPlayerToPublicRoom(int numberOfPlayers, String username, ClientConnection clientConnection){
@@ -74,21 +82,30 @@ public class ServerController {
             return;
         }
 
-        if(room.getGame().getPlayers().stream().noneMatch(player -> player.getUsername().equals(username))){
-            room.getGame().addPlayer(username);
-            List<ClientConnection> clientConnections = server.getPendingConnections();
-            clientConnections.remove(clientConnection);
-            room.addConnection(clientConnection);
-
-            int currentRoomId = -1;
-            for (Map.Entry<Integer, Room> entry: server.getRooms().entrySet())
-            {
-                if (room.equals(entry.getValue())) {
-                    currentRoomId = entry.getKey();
-                }
-            }
-            sendRoomDetails(currentRoomId, room, clientConnection);
+        if(room.getGame().getPlayers().stream().anyMatch(player -> player.getUsername().equals(username))){
+            clientConnection.sendMessage(new ErrorMessage("username is taken."));
+            return;
         }
+
+
+        room.getGame().addPlayer(username);
+        List<ClientConnection> clientConnections = server.getPendingConnections();
+        clientConnections.remove(clientConnection);
+        room.addConnection(clientConnection);
+
+        int currentRoomId = -1;
+        for (Map.Entry<Integer, Room> entry: server.getRooms().entrySet())
+        {
+            if (room.equals(entry.getValue())) {
+                currentRoomId = entry.getKey();
+            }
+        }
+        sendRoomDetails(currentRoomId, room, clientConnection);
+
+        if (room.isFull()){
+            startGame(room);
+        }
+
     }
 
     public void sendRoomDetails(int roomId, Room room, ClientConnection clientConnection){
@@ -103,5 +120,12 @@ public class ServerController {
         roomId++;
         if (roomId > 9999)roomId=1000;
         return roomId;
+    }
+
+    private void startGame(Room room){
+        room.sendAll(new StringMessage("Game is starting!"));
+        GameController gameController = new GameController(room);
+        room.setGameController(gameController);
+        gameController.start();
     }
 }

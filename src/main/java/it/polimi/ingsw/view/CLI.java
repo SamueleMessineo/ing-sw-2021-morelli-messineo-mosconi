@@ -38,8 +38,14 @@ public class CLI implements UI {
         if (selection == 1) {
             int playersNum = askIntegerInput("How many players is this game for?",1,4);
 
-            output.println("Is this a private game? [y/n]");
-            boolean privateGame = input.nextLine().toLowerCase().startsWith("y");
+            boolean privateGame;
+            if(playersNum==1){
+                privateGame = true;
+            } else {
+                output.println("Is this a private game? [y/n]");
+                privateGame= input.nextLine().toLowerCase().startsWith("y");
+            }
+
             client.sendMessage(new CreateRoomMessage(privateGame, playersNum, username));
         }
         else {
@@ -92,5 +98,9 @@ public class CLI implements UI {
             }
         }
         return selection;
+    }
+
+    public void displayString(String body){
+        output.println(body);
     }
 }

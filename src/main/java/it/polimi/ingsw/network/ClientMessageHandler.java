@@ -4,6 +4,7 @@ import it.polimi.ingsw.client.Client;
 import it.polimi.ingsw.client.ServerConnection;
 import it.polimi.ingsw.network.client.ErrorMessage;
 import it.polimi.ingsw.network.client.RoomDetailsMessage;
+import it.polimi.ingsw.network.client.StringMessage;
 import it.polimi.ingsw.view.UI;
 
 public class ClientMessageHandler {
@@ -22,4 +23,6 @@ public class ClientMessageHandler {
     public void handle(ErrorMessage message) {
         ui.displayError(message.getBody());
     }
+
+    public void handle(StringMessage message){ ui.displayString(message.getBody());}
 }

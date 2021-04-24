@@ -45,8 +45,26 @@ public class LeaderCard {
         return cardRequirementsLevel;
     }
 
+    private String printResourceRequirements(){
+        if(resourceRequirements!= null){
+            return ("Resource requirements: " + resourceRequirements + "\n");
+
+        }else {
+            return "";
+        }
+
+    }
+
+    private String printCardRequirements(){
+        if(getCardRequirements()!= null){
+            return ("Card requirements: " + cardRequirements + " Level: "+ cardRequirementsLevel + "\n");
+
+        }else {
+            return "";
+        }
+    }
     @Override
     public String toString() {
-        return (resourceRequirements +"\n" + cardRequirementsLevel + "\n" + cardRequirementsLevel + "\n" + score + "\n" +effectScope + "\n" +effectObject);
+        return ("\n\n" + printResourceRequirements() + printCardRequirements() +"Score: " + score + "\n" + "Effect: " +effectScope + " " +effectObject);
     }
 }

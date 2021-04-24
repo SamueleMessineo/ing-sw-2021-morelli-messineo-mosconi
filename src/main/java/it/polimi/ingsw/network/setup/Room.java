@@ -1,5 +1,6 @@
 package it.polimi.ingsw.network.setup;
 
+import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.network.Message;
 import it.polimi.ingsw.server.ClientConnection;
@@ -11,12 +12,14 @@ public class Room {
     private final int numberOfPlayers;
     private final boolean isPrivate;
     private ArrayList<ClientConnection> connections = new ArrayList<>();
+    private GameController gameController;
 
     public Room(Game game, int numberOfPlayers, boolean isPrivate, ClientConnection host) {
         this.game = game;
         this.numberOfPlayers = numberOfPlayers;
         this.isPrivate = isPrivate;
         addConnection(host);
+
     }
 
     public Game getGame() {
@@ -47,5 +50,9 @@ public class Room {
             connection.sendMessage(m);
 
         }
+    }
+
+    public void setGameController(GameController gameController) {
+        this.gameController = gameController;
     }
 }
