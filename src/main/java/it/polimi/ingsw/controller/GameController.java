@@ -8,14 +8,11 @@ import it.polimi.ingsw.server.ClientConnection;
 
 import java.util.ArrayList;
 
-public class GameController {
-    private final Room room;
-    private final Game game;
+public abstract class GameController {
+    private  Room room;
+    private  Game game;
 
-    public GameController(Room room) {
-        this.room = room;
-        this.game = room.getGame();
-    }
+
 
     public void startGame(){
         System.out.println("error");
@@ -27,11 +24,7 @@ public class GameController {
 
     public void dropInitialLeaderCards(int selection1, int selection2, ClientConnection clientConnection){
 
-        ArrayList<LeaderCard> leaderCards = getPlayerFromConnection(clientConnection).getLeaderCards();
-        LeaderCard card1 = leaderCards.get(selection1);
-        LeaderCard card2 = leaderCards.get(selection2);
-        leaderCards.remove(card1);
-        leaderCards.remove(card2);
+        getPlayerFromConnection(clientConnection).dropInitialLeaderCards(selection1, selection2);
 
     }
 

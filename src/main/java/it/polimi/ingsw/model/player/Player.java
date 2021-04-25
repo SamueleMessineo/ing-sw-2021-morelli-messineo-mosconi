@@ -63,7 +63,14 @@ public class Player {
     }
 
     public ArrayList<LeaderCard> getLeaderCards() {
-        return leaderCards;
+        return new ArrayList<LeaderCard>(leaderCards);
+    }
+
+    public void dropInitialLeaderCards(int selection1, int selection2){
+        LeaderCard card1 = leaderCards.get(selection1);
+        LeaderCard card2 = leaderCards.get(selection2);
+        leaderCards.remove(card1);
+        leaderCards.remove(card2);
     }
 
     public void setLeaderCards(ArrayList<LeaderCard> leaderCards) {

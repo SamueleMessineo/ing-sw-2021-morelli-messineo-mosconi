@@ -11,7 +11,7 @@ public class SoloGameController extends GameController {
     private final Game game;
 
     public SoloGameController(Room room) {
-        super(room);
+
         this.room = room;
         this.game = room.getGame();
     }

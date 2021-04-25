@@ -15,7 +15,7 @@ public class ClassicGameController extends GameController{
     private final Game game;
 
     public ClassicGameController(Room room) {
-        super(room);
+
         this.room = room;
         this.game = room.getGame();
     }
