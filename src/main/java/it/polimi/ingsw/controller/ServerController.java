@@ -16,6 +16,7 @@ import java.util.*;
 public class ServerController {
     private final Server server;
     private int roomId = 999;
+    private GameController GameController;
 
     public ServerController(Server server) {
         this.server = server;
@@ -24,7 +25,6 @@ public class ServerController {
     public void createRoom(boolean privateRoom, String username, int numberOfPlayers, ClientConnection clientConnection){
         List<ClientConnection> clientConnections=server.getPendingConnections();
         clientConnections.remove(clientConnection);
-
 
         Room room =  new Room(new Game(), numberOfPlayers, privateRoom, clientConnection);
         room.getGame().addPlayer(username);
@@ -35,13 +35,11 @@ public class ServerController {
         sendRoomDetails(currentRoomId, room, clientConnection);
 
         if (room.isFull()){
-            startGame(room);
+            startSoloGame(room);
         }
-
     }
 
     public void addPlayerByRoomId(String username,int roomId, ClientConnection clientConnection){
-
         if (server.getRooms().get(roomId) == null) {
             clientConnection.sendMessage(new ErrorMessage("room not found."));
             return;
@@ -87,7 +85,6 @@ public class ServerController {
             return;
         }
 
-
         room.getGame().addPlayer(username);
         List<ClientConnection> clientConnections = server.getPendingConnections();
         clientConnections.remove(clientConnection);
@@ -105,7 +102,6 @@ public class ServerController {
         if (room.isFull()){
             startGame(room);
         }
-
     }
 
     public void sendRoomDetails(int roomId, Room room, ClientConnection clientConnection){
@@ -124,18 +120,21 @@ public class ServerController {
 
     private void startGame(Room room){
         room.sendAll(new StringMessage("Game is starting!"));
-        GameController gameController = new GameController(room);
-        room.setGameController(gameController);
+        GameController classicGameController = new ClassicGameController(room);
+        room.setGameController(classicGameController);
         for (ClientConnection client:
              room.getConnections()) {
-            client.setGameMessageHandler(new GameMessageHandler(gameController, client));
+            client.setGameMessageHandler(new GameMessageHandler(classicGameController, client));
         }
 
-        if(room.getNumberOfPlayers()==1){
-            gameController.startSingleGame();
-        }else {
-            gameController.startGame();
-        }
+        classicGameController.startGame();
+    }
 
+    private void startSoloGame(Room room){
+        ClientConnection clientConnection = room.getConnections().get(0);
+        GameController soloGameController = new SoloGameController(room);
+        room.setGameController(soloGameController);
+        clientConnection.setGameMessageHandler(new GameMessageHandler(soloGameController, clientConnection));
+        soloGameController.startGame();
     }
 }

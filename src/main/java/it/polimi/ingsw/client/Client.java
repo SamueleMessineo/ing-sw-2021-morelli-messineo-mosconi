@@ -23,9 +23,6 @@ public class Client {
         ExecutorService executor = Executors.newCachedThreadPool();
         executor.submit(serverConnection::waitForMessages);
         ui.setup();
-        //serverConnection.sendMessage(new CreateRoomMessage(false, 2, "MacBook"));
-
-
     }
 
     public void sendMessage(Message m){

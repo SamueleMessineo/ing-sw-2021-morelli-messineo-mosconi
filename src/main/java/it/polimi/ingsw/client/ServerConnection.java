@@ -23,33 +23,25 @@ public class ServerConnection{
         this.client = client;
         this.clientMessageHandler = new ClientMessageHandler(client, this);
 
-
         try {
-
             outputStream = new ObjectOutputStream(socket.getOutputStream());
             inputStream  = new ObjectInputStream(socket.getInputStream());
-
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-
     public void waitForMessages() {
         while (true) {
             Message m = receiveMessage();
             ((ClientMessage) m).accept(clientMessageHandler);
-            //break;
         }
     }
 
     public Message receiveMessage() {
         Message m = null;
         try {
-
             m = (Message) inputStream.readObject();
-
-
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -59,7 +51,6 @@ public class ServerConnection{
     public Client getClient() {
         return client;
     }
-
 
     public void sendMessage(Message m) {
         try {
