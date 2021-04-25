@@ -20,7 +20,7 @@ Final project for the Software Engineering course at Polytechnic of Milan, 2021.
 |Persistence|✖️|
 |Parameter editor|✖️|
 |Offline games|✖️|
-|Multiple games|✖️|
+|Multiple games|✔️|
 |Disconnection resilience|✖️|
 
 ## How to start
