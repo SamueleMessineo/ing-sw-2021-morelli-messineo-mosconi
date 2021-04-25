@@ -4,7 +4,6 @@ import it.polimi.ingsw.controller.ServerController;
 import it.polimi.ingsw.network.setup.CreateRoomMessage;
 import it.polimi.ingsw.network.setup.JoinPrivateRoomMessage;
 import it.polimi.ingsw.network.setup.JoinPublicRoomMessage;
-import it.polimi.ingsw.network.client.ErrorMessage;
 import it.polimi.ingsw.server.ClientConnection;
 import it.polimi.ingsw.server.Server;
 
@@ -22,7 +21,6 @@ public class SetupMessageHandler {
     }
 
     public void handle(JoinPublicRoomMessage joinPublicRoomMessage) {
-
        serverController.addPlayerToPublicRoom(joinPublicRoomMessage.getNumberOfPlayers(), joinPublicRoomMessage.getUsername(), clientConnection);
     }
 

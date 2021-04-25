@@ -26,7 +26,6 @@ public class ServerController {
         List<ClientConnection> clientConnections=server.getPendingConnections();
         clientConnections.remove(clientConnection);
 
-
         Room room =  new Room(new Game(), numberOfPlayers, privateRoom, clientConnection);
         room.getGame().addPlayer(username);
 
@@ -36,13 +35,11 @@ public class ServerController {
         sendRoomDetails(currentRoomId, room, clientConnection);
 
         if (room.isFull()){
-            startGame(room);
+            startSoloGame(room);
         }
-
     }
 
     public void addPlayerByRoomId(String username,int roomId, ClientConnection clientConnection){
-
         if (server.getRooms().get(roomId) == null) {
             clientConnection.sendMessage(new ErrorMessage("room not found."));
             return;
@@ -88,7 +85,6 @@ public class ServerController {
             return;
         }
 
-
         room.getGame().addPlayer(username);
         List<ClientConnection> clientConnections = server.getPendingConnections();
         clientConnections.remove(clientConnection);
@@ -106,7 +102,6 @@ public class ServerController {
         if (room.isFull()){
             startGame(room);
         }
-
     }
 
     public void sendRoomDetails(int roomId, Room room, ClientConnection clientConnection){
@@ -132,7 +127,7 @@ public class ServerController {
             client.setGameMessageHandler(new GameMessageHandler(classicGameController, client));
         }
 
-        ((ClassicGameController) classicGameController).startGame();
+        classicGameController.startGame();
     }
 
     private void startSoloGame(Room room){
@@ -140,6 +135,6 @@ public class ServerController {
         GameController soloGameController = new SoloGameController(room);
         room.setGameController(soloGameController);
         clientConnection.setGameMessageHandler(new GameMessageHandler(soloGameController, clientConnection));
-        ((SoloGameController) soloGameController).startGame();
+        soloGameController.startGame();
     }
 }

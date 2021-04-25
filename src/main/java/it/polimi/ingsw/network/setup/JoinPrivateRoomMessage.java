@@ -7,7 +7,6 @@ public class JoinPrivateRoomMessage extends SetupMessage{
     private final int roomId;
     private final String username;
 
-
     public JoinPrivateRoomMessage(int roomId, String username) {
         this.roomId = roomId;
         this.username=username;

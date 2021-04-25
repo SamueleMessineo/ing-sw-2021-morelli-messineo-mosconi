@@ -15,19 +15,14 @@ public class ClassicGameController extends GameController{
     private final Game game;
 
     public ClassicGameController(Room room) {
-
         this.room = room;
         this.game = room.getGame();
     }
 
-
     public void startGame(){
         room.sendAll(new StringMessage("Game started"));
         leaderCardsSelectionStep();
-
     }
-
-
 
     public void leaderCardsSelectionStep(){
         for (ClientConnection player:
@@ -35,8 +30,6 @@ public class ClassicGameController extends GameController{
             player.sendMessage(new SelectLeaderCardsMessage(getPlayerFromConnection(player).getLeaderCards()));
         }
     }
-
-
 
     public Game getGame() {
         return game;

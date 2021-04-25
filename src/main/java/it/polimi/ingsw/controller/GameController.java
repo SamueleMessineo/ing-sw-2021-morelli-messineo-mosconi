@@ -12,8 +12,6 @@ public abstract class GameController {
     private  Room room;
     private  Game game;
 
-
-
     public void startGame(){
         System.out.println("error");
     }
@@ -23,9 +21,6 @@ public abstract class GameController {
     }
 
     public void dropInitialLeaderCards(int selection1, int selection2, ClientConnection clientConnection){
-
         getPlayerFromConnection(clientConnection).dropInitialLeaderCards(selection1, selection2);
-
     }
-
 }

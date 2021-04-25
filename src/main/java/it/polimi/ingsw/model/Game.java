@@ -47,7 +47,6 @@ public class Game {
         market.setCards(developmentCards);
     }
 
-
     public Player getCurrentPlayer() {
         return currentPlayer;
     }
@@ -59,8 +58,6 @@ public class Game {
     public ArrayList<Player> getPlayers() {
         return players;
     }
-
-
 
     private void loadResources() throws FileNotFoundException{
         GsonBuilder builder = new GsonBuilder();

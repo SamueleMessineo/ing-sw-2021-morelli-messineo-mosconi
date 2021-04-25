@@ -20,7 +20,6 @@ public class Room {
         this.numberOfPlayers = numberOfPlayers;
         this.isPrivate = isPrivate;
         addConnection(host);
-
     }
 
     public Game getGame() {
@@ -49,11 +48,10 @@ public class Room {
         for (ClientConnection connection:
              connections) {
             connection.sendMessage(m);
-
         }
     }
 
-    public void setGameController(GameController gameController) {
+    public void setGameController(GameController classicGameController) {
         this.classicGameController = classicGameController;
     }
 
