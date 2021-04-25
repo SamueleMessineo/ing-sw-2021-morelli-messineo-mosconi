@@ -25,30 +25,30 @@ import java.util.List;
 
 public class Game {
     private ArrayList<Player> players;
-    private Player currentPlayer;
+    private int currentPlayer;
     private Market market;
     private ArrayList<SoloActionType> soloActionTypes;
     private ArrayList<DevelopmentCard> developmentCards=new ArrayList<>();
     private ArrayList<LeaderCard> leaderCards=new ArrayList<>();
 
-
-
     public Game()  {
         this.players = new ArrayList<Player>();
         this.market = new Market();
         //TODO single soloActionType for single player
-
         try {
             loadResources();
         }catch (FileNotFoundException e){
             e.printStackTrace();
         }
-
         market.setCards(developmentCards);
     }
 
     public Player getCurrentPlayer() {
-        return currentPlayer;
+        return players.get(currentPlayer);
+    }
+
+    public void setCurrentPlayer(int playerIndex) {
+        currentPlayer = playerIndex;
     }
 
     public Market getMarket() {
@@ -92,6 +92,4 @@ public class Game {
         player.setLeaderCards(new ArrayList<LeaderCard>(leaderCards.subList(0,4)));
         leaderCards.removeAll(leaderCards.subList(0,4));
     }
-
-
 }

@@ -2,10 +2,7 @@ package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.client.Client;
 import it.polimi.ingsw.client.ServerConnection;
-import it.polimi.ingsw.network.client.ErrorMessage;
-import it.polimi.ingsw.network.client.RoomDetailsMessage;
-import it.polimi.ingsw.network.client.StringMessage;
-import it.polimi.ingsw.network.client.SelectLeaderCardsMessage;
+import it.polimi.ingsw.network.client.*;
 import it.polimi.ingsw.view.UI;
 
 public class ClientMessageHandler {
@@ -27,8 +24,12 @@ public class ClientMessageHandler {
 
     public void handle(StringMessage message){ ui.displayString(message.getBody());}
 
-    public void handle(SelectLeaderCardsMessage message){
+    public void handle(DropLeaderCardsRequestMessage message){
         System.out.println("handling");
         ui.selectLeaderCards(message.getLeaderCards());
+    }
+
+    public void handle(PossibleMovesMessage message) {
+        System.out.println("possible moves");
     }
 }

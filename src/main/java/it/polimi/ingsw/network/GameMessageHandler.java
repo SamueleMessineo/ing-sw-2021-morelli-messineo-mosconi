@@ -1,10 +1,7 @@
 package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.controller.GameController;
-import it.polimi.ingsw.network.game.DropInitialLeaderCardsMessage;
-import it.polimi.ingsw.network.game.EndTurnMessage;
-import it.polimi.ingsw.network.game.SelectCardMessage;
-import it.polimi.ingsw.network.game.SelectMarblesMessage;
+import it.polimi.ingsw.network.game.*;
 import it.polimi.ingsw.server.ClientConnection;
 
 public class GameMessageHandler {
@@ -30,7 +27,11 @@ public class GameMessageHandler {
         System.out.println("SelectMarblesMessage");
     }
 
-    public void handle(DropInitialLeaderCardsMessage message){
+    public void handle(DropLeaderCardsResponseMessage message){
         gameController.dropInitialLeaderCards(message.getCard1(), message.getCard2(), clientConnection);
+    }
+
+    public void handle(DisplayGameBoardMessage message) {
+        System.out.println(message);
     }
 }

@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.shared.LeaderCard;
 import it.polimi.ingsw.network.client.StringMessage;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public interface UI {
 
@@ -17,4 +18,6 @@ public interface UI {
     void displayString(String body);
 
     void selectLeaderCards(ArrayList<LeaderCard> leaderCards);
+
+    void displayGameBoard(List<String> possibleMoves);
 }

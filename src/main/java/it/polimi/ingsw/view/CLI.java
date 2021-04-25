@@ -2,7 +2,7 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.client.Client;
 import it.polimi.ingsw.model.shared.LeaderCard;
-import it.polimi.ingsw.network.game.DropInitialLeaderCardsMessage;
+import it.polimi.ingsw.network.game.DropLeaderCardsResponseMessage;
 import it.polimi.ingsw.network.setup.CreateRoomMessage;
 import it.polimi.ingsw.network.setup.JoinPrivateRoomMessage;
 import it.polimi.ingsw.network.setup.JoinPublicRoomMessage;
@@ -10,6 +10,7 @@ import it.polimi.ingsw.network.setup.JoinPublicRoomMessage;
 import java.io.PrintStream;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class CLI implements UI {
@@ -115,7 +116,12 @@ public class CLI implements UI {
             if(selection1==selection2)output.println("You must select two distinct cards");
         } while (selection1 == selection2);
 
-        client.sendMessage(new DropInitialLeaderCardsMessage(selection1, selection2));
+        client.sendMessage(new DropLeaderCardsResponseMessage(selection1, selection2));
+
+    }
+
+    @Override
+    public void displayGameBoard(List<String> possibleMoves) {
 
     }
 
