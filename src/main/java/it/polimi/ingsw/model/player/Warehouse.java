@@ -20,10 +20,18 @@ public class Warehouse {
         }
     }
 
+    /**
+     * Returns the list of Shelves in the warehouse.
+     * @return The list of shelves.
+     */
     public ArrayList<Shelf> getShelves() {
         return shelves;
     }
 
+    /**
+     * Returns the list of names of the shelves in the warehouse.
+     * @return The list of shelf names.
+     */
     public ArrayList<String> getShelfNames() {
         return shelfNames;
     }

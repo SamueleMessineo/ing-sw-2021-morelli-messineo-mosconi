@@ -3,6 +3,9 @@ package it.polimi.ingsw.model.shared;
 
 import java.util.Map;
 
+/**
+ * The development card that the player can buy from the market.
+ */
 public class DevelopmentCard {
     private final int level;
     private final CardType cardType;
@@ -19,22 +22,42 @@ public class DevelopmentCard {
         this.score=score;
     }
 
+    /**
+     * Returns the cost of the development card.
+     * @return The cost of the development card.
+     */
     public Map<Resource,Integer> getCost(){
         return cost;
     }
 
+    /**
+     * Returns the level of the development card.
+     * @return The level of the development card.
+     */
     public int getLevel() {
         return level;
     }
 
+    /**
+     * Returns the type of the development card.
+     * @return The type of the development card.
+     */
     public CardType getCardType() {
         return cardType;
     }
 
+    /**
+     * Returns the production power of the development card.
+     * @return The production power of the development card.
+     */
     public ProductionPower getProductionPower() {
         return productionPower;
     }
 
+    /**
+     * Returns the Vatican Points of the card.
+     * @return The VPs of the card.
+     */
     public int getScore() {
         return score;
     }

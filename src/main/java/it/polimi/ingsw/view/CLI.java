@@ -83,7 +83,7 @@ public class CLI implements UI {
 
     }
 
-    public int askIntegerInput(String message, int minBoundary, int maxBoundary) {
+    private int askIntegerInput(String message, int minBoundary, int maxBoundary) {
         int selection;
         while (true) {
             output.println(message);

@@ -9,6 +9,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Map;
 
+/**
+ * Contains all the information about a playing during the game.
+ */
 public class Player {
     private final String username;
     private int score = 0;
@@ -24,10 +27,19 @@ public class Player {
         playerBoard = new PlayerBoard();
     }
 
+    /**
+     * Returns the player's username.
+     * @return The player's username.
+     */
     public String getUsername() {
         return username;
     }
 
+    /**
+     * Returns the total number of points accumulated by the player at any point
+     * during the game.
+     * @return The sum of all VPs of the player.
+     */
     public int getVP() {
         int totalVP = 0;
         totalVP += playerBoard.getPoints();
@@ -39,8 +51,10 @@ public class Player {
         return totalVP;
     }
 
-
-
+    /**
+     * Updates the player's score.
+     * @param score increment to be added to the player's score.
+     */
     public void updateScore(int score) {
         this.score += score;
     }
@@ -50,22 +64,44 @@ public class Player {
         return username;
     }
 
+    /**
+     * Returns a boolean representing if the player is playing.
+     * @return True if the player is currently playing, otherwise false.
+     */
     public boolean isPlaying() {
         return playing;
     }
 
+    /**
+     * Returns the player's faith track.
+     * @return The FaithTrack object.
+     */
     public FaithTrack getFaithTrack() {
         return faithTrack;
     }
 
+    /**
+     * Returns the player's personal board.
+     * @return The PlayerBoard object.
+     */
     public PlayerBoard getPlayerBoard() {
         return playerBoard;
     }
 
+    /**
+     * Returns the list of all the player's Leader cards.
+     * @return The list of Leader cards.
+     */
     public ArrayList<LeaderCard> getLeaderCards() {
         return new ArrayList<LeaderCard>(leaderCards);
     }
 
+    /**
+     * During the initial phase of the game, it allows the player to discard
+     * two of his Leader cards.
+     * @param selection1 index of the first leader card.
+     * @param selection2 index of the second leader card.
+     */
     public void dropInitialLeaderCards(int selection1, int selection2){
         LeaderCard card1 = leaderCards.get(selection1);
         LeaderCard card2 = leaderCards.get(selection2);
@@ -81,6 +117,11 @@ public class Player {
         return playedLeaderCards;
     }
 
+    /**
+     * Allows to check whether a certain Leader card is playable by the player.
+     * @param leaderIndex index of the Leader card.
+     * @return True if the given leader card is playable, false if it's not.
+     */
     public boolean canPlayLeader(int leaderIndex) {
         LeaderCard leader = leaderCards.get(leaderIndex);
         Map<CardType,Integer> cardRequirements=leader.getCardRequirements();

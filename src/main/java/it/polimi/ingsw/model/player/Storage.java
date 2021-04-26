@@ -4,12 +4,15 @@ import it.polimi.ingsw.model.shared.Resource;
 
 import java.util.Map;
 
+/**
+ * The storage interface is used for all classes that hold any number of resources,
+ * such as the Shelf and the Strongbox.
+ */
 public interface Storage {
 
-    public Map<Resource, Integer> getResources();
+    Map<Resource, Integer> getResources();
 
-    public void addResources(Map<Resource, Integer> resources);
+    void addResources(Map<Resource, Integer> resources);
 
-    public void useResources(Map<Resource, Integer> resources);
-
+    void useResources(Map<Resource, Integer> resources);
 }

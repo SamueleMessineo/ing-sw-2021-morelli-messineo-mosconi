@@ -43,22 +43,42 @@ public class Game {
         market.setCards(developmentCards);
     }
 
+    /**
+     * Returns the player that is currently playing.
+     * @return The Player object of the current player.
+     */
     public Player getCurrentPlayer() {
         return players.get(currentPlayer);
     }
 
+    /**
+     * Sets the index of the player that is currently playing.
+     * @param playerIndex The index of the new playing player.
+     */
     public void setCurrentPlayer(int playerIndex) {
         currentPlayer = playerIndex;
     }
 
+    /**
+     * Returns the market object.
+     * @return The market object.
+     */
     public Market getMarket() {
         return market;
     }
 
+    /**
+     * Returns the list of players in the game.
+     * @return The list of players in the game.
+     */
     public ArrayList<Player> getPlayers() {
         return players;
     }
 
+    /**
+     * Reads the leader and development cards from the filesystem and builds the classes.
+     * @throws FileNotFoundException If the files are not found.
+     */
     private void loadResources() throws FileNotFoundException{
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();
@@ -78,16 +98,28 @@ public class Game {
         Collections.shuffle(leaderCards);
     }
 
+    /**
+     * Adds a new player to the game.
+     * @param username The username of the new player.
+     */
     public void addPlayer(String username){
         Player newPlayer=new Player(username);
         players.add(newPlayer);
         giveLeaderCardsToPlayer(newPlayer);
     }
 
+    /**
+     * Removes a player from the game.
+     * @param player The player object to remove.
+     */
     public void removePlayer(Player player){
         players.remove(player);
     }
 
+    /**
+     * Assigns to a player their initial leader cards.
+     * @param player The player.
+     */
     private void giveLeaderCardsToPlayer(Player player){
         player.setLeaderCards(new ArrayList<LeaderCard>(leaderCards.subList(0,4)));
         leaderCards.removeAll(leaderCards.subList(0,4));

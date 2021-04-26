@@ -5,6 +5,10 @@ import it.polimi.ingsw.model.shared.Resource;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The shelf that makes up the warehouse, it hold a maximum
+ * number of resources all of the same type.
+ */
 public class Shelf implements Storage {
     private Resource resourceType=null;
     private int resourceNumber=0;
@@ -20,14 +24,26 @@ public class Shelf implements Storage {
         resourceType = initialResourceType;
     }
 
+    /**
+     * Returns the type of the resource type of the shelf.
+     * @return The resource type of the shelf.
+     */
     public Resource getResourceType() {
         return resourceType;
     }
 
+    /**
+     * Returns the number of resources currently placed on this shelf.
+     * @return The number of resources currently placed on this shelf.
+     */
     public int getResourceNumber() {
         return resourceNumber;
     }
 
+    /**
+     * Returns the resources placed on this shelf in the form of a Map.
+     * @return The map of the resources on this shelf.
+     */
     public Map<Resource, Integer> getResources() {
         Map<Resource, Integer> contents = new HashMap<>();
         contents.put(Resource.SHIELD, 0);
@@ -40,10 +56,18 @@ public class Shelf implements Storage {
         return contents;
     }
 
+    /**
+     * Returns the maximum number of resources that are placeable on this shelf.
+     * @return The maximum number of resources allowed on this shelf.
+     */
     public int getMaxSize() {
         return maxSize;
     }
 
+    /**
+     * Places the given resources on the shelf.
+     * @param resources The map of resources to be added.
+     */
     public void addResources(Map<Resource, Integer> resources){
         if (resources.keySet().toArray().length == 1) {
             Map.Entry<Resource, Integer> entry = resources.entrySet().iterator().next();
@@ -54,6 +78,11 @@ public class Shelf implements Storage {
         }
     }
 
+    /**
+     * Checks if the given resources can be placed on the shelf.
+     * @param resources The map of resources whose placement to check.
+     * @return True if the resources can be placed, false otherwise.
+     */
     public boolean canPlace(Map<Resource, Integer> resources) {
         if (resources.keySet().toArray().length == 1) {
             Map.Entry<Resource, Integer> entry = resources.entrySet().iterator().next();
@@ -63,6 +92,10 @@ public class Shelf implements Storage {
         return false;
     }
 
+    /**
+     * Removes the given resources from the shelf.
+     * @param resources The map of resources to remove from the shelf.
+     */
     public void useResources(Map<Resource, Integer> resources) {
 
         if (resources.keySet().toArray().length == 1) {
