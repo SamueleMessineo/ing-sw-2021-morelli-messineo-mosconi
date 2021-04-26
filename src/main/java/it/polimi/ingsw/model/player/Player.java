@@ -12,7 +12,7 @@ import java.util.Map;
 /**
  * Contains all the information about a playing during the game.
  */
-public class Player {
+public class Player implements Serializable {
     private final String username;
     private int score = 0;
     private boolean playing = false;

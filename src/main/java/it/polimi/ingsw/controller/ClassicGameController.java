@@ -5,7 +5,7 @@ import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.network.client.DropLeaderCardsRequestMessage;
 import it.polimi.ingsw.network.client.PossibleMovesMessage;
 import it.polimi.ingsw.network.client.StringMessage;
-import it.polimi.ingsw.network.game.DisplayGameBoardMessage;
+import it.polimi.ingsw.network.client.GameStateMessage;
 import it.polimi.ingsw.network.setup.Room;
 import it.polimi.ingsw.server.ClientConnection;
 
@@ -57,7 +57,7 @@ public class ClassicGameController extends GameController{
             System.out.println(p.getLeaderCards().size());
             if (p.getLeaderCards().size() != 2) return;
         }
-        room.sendAll(new DisplayGameBoardMessage(room.getGame().getCurrentPlayer().getUsername()));
+        room.sendAll(new GameStateMessage(room.getGame()));
         room.getConnections().get(room.getGame().getPlayers().indexOf(
                 room.getGame().getCurrentPlayer())).sendMessage(new PossibleMovesMessage(new ArrayList<>(){{
                     add("DROP_LEADER");

@@ -1,12 +1,14 @@
 package it.polimi.ingsw.model.shared;
 
 
+import java.io.Serializable;
 import java.util.Map;
 
 /**
  * The development card that the player can buy from the market.
  */
-public class DevelopmentCard {
+public class DevelopmentCard implements Serializable {
+    private static final long serialVersionUID = -3506586118929270253L;
     private final int level;
     private final CardType cardType;
     private final Map<Resource,Integer> cost;

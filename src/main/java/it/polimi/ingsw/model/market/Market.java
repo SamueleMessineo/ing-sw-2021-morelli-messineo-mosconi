@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.market;
 import it.polimi.ingsw.model.shared.CardType;
 import it.polimi.ingsw.model.shared.DevelopmentCard;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -11,7 +12,7 @@ import java.util.List;
  * Holds the two structures that make up the game market:
  * the marble structure and the cards grid.
  */
-public class Market {
+public class Market implements Serializable {
 
     private final MarbleStructure marbleStructure;
 

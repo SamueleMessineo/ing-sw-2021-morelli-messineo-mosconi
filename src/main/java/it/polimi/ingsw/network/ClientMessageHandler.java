@@ -3,6 +3,7 @@ package it.polimi.ingsw.network;
 import it.polimi.ingsw.client.Client;
 import it.polimi.ingsw.client.ServerConnection;
 import it.polimi.ingsw.network.client.*;
+import it.polimi.ingsw.network.client.GameStateMessage;
 import it.polimi.ingsw.view.UI;
 
 public class ClientMessageHandler {
@@ -25,11 +26,14 @@ public class ClientMessageHandler {
     public void handle(StringMessage message){ ui.displayString(message.getBody());}
 
     public void handle(DropLeaderCardsRequestMessage message){
-        System.out.println("handling");
         ui.selectLeaderCards(message.getLeaderCards());
     }
 
     public void handle(PossibleMovesMessage message) {
         System.out.println("possible moves");
+    }
+
+    public void handle(GameStateMessage message) {
+        System.out.println(message.getGame().getCurrentPlayer());
     }
 }

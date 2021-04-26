@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.shared;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -8,7 +9,7 @@ import java.util.Map;
  * The productionPower class represents the production power of the Development Card
  */
 
-public class ProductionPower {
+public class ProductionPower implements Serializable {
     private final Map<Resource, Integer> input;
     private final Map<Resource, Integer> output;
 

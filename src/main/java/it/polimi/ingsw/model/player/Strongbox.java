@@ -2,13 +2,14 @@ package it.polimi.ingsw.model.player;
 
 import it.polimi.ingsw.model.shared.Resource;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * The player's strongbox.
  */
-public class Strongbox implements Storage {
+public class Strongbox implements Storage, Serializable {
     private Map<Resource, Integer> resources;
 
     public Strongbox(){

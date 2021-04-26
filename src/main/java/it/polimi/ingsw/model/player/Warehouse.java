@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.player;
 import it.polimi.ingsw.model.shared.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -9,7 +10,7 @@ import java.util.Map;
 /**
  * Structure containing a list of shelves the player can store resources onto.
  */
-public class Warehouse {
+public class Warehouse implements Serializable {
 
     private final ArrayList<Shelf> shelves = new ArrayList<>();
     private final ArrayList<String> shelfNames = new ArrayList<>(Arrays.asList("top", "middle", "bottom"));

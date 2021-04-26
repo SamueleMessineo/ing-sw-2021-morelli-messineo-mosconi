@@ -30,8 +30,4 @@ public class GameMessageHandler {
     public void handle(DropLeaderCardsResponseMessage message){
         gameController.dropInitialLeaderCards(message.getCard1(), message.getCard2(), clientConnection);
     }
-
-    public void handle(DisplayGameBoardMessage message) {
-        System.out.println(message);
-    }
 }

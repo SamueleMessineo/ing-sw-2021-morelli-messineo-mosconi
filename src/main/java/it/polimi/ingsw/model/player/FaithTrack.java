@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.player;
 import it.polimi.ingsw.model.shared.PopesFavorTile;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -8,7 +9,7 @@ import java.util.List;
 /**
  * The FaithTrack class stores the logic of the homonymous game component
  */
-public class FaithTrack {
+public class FaithTrack implements Serializable {
     private int position;
     private final int maxposition=24;
     private final ArrayList<PopesFavorTile> popesFavorTiles = new ArrayList<>();

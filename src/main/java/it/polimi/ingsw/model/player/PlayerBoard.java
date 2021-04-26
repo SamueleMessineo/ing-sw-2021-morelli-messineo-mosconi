@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.player;
 import it.polimi.ingsw.model.shared.*;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Map;
 
@@ -8,7 +9,7 @@ import java.util.Map;
  * The PlayerBoard contains the warehouse, the strongbox, and all the cards that the
  * player has bought during the game.
  */
-public class PlayerBoard {
+public class PlayerBoard implements Serializable {
 
     private Warehouse warehouse;
     private final ArrayList<PlayerCardStack> cardStacks = new ArrayList<>();

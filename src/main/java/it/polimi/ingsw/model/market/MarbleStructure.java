@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.market;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,7 +8,7 @@ import java.util.List;
  * Holds the 12 marbles plus the extra marble used during a player's turn
  * to acquire resources by shifting a row or column.
  */
-public class MarbleStructure {
+public class MarbleStructure implements Serializable {
     private final ArrayList<Marble> marbles;
     private Marble extraMarble;
 

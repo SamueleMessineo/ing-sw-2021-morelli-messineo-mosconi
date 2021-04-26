@@ -2,13 +2,14 @@ package it.polimi.ingsw.model.player;
 
 import it.polimi.ingsw.model.shared.DevelopmentCard;
 
+import java.io.Serializable;
 import java.util.Stack;
 
 /**
  * The stack of development cards bought by the player during the game
  * and placed on his board.
  */
-public class PlayerCardStack extends Stack<DevelopmentCard> {
+public class PlayerCardStack extends Stack<DevelopmentCard> implements Serializable {
 
     /**
      * Checks if a new card can be placed on the stack.

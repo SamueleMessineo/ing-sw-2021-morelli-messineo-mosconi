@@ -14,6 +14,7 @@ import it.polimi.ingsw.model.shared.SoloActionType;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -23,7 +24,7 @@ import java.util.List;
  * Defines the main game class, it holds all the information of a game in progress
  */
 
-public class Game {
+public class Game implements Serializable {
     private ArrayList<Player> players;
     private int currentPlayer;
     private Market market;

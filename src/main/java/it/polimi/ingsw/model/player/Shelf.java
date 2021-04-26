@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.player;
 
 import it.polimi.ingsw.model.shared.Resource;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,7 +10,7 @@ import java.util.Map;
  * The shelf that makes up the warehouse, it hold a maximum
  * number of resources all of the same type.
  */
-public class Shelf implements Storage {
+public class Shelf implements Storage, Serializable {
     private Resource resourceType=null;
     private int resourceNumber=0;
     private final int maxSize;

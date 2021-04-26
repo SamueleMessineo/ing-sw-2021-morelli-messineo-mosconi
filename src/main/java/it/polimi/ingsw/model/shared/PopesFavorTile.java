@@ -1,11 +1,13 @@
 package it.polimi.ingsw.model.shared;
 
+import java.io.Serializable;
+
 /**
  * The PopesFavorTile class represents the Pope’s Favor tiles that are placed on the
  * corresponding spaces of the Faith Track
  */
 
-public class PopesFavorTile {
+public class PopesFavorTile implements Serializable {
     private final int score;
     private final PopesFavorTileState state;
 

@@ -3,6 +3,7 @@ package it.polimi.ingsw.model.market;
 import it.polimi.ingsw.model.shared.CardType;
 import it.polimi.ingsw.model.shared.DevelopmentCard;
 
+import java.io.Serializable;
 import java.util.Stack;
 
 /**
@@ -10,7 +11,7 @@ import java.util.Stack;
  * All the cards in a stack have the same level (1, 2 or 3)
  * and type (GREEN, YELLOW, PURPLE or BLUE).
  */
-public class MarketCardStack extends Stack<DevelopmentCard> {
+public class MarketCardStack extends Stack<DevelopmentCard> implements Serializable {
     private final int level;
     private final CardType type;
 

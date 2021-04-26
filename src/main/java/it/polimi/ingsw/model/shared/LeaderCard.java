@@ -7,6 +7,7 @@ import java.util.Map;
  * The Leader card that is given to the player ad the beginning of the game.
  */
 public class LeaderCard implements Serializable {
+    private static final long serialVersionUID = -3506586118929270253L;
     private final Map<Resource,Integer> resourceRequirements;
     private final Map<CardType,Integer> cardRequirements;
     private final int score;
