@@ -38,9 +38,9 @@ public class PlayerCardStack extends Stack<DevelopmentCard> implements Serializa
     public synchronized String toString() {
         String result = "";
         if(size() == 0)return "empty";
-        result.concat(get(size()-1).toString());
-        for (int i = size()-2; i > 0; i--) {
-            result += (get(i).getLevel());
+        result+=(peek().toString());
+        for (int i = size()-2; i >= 0; i--) {
+            result += "\nlevel card-"+i+": "+(get(i).getLevel());
         }
         //TODO test
         return result;

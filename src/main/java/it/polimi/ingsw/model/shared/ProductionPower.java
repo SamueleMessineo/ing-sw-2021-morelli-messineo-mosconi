@@ -33,4 +33,12 @@ public class ProductionPower implements Serializable {
     public Map<Resource, Integer> getOutput(){
         return output;
     }
+
+    @Override
+    public String toString() {
+        return "ProductionPower{" +
+                "input=" + input +
+                ", output=" + output +
+                '}';
+    }
 }
