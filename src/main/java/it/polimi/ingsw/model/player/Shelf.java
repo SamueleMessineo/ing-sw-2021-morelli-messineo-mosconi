@@ -110,9 +110,14 @@ public class Shelf implements Storage, Serializable {
 
     @Override
     public String toString() {
-        return "Shelf{" +
-                "resourceType=" + resourceType +
-                ", resourceNumber=" + resourceNumber +
-                '}';
+        if (resourceType==null || resourceNumber == 0){
+            return "EMPTY";
+        }
+        else{
+            return "Shelf{" +
+                    "resourceType=" + resourceType +
+                    ", resourceNumber=" + resourceNumber +
+                    '}';
+        }
     }
 }
