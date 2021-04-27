@@ -39,16 +39,16 @@ ClientConnection-->Client:InvalidParametersError
 
  ServerController ->Server:\n\ngetPendingConnections()\nand remove clientConnection
  
- ServerController ->Room:addConnection\n(clientConnection)
 
 ServerController ->Server:getRooms.getRoom(roomId)
 
 ServerController <--Server:room
 
 
+ ServerController ->Room:addConnection\n(clientConnection)
+activate Room
 
 ServerController ->Room:getGame()
-activate Room
 
 ServerController <--Room:game()
 

@@ -107,4 +107,12 @@ public class Shelf implements Storage, Serializable {
             }
         }
     }
+
+    @Override
+    public String toString() {
+        return "Shelf{" +
+                "resourceType=" + resourceType +
+                ", resourceNumber=" + resourceNumber +
+                '}';
+    }
 }
