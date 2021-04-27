@@ -54,14 +54,17 @@ public class ClassicGameController extends GameController{
 
     private void startPlayingIfReady(ClientConnection clientConnection) {
         for (Player p : room.getGame().getPlayers()) {
-            System.out.println(p.getLeaderCards().size());
             if (p.getLeaderCards().size() != 2) return;
         }
         room.sendAll(new GameStateMessage(room.getGame()));
-        /*room.getConnections().get(room.getGame().getPlayers().indexOf(
-                room.getGame().getCurrentPlayer())).sendMessage(new PossibleMovesMessage(new ArrayList<>(){{
-                    add("DROP_LEADER");
-                    add("GET_MARBLES");
-        }}));*/
+
+        ClientConnection currentPlayer = room.getConnections().get(room.getGame().getPlayers().indexOf(
+                room.getGame().getCurrentPlayer()));
+
+        PossibleMovesMessage possibleMovesMessage = new PossibleMovesMessage(new ArrayList<String>(){{ ;
+            add("DROP_LEADER");
+            add("GET_MARBLES");
+        }});
+        currentPlayer.sendMessage(possibleMovesMessage);
     }
 }

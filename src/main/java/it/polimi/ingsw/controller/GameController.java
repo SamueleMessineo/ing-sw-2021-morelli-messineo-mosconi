@@ -26,7 +26,6 @@ public abstract class GameController {
         System.out.println("ok");
         System.out.println(room.getGame().getPlayers());
         for (Player p : room.getGame().getPlayers()) {
-            System.out.println(p.getLeaderCards().size());
             if (p.getLeaderCards().size() != 2) return;
         }
         room.sendAll(new StringMessage("start playing"));
