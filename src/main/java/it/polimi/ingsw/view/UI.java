@@ -20,7 +20,9 @@ public interface UI {
 
     void selectLeaderCards(ArrayList<LeaderCard> leaderCards);
 
-    void displayGameState(Game game);
+    void displayGameState();
 
-    void displayGameBoard(List<String> possibleMoves);
+    void displayPossibleMoves(List<String> moves);
+
+    void setGameState(Game game);
 }

@@ -30,10 +30,11 @@ public class ClientMessageHandler {
     }
 
     public void handle(PossibleMovesMessage message) {
-        System.out.println("possible moves");
+        ui.displayPossibleMoves(message.getMoves());
     }
 
     public void handle(GameStateMessage message) {
-        ui.displayGameState(message.getGame());
+        ui.setGameState(message.getGame());
+        ui.displayGameState();
     }
 }

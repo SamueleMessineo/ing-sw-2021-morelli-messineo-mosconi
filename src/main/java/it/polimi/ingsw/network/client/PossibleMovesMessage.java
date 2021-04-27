@@ -8,9 +8,9 @@ import java.util.List;
 
 public class PossibleMovesMessage extends ClientMessage  {
 
-    private final ArrayList<String> moves;
+    private final List<String> moves;
 
-    public PossibleMovesMessage(ArrayList<String> moves) {
+    public PossibleMovesMessage(List<String> moves) {
         this.moves = new ArrayList<>(moves);
     }
 

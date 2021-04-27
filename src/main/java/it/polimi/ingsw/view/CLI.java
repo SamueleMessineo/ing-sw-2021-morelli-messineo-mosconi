@@ -10,6 +10,7 @@ import it.polimi.ingsw.network.setup.JoinPrivateRoomMessage;
 import it.polimi.ingsw.network.setup.JoinPublicRoomMessage;
 
 import java.io.PrintStream;
+import java.lang.management.PlatformLoggingMXBean;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +23,7 @@ public class CLI implements UI {
     private final Scanner input;
     private final PrintStream output;
     private String username;
+    private Game gameState;
     
     public CLI(Client client) {
         this.client = client;
@@ -123,11 +125,6 @@ public class CLI implements UI {
 
     }
 
-    @Override
-    public void displayGameBoard(List<String> possibleMoves) {
-
-    }
-
     public void displayLeaderCards(ArrayList<LeaderCard> leaderCards){
         for (int i = 0; i < leaderCards.size(); i++) {
             output.println("Carta numero "+ (i+1) +":" + leaderCards.get(i));
@@ -135,26 +132,30 @@ public class CLI implements UI {
     }
 
     @Override
-    public void displayGameState(Game game) {
-       displayPlayerBoard(game.getPlayerByUsername(username));
-       while (game.getCurrentPlayer()!= game.getPlayerByUsername(username)) {
-           output.println("Enter the username of a player you want to visit");
-           output.print("[");
-           for (Player player:
-                   game.getPlayers()) {
-               output.print(player.getUsername() + "(" + player.getVP() + " points) ");
-
-           }
-           output.print("]");
-           try {
-               displayPlayerBoard(game.getPlayerByUsername(input.nextLine()));
-           } catch (NoSuchElementException e){
-               output.println("Username not found");
-           }
+    public void displayGameState() {
+       displayPlayerBoard(gameState.getPlayerByUsername(username));
+       while (gameState.getCurrentPlayer()!= gameState.getPlayerByUsername(username)) {
+          askToDisplayPlayerBoard();
        }
+    }
 
+    private void askToDisplayPlayerBoard(){
+        output.println("Enter the username of a player you want to visit");
+        output.print("[");
+        for (Player player:
+                gameState.getPlayers()) {
+            output.print(player.getUsername() + "(" + player.getVP() + " points) ");
 
-
+        }
+        output.println("]");
+        output.print("username: ");
+        Player player;
+        try {
+            player = gameState.getPlayerByUsername(input.nextLine());
+            displayPlayerBoard(player);
+        } catch (NoSuchElementException e){
+            output.println("Username not found");
+        }
     }
 
     private void displayPlayerBoard(Player player){
@@ -167,7 +168,56 @@ public class CLI implements UI {
         for (int i = 0; i < 3 ; i++) {
             output.println(player.getPlayerBoard().getCardStacks().get(i).toString());
         }
+    }
 
+    public void displayPossibleMoves(List<String> moves){
+        output.println("Possible moves:");
+        output.println("1. Visit a player");
+        for (int i = 0; i < moves.size(); i++) {
+            output.println((i+2)+". " + moves.get(i));
+        }
+
+        /*output.println("Select a move");
+        String selectedMove = input.nextLine();
+        if (selectedMove.toLowerCase().trim().charAt(0) == 'v' && moves.contains()){
+
+        } else if */
+
+        int selection = askIntegerInput("Select a move", 1, moves.size());
+        if(selection==1)sendMove("VISIT_PLAYER");
+        else sendMove(moves.get(selection-2));
+    }
+
+    private void sendMove(String move){
+        switch (move){
+            case("VISIT_PLAYER"):
+                askToDisplayPlayerBoard();
+                break;
+            case ("ACTIVATE_PRODUCTION"):
+                System.out.println("activating production");
+                break;
+            case ("GET_MARBLES"):
+                System.out.println("getting marbles");
+                break;
+            case ("BUY_CARD"):
+                System.out.println("buying card");
+                break;
+            case ("PLAY_LEADER"):
+                System.out.println("PLaying leader");
+                break;
+            case ("DROP_LEADER"):
+                System.out.println("dropping leader");
+                break;
+            case ("SWITCH_SHELVES"):
+                System.out.println("switching shelves");
+                break;
+        }
 
     }
+
+    public void setGameState(Game game){
+        gameState = game;
+    }
+
+
 }
