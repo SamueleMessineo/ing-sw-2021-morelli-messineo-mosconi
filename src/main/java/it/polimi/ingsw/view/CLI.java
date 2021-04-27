@@ -174,14 +174,8 @@ public class CLI implements UI {
         output.println("Possible moves:");
         output.println("1. Visit a player");
         for (int i = 0; i < moves.size(); i++) {
-            output.println((i+2)+". " + moves.get(i));
+            output.println((i+2)+". " + moves.get(i).toLowerCase());
         }
-
-        /*output.println("Select a move");
-        String selectedMove = input.nextLine();
-        if (selectedMove.toLowerCase().trim().charAt(0) == 'v' && moves.contains()){
-
-        } else if */
 
         int selection = askIntegerInput("Select a move", 1, moves.size());
         if(selection==1)sendMove("VISIT_PLAYER");
@@ -210,6 +204,9 @@ public class CLI implements UI {
                 break;
             case ("SWITCH_SHELVES"):
                 System.out.println("switching shelves");
+                break;
+            case ("END_TURN"):
+                System.out.println("ending turn");
                 break;
         }
 

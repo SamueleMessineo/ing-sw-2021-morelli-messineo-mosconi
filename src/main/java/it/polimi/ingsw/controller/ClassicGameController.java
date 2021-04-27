@@ -61,7 +61,7 @@ public class ClassicGameController extends GameController{
         ClientConnection currentPlayer = room.getConnections().get(room.getGame().getPlayers().indexOf(
                 room.getGame().getCurrentPlayer()));
 
-        PossibleMovesMessage possibleMovesMessage = new PossibleMovesMessage(new ArrayList<String>(){{ ;
+        PossibleMovesMessage possibleMovesMessage = new PossibleMovesMessage(new ArrayList<String>(){{
             add("DROP_LEADER");
             add("GET_MARBLES");
         }});
