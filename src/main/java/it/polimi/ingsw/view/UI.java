@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view;
 
+import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.shared.LeaderCard;
 import it.polimi.ingsw.network.client.StringMessage;
@@ -18,6 +19,8 @@ public interface UI {
     void displayString(String body);
 
     void selectLeaderCards(ArrayList<LeaderCard> leaderCards);
+
+    void displayGameState(Game game);
 
     void displayGameBoard(List<String> possibleMoves);
 }

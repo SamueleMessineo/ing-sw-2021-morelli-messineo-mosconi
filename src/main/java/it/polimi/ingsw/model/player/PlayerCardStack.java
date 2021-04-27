@@ -33,4 +33,16 @@ public class PlayerCardStack extends Stack<DevelopmentCard> implements Serializa
             return super.push(card);
         return null;
     }
+
+    @Override
+    public synchronized String toString() {
+        String result = "";
+        if(size() == 0)return "empty";
+        result.concat(get(size()-1).toString());
+        for (int i = size()-2; i > 0; i--) {
+            result += (get(i).getLevel());
+        }
+        //TODO test
+        return result;
+    }
 }

@@ -44,4 +44,9 @@ public class Strongbox implements Storage, Serializable {
         this.resources.forEach((resource,integer)->
                 this.resources.put(resource,integer - res.get(resource)));
     }
+
+    @Override
+    public String toString() {
+        return "Coin: " + resources.get(Resource.COIN) + " Servant: " + resources.get(Resource.SERVANT) + " Stone: " + resources.get(Resource.STONE) + " Shield: " + resources.get(Resource.SHIELD);
+    }
 }

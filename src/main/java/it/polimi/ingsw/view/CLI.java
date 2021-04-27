@@ -1,6 +1,8 @@
 package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.client.Client;
+import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.shared.LeaderCard;
 import it.polimi.ingsw.network.game.DropLeaderCardsResponseMessage;
 import it.polimi.ingsw.network.setup.CreateRoomMessage;
@@ -11,6 +13,7 @@ import java.io.PrintStream;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 public class CLI implements UI {
@@ -131,4 +134,40 @@ public class CLI implements UI {
         }
     }
 
+    @Override
+    public void displayGameState(Game game) {
+       displayPlayerBoard(game.getPlayerByUsername(username));
+       while (game.getCurrentPlayer()!= game.getPlayerByUsername(username)) {
+           output.println("Enter the username of a player you want to visit");
+           output.print("[");
+           for (Player player:
+                   game.getPlayers()) {
+               output.print(player.getUsername() + "(" + player.getVP() + " points) ");
+
+           }
+           output.print("]");
+           try {
+               displayPlayerBoard(game.getPlayerByUsername(input.nextLine()));
+           } catch (NoSuchElementException e){
+               output.println("Username not found");
+           }
+       }
+
+
+
+    }
+
+    private void displayPlayerBoard(Player player){
+        output.println(player.getUsername() + " playerBoard: ");
+        output.println("\nFaith track positions");
+        output.println("position: " + player.getFaithTrack().getPosition());
+        output.println("\nStorage");
+        output.println(player.getPlayerBoard());
+        output.println("\nCards");
+        for (int i = 0; i < 3 ; i++) {
+            output.println(player.getPlayerBoard().getCardStacks().get(i).toString());
+        }
+
+
+    }
 }

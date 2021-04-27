@@ -125,4 +125,8 @@ public class Game implements Serializable {
         player.setLeaderCards(new ArrayList<LeaderCard>(leaderCards.subList(0,4)));
         leaderCards.removeAll(leaderCards.subList(0,4));
     }
+
+    public Player getPlayerByUsername(String username){
+        return players.stream().filter(player -> player.getUsername().toLowerCase().trim().equals(username.toLowerCase().trim())).findFirst().orElseThrow();
+    }
 }

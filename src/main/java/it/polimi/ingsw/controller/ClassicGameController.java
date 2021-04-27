@@ -58,10 +58,10 @@ public class ClassicGameController extends GameController{
             if (p.getLeaderCards().size() != 2) return;
         }
         room.sendAll(new GameStateMessage(room.getGame()));
-        room.getConnections().get(room.getGame().getPlayers().indexOf(
+        /*room.getConnections().get(room.getGame().getPlayers().indexOf(
                 room.getGame().getCurrentPlayer())).sendMessage(new PossibleMovesMessage(new ArrayList<>(){{
                     add("DROP_LEADER");
                     add("GET_MARBLES");
-        }}));
+        }}));*/
     }
 }

@@ -34,6 +34,6 @@ public class ClientMessageHandler {
     }
 
     public void handle(GameStateMessage message) {
-        System.out.println(message.getGame().getCurrentPlayer());
+        ui.displayGameState(message.getGame());
     }
 }

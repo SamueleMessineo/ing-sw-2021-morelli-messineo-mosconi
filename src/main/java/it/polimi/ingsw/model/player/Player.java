@@ -25,6 +25,7 @@ public class Player implements Serializable {
         this.username = username;
         faithTrack = new FaithTrack();
         playerBoard = new PlayerBoard();
+        playedLeaderCards = new ArrayList<>();
     }
 
     /**
