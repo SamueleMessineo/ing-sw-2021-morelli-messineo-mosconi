@@ -1,0 +1,126 @@
+title GetMarbles
+
+participant Client
+participant ClientConnection
+participant SelectedMoveMessage
+participant SelectMarblesResponseMessage
+participant DropResourcesResponseMessage
+participant GameMessageHandler
+participant GameController
+participant Game
+participant Market
+participant MarbleStructure
+participant Warehouse
+participant Player
+
+participant [
+participant Room
+
+activate GameController
+activate GameMessageHandler
+activate Client
+activate ClientConnection
+activate Game
+activate Player
+activate Room
+activate Market
+activate MarbleStructure
+activate Warehouse
+
+ ClientConnection -> Client:PossibleMoves (..., "GET_MARBLES",...)
+
+ 
+Client->ClientConnection:SelectedMove("GET_MARBLES")
+
+ 
+ ClientConnection ->SelectedMoveMessage:accept\n(GameMessageHandler)
+ 
+ activate SelectedMoveMessage
+
+SelectedMoveMessage->GameMessageHandler:handle(SelectedMoveMessage...)
+deactivate SelectedMoveMessage
+GameMessageHandler->GameController:selectMove(...)
+
+ 
+
+
+GameController-->ClientConnection:sendErrorMessage\n(Invalid move)
+
+ClientConnection-->Client:InvalidMoveError
+
+ 
+ GameController -->ClientConnection:sendMessage(new SelectMarblesRequestMessage ())
+ 
+ClientConnection -->Client:SelectMarblesRequestMessage ()
+
+ClientConnection <-Client:SelectMarblesResponseMessage(int index, String rowOrColumn)
+ 
+  
+ClientConnection ->SelectMarblesResponseMessage:accept\n(GameMessageHandler)
+activate SelectMarblesResponseMessage
+ 
+
+SelectMarblesResponseMessage->GameMessageHandler:handle(SelectMarblesReponseMessage(...)...)
+deactivate SelectMarblesResponseMessage
+GameMessageHandler -> GameController:selectMatbles (int index, String roworColumn) 
+ 
+GameController->Game : getCurrentPlayer()
+
+GameController <--Game : currentPlayer
+
+GameController ->Game: getMarket()
+Game -->GameController:market
+
+ GameController ->Market: getMarbleStructure()
+ 
+ Market --> GameController: marbleStructure 
+ 
+ GameController ->MarbleStructure: shiftRow(index) / shiftColumn(index)
+ 
+ MarbleStructure -->GameController : List<Marble> originalColumnOrRow
+ 
+GameController ->GameController:calculateEquivalentResources(List<Marble>)
+ 
+ GameController -->ClientConnection:sendMessage(new DropResourceRequest(List<Resource>))
+ 
+ ClientConnection -->Client:DropResourceRequest(List<Resource>)
+ 
+ Client ->ClientConnection:DropResourceResponse(List<Resource>)
+ ->SelectMarblesResponseMessage:accept\n(GameMessageHandler)
+ 
+ClientConnection ->DropResourcesResponseMessage:accept(GameMessageHandler)
+activate DropResourcesResponseMessage
+
+DropResourcesResponseMessage->GameMessageHandler:handle(DropResourcesReponseMessage(List<Resource>)...)
+deactivate DropResourcesResponseMessage
+
+ GameMessageHandler ->GameController:dropResources(List<Resource>)
+ 
+ GameController ->GameController: checkDroppedResources
+ 
+ 
+GameController-->ClientConnection:sendMessage (new ErrorMessage ("Not enough"))
+
+ClientConnection-->Client:ErrorMessage
+
+GameController ->Player: getPlayerBoard().getWarehouse()
+
+GameController <--Player: warehouse
+
+GameController ->Warehouse: placeResources()
+
+ 
+
+ 
+ GameController ->Room:\nsendAll(new GameStateMessage(Game))
+ Room-->Client:sendMessage(GameStateMessage(Game))
+Room-->[:sendMessage(GameStateMessage(Game))
+ deactivate Room
+ 
+ deactivate Room
+ 
+ 
+
+
+
+
