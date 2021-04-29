@@ -1,0 +1,54 @@
+title Join Public Room Event
+
+participant Client
+participant ClientConnection
+participant JoinPublicRoomMessage
+participant SetupMessageHandler
+participant ServerController
+participant Room
+participant Game
+participant Server
+
+activate Server
+activate ServerController
+activate Client
+activate ClientConnection
+activate SetupMessageHandler
+
+Client ->ClientConnection: JoinPublicRoomMessage(numberOfPlayers, username)
+ 
+ClientConnection ->JoinPublicRoomMessage: accept(SetupMessageHandler)
+activate JoinPublicRoomMessage
+
+JoinPublicRoomMessage->SetupMessageHandler: handle(JoinPublicRoomMessage)
+deactivate JoinPublicRoomMessage
+
+SetupMessageHandler->ServerController: addPlayerToPublicRoom(numberOfPlayers, username, clientConnection)
+
+ServerController-->ClientConnection: sendMessage(ErrorMessage("invalid parameters"))
+
+ClientConnection-->Client: ErrorMessage("invalid parameters")
+
+ServerController->Server: getPendingConnections().remove(clientConnection)
+ 
+ServerController->Room: addConnection(clientConnection)
+
+ServerController->Server: find a room with the requested number of players
+
+Server-->ServerController: room
+
+ServerController->Room: getGame()
+activate Room
+
+ServerController<--Room: game()
+
+ServerController->Game: addPlayer(username)
+activate Game
+
+ServerController->Room: sendAll(RoomDetailsMessage(players, numberOfPlayers, roomID))
+
+Room-->ClientConnection: sendMessage(RoomDetailsMessage(players, numberOfPlayers, roomID))
+
+ClientConnection-->Client: RoomDetailsMessage(players, numberOfPlayers, roomID)
+
+Room-->[: sendMessage(RoomDetailsMessage(players, numberOfPlayers, roomID))

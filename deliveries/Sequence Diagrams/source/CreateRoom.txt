@@ -1,7 +1,6 @@
-title CreateRoom
+title Create Room Event
 
 participant Client
-participant ServerConnection
 participant ClientConnection
 participant CreateRoomMessage
 participant SetupMessageHandler
@@ -9,44 +8,35 @@ participant ServerController
 participant Room
 participant Server
 
-
 activate Server
-activate ServerConnection
 activate ServerController
 activate Client
 activate ClientConnection
-
-[-> Client:sendMessage(new \nCreateRoomMessage\n(privateGame, \n playersNum, \n username))
-Client->ServerConnection:sendMessage\n(CreateRoom ...)
-ServerConnection->ClientConnection:receiveMessage()
-
- ClientConnection ->CreateRoomMessage:accept\n(setupMessageHandler)
- activate CreateRoomMessage
-
-CreateRoomMessage->SetupMessageHandler:handle(CreateRoomMessage)
-deactivate CreateRoomMessage
 activate SetupMessageHandler
-SetupMessageHandler->ServerController: createRoom(...)
-deactivate SetupMessageHandler
 
+Client->ClientConnection: CreateRoomMessage(privateRoom, playersNum, username)
 
-ServerController-->ClientConnection: sendMessage(Invalid ParametersError)
-ClientConnection-->Client:InvalidParametersError
+ClientConnection->CreateRoomMessage: accept(SetupMessageHandler)
+activate CreateRoomMessage
 
- ServerController ->Server:getPendingConnections()\nand remove clientConnection
+CreateRoomMessage->SetupMessageHandler: handle(CreateRoomMessage)
+deactivate CreateRoomMessage
 
+SetupMessageHandler->ServerController: createRoom(privateRoom, playersNum, username)
+
+ServerController->Server:getPendingConnections().remove(clientConnection)
+
+ServerController->Room: new Room(new Game(), numberOfPlayers, privateRoom, clientConnection)
+activate Room
+
+ServerController->Room: getGame().addPlayer(username)
  
- ServerController->Room: new Room()
- activate Room
- ServerController<--Room: room
- 
- ServerController  -->ServerController:getRoomId()
+ServerController-->ServerController: getRoomId()
 
-ServerController ->Server:addRoom(roomId,room)
- 
+ServerController->Server: addRoom(roomId, room)
 
+ServerController->Room: sendAll(RoomDetailsMessage(players, numberOfPlayers, roomID))
 
- ServerController ->Room:\nsendRoomDetails()
- deactivate Room
-Room-->[:sendAll(new RoomDetailsMessage())
- deactivate Room
+Room-->ClientConnection: sendMessage(RoomDetailsMessage(players, numberOfPlayers, roomID))
+
+ClientConnection-->Client: RoomDetailsMessage(players, numberOfPlayers, roomID)
