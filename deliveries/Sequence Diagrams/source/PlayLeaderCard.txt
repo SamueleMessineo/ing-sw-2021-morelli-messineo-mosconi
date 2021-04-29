@@ -1,0 +1,80 @@
+title PlayLeaderCard
+
+participant Client
+participant ClientConnection
+participant SelectedMoveMessage
+participant SelectLeaderCardResponseMessage
+participant GameMessageHandler
+participant GameController
+participant Game
+participant Player
+
+activate GameController
+activate GameMessageHandler
+activate Client
+activate ClientConnection
+activate Game
+activate Player
+activate Room
+
+ ClientConnection -> Client:PossibleMoves (..., "PLAY_LEADER",...)
+
+ 
+Client->ClientConnection:SelectedMove("PLAY_LEADER")
+
+ 
+ ClientConnection ->SelectedMoveMessage:accept\n(GameMessageHandler)
+ 
+ activate SelectedMoveMessage
+
+SelectedMoveMessage->GameMessageHandler:handle(SelectedMoveMessage...)
+deactivate SelectedMoveMessage
+GameMessageHandler->GameController:selectMove(...)
+
+
+GameController-->ClientConnection:sendErrorMessage\n(Invalid move)
+
+ClientConnection-->Client:InvalidMoveError
+
+ GameController->Game : getCurrentPlayer()
+
+
+ GameController <--Game : currentPlayer
+ 
+  GameController ->Player:getNotPlayedLeaderCards()
+ Player -->GameController: List<LeaderCard>
+ 
+ GameController -->ClientConnection:sendMessage(new SelectLeaderCardRequestMessage (List<LeaderCard> ))
+ 
+ClientConnection -->Client:SelectLeaderCardRequestMessage(List<LeaderCard>)
+
+ClientConnection <-Client:SelectLeaderCardReponseMessage(LeaderCard)
+ 
+  
+ClientConnection ->SelectLeaderCardResponseMessage:accept\n(GameMessageHandler)
+activate SelectLeaderCardResponseMessage
+ 
+
+SelectLeaderCardResponseMessage->GameMessageHandler:handle(SelectLeaderCardReponseMessage(...)...)
+deactivate SelectLeaderCardResponseMessage
+GameMessageHandler -> GameController: playLeaderCard (LeaderCard) 
+ 
+GameController->Game : getCurrentPlayer()
+
+GameController <--Game : currentPlayer
+ 
+GameController ->Player :playLeaderCard (LeaderCard)
+
+
+ GameController ->Room:\nsendAll(new GameStateMessage(Game))
+ Room-->Client:sendMessage(GameStateMessage(Game))
+Room-->[:sendMessage(GameStateMessage(Game))
+ deactivate Room
+ 
+ deactivate Room
+ 
+ 
+
+
+
+
