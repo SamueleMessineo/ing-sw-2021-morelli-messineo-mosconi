@@ -160,5 +160,10 @@ public class Player implements Serializable {
         return true;
     }
 
+    public void playLeaderCard(LeaderCard leaderCard){
+        leaderCards.remove(leaderCard);
+        playedLeaderCards.add(leaderCard);
+    }
+
     //TODO public boolean canBuyDevelopmentCard
 }
