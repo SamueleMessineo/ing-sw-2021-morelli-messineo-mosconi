@@ -1,6 +1,9 @@
 title PlayLeaderCard
 
+participantgroup #fff2e5 <size:20>**Client**</size>
 participant Client
+end
+participantgroup #e5fcff <size:20>**Server**</size>
 participant ClientConnection
 participant SelectedMoveMessage
 participant SelectLeaderCardResponseMessage
@@ -8,7 +11,8 @@ participant GameMessageHandler
 participant GameController
 participant Game
 participant Player
-
+participant Room
+end
 activate GameController
 activate GameMessageHandler
 activate Client
@@ -17,26 +21,27 @@ activate Game
 activate Player
 activate Room
 
- ClientConnection -> Client:PossibleMoves (..., "PLAY_LEADER",...)
-
+loop until move is valid
+ClientConnection -> Client:PossibleMoves (..., "PLAY_LEADER",...)
  
 Client->ClientConnection:SelectedMove("PLAY_LEADER")
 
+ClientConnection ->SelectedMoveMessage:accept(GameMessageHandler)
  
- ClientConnection ->SelectedMoveMessage:accept\n(GameMessageHandler)
- 
- activate SelectedMoveMessage
+activate SelectedMoveMessage
 
 SelectedMoveMessage->GameMessageHandler:handle(SelectedMoveMessage...)
 deactivate SelectedMoveMessage
 GameMessageHandler->GameController:selectMove(...)
 
+group error [if parameters are invalid]
 
-GameController-->ClientConnection:sendErrorMessage\n(Invalid move)
+GameController--#red>ClientConnection:sendErrorMessage(Invalid move)
 
-ClientConnection-->Client:InvalidMoveError
-
- GameController->Game : getCurrentPlayer()
+ClientConnection--#red>Client:InvalidMoveError
+end
+end
+GameController->Game : getCurrentPlayer()
 
 
  GameController <--Game : currentPlayer
@@ -51,7 +56,7 @@ ClientConnection -->Client:SelectLeaderCardRequestMessage(List<LeaderCard>)
 ClientConnection <-Client:SelectLeaderCardReponseMessage(LeaderCard)
  
   
-ClientConnection ->SelectLeaderCardResponseMessage:accept\n(GameMessageHandler)
+ClientConnection ->SelectLeaderCardResponseMessage:accept(GameMessageHandler)
 activate SelectLeaderCardResponseMessage
  
 
@@ -66,12 +71,15 @@ GameController <--Game : currentPlayer
 GameController ->Player :playLeaderCard (LeaderCard)
 
 
- GameController ->Room:\nsendAll(new GameStateMessage(Game))
- Room-->Client:sendMessage(GameStateMessage(Game))
-Room-->[:sendMessage(GameStateMessage(Game))
- deactivate Room
- 
- deactivate Room
+GameController->Room: sendAll(new GameStateMessage(Game))
+
+loop for each connected player
+
+Room-->ClientConnection: sendMessage(RoomDetailsMessage(players, numberOfPlayers, roomID))
+
+ClientConnection-->Client: RoomDetailsMessage(players, numberOfPlayers, roomID)
+
+end
  
  
 

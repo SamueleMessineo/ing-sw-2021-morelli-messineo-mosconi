@@ -1,6 +1,9 @@
-title GetMarbles
+title Get Marbles
 
+participantgroup #fff2e5 <size:20>**Client**</size>
 participant Client
+end
+participantgroup #e5fcff <size:20>**Server**</size>
 participant ClientConnection
 participant SelectedMoveMessage
 participant SelectMarblesResponseMessage
@@ -12,9 +15,8 @@ participant Market
 participant MarbleStructure
 participant Warehouse
 participant Player
-
-participant [
 participant Room
+end
 
 activate GameController
 activate GameMessageHandler
@@ -27,36 +29,34 @@ activate Market
 activate MarbleStructure
 activate Warehouse
 
- ClientConnection -> Client:PossibleMoves (..., "GET_MARBLES",...)
+loop until move is valid
 
+ClientConnection -> Client: PossibleMoves (..., "GET_MARBLES",...)
  
-Client->ClientConnection:SelectedMove("GET_MARBLES")
+Client->ClientConnection: SelectedMove("GET_MARBLES")
+ 
+ClientConnection ->SelectedMoveMessage: accept(GameMessageHandler)
+ 
+activate SelectedMoveMessage
 
- 
- ClientConnection ->SelectedMoveMessage:accept\n(GameMessageHandler)
- 
- activate SelectedMoveMessage
-
-SelectedMoveMessage->GameMessageHandler:handle(SelectedMoveMessage...)
+SelectedMoveMessage->GameMessageHandler: handle(SelectedMoveMessage...)
 deactivate SelectedMoveMessage
 GameMessageHandler->GameController:selectMove(...)
+group error [if move is invalid]
 
- 
+GameController--#red>ClientConnection:sendErrorMessage(Invalid move)
 
-
-GameController-->ClientConnection:sendErrorMessage\n(Invalid move)
-
-ClientConnection-->Client:InvalidMoveError
-
- 
- GameController -->ClientConnection:sendMessage(new SelectMarblesRequestMessage ())
+ClientConnection--#red>Client:InvalidMoveError
+end
+end
+GameController -->ClientConnection:sendMessage(new SelectMarblesRequestMessage ())
  
 ClientConnection -->Client:SelectMarblesRequestMessage ()
 
 ClientConnection <-Client:SelectMarblesResponseMessage(int index, String rowOrColumn)
  
   
-ClientConnection ->SelectMarblesResponseMessage:accept\n(GameMessageHandler)
+ClientConnection ->SelectMarblesResponseMessage:accept(GameMessageHandler)
 activate SelectMarblesResponseMessage
  
 
@@ -71,22 +71,22 @@ GameController <--Game : currentPlayer
 GameController ->Game: getMarket()
 Game -->GameController:market
 
- GameController ->Market: getMarbleStructure()
+GameController ->Market: getMarbleStructure()
  
- Market --> GameController: marbleStructure 
+Market --> GameController: marbleStructure 
  
- GameController ->MarbleStructure: shiftRow(index) / shiftColumn(index)
+GameController ->MarbleStructure: shiftRow(index) / shiftColumn(index)
  
- MarbleStructure -->GameController : List<Marble> originalColumnOrRow
+MarbleStructure -->GameController : List<Marble> originalColumnOrRow
  
 GameController ->GameController:calculateEquivalentResources(List<Marble>)
  
- GameController -->ClientConnection:sendMessage(new DropResourceRequest(List<Resource>))
+GameController -->ClientConnection:sendMessage(new DropResourceRequest(List<Resource>))
+
+ClientConnection -->Client:DropResourceRequest(List<Resource>)
  
- ClientConnection -->Client:DropResourceRequest(List<Resource>)
- 
- Client ->ClientConnection:DropResourceResponse(List<Resource>)
- ->SelectMarblesResponseMessage:accept\n(GameMessageHandler)
+Client ->ClientConnection:DropResourceResponse(List<Resource>)
+ClientConnection->SelectMarblesResponseMessage:accept(GameMessageHandler)
  
 ClientConnection ->DropResourcesResponseMessage:accept(GameMessageHandler)
 activate DropResourcesResponseMessage
@@ -94,33 +94,28 @@ activate DropResourcesResponseMessage
 DropResourcesResponseMessage->GameMessageHandler:handle(DropResourcesReponseMessage(List<Resource>)...)
 deactivate DropResourcesResponseMessage
 
- GameMessageHandler ->GameController:dropResources(List<Resource>)
+GameMessageHandler ->GameController:dropResources(List<Resource>)
  
- GameController ->GameController: checkDroppedResources
- 
- 
-GameController-->ClientConnection:sendMessage (new ErrorMessage ("Not enough"))
+GameController ->GameController: checkDroppedResources
 
-ClientConnection-->Client:ErrorMessage
+group error [if more marbles need to be dropped]
+ 
+GameController--#red>ClientConnection:sendMessage (new ErrorMessage ("Not enough"))
 
+ClientConnection--#red>Client:ErrorMessage
+end
 GameController ->Player: getPlayerBoard().getWarehouse()
 
 GameController <--Player: warehouse
 
 GameController ->Warehouse: placeResources()
 
- 
+GameController ->Room:\nsendAll(new GameStateMessage(Game))
 
- 
- GameController ->Room:\nsendAll(new GameStateMessage(Game))
- Room-->Client:sendMessage(GameStateMessage(Game))
-Room-->[:sendMessage(GameStateMessage(Game))
- deactivate Room
- 
- deactivate Room
- 
- 
+loop for each connected player
 
+Room-->ClientConnection: sendMessage(RoomDetailsMessage(players, numberOfPlayers, roomID))
 
+ClientConnection-->Client: RoomDetailsMessage(players, numberOfPlayers, roomID)
 
-
+end

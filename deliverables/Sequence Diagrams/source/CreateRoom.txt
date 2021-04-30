@@ -1,13 +1,16 @@
 title Create Room Event
 
+participantgroup #fff2e5 <size:20>**Client**</size>
 participant Client
+end
+participantgroup #e5fcff <size:20>**Server**</size>
 participant ClientConnection
 participant CreateRoomMessage
 participant SetupMessageHandler
 participant ServerController
 participant Room
 participant Server
-
+end
 activate Server
 activate ServerController
 activate Client
@@ -37,6 +40,10 @@ ServerController->Server: addRoom(roomId, room)
 
 ServerController->Room: sendAll(RoomDetailsMessage(players, numberOfPlayers, roomID))
 
+loop for each connected player
+
 Room-->ClientConnection: sendMessage(RoomDetailsMessage(players, numberOfPlayers, roomID))
 
 ClientConnection-->Client: RoomDetailsMessage(players, numberOfPlayers, roomID)
+
+end
