@@ -3,6 +3,7 @@ package it.polimi.ingsw.client;
 import it.polimi.ingsw.network.Message;
 import it.polimi.ingsw.network.setup.CreateRoomMessage;
 import it.polimi.ingsw.view.CLI;
+import it.polimi.ingsw.view.GUI;
 import it.polimi.ingsw.view.UI;
 
 import java.io.IOException;
@@ -15,13 +16,21 @@ public class Client {
     private Socket socket;
     ServerConnection serverConnection;
 
+    public Client(boolean withCLI) {
+        if (withCLI) {
+            ui = new CLI(this);
+        } else {
+            ui = new GUI();
+        }
+    }
+
     public void run() throws IOException {
         socket = new Socket("localhost", 31415);
-        ui = new CLI(this);
 
         serverConnection = new ServerConnection(socket, this);
         ExecutorService executor = Executors.newCachedThreadPool();
         executor.submit(serverConnection::waitForMessages);
+
         ui.setup();
     }
 
