@@ -53,12 +53,8 @@ public class ClassicGameController extends GameController{
 
     @Override
     public List<Resource> getMarbles(String rowOrColumn, int index) {
-        List<Marble> marbles;
         if(rowOrColumn.equals("ROW")){
-            marbles = game.getMarket().getMarbleStructure().shiftRow(index);
-            System.out.println("fatto");
-            System.out.println(marbles);
-            return calculateEquivalentResources(marbles);
+            return calculateEquivalentResources(game.getMarket().getMarbleStructure().shiftRow(index));
         } else {
             return calculateEquivalentResources(game.getMarket().getMarbleStructure().shiftColumn(index));
         }

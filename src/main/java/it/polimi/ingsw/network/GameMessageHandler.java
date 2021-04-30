@@ -67,9 +67,7 @@ public class GameMessageHandler {
     }
 
     public void handle(SelectMarblesResponseMessage message){
-        System.out.println("handling");
         List<Resource> resources = gameController.getMarbles(message.getRowOrColumn(), message.getIndex());
-        System.out.println(resources);
         clientConnection.sendMessage(new DropResourceRequestMessage(resources));
     }
 
