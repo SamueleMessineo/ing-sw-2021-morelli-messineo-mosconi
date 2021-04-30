@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.shared.DevelopmentCard;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -22,7 +23,21 @@ public class Market implements Serializable {
     private final List<MarketCardStack> cardsGrid = new ArrayList<>();
 
     public Market() {
-        marbleStructure = new MarbleStructure(new ArrayList<>(), Marble.BLUE);
+        List<Marble> initialMarbles = new ArrayList<>();
+        initialMarbles.add(Marble.RED);
+        for (int i = 0; i < 2; i++) {
+            initialMarbles.add(Marble.GREY);
+            initialMarbles.add(Marble.BLUE);
+            initialMarbles.add(Marble.YELLOW);
+            initialMarbles.add(Marble.PURPLE);
+        }
+        for (int i = 0; i < 4; i++) {
+            initialMarbles.add(Marble.WHITE);
+        }
+
+        Collections.shuffle(initialMarbles);
+        marbleStructure = new MarbleStructure(new ArrayList<>(initialMarbles.subList(0, initialMarbles.size()-1)), initialMarbles.get(initialMarbles.size()-1));
+
         for (int j = 3; j > 0; j--) {
             cardsGrid.add(new MarketCardStack(j, CardType.GREEN));
             cardsGrid.add(new MarketCardStack(j, CardType.BLUE));

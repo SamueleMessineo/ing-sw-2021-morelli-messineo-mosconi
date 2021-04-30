@@ -101,11 +101,11 @@ public class MarbleStructure implements Serializable {
         String result = "Marble Structure: \n";
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 4; j++) {
-                result += marbles.get(i+j).name() + " ";
+                result += marbles.get((i*4)+j).name() + " ";
             }
             result += "\n";
         }
-
+        result += "Extra Marble: " + extraMarble.name();
         return result;
     }
 }

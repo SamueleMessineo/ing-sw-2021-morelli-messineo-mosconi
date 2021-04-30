@@ -27,5 +27,5 @@ public interface UI {
 
     void setGameState(Game game);
 
-    public void displayMarbles(MarbleStructure marbleStructure);
+    void displayMarbles(MarbleStructure marbleStructure);
 }

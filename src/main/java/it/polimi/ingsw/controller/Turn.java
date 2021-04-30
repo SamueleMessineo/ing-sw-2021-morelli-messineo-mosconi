@@ -28,7 +28,6 @@ public class Turn {
     }
 
     public boolean isValidMove(String move, String username){
-        System.out.println("validating");
-        return (moves.contains(move) && currentPlayer.equals(username));
+        return moves.contains(move) && currentPlayer.equals(username);
     }
 }

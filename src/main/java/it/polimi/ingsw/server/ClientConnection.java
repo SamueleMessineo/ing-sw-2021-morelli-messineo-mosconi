@@ -1,6 +1,5 @@
 package it.polimi.ingsw.server;
 
-import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.network.*;
 import it.polimi.ingsw.network.game.GameMessage;
 import it.polimi.ingsw.network.setup.SetupMessage;
@@ -8,8 +7,9 @@ import it.polimi.ingsw.network.setup.SetupMessage;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.Serializable;
 import java.net.Socket;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class ClientConnection implements Runnable{
 
@@ -19,17 +19,21 @@ public class ClientConnection implements Runnable{
     private ObjectOutputStream outputStream;
     private final SetupMessageHandler setupMessageHandler;
     private GameMessageHandler gameMessageHandler;
+    private Logger logger;
 
     public ClientConnection(Socket socket, Server server) {
         this.socket = socket;
         this.server = server;
         try {
-            inputStream  = new ObjectInputStream(socket.getInputStream());
             outputStream = new ObjectOutputStream(socket.getOutputStream());
+            inputStream  = new ObjectInputStream(socket.getInputStream());
 
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        logger = Logger.getLogger(ClientConnection.class.getName());
+        logger.setLevel(Level.INFO);
 
         this.setupMessageHandler=new SetupMessageHandler(server, this);
     }
@@ -53,7 +57,7 @@ public class ClientConnection implements Runnable{
         Message m = null;
         try {
             m = (Message) inputStream.readObject();
-
+            logger.info(m.toString());
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -62,7 +66,9 @@ public class ClientConnection implements Runnable{
 
     public void sendMessage(Message m) {
         try {
+            outputStream.reset();
             outputStream.writeObject(m);
+            outputStream.flush();
         } catch (IOException e) {
             e.printStackTrace();
         }

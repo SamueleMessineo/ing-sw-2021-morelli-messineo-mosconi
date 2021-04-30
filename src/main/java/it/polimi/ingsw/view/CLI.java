@@ -194,7 +194,6 @@ public class CLI implements UI {
                 System.out.println("activating production");
                 break;
             case ("GET_MARBLES"):
-                System.out.println("sending move");
                 client.sendMessage(new SelectMoveResponseMessage("GET_MARBLES"));
                 break;
             case ("BUY_CARD"):
@@ -213,7 +212,6 @@ public class CLI implements UI {
                 System.out.println("ending turn");
                 break;
         }
-
     }
 
     public void setGameState(Game game){
@@ -221,7 +219,6 @@ public class CLI implements UI {
     }
 
     public void displayMarbles(MarbleStructure marbleStructure){
-        output.println("displaying marbles");
         output.println(marbleStructure.toString());
     }
 

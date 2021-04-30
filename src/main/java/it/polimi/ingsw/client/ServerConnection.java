@@ -54,7 +54,9 @@ public class ServerConnection{
 
     public void sendMessage(Message m) {
         try {
+            outputStream.reset();
             outputStream.writeObject(m);
+            outputStream.flush();
         } catch (IOException e) {
             e.printStackTrace();
         }

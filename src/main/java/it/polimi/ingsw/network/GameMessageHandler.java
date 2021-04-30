@@ -58,19 +58,11 @@ public class GameMessageHandler {
     }
 
     public void handle(SelectMoveResponseMessage message){
-        System.out.println(message.getMove());
-        System.out.println(currentTurn.getMoves());
-        System.out.println(room.getPlayerFromConnection(clientConnection).getUsername());
-        System.out.println(currentTurn.getCurrentPlayer());
         if(currentTurn.isValidMove(message.getMove(), room.getPlayerFromConnection(clientConnection).getUsername())){
-            System.out.println("valid");
-            System.out.println(room.getGame().getMarket().getMarbleStructure());
             clientConnection.sendMessage(new SelectMarblesRequestMessage(room.getGame().getMarket().getMarbleStructure()));
         } else {
-            System.out.println("invalid");
             clientConnection.sendMessage(new ErrorMessage("Invalid Move"));
         }
-
     }
 
     public void handle(SelectMarblesResponseMessage message){
