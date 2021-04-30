@@ -126,7 +126,6 @@ public class ServerController {
              room.getConnections()) {
             client.setGameMessageHandler(new GameMessageHandler(classicGameController, client, room));
         }
-
         classicGameController.startGame();
     }
 

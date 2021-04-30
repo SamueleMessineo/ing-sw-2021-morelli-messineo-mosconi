@@ -137,7 +137,7 @@ public class Player implements Serializable {
             }
         }
 
-        //CardRequirements for play the LeaderCard
+        //CardRequirements needed to play the LeaderCard
         if(cardRequirements!=null && !cardRequirements.isEmpty())
         {
             for(CardType cardType: cardRequirements.keySet()){
@@ -153,7 +153,7 @@ public class Player implements Serializable {
                 }
                 if(i==0)
                     found = true;
-                if(found == false)
+                if(!found)
                     return false;
             }
         }

@@ -6,7 +6,9 @@ import it.polimi.ingsw.model.market.Marble;
 import it.polimi.ingsw.model.market.MarbleStructure;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.shared.LeaderCard;
+import it.polimi.ingsw.model.shared.Resource;
 import it.polimi.ingsw.network.game.DropLeaderCardsResponseMessage;
+import it.polimi.ingsw.network.game.SelectMarblesResponseMessage;
 import it.polimi.ingsw.network.game.SelectMoveResponseMessage;
 import it.polimi.ingsw.network.setup.CreateRoomMessage;
 import it.polimi.ingsw.network.setup.JoinPrivateRoomMessage;
@@ -194,6 +196,7 @@ public class CLI implements UI {
                 System.out.println("activating production");
                 break;
             case ("GET_MARBLES"):
+                System.out.println("getting marble structure");
                 client.sendMessage(new SelectMoveResponseMessage("GET_MARBLES"));
                 break;
             case ("BUY_CARD"):
@@ -220,6 +223,22 @@ public class CLI implements UI {
 
     public void displayMarbles(MarbleStructure marbleStructure){
         output.println(marbleStructure.toString());
+
+        int selection = askIntegerInput("Do you want to shift a row or a column?\n1.Row\n2.Column", 1,2);
+
+        int selectionIndex;
+        if (selection == 1){
+            selectionIndex = askIntegerInput("Which row do you want to shift?", 1,3);
+            client.sendMessage(new SelectMarblesResponseMessage("ROW",selectionIndex));
+        } else {
+            selectionIndex = askIntegerInput("Which column do you want to shift?", 1,4);
+            client.sendMessage(new SelectMarblesResponseMessage("COLUMN",selectionIndex));
+        }
     }
 
+    @Override
+    public void dropResources(List<Resource> resources) {
+        output.println("This are the resources you just got");
+        output.println(resources);
+    }
 }

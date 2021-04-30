@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.market.MarbleStructure;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.shared.LeaderCard;
+import it.polimi.ingsw.model.shared.Resource;
 import it.polimi.ingsw.network.client.StringMessage;
 
 import java.util.ArrayList;
@@ -28,4 +29,6 @@ public interface UI {
     void setGameState(Game game);
 
     void displayMarbles(MarbleStructure marbleStructure);
+
+    void dropResources(List<Resource> resources);
 }

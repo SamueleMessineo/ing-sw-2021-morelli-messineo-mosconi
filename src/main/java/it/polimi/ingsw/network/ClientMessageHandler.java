@@ -41,4 +41,8 @@ public class ClientMessageHandler {
     public void handle(SelectMarblesRequestMessage message){
         ui.displayMarbles(message.getMarbleStructure());
     }
+
+    public void handle(DropResourceRequestMessage message){
+        ui.dropResources(message.getResources());
+    }
 }

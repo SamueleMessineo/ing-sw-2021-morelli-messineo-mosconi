@@ -2,6 +2,7 @@ package it.polimi.ingsw.network.setup;
 
 import it.polimi.ingsw.controller.ClassicGameController;
 import it.polimi.ingsw.controller.GameController;
+import it.polimi.ingsw.controller.Turn;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.network.Message;
@@ -15,6 +16,7 @@ public class Room {
     private final boolean isPrivate;
     private ArrayList<ClientConnection> connections = new ArrayList<>();
     private GameController classicGameController;
+    private Turn currentTurn;
 
     public Room(Game game, int numberOfPlayers, boolean isPrivate, ClientConnection host) {
         this.game = game;
@@ -62,5 +64,13 @@ public class Room {
 
     public Player getPlayerFromConnection(ClientConnection clientConnection){
         return getGame().getPlayers().get(getConnections().indexOf(clientConnection));
+    }
+
+    public Turn getCurrentTurn() {
+        return currentTurn;
+    }
+
+    public void setCurrentTurn(Turn currentTurn) {
+        this.currentTurn = currentTurn;
     }
 }
