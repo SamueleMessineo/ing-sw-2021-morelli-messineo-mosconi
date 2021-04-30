@@ -23,6 +23,6 @@ public class SoloGameController extends GameController {
     public void leaderCardsSelectionStep(){
         ClientConnection player = room.getConnections().get(0);
         player.sendMessage(new StringMessage("Single game started"));
-        player.sendMessage(new DropLeaderCardsRequestMessage(getPlayerFromConnection(player).getLeaderCards()));
+        player.sendMessage(new DropLeaderCardsRequestMessage(room.getPlayerFromConnection(player).getLeaderCards()));
     }
 }

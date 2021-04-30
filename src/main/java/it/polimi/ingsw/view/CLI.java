@@ -2,9 +2,12 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.client.Client;
 import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.market.Marble;
+import it.polimi.ingsw.model.market.MarbleStructure;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.shared.LeaderCard;
 import it.polimi.ingsw.network.game.DropLeaderCardsResponseMessage;
+import it.polimi.ingsw.network.game.SelectMoveResponseMessage;
 import it.polimi.ingsw.network.setup.CreateRoomMessage;
 import it.polimi.ingsw.network.setup.JoinPrivateRoomMessage;
 import it.polimi.ingsw.network.setup.JoinPublicRoomMessage;
@@ -177,7 +180,7 @@ public class CLI implements UI {
             output.println((i+2)+". " + moves.get(i).toLowerCase());
         }
 
-        int selection = askIntegerInput("Select a move", 1, moves.size());
+        int selection = askIntegerInput("Select a move", 1, moves.size()+1);
         if(selection==1)sendMove("VISIT_PLAYER");
         else sendMove(moves.get(selection-2));
     }
@@ -191,7 +194,8 @@ public class CLI implements UI {
                 System.out.println("activating production");
                 break;
             case ("GET_MARBLES"):
-                System.out.println("getting marbles");
+                System.out.println("sending move");
+                client.sendMessage(new SelectMoveResponseMessage("GET_MARBLES"));
                 break;
             case ("BUY_CARD"):
                 System.out.println("buying card");
@@ -216,5 +220,9 @@ public class CLI implements UI {
         gameState = game;
     }
 
+    public void displayMarbles(MarbleStructure marbleStructure){
+        output.println("displaying marbles");
+        output.println(marbleStructure.toString());
+    }
 
 }

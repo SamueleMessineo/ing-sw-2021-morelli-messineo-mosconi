@@ -29,12 +29,16 @@ public class ClientMessageHandler {
         ui.selectLeaderCards(message.getLeaderCards());
     }
 
-    public void handle(PossibleMovesMessage message) {
+    public void handle(SelectMoveRequestMessage message) {
         ui.displayPossibleMoves(message.getMoves());
     }
 
     public void handle(GameStateMessage message) {
         ui.setGameState(message.getGame());
         ui.displayGameState();
+    }
+
+    public void handle(SelectMarblesRequestMessage message){
+        ui.displayMarbles(message.getMarbleStructure());
     }
 }

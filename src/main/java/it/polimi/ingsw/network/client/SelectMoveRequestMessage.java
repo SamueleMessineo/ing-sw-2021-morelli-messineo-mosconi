@@ -6,11 +6,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PossibleMovesMessage extends ClientMessage  {
+public class SelectMoveRequestMessage extends ClientMessage  {
 
     private final List<String> moves;
 
-    public PossibleMovesMessage(List<String> moves) {
+    public SelectMoveRequestMessage(List<String> moves) {
         this.moves = new ArrayList<>(moves);
     }
 

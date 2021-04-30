@@ -6,7 +6,7 @@ enum RowOrColumn{
     ROW, COLUMN;
 }
 
-public class SelectMarblesMessage extends GameMessage {
+public class SelectMarblesResponseMessage extends GameMessage {
     private RowOrColumn rowOrColumn;
     private int index;
     
@@ -18,7 +18,7 @@ public class SelectMarblesMessage extends GameMessage {
         this.index = index;
     }
 
-    public SelectMarblesMessage(RowOrColumn rowOrColumn, int index) {
+    public SelectMarblesResponseMessage(RowOrColumn rowOrColumn, int index) {
         this.rowOrColumn = rowOrColumn;
         this.index = index;
     }
@@ -34,4 +34,6 @@ public class SelectMarblesMessage extends GameMessage {
     public void accept(GameMessageHandler handler) {
         handler.handle(this);
     }
+
+
 }

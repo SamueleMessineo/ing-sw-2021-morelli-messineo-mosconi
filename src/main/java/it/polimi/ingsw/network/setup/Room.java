@@ -3,6 +3,7 @@ package it.polimi.ingsw.network.setup;
 import it.polimi.ingsw.controller.ClassicGameController;
 import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.network.Message;
 import it.polimi.ingsw.server.ClientConnection;
 
@@ -57,5 +58,9 @@ public class Room {
 
     public ArrayList<ClientConnection> getConnections() {
         return connections;
+    }
+
+    public Player getPlayerFromConnection(ClientConnection clientConnection){
+        return getGame().getPlayers().get(getConnections().indexOf(clientConnection));
     }
 }

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.market.MarbleStructure;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.shared.LeaderCard;
 import it.polimi.ingsw.network.client.StringMessage;
@@ -25,4 +26,6 @@ public interface UI {
     void displayPossibleMoves(List<String> moves);
 
     void setGameState(Game game);
+
+    public void displayMarbles(MarbleStructure marbleStructure);
 }

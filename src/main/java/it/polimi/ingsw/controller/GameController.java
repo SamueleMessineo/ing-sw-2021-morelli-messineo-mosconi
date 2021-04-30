@@ -17,17 +17,7 @@ public abstract class GameController {
         System.out.println("error");
     }
 
-    public Player getPlayerFromConnection(ClientConnection clientConnection){
-        return room.getGame().getPlayers().get(room.getConnections().indexOf(clientConnection));
-    }
 
-    public void dropInitialLeaderCards(int selection1, int selection2, ClientConnection clientConnection){
-        getPlayerFromConnection(clientConnection).dropInitialLeaderCards(selection1, selection2);
-        System.out.println("ok");
-        System.out.println(room.getGame().getPlayers());
-        for (Player p : room.getGame().getPlayers()) {
-            if (p.getLeaderCards().size() != 2) return;
-        }
-        room.sendAll(new StringMessage("start playing"));
+    public void dropInitialLeaderCards(int selection1, int selection2, String player){
     }
 }

@@ -95,4 +95,17 @@ public class MarbleStructure implements Serializable {
         extraMarble = newExtraMarble;
         return oldRow;
     }
+
+    @Override
+    public String toString() {
+        String result = "Marble Structure: \n";
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 4; j++) {
+                result += marbles.get(i+j).name() + " ";
+            }
+            result += "\n";
+        }
+
+        return result;
+    }
 }

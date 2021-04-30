@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.market.MarbleStructure;
 import it.polimi.ingsw.model.shared.LeaderCard;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -61,6 +62,11 @@ public class GUI extends Application implements UI {
 
     @Override
     public void setGameState(Game game) {
+
+    }
+
+    @Override
+    public void displayMarbles(MarbleStructure marbleStructure) {
 
     }
 }

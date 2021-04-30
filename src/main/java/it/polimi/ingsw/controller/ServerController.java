@@ -124,7 +124,7 @@ public class ServerController {
         room.setGameController(classicGameController);
         for (ClientConnection client:
              room.getConnections()) {
-            client.setGameMessageHandler(new GameMessageHandler(classicGameController, client));
+            client.setGameMessageHandler(new GameMessageHandler(classicGameController, client, room));
         }
 
         classicGameController.startGame();
@@ -134,7 +134,7 @@ public class ServerController {
         ClientConnection clientConnection = room.getConnections().get(0);
         GameController soloGameController = new SoloGameController(room);
         room.setGameController(soloGameController);
-        clientConnection.setGameMessageHandler(new GameMessageHandler(soloGameController, clientConnection));
+        clientConnection.setGameMessageHandler(new GameMessageHandler(soloGameController, clientConnection, room));
         soloGameController.startGame();
     }
 }
