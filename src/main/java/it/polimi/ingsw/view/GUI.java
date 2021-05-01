@@ -2,6 +2,7 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.market.MarbleStructure;
+import it.polimi.ingsw.model.player.Shelf;
 import it.polimi.ingsw.model.shared.LeaderCard;
 import it.polimi.ingsw.model.shared.Resource;
 import javafx.application.Application;
@@ -78,6 +79,11 @@ public class GUI extends Application implements UI {
 
     @Override
     public void discardLeaderCard(ArrayList<LeaderCard> cards) {
+
+    }
+
+    @Override
+    public void switchShelves(ArrayList<Shelf> shelves) {
 
     }
 }

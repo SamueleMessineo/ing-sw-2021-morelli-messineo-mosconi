@@ -12,21 +12,18 @@ import it.polimi.ingsw.server.ClientConnection;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class GameController {
+public interface GameController {
 
 
-    public void startGame(){
-        System.out.println("error");
-    }
+    public void startGame();
 
 
-    public void dropInitialLeaderCards(int selection1, int selection2, String player){
-    }
+    public void dropInitialLeaderCards(int selection1, int selection2, String player);
 
-    public List<Resource> getMarbles(String rowOrColumn, int index){
-      return new ArrayList<>();
-    }
+    public List<Resource> getMarbles(String rowOrColumn, int index);
 
-    public void dropLeader(int card){};
+    public void dropLeader(int card);
+
+    public void switchShelves(String shelf1, String shelf2);
 
 }

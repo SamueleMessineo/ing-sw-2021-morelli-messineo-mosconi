@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class ClassicGameController extends GameController{
+public class ClassicGameController implements GameController{
     private final Game game;
 
     public ClassicGameController(Room room) {
@@ -91,5 +91,10 @@ public class ClassicGameController extends GameController{
     public void dropLeader(int card) {
         game.getCurrentPlayer().getFaithTrack().move();
         game.getCurrentPlayer().getLeaderCards().remove(card);
+    }
+
+    @Override
+    public void switchShelves(String shelf1, String shelf2) {
+        game.getCurrentPlayer().getPlayerBoard().getWarehouse().switchShelves(shelf1, shelf2);
     }
 }

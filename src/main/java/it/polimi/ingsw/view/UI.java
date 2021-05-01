@@ -3,6 +3,7 @@ package it.polimi.ingsw.view;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.market.MarbleStructure;
 import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.model.player.Shelf;
 import it.polimi.ingsw.model.shared.LeaderCard;
 import it.polimi.ingsw.model.shared.Resource;
 import it.polimi.ingsw.network.client.StringMessage;
@@ -33,4 +34,6 @@ public interface UI {
     void dropResources(List<Resource> resources);
 
     void discardLeaderCard(ArrayList<LeaderCard> cards);
+
+    void switchShelves(ArrayList<Shelf> shelves);
 }

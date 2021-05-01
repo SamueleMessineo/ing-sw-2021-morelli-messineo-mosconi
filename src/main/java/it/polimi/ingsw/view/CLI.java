@@ -5,12 +5,10 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.market.Marble;
 import it.polimi.ingsw.model.market.MarbleStructure;
 import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.model.player.Shelf;
 import it.polimi.ingsw.model.shared.LeaderCard;
 import it.polimi.ingsw.model.shared.Resource;
-import it.polimi.ingsw.network.game.DiscardLeaderCardResponseMessage;
-import it.polimi.ingsw.network.game.DropLeaderCardsResponseMessage;
-import it.polimi.ingsw.network.game.SelectMarblesResponseMessage;
-import it.polimi.ingsw.network.game.SelectMoveResponseMessage;
+import it.polimi.ingsw.network.game.*;
 import it.polimi.ingsw.network.setup.CreateRoomMessage;
 import it.polimi.ingsw.network.setup.JoinPrivateRoomMessage;
 import it.polimi.ingsw.network.setup.JoinPublicRoomMessage;
@@ -247,6 +245,21 @@ public class CLI implements UI {
         displayLeaderCards(cards);
         int selection = askIntegerInput("Select the card number", 1, 2)-1;
         client.sendMessage(new DiscardLeaderCardResponseMessage(selection));
+
+    }
+
+    @Override
+    public void switchShelves(ArrayList<Shelf> shelves) {
+        output.println(shelves);
+        String selection1;
+        String selection2;
+        do {
+            selection1 = input.nextLine().toLowerCase().trim();
+            selection2 = input.nextLine().toLowerCase().trim();
+            if(selection1.equals(selection2))output.println("You must select two distinct shelves");
+        } while (selection1.equals(selection2));
+
+        client.sendMessage(new SwitchShelvesResponseMessage(selection1, selection2));
 
     }
 }

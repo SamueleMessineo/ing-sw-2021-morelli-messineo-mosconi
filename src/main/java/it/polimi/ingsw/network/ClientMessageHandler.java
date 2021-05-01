@@ -49,4 +49,8 @@ public class ClientMessageHandler {
     public void handle(DiscardLeaderCardRequestMessage message){
         ui.discardLeaderCard(message.getLeaderCards());
     }
+
+    public void handle(SwitchShelvesRequestMessage message){
+
+    }
 }

@@ -110,7 +110,9 @@ public class Shelf implements Storage, Serializable {
 
     @Override
     public String toString() {
-        if (resourceType==null || resourceNumber == 0){
+        if (resourceType==null){
+            return "";
+        } else if(resourceNumber == 0){
             return "EMPTY";
         }
         else{

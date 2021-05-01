@@ -67,6 +67,9 @@ public class GameMessageHandler {
                 case("DROP_LEADER"):
                     clientConnection.sendMessage(new DiscardLeaderCardRequestMessage(room.getPlayerFromConnection(clientConnection).getLeaderCards()));
                     break;
+                case("SWITCH_SHELVES"):
+
+                    break;
             }
 
         } else {
@@ -82,6 +85,12 @@ public class GameMessageHandler {
     public void handle(DiscardLeaderCardResponseMessage message){
         gameController.dropLeader(message.getCard());
         clientConnection.sendMessage(new StringMessage("Your have " +room.getPlayerFromConnection(clientConnection).getFaithTrack().getPosition() +" faith points"));
+    }
+
+    public void handle(SwitchShelvesResponseMessage message){
+        gameController.switchShelves(message.getShelf1(), message.getShelf2());
+        clientConnection.sendMessage(new StringMessage("Your updated warehouse\n" + room.getPlayerFromConnection(clientConnection).getPlayerBoard().getWarehouse().getShelf("top") +
+                room.getPlayerFromConnection(clientConnection).getPlayerBoard().getWarehouse().getShelf("middle") + room.getPlayerFromConnection(clientConnection).getPlayerBoard().getWarehouse().getShelf("bottom") + room.getPlayerFromConnection(clientConnection).getPlayerBoard().getWarehouse().getShelf("extra")));
     }
 
 }
