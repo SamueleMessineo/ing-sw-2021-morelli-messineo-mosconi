@@ -73,7 +73,8 @@ public class GameMessageHandler {
             }
 
         } else {
-            clientConnection.sendMessage(new ErrorMessage("Invalid Move"));
+            clientConnection.sendMessage(new ErrorMessage("Invalid Move\nRetry"));
+            clientConnection.sendMessage(new SelectMoveRequestMessage(room.getCurrentTurn().getMoves()));
         }
     }
 
