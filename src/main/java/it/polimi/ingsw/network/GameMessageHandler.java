@@ -60,7 +60,15 @@ public class GameMessageHandler {
 
     public void handle(SelectMoveResponseMessage message){
         if(room.getCurrentTurn().isValidMove(message.getMove(), room.getPlayerFromConnection(clientConnection).getUsername())){
-            clientConnection.sendMessage(new SelectMarblesRequestMessage(room.getGame().getMarket().getMarbleStructure()));
+            switch (message.getMove()){
+                case("GET_MARBLES"):
+                    clientConnection.sendMessage(new SelectMarblesRequestMessage(room.getGame().getMarket().getMarbleStructure()));
+                    break;
+                case("DROP_LEADER"):
+                    clientConnection.sendMessage(new DiscardLeaderCardRequestMessage(room.getPlayerFromConnection(clientConnection).getLeaderCards()));
+                    break;
+            }
+
         } else {
             clientConnection.sendMessage(new ErrorMessage("Invalid Move"));
         }
@@ -69,6 +77,11 @@ public class GameMessageHandler {
     public void handle(SelectMarblesResponseMessage message){
         List<Resource> resources = gameController.getMarbles(message.getRowOrColumn(), message.getIndex());
         clientConnection.sendMessage(new DropResourceRequestMessage(resources));
+    }
+
+    public void handle(DiscardLeaderCardResponseMessage message){
+        gameController.dropLeader(message.getCard());
+        clientConnection.sendMessage(new StringMessage("Your have " +room.getPlayerFromConnection(clientConnection).getFaithTrack().getPosition() +" faith points"));
     }
 
 }

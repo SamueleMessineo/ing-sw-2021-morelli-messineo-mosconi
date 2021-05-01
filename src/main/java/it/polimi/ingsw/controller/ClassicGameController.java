@@ -87,4 +87,9 @@ public class ClassicGameController extends GameController{
         return resources;
     }
 
+    @Override
+    public void dropLeader(int card) {
+        game.getCurrentPlayer().getFaithTrack().move();
+        game.getCurrentPlayer().getLeaderCards().remove(card);
+    }
 }

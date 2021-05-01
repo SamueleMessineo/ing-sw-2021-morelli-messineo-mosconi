@@ -31,4 +31,6 @@ public interface UI {
     void displayMarbles(MarbleStructure marbleStructure);
 
     void dropResources(List<Resource> resources);
+
+    void discardLeaderCard(ArrayList<LeaderCard> cards);
 }

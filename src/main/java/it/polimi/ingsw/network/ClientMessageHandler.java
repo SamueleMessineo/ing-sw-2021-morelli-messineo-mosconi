@@ -45,4 +45,8 @@ public class ClientMessageHandler {
     public void handle(DropResourceRequestMessage message){
         ui.dropResources(message.getResources());
     }
+
+    public void handle(DiscardLeaderCardRequestMessage message){
+        ui.discardLeaderCard(message.getLeaderCards());
+    }
 }

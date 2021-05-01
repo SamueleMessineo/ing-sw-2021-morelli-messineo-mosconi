@@ -75,4 +75,9 @@ public class GUI extends Application implements UI {
     public void dropResources(List<Resource> resources) {
 
     }
+
+    @Override
+    public void discardLeaderCard(ArrayList<LeaderCard> cards) {
+
+    }
 }

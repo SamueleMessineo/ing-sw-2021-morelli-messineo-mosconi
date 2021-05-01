@@ -27,5 +27,6 @@ public abstract class GameController {
       return new ArrayList<>();
     }
 
+    public void dropLeader(int card){};
 
 }

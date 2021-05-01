@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.market.MarbleStructure;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.shared.LeaderCard;
 import it.polimi.ingsw.model.shared.Resource;
+import it.polimi.ingsw.network.game.DiscardLeaderCardResponseMessage;
 import it.polimi.ingsw.network.game.DropLeaderCardsResponseMessage;
 import it.polimi.ingsw.network.game.SelectMarblesResponseMessage;
 import it.polimi.ingsw.network.game.SelectMoveResponseMessage;
@@ -196,7 +197,6 @@ public class CLI implements UI {
                 System.out.println("activating production");
                 break;
             case ("GET_MARBLES"):
-                System.out.println("getting marble structure");
                 client.sendMessage(new SelectMoveResponseMessage("GET_MARBLES"));
                 break;
             case ("BUY_CARD"):
@@ -206,7 +206,7 @@ public class CLI implements UI {
                 System.out.println("PLaying leader");
                 break;
             case ("DROP_LEADER"):
-                System.out.println("dropping leader");
+                client.sendMessage(new SelectMoveResponseMessage("DROP_LEADER"));
                 break;
             case ("SWITCH_SHELVES"):
                 System.out.println("switching shelves");
@@ -240,5 +240,13 @@ public class CLI implements UI {
     public void dropResources(List<Resource> resources) {
         output.println("This are the resources you just got");
         output.println(resources);
+    }
+
+    @Override
+    public void discardLeaderCard(ArrayList<LeaderCard> cards) {
+        displayLeaderCards(cards);
+        int selection = askIntegerInput("Select the card number", 1, 2)-1;
+        client.sendMessage(new DiscardLeaderCardResponseMessage(selection));
+
     }
 }
