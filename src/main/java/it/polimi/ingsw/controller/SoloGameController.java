@@ -41,6 +41,10 @@ public class SoloGameController implements GameController {
         return null;
     }
 
+    public void computeCurrentPlayer(){
+
+    }
+
     @Override
     public void dropLeader(int card) {
 

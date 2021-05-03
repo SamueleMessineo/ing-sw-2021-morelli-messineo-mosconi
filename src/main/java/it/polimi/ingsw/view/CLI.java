@@ -137,7 +137,9 @@ public class CLI implements UI {
     @Override
     public void displayGameState() {
        displayPlayerBoard(gameState.getPlayerByUsername(username));
-       while (gameState.getCurrentPlayer()!= gameState.getPlayerByUsername(username)) {
+
+        System.out.println(gameState.getCurrentPlayer());
+       if (gameState.getCurrentPlayer()!= gameState.getPlayerByUsername(username)) {
           askToDisplayPlayerBoard();
        }
     }
@@ -209,7 +211,7 @@ public class CLI implements UI {
                 client.sendMessage(new SelectMoveResponseMessage("SWITCH_SHELVES"));
                 break;
             case ("END_TURN"):
-                System.out.println("ending turn");
+                client.sendMessage(new SelectMoveResponseMessage("END_TURN"));
                 break;
         }
     }

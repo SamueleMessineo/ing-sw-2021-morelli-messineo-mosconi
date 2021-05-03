@@ -44,7 +44,7 @@ public class ClassicGameController implements GameController{
         return false;
     }
 
-    private void computeCurrentPlayer(){
+    public void computeCurrentPlayer(){
         if (game.getPlayers().indexOf(game.getCurrentPlayer()) + 1 < game.getPlayers().size()) {
             game.setCurrentPlayer(game.getPlayers().indexOf(game.getCurrentPlayer()) + 1);
         } else {
@@ -136,6 +136,9 @@ public class ClassicGameController implements GameController{
         } else {
             moves.add("END_TURN");
         }
+
+        //FOR DEBUG
+        moves.add("END_TURN");
 
         if(player.getLeaderCards().size() > 0){
             moves.add("DROP_LEADER");

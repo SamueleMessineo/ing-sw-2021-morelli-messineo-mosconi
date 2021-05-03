@@ -67,8 +67,10 @@ public class GameMessageHandler {
                     clientConnection.sendMessage(new DropLeaderCardRequestMessage(room.getPlayerFromConnection(clientConnection).getLeaderCards()));
                     break;
                 case("SWITCH_SHELVES"):
-
+                    clientConnection.sendMessage(new SwitchShelvesRequestMessage(room.getPlayerFromConnection(clientConnection).getPlayerBoard().getWarehouse().getShelves()));
                     break;
+                case("END_TURN"):
+                    endTurn();
             }
 
         } else {
@@ -102,6 +104,7 @@ public class GameMessageHandler {
     public void handle(DropLeaderCardResponseMessage message){
         gameController.dropLeader(message.getCard());
         clientConnection.sendMessage(new StringMessage("Your have " +room.getPlayerFromConnection(clientConnection).getFaithTrack().getPosition() +" faith points"));
+        sendNextMoves();
     }
 
     public void handle(SwitchShelvesResponseMessage message){
@@ -116,5 +119,24 @@ public class GameMessageHandler {
 
     public void handle(SelectResourceForWhiteMarbleResponseMessage message) {
 
+    }
+
+    private void endTurn(){
+        gameController.computeCurrentPlayer();
+        room.sendAll(new GameStateMessage(room.getGame()));
+
+        ClientConnection currentPlayer = room.getConnections().get(room.getGame().getPlayers().indexOf(
+                room.getGame().getCurrentPlayer()));
+        System.out.println(room.getPlayerFromConnection(currentPlayer).getUsername());
+        room.setCurrentTurn(new Turn(room.getPlayerFromConnection(currentPlayer).getUsername(), gameController.computeNextPossibleMoves(false)));
+        SelectMoveRequestMessage selectMoveRequestMessage = new SelectMoveRequestMessage(room.getCurrentTurn().getMoves());
+
+        currentPlayer.sendMessage(selectMoveRequestMessage);
+
+    }
+
+    private void sendNextMoves(){
+        gameController.computeNextPossibleMoves(true);
+        clientConnection.sendMessage(new SelectMoveRequestMessage(room.getCurrentTurn().getMoves()));
     }
 }

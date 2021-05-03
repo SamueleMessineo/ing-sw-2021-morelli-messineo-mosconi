@@ -22,6 +22,8 @@ public interface GameController {
 
     void dropLeader(int card);
 
+    public void computeCurrentPlayer();
+
     public boolean switchShelves(String shelf1, String shelf2);
 
     public List<String> computeNextPossibleMoves(boolean alreadyPerfomedMove);
