@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.shared.Resource;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -176,6 +177,17 @@ public class Player implements Serializable {
         return resources;
     }
 
-
+    public boolean canBuyAndPlaceDevelopmentCard(DevelopmentCard developmentCard){
+        Map<Resource, Integer> cost = developmentCard.getCost();
+        Map<Resource, Integer> allResources = new HashMap<>(playerBoard.getResources());
+        for (Resource resource : allResources.keySet()) {
+            if (allResources.get(resource) < cost.get(resource)) return false;
+        }
+        for (PlayerCardStack playerCardStack: this.getPlayerBoard().getCardStacks()){
+            if(playerCardStack.canPlaceCard(developmentCard))
+                return true;
+        }
+        return false;
+    }
     //TODO public boolean canBuyDevelopmentCard
 }

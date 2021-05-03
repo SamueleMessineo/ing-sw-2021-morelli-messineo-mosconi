@@ -175,4 +175,111 @@ public class PlayerTest {
         player.setLeaderCards(testCards);
         assertFalse(player.canPlayLeader(7));
     }
+
+    @Test
+    public void canBuyAndPlaceDevelopmentCard(){
+        Map<Resource,Integer> cost=new HashMap<>();
+        Map<Resource, Integer> add_res=new HashMap<>();
+
+        Map<Resource, Integer> emptyMap1 = new HashMap<>();
+
+        add_res.put(Resource.SERVANT, 12);
+        add_res.put(Resource.COIN, 6);
+        add_res.put(Resource.STONE, 9);
+        add_res.put(Resource.SHIELD, 15);
+
+        player.getPlayerBoard().getStrongbox().addResources(add_res);
+
+        //Development card for test resourceRequirements from strongbox
+        cost.put(Resource.SERVANT, 5);
+        cost.put(Resource.COIN, 3);
+        cost.put(Resource.STONE, 2);
+        cost.put(Resource.SHIELD, 10);
+
+        ProductionPower productionPower=new ProductionPower(emptyMap1,emptyMap1);
+        DevelopmentCard developmentCardTest=new DevelopmentCard(1,CardType.GREEN,cost,productionPower,0);
+        assertTrue(player.canBuyAndPlaceDevelopmentCard(developmentCardTest));
+
+        cost.put(Resource.SERVANT, 13); //Strongbox has only 12 Servant...
+        cost.put(Resource.COIN, 3);
+        cost.put(Resource.STONE, 2);
+        cost.put(Resource.SHIELD, 10);
+
+
+        developmentCardTest=new DevelopmentCard(1,CardType.GREEN,cost,productionPower,0);
+        assertFalse(player.canBuyAndPlaceDevelopmentCard(developmentCardTest));
+
+
+
+//       resources from warehouse
+        //clean strongbox
+        player.getPlayerBoard().getStrongbox().useResources(add_res);
+
+        Shelf shel3ftest=player.getPlayerBoard().getWarehouse().getShelf("bottom");
+
+        Map<Resource,Integer> shelfRes=new HashMap<>();
+        shelfRes.put(Resource.COIN,3);
+        shel3ftest.addResources(shelfRes);
+
+        cost.put(Resource.SERVANT, 0);
+        cost.put(Resource.COIN, 3);
+        cost.put(Resource.STONE, 0);
+        cost.put(Resource.SHIELD, 0);
+
+        developmentCardTest=new DevelopmentCard(1,CardType.GREEN,cost,productionPower,0);
+
+        assertTrue(player.canBuyAndPlaceDevelopmentCard(developmentCardTest));
+
+        cost.put(Resource.SERVANT, 0);
+        cost.put(Resource.COIN, 0);
+        cost.put(Resource.STONE, 5);
+        cost.put(Resource.SHIELD, 0);
+
+
+        developmentCardTest=new DevelopmentCard(1,CardType.GREEN,cost,productionPower,0);
+        assertFalse(player.canBuyAndPlaceDevelopmentCard(developmentCardTest));
+
+//        get resources for buy development card from strongbox and warehouse
+        add_res.put(Resource.SERVANT, 0);
+        add_res.put(Resource.COIN, 5);
+        add_res.put(Resource.STONE, 5);
+        add_res.put(Resource.SHIELD, 0);
+
+        player.getPlayerBoard().getStrongbox().addResources(add_res);
+
+        cost.put(Resource.SERVANT, 0);
+        cost.put(Resource.COIN, 8);
+        cost.put(Resource.STONE, 5);
+        cost.put(Resource.SHIELD, 0);
+
+        developmentCardTest=new DevelopmentCard(1,CardType.GREEN,cost,productionPower,0);
+        assertTrue(player.canBuyAndPlaceDevelopmentCard(developmentCardTest));
+
+        cost.put(Resource.SERVANT, 0);
+        cost.put(Resource.COIN, 9);
+        cost.put(Resource.STONE, 5);
+        cost.put(Resource.SHIELD, 0);
+
+        developmentCardTest=new DevelopmentCard(1,CardType.GREEN,cost,productionPower,0);
+
+        assertFalse(player.canBuyAndPlaceDevelopmentCard(developmentCardTest));
+//        test if I can place card
+
+        cost.put(Resource.SERVANT, 0);
+        cost.put(Resource.COIN, 8);
+        cost.put(Resource.STONE, 5);
+        cost.put(Resource.SHIELD, 0);
+        player.getPlayerBoard().getCardStacks().get(0).push(developmentCardTest);
+        developmentCardTest=new DevelopmentCard(2,CardType.GREEN,cost,productionPower,0);
+
+        assertTrue(player.canBuyAndPlaceDevelopmentCard(developmentCardTest));
+
+        developmentCardTest=new DevelopmentCard(3,CardType.GREEN,cost,productionPower,0);
+
+        assertFalse(player.canBuyAndPlaceDevelopmentCard(developmentCardTest));
+
+
+
+    }
+
 }
