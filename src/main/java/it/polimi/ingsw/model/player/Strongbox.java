@@ -24,7 +24,7 @@ public class Strongbox implements Storage, Serializable {
      * Returns all the resources contained in the strongbox.
      * @return A map of all the resources in the strongbox.
      */
-    public Map<Resource,Integer> getResources() { return resources; }
+    public Map<Resource,Integer> getResources() { return new HashMap<>(resources); }
 
     /**
      * Adds the given resources to the strongbox.
