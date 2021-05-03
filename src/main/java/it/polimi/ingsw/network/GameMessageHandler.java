@@ -11,6 +11,7 @@ import it.polimi.ingsw.server.ClientConnection;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class GameMessageHandler {
 
@@ -79,7 +80,24 @@ public class GameMessageHandler {
     }
 
     public void handle(SelectMarblesResponseMessage message){
-        List<Resource> resources = gameController.getMarbles(message.getRowOrColumn(), message.getIndex());
+        Map<String, List<Resource>> resources = gameController.getMarbles(message.getRowOrColumn(), message.getIndex());
+
+        room.getCurrentTurn().setNonWhiteMarbles(resources.get("notWhite"));
+        room.getCurrentTurn().setWhiteMarbles(resources.get("white"));
+
+        if (resources.get("white").size() > 0 && resources.get("white").get(0).equals(Resource.ANY)) {
+            System.out.println(resources.get("white").size());
+            System.out.println(resources.get("conversionOptions"));
+            return;
+        }
+
+        askToDropResources(new ArrayList<>() {{
+            addAll(room.getCurrentTurn().getNonWhiteMarbles());
+            addAll(room.getCurrentTurn().getWhiteMarbles());
+        }});
+    }
+
+    private void askToDropResources(List<Resource> resources) {
         clientConnection.sendMessage(new DropResourceRequestMessage(resources));
     }
 
@@ -94,4 +112,7 @@ public class GameMessageHandler {
                 room.getPlayerFromConnection(clientConnection).getPlayerBoard().getWarehouse().getShelf("middle") + room.getPlayerFromConnection(clientConnection).getPlayerBoard().getWarehouse().getShelf("bottom") + room.getPlayerFromConnection(clientConnection).getPlayerBoard().getWarehouse().getShelf("extra")));
     }
 
+    public void handle(SelectResourceForWhiteMarbleResponseMessage message) {
+
+    }
 }

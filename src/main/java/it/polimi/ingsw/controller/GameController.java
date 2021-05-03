@@ -3,19 +3,16 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.model.shared.Resource;
 
 import java.util.List;
+import java.util.Map;
 
 public interface GameController {
+    void startGame();
 
+    void dropInitialLeaderCards(int selection1, int selection2, String player);
 
-    public void startGame();
+    Map<String, List<Resource>> getMarbles(String rowOrColumn, int index);
 
+    void dropLeader(int card);
 
-    public void dropInitialLeaderCards(int selection1, int selection2, String player);
-
-    public List<Resource> getMarbles(String rowOrColumn, int index);
-
-    public void dropLeader(int card);
-
-    public void switchShelves(String shelf1, String shelf2);
-
+    void switchShelves(String shelf1, String shelf2);
 }

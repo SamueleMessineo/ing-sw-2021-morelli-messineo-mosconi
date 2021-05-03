@@ -6,9 +6,7 @@ import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.shared.Resource;
 import it.polimi.ingsw.server.Room;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class ClassicGameController implements GameController{
     private final Game game;
@@ -52,39 +50,55 @@ public class ClassicGameController implements GameController{
     }
 
     @Override
-    public List<Resource> getMarbles(String rowOrColumn, int index) {
+    public Map<String, List<Resource>> getMarbles(String rowOrColumn, int index) {
+        List<Marble> marbles;
         if(rowOrColumn.equals("ROW")){
-            return calculateEquivalentResources(game.getMarket().getMarbleStructure().shiftRow(index));
+            marbles = game.getMarket().getMarbleStructure().shiftRow(index);
         } else {
-            return calculateEquivalentResources(game.getMarket().getMarbleStructure().shiftColumn(index));
+            marbles = game.getMarket().getMarbleStructure().shiftColumn(index);
         }
-    }
 
-    private List<Resource> calculateEquivalentResources(List<Marble> marbles){
-        List<Resource> resources = new ArrayList<>();
-        for (Marble marble:
-                marbles) {
-            switch (marble){
+        Map<String, List<Resource>> convertedMarbles = new HashMap<>(){{
+            put("white", new ArrayList<>());
+            put("notWhite", new ArrayList<>());
+        }};
+
+        int nWhiteMarblesToAskConvert = 0;
+        List<Resource> resources = game.getCurrentPlayer().hasActiveEffectOn("Marbles");
+        convertedMarbles.put("conversionOptions", resources);
+
+        for (Marble marble : marbles) {
+            switch (marble) {
                 case RED:
-                    resources.add(Resource.FAITH);
+                    //convertedMarbles.get("notWhite").add(Resource.FAITH);
                     break;
                 case BLUE:
-                    resources.add(Resource.SHIELD);
+                    convertedMarbles.get("notWhite").add(Resource.SHIELD);
                     break;
                 case GREY:
-                    resources.add(Resource.STONE);
+                    convertedMarbles.get("notWhite").add(Resource.STONE);
                     break;
                 case PURPLE:
-                    resources.add(Resource.SERVANT);
+                    convertedMarbles.get("notWhite").add(Resource.SERVANT);
                     break;
                 case YELLOW:
-                    resources.add(Resource.COIN);
+                    convertedMarbles.get("notWhite").add(Resource.COIN);
+                    break;
+                case WHITE:
+                    if (resources.size() == 2) {
+                        // need to ask the user how to convert
+                        //nWhiteMarblesToAskConvert++;
+                        convertedMarbles.get("white").add(Resource.ANY);
+                    } else if (resources.size() == 1) {
+                        // can automatically convert
+                        convertedMarbles.get("white").add(resources.get(0));
+                    }
                     break;
                 default:
                     break;
             }
         }
-        return resources;
+        return convertedMarbles;
     }
 
     @Override

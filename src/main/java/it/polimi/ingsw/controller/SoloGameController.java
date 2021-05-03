@@ -8,6 +8,7 @@ import it.polimi.ingsw.server.Room;
 import it.polimi.ingsw.server.ClientConnection;
 
 import java.util.List;
+import java.util.Map;
 
 public class SoloGameController implements GameController {
     private final Room room;
@@ -35,7 +36,7 @@ public class SoloGameController implements GameController {
     }
 
     @Override
-    public List<Resource> getMarbles(String rowOrColumn, int index) {
+    public Map<String, List<Resource>> getMarbles(String rowOrColumn, int index) {
         return null;
     }
 

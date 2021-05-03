@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.shared.Resource;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -164,6 +165,17 @@ public class Player implements Serializable {
         leaderCards.remove(leaderCard);
         playedLeaderCards.add(leaderCard);
     }
+
+    public List<Resource> hasActiveEffectOn(String effectScope) {
+        List<Resource> resources = new ArrayList<>();
+        for (LeaderCard card : playedLeaderCards) {
+            if (card.getEffectScope().equals(effectScope)) {
+                resources.add(card.getEffectObject());
+            }
+        }
+        return resources;
+    }
+
 
     //TODO public boolean canBuyDevelopmentCard
 }

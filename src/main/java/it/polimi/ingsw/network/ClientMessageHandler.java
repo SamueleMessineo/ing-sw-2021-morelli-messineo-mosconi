@@ -53,4 +53,8 @@ public class ClientMessageHandler {
     public void handle(SwitchShelvesRequestMessage message){
 
     }
+
+    public void handle(SelectResourceForWhiteMarbleRequestMessage message) {
+
+    }
 }
