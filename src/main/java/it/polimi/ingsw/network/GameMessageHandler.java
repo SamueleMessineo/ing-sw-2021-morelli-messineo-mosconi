@@ -104,13 +104,14 @@ public class GameMessageHandler {
     public void handle(DropLeaderCardResponseMessage message){
         gameController.dropLeader(message.getCard());
         clientConnection.sendMessage(new StringMessage("Your have " +room.getPlayerFromConnection(clientConnection).getFaithTrack().getPosition() +" faith points"));
-        sendNextMoves();
+        sendNextMoves(false);
     }
 
     public void handle(SwitchShelvesResponseMessage message){
         if(gameController.switchShelves(message.getShelf1(), message.getShelf2())){
             clientConnection.sendMessage(new StringMessage("Your updated warehouse\n" + room.getPlayerFromConnection(clientConnection).getPlayerBoard().getWarehouse().getShelf("top") +
                     room.getPlayerFromConnection(clientConnection).getPlayerBoard().getWarehouse().getShelf("middle") + room.getPlayerFromConnection(clientConnection).getPlayerBoard().getWarehouse().getShelf("bottom") + room.getPlayerFromConnection(clientConnection).getPlayerBoard().getWarehouse().getShelf("extra")));
+                    sendNextMoves(false);
         } else {
             clientConnection.sendMessage(new ErrorMessage("You cannot switch these two shelves\n"));
             clientConnection.sendMessage((new SelectMoveRequestMessage(room.getCurrentTurn().getMoves())));
@@ -135,8 +136,8 @@ public class GameMessageHandler {
 
     }
 
-    private void sendNextMoves(){
-        gameController.computeNextPossibleMoves(true);
+    private void sendNextMoves(boolean hasPerformedAction){
+        room.getCurrentTurn().setMoves(gameController.computeNextPossibleMoves(hasPerformedAction));
         clientConnection.sendMessage(new SelectMoveRequestMessage(room.getCurrentTurn().getMoves()));
     }
 }

@@ -107,7 +107,7 @@ public class ClassicGameController implements GameController{
     @Override
     public void dropLeader(int card) {
         game.getCurrentPlayer().getFaithTrack().move();
-        game.getCurrentPlayer().getLeaderCards().remove(card);
+        game.getCurrentPlayer().dropLeaderCard(card);
     }
 
     @Override
@@ -124,15 +124,24 @@ public class ClassicGameController implements GameController{
             //System.out.println(player.getPlayerBoard().getResources().values().stream().flatMapToInt(num -> IntStream.of(Integer.parseInt(String.valueOf(num)))).sum());
             //Se non funzionerà qualcosa forse sarà la riga seguente
             if(player.getPlayerBoard().getResources().values().stream().flatMapToInt(num -> IntStream.of(Integer.parseInt(String.valueOf(num)))).sum()>=2)moves.add("ACTIVATE_PRODUCTION");
-            moves.add("GET_MARBLES");
 
+            moves.add("GET_MARBLES");
+            //todo
+            /* method canBuyAndPlaceDevelopmentCard(cardsStack.peek() does not work
             for (MarketCardStack cardsStack:
                  game.getMarket().getCardsGrid()) {
-                 //player.canBuyDevelopementCard(cardStack.peek)
+                System.out.println("prima dell'if");
+                 if(player.canBuyAndPlaceDevelopmentCard(cardsStack.peek())){
+                     System.out.println("nell'if");
+                    moves.add("BUY_CARD");
+                    break;
+                }
             }
 
+             */
 
-            moves.add("BUY_CARD");
+            System.out.println("endIf");
+
         } else {
             moves.add("END_TURN");
         }
@@ -145,18 +154,26 @@ public class ClassicGameController implements GameController{
         }
 
         for (int i = 0; i < player.getLeaderCards().size(); i++) {
+            System.out.println("chip");
+            //todo revisionare il metodo canPlayLeader
+            /*
             if(player.canPlayLeader(i)){
-                System.out.println(i);
                 moves.add("PLAY_LEADER");
                 break;
             }
+
+             */
+            System.out.println("chop");
         }
 
         if(player.getPlayerBoard().getWarehouse().getShelf("top").getResourceNumber()>0||
                 player.getPlayerBoard().getWarehouse().getShelf("middle").getResourceNumber()>0||
                 player.getPlayerBoard().getWarehouse().getShelf("bottom").getResourceNumber()>0){
             moves.add("SWITCH_SHELVES");
-        }
+        } /* else if (player.getPlayerBoard().getWarehouse().getShelf("extra") != null && player.getPlayerBoard().getWarehouse().getShelf("extra").getResourceNumber() > 0){
+            moves.add("SWITCH_SHELVES");
+        } */
+        System.out.println("computed");
         return moves;
     }
 }

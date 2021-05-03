@@ -13,12 +13,14 @@ import it.polimi.ingsw.network.setup.CreateRoomMessage;
 import it.polimi.ingsw.network.setup.JoinPrivateRoomMessage;
 import it.polimi.ingsw.network.setup.JoinPublicRoomMessage;
 
+import javax.management.timer.Timer;
 import java.io.PrintStream;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
+import java.util.concurrent.TimeoutException;
 
 public class CLI implements UI {
 
@@ -138,10 +140,21 @@ public class CLI implements UI {
     public void displayGameState() {
        displayPlayerBoard(gameState.getPlayerByUsername(username));
 
-        System.out.println(gameState.getCurrentPlayer());
-       if (gameState.getCurrentPlayer()!= gameState.getPlayerByUsername(username)) {
+       //momentary fix
+       if(gameState.getCurrentPlayer()!= gameState.getPlayerByUsername(username)){
+           for (Player player:
+                gameState.getPlayers()) {
+               if (!player.getUsername().equals(gameState.getCurrentPlayer().getUsername())){
+                   displayPlayerBoard(gameState.getPlayerByUsername(player.getUsername()));
+                   output.println("Wait your turn");
+               }
+           }
+       }
+       /* todo this in preferable to the above one but gives problems. Go Fix it
+       while (gameState.getCurrentPlayer()!= gameState.getPlayerByUsername(username)) {
           askToDisplayPlayerBoard();
        }
+        */
     }
 
     private void askToDisplayPlayerBoard(){
@@ -155,12 +168,14 @@ public class CLI implements UI {
         output.println("]");
         output.print("username: ");
         Player player;
-        try {
-            player = gameState.getPlayerByUsername(input.nextLine());
-            displayPlayerBoard(player);
-        } catch (NoSuchElementException e){
-            output.println("Username not found");
-        }
+
+
+            try {
+                player = gameState.getPlayerByUsername(input.nextLine());
+                displayPlayerBoard(player);
+            } catch (NoSuchElementException e) {
+                output.println("Username not found");
+            }
     }
 
     private void displayPlayerBoard(Player player){

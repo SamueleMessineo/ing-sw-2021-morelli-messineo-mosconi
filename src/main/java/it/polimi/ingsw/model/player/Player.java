@@ -112,6 +112,15 @@ public class Player implements Serializable {
         leaderCards.remove(card2);
     }
 
+    /**
+     * A player can discard a leader card from his hand to gain a faith point
+     * @param card index of the card to discard
+     */
+    public void dropLeaderCard(int card){
+        LeaderCard sel = leaderCards.get(card);
+        leaderCards.remove(sel);
+    }
+
     public void setLeaderCards(ArrayList<LeaderCard> leaderCards) {
         this.leaderCards = leaderCards;
     }
