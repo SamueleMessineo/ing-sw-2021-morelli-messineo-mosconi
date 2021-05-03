@@ -129,9 +129,9 @@ public class Player implements Serializable {
         Map<CardType,Integer> cardRequirements=leader.getCardRequirements();
         int cardRequirementsLevel= leader.getCardRequirementsLevel();
 
-        //Resource for play the LeaderCard
+        //Resource needed to play the LeaderCard
         Map<Resource, Integer> resourceRequirements = leader.getResourceRequirements();
-        if(!resourceRequirements.isEmpty() && resourceRequirements!=null){
+        if(resourceRequirements!=null && !resourceRequirements.isEmpty()){
             Map<Resource, Integer> allResources = playerBoard.getResources();
             for (Resource resource : allResources.keySet()) {
                 if (allResources.get(resource) < resourceRequirements.get(resource)) return false;

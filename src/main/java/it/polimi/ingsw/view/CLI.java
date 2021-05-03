@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Shelf;
 import it.polimi.ingsw.model.shared.LeaderCard;
 import it.polimi.ingsw.model.shared.Resource;
+import it.polimi.ingsw.network.client.SelectMoveRequestMessage;
 import it.polimi.ingsw.network.game.*;
 import it.polimi.ingsw.network.setup.CreateRoomMessage;
 import it.polimi.ingsw.network.setup.JoinPrivateRoomMessage;
@@ -205,7 +206,7 @@ public class CLI implements UI {
                 client.sendMessage(new SelectMoveResponseMessage("DROP_LEADER"));
                 break;
             case ("SWITCH_SHELVES"):
-                System.out.println("switching shelves");
+                client.sendMessage(new SelectMoveRequestMessage("SWITCH_SHELVES"));
                 break;
             case ("END_TURN"):
                 System.out.println("ending turn");
@@ -224,10 +225,10 @@ public class CLI implements UI {
 
         int selectionIndex;
         if (selection == 1){
-            selectionIndex = askIntegerInput("Which row do you want to shift?", 1,3);
+            selectionIndex = askIntegerInput("Which row do you want to shift?", 1,3)-1;
             client.sendMessage(new SelectMarblesResponseMessage("ROW",selectionIndex));
         } else {
-            selectionIndex = askIntegerInput("Which column do you want to shift?", 1,4);
+            selectionIndex = askIntegerInput("Which column do you want to shift?", 1,4)-1;
             client.sendMessage(new SelectMarblesResponseMessage("COLUMN",selectionIndex));
         }
     }

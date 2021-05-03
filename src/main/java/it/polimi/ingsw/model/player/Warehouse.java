@@ -102,7 +102,7 @@ public class Warehouse implements Serializable {
      * @param firstShelfName name of the first shelf.
      * @param secondShelfName name of the second shelf.
      */
-    public void switchShelves(String firstShelfName, String secondShelfName){
+    public boolean switchShelves(String firstShelfName, String secondShelfName){
         Shelf firstShelf = shelves.get(getShelfIndex(firstShelfName));
         Shelf secondShelf = shelves.get(getShelfIndex(secondShelfName));
 
@@ -125,7 +125,9 @@ public class Warehouse implements Serializable {
             if (tempResourceType != null) {
                 secondShelf.addResources(new HashMap<>(){{put(tempResourceType, tempResourceNumber);}});
             }
+           return true;
         }
+        return false;
     }
 
     /**

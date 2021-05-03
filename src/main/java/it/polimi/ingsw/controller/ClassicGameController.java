@@ -2,11 +2,14 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.market.Marble;
+import it.polimi.ingsw.model.market.MarketCardStack;
 import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.model.shared.LeaderCard;
 import it.polimi.ingsw.model.shared.Resource;
 import it.polimi.ingsw.server.Room;
 
 import java.util.*;
+import java.util.stream.IntStream;
 
 public class ClassicGameController implements GameController{
     private final Game game;
@@ -108,7 +111,49 @@ public class ClassicGameController implements GameController{
     }
 
     @Override
-    public void switchShelves(String shelf1, String shelf2) {
-        game.getCurrentPlayer().getPlayerBoard().getWarehouse().switchShelves(shelf1, shelf2);
+    public boolean switchShelves(String shelf1, String shelf2) {
+        return game.getCurrentPlayer().getPlayerBoard().getWarehouse().switchShelves(shelf1, shelf2);
+    }
+
+    @Override
+    public List<String> computeNextPossibleMoves(boolean alreadyPerfomedMove) {
+        List<String> moves = new ArrayList<>();
+        Player player = game.getCurrentPlayer();
+
+        if(!alreadyPerfomedMove){
+            //System.out.println(player.getPlayerBoard().getResources().values().stream().flatMapToInt(num -> IntStream.of(Integer.parseInt(String.valueOf(num)))).sum());
+            //Se non funzionerà qualcosa forse sarà la riga seguente
+            if(player.getPlayerBoard().getResources().values().stream().flatMapToInt(num -> IntStream.of(Integer.parseInt(String.valueOf(num)))).sum()>=2)moves.add("ACTIVATE_PRODUCTION");
+            moves.add("GET_MARBLES");
+
+            for (MarketCardStack cardsStack:
+                 game.getMarket().getCardsGrid()) {
+                 //player.canBuyDevelopementCard(cardStack.peek)
+            }
+
+
+            moves.add("BUY_CARD");
+        } else {
+            moves.add("END_TURN");
+        }
+
+        if(player.getLeaderCards().size() > 0){
+            moves.add("DROP_LEADER");
+        }
+
+        for (int i = 0; i < player.getLeaderCards().size(); i++) {
+            if(player.canPlayLeader(i)){
+                System.out.println(i);
+                moves.add("PLAY_LEADER");
+                break;
+            }
+        }
+
+        if(player.getPlayerBoard().getWarehouse().getShelf("top").getResourceNumber()>0||
+                player.getPlayerBoard().getWarehouse().getShelf("middle").getResourceNumber()>0||
+                player.getPlayerBoard().getWarehouse().getShelf("bottom").getResourceNumber()>0){
+            moves.add("SWITCH_SHELVES");
+        }
+        return moves;
     }
 }

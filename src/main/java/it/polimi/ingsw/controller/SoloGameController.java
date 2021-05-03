@@ -7,6 +7,7 @@ import it.polimi.ingsw.network.client.StringMessage;
 import it.polimi.ingsw.server.Room;
 import it.polimi.ingsw.server.ClientConnection;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -46,7 +47,12 @@ public class SoloGameController implements GameController {
     }
 
     @Override
-    public void switchShelves(String shelf1, String shelf2) {
+    public boolean switchShelves(String shelf1, String shelf2) {
+        return false;
+    }
 
+    @Override
+    public List<String> computeNextPossibleMoves(boolean alreadyPerfomedMove) {
+        return new ArrayList<>();
     }
 }

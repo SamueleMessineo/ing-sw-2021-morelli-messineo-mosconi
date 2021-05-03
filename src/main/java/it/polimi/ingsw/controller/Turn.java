@@ -2,14 +2,15 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.shared.Resource;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.ArrayList;
 
 public class Turn {
     private String currentPlayer;
     private List<String> moves;
     private List<Resource> nonWhiteMarbles = new ArrayList<>();
     private List<Resource> whiteMarbles = new ArrayList<>();
+    private boolean AlreadyPerformedMove = false;
 
     public Turn(String currentPlayer, List<String> moves) {
         this.currentPlayer = currentPlayer;
@@ -34,6 +35,14 @@ public class Turn {
 
     public boolean isValidMove(String move, String username){
         return moves.contains(move) && currentPlayer.equals(username);
+    }
+
+    public void setAlreadyPerformedMove(boolean alreadyPerformedMove) {
+        AlreadyPerformedMove = alreadyPerformedMove;
+    }
+
+    public boolean haveAlreadyPerformedMove() {
+        return AlreadyPerformedMove;
     }
 
     public List<Resource> getNonWhiteMarbles() {

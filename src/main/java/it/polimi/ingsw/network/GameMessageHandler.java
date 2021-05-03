@@ -50,10 +50,8 @@ public class GameMessageHandler {
         ClientConnection currentPlayer = room.getConnections().get(room.getGame().getPlayers().indexOf(
                 room.getGame().getCurrentPlayer()));
 
-        room.setCurrentTurn(new Turn(room.getPlayerFromConnection(currentPlayer).getUsername(),new ArrayList<String>(){{
-            add("DROP_LEADER");
-            add("GET_MARBLES");
-        }}));
+
+        room.setCurrentTurn(new Turn(room.getPlayerFromConnection(currentPlayer).getUsername(), gameController.computeNextPossibleMoves(false)));
 
         SelectMoveRequestMessage selectMoveRequestMessage = new SelectMoveRequestMessage(room.getCurrentTurn().getMoves());
         currentPlayer.sendMessage(selectMoveRequestMessage);
@@ -107,9 +105,13 @@ public class GameMessageHandler {
     }
 
     public void handle(SwitchShelvesResponseMessage message){
-        gameController.switchShelves(message.getShelf1(), message.getShelf2());
-        clientConnection.sendMessage(new StringMessage("Your updated warehouse\n" + room.getPlayerFromConnection(clientConnection).getPlayerBoard().getWarehouse().getShelf("top") +
-                room.getPlayerFromConnection(clientConnection).getPlayerBoard().getWarehouse().getShelf("middle") + room.getPlayerFromConnection(clientConnection).getPlayerBoard().getWarehouse().getShelf("bottom") + room.getPlayerFromConnection(clientConnection).getPlayerBoard().getWarehouse().getShelf("extra")));
+        if(gameController.switchShelves(message.getShelf1(), message.getShelf2())){
+            clientConnection.sendMessage(new StringMessage("Your updated warehouse\n" + room.getPlayerFromConnection(clientConnection).getPlayerBoard().getWarehouse().getShelf("top") +
+                    room.getPlayerFromConnection(clientConnection).getPlayerBoard().getWarehouse().getShelf("middle") + room.getPlayerFromConnection(clientConnection).getPlayerBoard().getWarehouse().getShelf("bottom") + room.getPlayerFromConnection(clientConnection).getPlayerBoard().getWarehouse().getShelf("extra")));
+        } else {
+            clientConnection.sendMessage(new ErrorMessage("You cannot switch these two shelves\n"));
+            clientConnection.sendMessage((new SelectMoveRequestMessage(room.getCurrentTurn().getMoves())));
+        }
     }
 
     public void handle(SelectResourceForWhiteMarbleResponseMessage message) {
