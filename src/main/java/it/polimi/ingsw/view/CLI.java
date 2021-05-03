@@ -206,7 +206,7 @@ public class CLI implements UI {
                 client.sendMessage(new SelectMoveResponseMessage("DROP_LEADER"));
                 break;
             case ("SWITCH_SHELVES"):
-                client.sendMessage(new SelectMoveRequestMessage("SWITCH_SHELVES"));
+                client.sendMessage(new SelectMoveResponseMessage("SWITCH_SHELVES"));
                 break;
             case ("END_TURN"):
                 System.out.println("ending turn");
