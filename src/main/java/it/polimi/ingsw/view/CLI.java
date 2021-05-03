@@ -2,7 +2,6 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.client.Client;
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.market.Marble;
 import it.polimi.ingsw.model.market.MarbleStructure;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Shelf;
@@ -14,7 +13,6 @@ import it.polimi.ingsw.network.setup.JoinPrivateRoomMessage;
 import it.polimi.ingsw.network.setup.JoinPublicRoomMessage;
 
 import java.io.PrintStream;
-import java.lang.management.PlatformLoggingMXBean;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
@@ -125,7 +123,7 @@ public class CLI implements UI {
             if(selection1==selection2)output.println("You must select two distinct cards");
         } while (selection1 == selection2);
 
-        client.sendMessage(new DropLeaderCardsResponseMessage(selection1, selection2));
+        client.sendMessage(new DropInitialLeaderCardsResponseMessage(selection1, selection2));
 
     }
 
@@ -244,7 +242,7 @@ public class CLI implements UI {
     public void discardLeaderCard(ArrayList<LeaderCard> cards) {
         displayLeaderCards(cards);
         int selection = askIntegerInput("Select the card number", 1, 2)-1;
-        client.sendMessage(new DiscardLeaderCardResponseMessage(selection));
+        client.sendMessage(new DropLeaderCardResponseMessage(selection));
 
     }
 

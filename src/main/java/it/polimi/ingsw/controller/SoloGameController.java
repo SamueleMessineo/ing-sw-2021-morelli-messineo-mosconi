@@ -2,7 +2,7 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.shared.Resource;
-import it.polimi.ingsw.network.client.DropLeaderCardsRequestMessage;
+import it.polimi.ingsw.network.client.DropInitialLeaderCardsRequestMessage;
 import it.polimi.ingsw.network.client.StringMessage;
 import it.polimi.ingsw.server.Room;
 import it.polimi.ingsw.server.ClientConnection;
@@ -26,7 +26,7 @@ public class SoloGameController implements GameController {
     public void leaderCardsSelectionStep(){
         ClientConnection player = room.getConnections().get(0);
         player.sendMessage(new StringMessage("Single game started"));
-        player.sendMessage(new DropLeaderCardsRequestMessage(room.getPlayerFromConnection(player).getLeaderCards()));
+        player.sendMessage(new DropInitialLeaderCardsRequestMessage(room.getPlayerFromConnection(player).getLeaderCards()));
     }
 
     @Override

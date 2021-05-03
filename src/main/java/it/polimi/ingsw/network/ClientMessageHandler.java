@@ -25,7 +25,7 @@ public class ClientMessageHandler {
 
     public void handle(StringMessage message){ ui.displayString(message.getBody());}
 
-    public void handle(DropLeaderCardsRequestMessage message){
+    public void handle(DropInitialLeaderCardsRequestMessage message){
         ui.selectLeaderCards(message.getLeaderCards());
     }
 
@@ -46,7 +46,7 @@ public class ClientMessageHandler {
         ui.dropResources(message.getResources());
     }
 
-    public void handle(DiscardLeaderCardRequestMessage message){
+    public void handle(DropLeaderCardRequestMessage message){
         ui.discardLeaderCard(message.getLeaderCards());
     }
 

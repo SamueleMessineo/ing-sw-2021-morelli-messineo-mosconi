@@ -8,10 +8,10 @@ import it.polimi.ingsw.network.game.GameMessage;
 
 import java.util.ArrayList;
 
-public class DropLeaderCardsRequestMessage extends ClientMessage {
+public class DropInitialLeaderCardsRequestMessage extends ClientMessage {
     private final ArrayList<LeaderCard> leaderCards;
 
-    public DropLeaderCardsRequestMessage(ArrayList<LeaderCard> leaderCards) {
+    public DropInitialLeaderCardsRequestMessage(ArrayList<LeaderCard> leaderCards) {
         this.leaderCards = leaderCards;
     }
 

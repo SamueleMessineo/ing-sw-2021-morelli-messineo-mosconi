@@ -2,10 +2,10 @@ package it.polimi.ingsw.network.game;
 
 import it.polimi.ingsw.network.GameMessageHandler;
 
-public class DiscardLeaderCardResponseMessage extends GameMessage {
+public class DropLeaderCardResponseMessage extends GameMessage {
     private final int card;
 
-    public DiscardLeaderCardResponseMessage(int card) {
+    public DropLeaderCardResponseMessage(int card) {
         this.card = card;
     }
 

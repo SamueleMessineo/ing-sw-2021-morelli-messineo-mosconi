@@ -22,7 +22,7 @@ public class GameMessageHandler {
         this.gameController = gameController;
         this.clientConnection = clientConnection;
         this.room = room;
-        clientConnection.sendMessage(new DropLeaderCardsRequestMessage(room.getPlayerFromConnection(clientConnection).getLeaderCards()));
+        clientConnection.sendMessage(new DropInitialLeaderCardsRequestMessage(room.getPlayerFromConnection(clientConnection).getLeaderCards()));
     }
 
     public void handle(SelectCardMessage message) {
@@ -34,7 +34,7 @@ public class GameMessageHandler {
     }
 
 
-    public void handle(DropLeaderCardsResponseMessage message){
+    public void handle(DropInitialLeaderCardsResponseMessage message){
         gameController.dropInitialLeaderCards(message.getCard1(), message.getCard2(), room.getPlayerFromConnection(clientConnection).getUsername());
         startPlayingIfReady();
     }
@@ -65,7 +65,7 @@ public class GameMessageHandler {
                     clientConnection.sendMessage(new SelectMarblesRequestMessage(room.getGame().getMarket().getMarbleStructure()));
                     break;
                 case("DROP_LEADER"):
-                    clientConnection.sendMessage(new DiscardLeaderCardRequestMessage(room.getPlayerFromConnection(clientConnection).getLeaderCards()));
+                    clientConnection.sendMessage(new DropLeaderCardRequestMessage(room.getPlayerFromConnection(clientConnection).getLeaderCards()));
                     break;
                 case("SWITCH_SHELVES"):
 
@@ -83,7 +83,7 @@ public class GameMessageHandler {
         clientConnection.sendMessage(new DropResourceRequestMessage(resources));
     }
 
-    public void handle(DiscardLeaderCardResponseMessage message){
+    public void handle(DropLeaderCardResponseMessage message){
         gameController.dropLeader(message.getCard());
         clientConnection.sendMessage(new StringMessage("Your have " +room.getPlayerFromConnection(clientConnection).getFaithTrack().getPosition() +" faith points"));
     }

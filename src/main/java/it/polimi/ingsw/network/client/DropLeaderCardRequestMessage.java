@@ -5,10 +5,10 @@ import it.polimi.ingsw.network.ClientMessageHandler;
 
 import java.util.ArrayList;
 
-public class DiscardLeaderCardRequestMessage extends ClientMessage {
+public class DropLeaderCardRequestMessage extends ClientMessage {
     private final ArrayList<LeaderCard> leaderCards;
 
-    public DiscardLeaderCardRequestMessage(ArrayList<LeaderCard> leaderCards) {
+    public DropLeaderCardRequestMessage(ArrayList<LeaderCard> leaderCards) {
         this.leaderCards = leaderCards;
     }
 
