@@ -4,7 +4,7 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.market.Marble;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.shared.Resource;
-import it.polimi.ingsw.network.setup.Room;
+import it.polimi.ingsw.server.Room;
 
 import java.util.ArrayList;
 import java.util.List;

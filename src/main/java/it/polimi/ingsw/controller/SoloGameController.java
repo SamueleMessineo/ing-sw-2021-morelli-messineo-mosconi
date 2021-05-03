@@ -4,7 +4,7 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.shared.Resource;
 import it.polimi.ingsw.network.client.DropLeaderCardsRequestMessage;
 import it.polimi.ingsw.network.client.StringMessage;
-import it.polimi.ingsw.network.setup.Room;
+import it.polimi.ingsw.server.Room;
 import it.polimi.ingsw.server.ClientConnection;
 
 import java.util.List;

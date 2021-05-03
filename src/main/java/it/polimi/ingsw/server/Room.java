@@ -1,12 +1,10 @@
-package it.polimi.ingsw.network.setup;
+package it.polimi.ingsw.server;
 
-import it.polimi.ingsw.controller.ClassicGameController;
 import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.controller.Turn;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.network.Message;
-import it.polimi.ingsw.server.ClientConnection;
 
 import java.util.ArrayList;
 

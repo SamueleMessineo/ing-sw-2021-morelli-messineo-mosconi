@@ -6,7 +6,7 @@ import it.polimi.ingsw.network.GameMessageHandler;
 import it.polimi.ingsw.network.client.ErrorMessage;
 import it.polimi.ingsw.network.client.RoomDetailsMessage;
 import it.polimi.ingsw.network.client.StringMessage;
-import it.polimi.ingsw.network.setup.Room;
+import it.polimi.ingsw.server.Room;
 
 import it.polimi.ingsw.server.ClientConnection;
 import it.polimi.ingsw.server.Server;

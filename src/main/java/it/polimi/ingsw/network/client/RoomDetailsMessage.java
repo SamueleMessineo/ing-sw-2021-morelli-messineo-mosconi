@@ -1,9 +1,6 @@
 package it.polimi.ingsw.network.client;
 
-import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.network.ClientMessageHandler;
-import it.polimi.ingsw.network.Message;
-import it.polimi.ingsw.network.setup.Room;
 
 import java.util.ArrayList;
 
