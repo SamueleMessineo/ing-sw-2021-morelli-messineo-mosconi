@@ -124,10 +124,6 @@ public class ClassicGameController implements GameController{
         System.out.println("compute moves");
 
         if(!alreadyPerfomedMove){
-            //System.out.println(player.getPlayerBoard().getResources().values().stream().flatMapToInt(num -> IntStream.of(Integer.parseInt(String.valueOf(num)))).sum());
-            //Se non funzionerà qualcosa forse sarà la riga seguente
-            //if(player.getPlayerBoard().getResources().values().stream().flatMapToInt(num -> IntStream.of(Integer.parseInt(String.valueOf(num)))).sum()>=2)
-            //    moves.add("ACTIVATE_PRODUCTION");
             System.out.println("check activate production");
             if (player.canActivateProduction()) {
                 System.out.println("add activate production");
@@ -135,19 +131,13 @@ public class ClassicGameController implements GameController{
             }
             System.out.println("add get marbles");
             moves.add("GET_MARBLES");
-            //todo
-            /* method canBuyAndPlaceDevelopmentCard(cardsStack.peek() does not work
-            */
             for (MarketCardStack cardsStack : game.getMarket().getCardsGrid()) {
-                System.out.println("prima dell'if");
                 DevelopmentCard topCard = cardsStack.peek();
                 if (player.canBuyAndPlaceDevelopmentCard(topCard)) {
-                    System.out.println("nell'if");
                     moves.add("BUY_CARD");
                     break;
                 }
             }
-            System.out.println("endIf");
         } else {
             moves.add("END_TURN");
         }
@@ -159,17 +149,13 @@ public class ClassicGameController implements GameController{
             moves.add("DROP_LEADER");
         }
 
-        /*
         for (int i = 0; i < player.getLeaderCards().size(); i++) {
-            System.out.println("chip");
             //todo revisionare il metodo canPlayLeader
             if (player.canPlayLeader(i)) {
                 moves.add("PLAY_LEADER");
                 break;
             }
-            System.out.println("chop");
         }
-        */
 
         Warehouse warehouse = player.getPlayerBoard().getWarehouse();
         if(warehouse.canSwitchShelves(warehouse.getShelf("top"), warehouse.getShelf("middle"))||
@@ -179,10 +165,6 @@ public class ClassicGameController implements GameController{
                 warehouse.canSwitchShelves(warehouse.getShelf("middle"), warehouse.getShelf("extra"))||
                 warehouse.canSwitchShelves(warehouse.getShelf("bottom"), warehouse.getShelf("extra"))
         ) moves.add("SWITCH_SHELVES");
-
-
-
-        System.out.println("computed");
         return moves;
     }
 }

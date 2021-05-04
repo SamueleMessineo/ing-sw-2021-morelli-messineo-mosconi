@@ -68,7 +68,6 @@ public class ClientConnection implements Runnable{
             outputStream.reset();
             outputStream.writeObject(m);
             outputStream.flush();
-            logger.warning(m.toString());
         } catch (IOException e) {
             e.printStackTrace();
         }
