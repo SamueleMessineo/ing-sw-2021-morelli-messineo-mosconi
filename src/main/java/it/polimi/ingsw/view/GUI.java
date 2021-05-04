@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.market.MarbleStructure;
 import it.polimi.ingsw.model.player.Shelf;
 import it.polimi.ingsw.model.shared.LeaderCard;
+import it.polimi.ingsw.model.shared.ProductionPower;
 import it.polimi.ingsw.model.shared.Resource;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -85,6 +86,11 @@ public class GUI extends Application implements UI {
 
     @Override
     public void switchShelves(ArrayList<Shelf> shelves) {
+
+    }
+
+    @Override
+    public void activateProduction(List<ProductionPower> productionPowers) {
 
     }
 }

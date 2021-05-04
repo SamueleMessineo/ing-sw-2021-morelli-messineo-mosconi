@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.market.MarbleStructure;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Shelf;
 import it.polimi.ingsw.model.shared.LeaderCard;
+import it.polimi.ingsw.model.shared.ProductionPower;
 import it.polimi.ingsw.model.shared.Resource;
 import it.polimi.ingsw.network.client.SelectMoveRequestMessage;
 import it.polimi.ingsw.network.game.*;
@@ -16,10 +17,7 @@ import it.polimi.ingsw.network.setup.JoinPublicRoomMessage;
 import javax.management.timer.Timer;
 import java.io.PrintStream;
 import java.security.InvalidParameterException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Scanner;
+import java.util.*;
 import java.util.concurrent.TimeoutException;
 
 public class CLI implements UI {
@@ -212,7 +210,7 @@ public class CLI implements UI {
                 askToDisplayPlayerBoard();
                 break;
             case ("ACTIVATE_PRODUCTION"):
-                System.out.println("activating production");
+                client.sendMessage(new SelectMoveResponseMessage("ACTIVATE_PRODUCTION"));
                 break;
             case ("GET_MARBLES"):
                 client.sendMessage(new SelectMoveResponseMessage("GET_MARBLES"));
@@ -281,5 +279,64 @@ public class CLI implements UI {
 
         client.sendMessage(new SwitchShelvesResponseMessage(selection1, selection2));
 
+    }
+
+    @Override
+    public void activateProduction(List<ProductionPower> productionPowers) {
+        List<Integer> selectedStacks = null;
+        ProductionPower productionPower = null;
+
+        if(gameState.getCurrentPlayer().canActivateBasicProduction()){
+            output.println("Do you want to activate basic production power? [y/n]");
+            if (input.nextLine().toLowerCase().trim().startsWith("y")){
+                productionPower = askBasicProductionPowerIO();
+            }
+        }
+
+        if(gameState.getCurrentPlayer().canActivateProduction()){
+            selectedStacks = new ArrayList<>();
+            output.println("Do you want to activate production on the first stack? [y/n]");
+            if(input.nextLine().trim().toLowerCase().startsWith("y"))selectedStacks.add(1);
+            output.println("Do you want to activate production on the second stack? [y/n]");
+            if(input.nextLine().trim().toLowerCase().startsWith("y"))selectedStacks.add(2);
+            output.println("Do you want to activate production on the third stack? [y/n]");
+            if(input.nextLine().trim().toLowerCase().startsWith("y"))selectedStacks.add(3);
+        }
+
+
+        client.sendMessage(new ActivateProductionResponseMessage(selectedStacks, productionPower));
+
+
+    }
+
+    private ProductionPower askBasicProductionPowerIO(){
+        Map<Resource, Integer> input = new HashMap<>();
+        Map<Resource, Integer> output = new HashMap<>();
+        List<Integer> resources = new ArrayList<>();
+        resources.add(askIntegerInput("What is the first resource you want to put as input?\n1.SHIELD, 2.SERVANT, 3.STONE, 4.COIN",1,4));
+        resources.add(askIntegerInput("What is the second resource you want to put as input?\n1.SHIELD, 2.SERVANT, 3.STONE, 4.COIN",1,4));
+        resources.add(askIntegerInput("What is the resource you want as output?\n1.SHIELD, 2.SERVANT, 3.STONE, 4.COIN",1,4));
+
+        for (int i = 0; i < 3; i++) {
+            switch (resources.get(i)){
+                case (1):
+                    if(i<2)input.put(Resource.SHIELD, 1);
+                    else output.put(Resource.SHIELD,1);
+                    break;
+                case (2):
+                    if(i<2)input.put(Resource.SERVANT, 1);
+                    else output.put(Resource.SERVANT,1);
+                    break;
+                case (3):
+                    if(i<2)input.put(Resource.STONE, 1);
+                    else output.put(Resource.STONE,1);
+                    break;
+                case (4):
+                    if(i<2)input.put(Resource.COIN, 1);
+                    else output.put(Resource.COIN,1);
+                    break;
+            }
+        }
+        return new ProductionPower(input, output);
     }
 }

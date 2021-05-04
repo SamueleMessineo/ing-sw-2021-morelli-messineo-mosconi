@@ -45,12 +45,7 @@ public class GameMessageHandler {
             if (p.getLeaderCards().size() != 2) return;
         }
 
-        room.sendAll(new GameStateMessage(room.getGame()));
-        ClientConnection currentPlayer = room.getConnections().get(room.getGame().getPlayers().indexOf(
-                room.getGame().getCurrentPlayer()));
-        room.setCurrentTurn(new Turn(room.getPlayerFromConnection(currentPlayer).getUsername(), gameController.computeNextPossibleMoves(false)));
-        SelectMoveRequestMessage selectMoveRequestMessage = new SelectMoveRequestMessage(room.getCurrentTurn().getMoves());
-        currentPlayer.sendMessage(selectMoveRequestMessage);
+       sendStateAndMoves(false);
     }
 
     public void handle(SelectMoveResponseMessage message){
@@ -67,6 +62,10 @@ public class GameMessageHandler {
                     break;
                 case("END_TURN"):
                     endTurn();
+                    break;
+                case("ACTIVATE_PRODUCTION"):
+                    clientConnection.sendMessage(new ActivateProductionRequestMessage(room.getPlayerFromConnection(clientConnection).possibleProductionPowersToActive()));
+                    break;
             }
 
         } else {
@@ -76,35 +75,25 @@ public class GameMessageHandler {
     }
 
     public void handle(SelectMarblesResponseMessage message){
-        System.out.println("received get marbles response");
         Map<String, List<Resource>> resources = gameController.getMarbles(message.getRowOrColumn(), message.getIndex());
-        System.out.println("retrieved resources");
         room.getCurrentTurn().setNonWhiteMarbles(resources.get("notWhite"));
         room.getCurrentTurn().setWhiteMarbles(resources.get("white"));
-        System.out.println("turn set");
 
         if (resources.get("white").size() > 0 && resources.get("white").get(0).equals(Resource.ANY)) {
-            System.out.println("ask for conversion help");
             clientConnection.sendMessage(new SelectResourceForWhiteMarbleRequestMessage(resources.get("white").size(),
                     resources.get("conversionOptions").get(0), resources.get("conversionOptions").get(1)));
             return;
         }
-        System.out.println("merge resources");
         List<Resource> allResources = new ArrayList<>();
 
         allResources.addAll(room.getCurrentTurn().getNonWhiteMarbles());
         allResources.addAll(room.getCurrentTurn().getWhiteMarbles());
 
 
-
-
         askToDropResources(allResources);
     }
 
     private void askToDropResources(List<Resource> resources) {
-        System.out.println("ask to drop");
-        System.out.println(resources);
-
         clientConnection.sendMessage(new DropResourceRequestMessage(resources));
     }
 
@@ -129,20 +118,43 @@ public class GameMessageHandler {
 
     }
 
+    public void handle(ActivateProductionResponseMessage message){
+        if(message.getSelectedStacks()!=null){
+            room.getGame().getCurrentPlayer().getPlayerBoard().activateProduction(message.getSelectedStacks());
+            clientConnection.sendMessage(new StringMessage("Your update strongbox: "+ room.getGame().getCurrentPlayer().getPlayerBoard().getStrongbox()));
+            sendStateAndMoves(true);
+        }
+        if(message.getBasicProduction() != null){
+            //activating basic production
+        }
+        else {
+            clientConnection.sendMessage(new ErrorMessage("Nothing could be done"));
+            sendNextMoves(false);
+        }
+    }
+
     private void endTurn(){
         gameController.computeCurrentPlayer();
+        sendStateAndMoves(false);
+
+    }
+
+    private void sendStateAndMoves(boolean hasPerformedAction){
         room.sendAll(new GameStateMessage(room.getGame()));
 
         ClientConnection currentPlayer = room.getConnections().get(room.getGame().getPlayers().indexOf(
                 room.getGame().getCurrentPlayer()));
-        room.setCurrentTurn(new Turn(room.getPlayerFromConnection(currentPlayer).getUsername(), gameController.computeNextPossibleMoves(false)));
+        room.setCurrentTurn(new Turn(room.getPlayerFromConnection(currentPlayer).getUsername(), gameController.computeNextPossibleMoves(hasPerformedAction)));
         SelectMoveRequestMessage selectMoveRequestMessage = new SelectMoveRequestMessage(room.getCurrentTurn().getMoves());
         currentPlayer.sendMessage(selectMoveRequestMessage);
-
     }
 
     private void sendNextMoves(boolean hasPerformedAction){
         room.getCurrentTurn().setMoves(gameController.computeNextPossibleMoves(hasPerformedAction));
         clientConnection.sendMessage(new SelectMoveRequestMessage(room.getCurrentTurn().getMoves()));
     }
+
+
+
+
 }

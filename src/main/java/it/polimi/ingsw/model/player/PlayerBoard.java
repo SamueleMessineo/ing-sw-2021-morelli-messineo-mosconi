@@ -3,6 +3,7 @@ import it.polimi.ingsw.model.shared.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -98,7 +99,15 @@ public class PlayerBoard implements Serializable {
     /**
      * Activates the selected production powers.
      */
-    public void activateProduction(){
+    public void activateProduction(List<Integer> selectedStacks){
+        for (Integer i:
+             selectedStacks) {
+            ProductionPower productionPower = getCardStacks().get(i).peek().getProductionPower();
+
+            //todo finire di impelementare levando l'input alla warehouse e/o strongbox
+
+            strongbox.addResources(productionPower.getOutput());
+        }
         System.out.println("metodo da implementare successivamente");
     }
 

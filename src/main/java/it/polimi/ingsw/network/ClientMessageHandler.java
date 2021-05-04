@@ -57,4 +57,8 @@ public class ClientMessageHandler {
     public void handle(SelectResourceForWhiteMarbleRequestMessage message) {
 
     }
+
+    public void handle(ActivateProductionRequestMessage message){
+        ui.activateProduction(message.getProductionPowers());
+    }
 }

@@ -56,7 +56,7 @@ public class ClientConnection implements Runnable{
         Message m = null;
         try {
             m = (Message) inputStream.readObject();
-            logger.info(m.toString());
+            //logger.info(m.toString());
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }

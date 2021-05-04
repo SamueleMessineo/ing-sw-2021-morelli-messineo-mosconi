@@ -124,12 +124,9 @@ public class ClassicGameController implements GameController{
         System.out.println("compute moves");
 
         if(!alreadyPerfomedMove){
-            System.out.println("check activate production");
             if (player.canActivateProduction()) {
-                System.out.println("add activate production");
                 moves.add("ACTIVATE_PRODUCTION");
             }
-            System.out.println("add get marbles");
             moves.add("GET_MARBLES");
             for (MarketCardStack cardsStack : game.getMarket().getCardsGrid()) {
                 DevelopmentCard topCard = cardsStack.peek();
@@ -160,11 +157,14 @@ public class ClassicGameController implements GameController{
         Warehouse warehouse = player.getPlayerBoard().getWarehouse();
         if(warehouse.canSwitchShelves(warehouse.getShelf("top"), warehouse.getShelf("middle"))||
                 warehouse.canSwitchShelves(warehouse.getShelf("top"), warehouse.getShelf("bottom"))||
-                warehouse.canSwitchShelves(warehouse.getShelf("top"), warehouse.getShelf("extra"))||
-                warehouse.canSwitchShelves(warehouse.getShelf("middle"), warehouse.getShelf("bottom"))||
+                /*warehouse.canSwitchShelves(warehouse.getShelf("top"), warehouse.getShelf("extra"))||*/
+                warehouse.canSwitchShelves(warehouse.getShelf("middle"), warehouse.getShelf("bottom"))/*||
                 warehouse.canSwitchShelves(warehouse.getShelf("middle"), warehouse.getShelf("extra"))||
-                warehouse.canSwitchShelves(warehouse.getShelf("bottom"), warehouse.getShelf("extra"))
+                warehouse.canSwitchShelves(warehouse.getShelf("bottom"), warehouse.getShelf("extra"))*/
         ) moves.add("SWITCH_SHELVES");
+
+        //for debug
+        moves.add("ACTIVATE_PRODUCTION");
         return moves;
     }
 }
