@@ -203,9 +203,7 @@ public class Player implements Serializable {
     public boolean canBuyAndPlaceDevelopmentCard(DevelopmentCard developmentCard){
         Map<Resource, Integer> cost = developmentCard.getCost();
         Map<Resource, Integer> allResources = new HashMap<>(playerBoard.getResources());
-        System.out.println("retrieved all resources");
         for (Resource resource : allResources.keySet()) {
-            System.out.println(resource);
             if (allResources.get(resource) < cost.get(resource)) return false;
         }
 
@@ -232,6 +230,18 @@ public class Player implements Serializable {
                     return true;
                 }
             }
+        }
+        return false;
+    }
+
+    public boolean canActivateBasicProduction(){
+        Map<Resource,Integer> warehouseRes=new HashMap<>(playerBoard.getWarehouse().getResources());
+        int res=0;
+
+        for(Resource resource : warehouseRes.keySet()){
+            res+=warehouseRes.get(resource);
+            if(res>=2)
+                return true;
         }
         return false;
     }

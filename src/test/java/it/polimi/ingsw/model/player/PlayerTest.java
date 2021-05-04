@@ -277,9 +277,132 @@ public class PlayerTest {
         developmentCardTest=new DevelopmentCard(3,CardType.GREEN,cost,productionPower,0);
 
         assertFalse(player.canBuyAndPlaceDevelopmentCard(developmentCardTest));
+    }
+
+    @Test
+    public void canActivateProduction(){
+        Map<Resource,Integer>  input=new HashMap<>();
+        Map<Resource, Integer> add_res=new HashMap<>();
+
+        Map<Resource, Integer> emptyMap1 = new HashMap<>();
+
+        add_res.put(Resource.SERVANT, 12);
+        add_res.put(Resource.COIN, 6);
+        add_res.put(Resource.STONE, 9);
+        add_res.put(Resource.SHIELD, 15);
+        player.getPlayerBoard().getStrongbox().addResources(add_res);
+
+        input.put(Resource.SERVANT, 12);
+        input.put(Resource.COIN, 6);
+        input.put(Resource.STONE, 9);
+        input.put(Resource.SHIELD, 15);
+
+        ProductionPower productionPower=new ProductionPower(input, emptyMap1);
+
+        assertFalse(player.canActivateProduction());
 
 
+        DevelopmentCard developmentCardTest1=new DevelopmentCard(1,CardType.GREEN,emptyMap1,productionPower,0);
+        DevelopmentCard developmentCardTest2=new DevelopmentCard(2,CardType.PURPLE,emptyMap1,productionPower,0);
+        DevelopmentCard developmentCardTest3=new DevelopmentCard(3,CardType.BLUE,emptyMap1,productionPower,0);
 
+        player.getPlayerBoard().getCardStacks().get(0).push(developmentCardTest1);
+        player.getPlayerBoard().getCardStacks().get(0).push(developmentCardTest2);
+        player.getPlayerBoard().getCardStacks().get(0).push(developmentCardTest3);
+
+        assertTrue(player.canActivateProduction());
+
+        developmentCardTest1=new DevelopmentCard(1,CardType.YELLOW,emptyMap1,productionPower,0);
+        developmentCardTest2=new DevelopmentCard(2,CardType.PURPLE,emptyMap1,productionPower,0);
+        developmentCardTest3=new DevelopmentCard(3,CardType.GREEN,emptyMap1,productionPower,0);
+
+        player.getPlayerBoard().getStrongbox().useResources(add_res);
+
+        player.getPlayerBoard().getCardStacks().get(1).push(developmentCardTest1);
+        player.getPlayerBoard().getCardStacks().get(1).push(developmentCardTest2);
+        player.getPlayerBoard().getCardStacks().get(1).push(developmentCardTest3);
+
+        assertFalse(player.canActivateProduction());
+
+        input.put(Resource.SERVANT, 0);
+        input.put(Resource.COIN, 2);
+        input.put(Resource.STONE, 0);
+        input.put(Resource.SHIELD, 0);
+
+        productionPower=new ProductionPower(input, emptyMap1);
+
+        Map<Resource,Integer> shelfRes=new HashMap<>();
+        shelfRes.put(Resource.COIN,3);
+        player.getPlayerBoard().getWarehouse().getShelf("bottom").addResources(shelfRes);
+
+        developmentCardTest1=new DevelopmentCard(1,CardType.YELLOW,emptyMap1,productionPower,0);
+        developmentCardTest2=new DevelopmentCard(2,CardType.PURPLE,emptyMap1,productionPower,0);
+        developmentCardTest3=new DevelopmentCard(3,CardType.GREEN,emptyMap1,productionPower,0);
+
+        player.getPlayerBoard().getCardStacks().get(2).push(developmentCardTest1);
+        player.getPlayerBoard().getCardStacks().get(2).push(developmentCardTest2);
+        player.getPlayerBoard().getCardStacks().get(2).push(developmentCardTest3);
+
+        assertTrue(player.canActivateProduction());
+
+        player.getPlayerBoard().getWarehouse().getShelf("bottom").useResources(shelfRes);
+
+        assertFalse(player.canActivateProduction());
+
+        player.getPlayerBoard().getWarehouse().getShelf("bottom").addResources(shelfRes);
+
+        player.getPlayerBoard().getCardStacks().get(2).pop();
+        player.getPlayerBoard().getCardStacks().get(2).pop();
+        player.getPlayerBoard().getCardStacks().get(2).pop();
+
+        player.getPlayerBoard().getCardStacks().get(1).pop();
+        player.getPlayerBoard().getCardStacks().get(1).pop();
+        player.getPlayerBoard().getCardStacks().get(1).pop();
+
+        player.getPlayerBoard().getCardStacks().get(0).pop();
+        player.getPlayerBoard().getCardStacks().get(0).pop();
+        player.getPlayerBoard().getCardStacks().get(0).pop();
+
+        player.getPlayerBoard().getWarehouse().getShelf("bottom").addResources(shelfRes);
+        player.getPlayerBoard().getStrongbox().addResources(add_res);
+
+
+        input.put(Resource.SERVANT, 12);
+        input.put(Resource.COIN, 10);
+        input.put(Resource.STONE, 9);
+        input.put(Resource.SHIELD, 15);
+
+        productionPower=new ProductionPower(input, emptyMap1);
+
+
+        developmentCardTest1=new DevelopmentCard(1,CardType.YELLOW,emptyMap1,productionPower,0);
+        developmentCardTest2=new DevelopmentCard(2,CardType.PURPLE,emptyMap1,productionPower,0);
+        developmentCardTest3=new DevelopmentCard(3,CardType.GREEN,emptyMap1,productionPower,0);
+
+        player.getPlayerBoard().getCardStacks().get(0).push(developmentCardTest1);
+        player.getPlayerBoard().getCardStacks().get(0).push(developmentCardTest2);
+        player.getPlayerBoard().getCardStacks().get(0).push(developmentCardTest3);
+
+        assertFalse(player.canActivateProduction());
+
+
+        input.put(Resource.SERVANT, 12);
+        input.put(Resource.COIN, 9);
+        input.put(Resource.STONE, 9);
+        input.put(Resource.SHIELD, 15);
+
+        productionPower=new ProductionPower(input, emptyMap1);
+
+
+        developmentCardTest1=new DevelopmentCard(1,CardType.YELLOW,emptyMap1,productionPower,0);
+        developmentCardTest2=new DevelopmentCard(2,CardType.PURPLE,emptyMap1,productionPower,0);
+        developmentCardTest3=new DevelopmentCard(3,CardType.GREEN,emptyMap1,productionPower,0);
+
+        player.getPlayerBoard().getCardStacks().get(1).push(developmentCardTest1);
+        player.getPlayerBoard().getCardStacks().get(1).push(developmentCardTest2);
+        player.getPlayerBoard().getCardStacks().get(1).push(developmentCardTest3);
+
+        assertTrue(player.canActivateProduction());
     }
 
 }
