@@ -189,9 +189,12 @@ public class Player implements Serializable {
     public boolean canBuyAndPlaceDevelopmentCard(DevelopmentCard developmentCard){
         Map<Resource, Integer> cost = developmentCard.getCost();
         Map<Resource, Integer> allResources = new HashMap<>(playerBoard.getResources());
+        System.out.println("retrieved all resources");
         for (Resource resource : allResources.keySet()) {
+            System.out.println(resource);
             if (allResources.get(resource) < cost.get(resource)) return false;
         }
+
         for (PlayerCardStack playerCardStack: this.getPlayerBoard().getCardStacks()){
             if(playerCardStack.canPlaceCard(developmentCard))
                 return true;
@@ -201,18 +204,19 @@ public class Player implements Serializable {
 
     public boolean canActivateProduction() {
         Map<Resource, Integer> allResources = new HashMap<>(playerBoard.getResources());
-
         for (PlayerCardStack cardStack : playerBoard.getCardStacks()) {
-            DevelopmentCard topCard = cardStack.peek();
-            boolean canActivateCard = true;
-            for (Resource resource : allResources.keySet()) {
-                if (allResources.get(resource) < topCard.getProductionPower().getInput().get(resource)) {
-                    canActivateCard = false;
-                    break;
+            if (!cardStack.empty()) {
+                DevelopmentCard topCard = cardStack.peek();
+                boolean canActivateCard = true;
+                for (Resource resource : allResources.keySet()) {
+                    if (allResources.get(resource) < topCard.getProductionPower().getInput().get(resource)) {
+                        canActivateCard = false;
+                        break;
+                    }
                 }
-            }
-            if (canActivateCard) {
-                return true;
+                if (canActivateCard) {
+                    return true;
+                }
             }
         }
         return false;

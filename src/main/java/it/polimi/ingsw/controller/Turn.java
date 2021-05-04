@@ -10,9 +10,10 @@ public class Turn {
     private List<String> moves;
     private List<Resource> nonWhiteMarbles = new ArrayList<>();
     private List<Resource> whiteMarbles = new ArrayList<>();
-    private boolean AlreadyPerformedMove = false;
+    private boolean alreadyPerformedMove = false;
 
     public Turn(String currentPlayer, List<String> moves) {
+        System.out.println("turn constructor");
         this.currentPlayer = currentPlayer;
         this.moves = moves;
     }
@@ -38,11 +39,11 @@ public class Turn {
     }
 
     public void setAlreadyPerformedMove(boolean alreadyPerformedMove) {
-        AlreadyPerformedMove = alreadyPerformedMove;
+        this.alreadyPerformedMove = alreadyPerformedMove;
     }
 
-    public boolean haveAlreadyPerformedMove() {
-        return AlreadyPerformedMove;
+    public boolean hasAlreadyPerformedMove() {
+        return alreadyPerformedMove;
     }
 
     public List<Resource> getNonWhiteMarbles() {

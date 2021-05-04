@@ -33,7 +33,6 @@ public class ClientConnection implements Runnable{
         }
 
         logger = Logger.getLogger(ClientConnection.class.getName());
-        logger.setLevel(Level.INFO);
 
         this.setupMessageHandler=new SetupMessageHandler(server, this);
     }
@@ -57,7 +56,7 @@ public class ClientConnection implements Runnable{
         Message m = null;
         try {
             m = (Message) inputStream.readObject();
-            //logger..info(m.toString());
+            logger.info(m.toString());
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -69,6 +68,7 @@ public class ClientConnection implements Runnable{
             outputStream.reset();
             outputStream.writeObject(m);
             outputStream.flush();
+            logger.warning(m.toString());
         } catch (IOException e) {
             e.printStackTrace();
         }

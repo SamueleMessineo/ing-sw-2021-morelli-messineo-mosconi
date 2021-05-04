@@ -22,10 +22,10 @@ public interface GameController {
 
     void dropLeader(int card);
 
-    public void computeCurrentPlayer();
+    void computeCurrentPlayer();
 
-    public boolean switchShelves(String shelf1, String shelf2);
+    boolean switchShelves(String shelf1, String shelf2);
 
-    public List<String> computeNextPossibleMoves(boolean alreadyPerfomedMove);
+    List<String> computeNextPossibleMoves(boolean alreadyPerfomedMove);
 
 }

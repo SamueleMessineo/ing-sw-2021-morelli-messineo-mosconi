@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.market.Marble;
 import it.polimi.ingsw.model.market.MarketCardStack;
 import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.model.shared.DevelopmentCard;
 import it.polimi.ingsw.model.shared.LeaderCard;
 import it.polimi.ingsw.model.shared.Resource;
 import it.polimi.ingsw.server.Room;
@@ -119,41 +120,40 @@ public class ClassicGameController implements GameController{
     public List<String> computeNextPossibleMoves(boolean alreadyPerfomedMove) {
         List<String> moves = new ArrayList<>();
         Player player = game.getCurrentPlayer();
+        System.out.println("compute moves");
 
         if(!alreadyPerfomedMove){
             //System.out.println(player.getPlayerBoard().getResources().values().stream().flatMapToInt(num -> IntStream.of(Integer.parseInt(String.valueOf(num)))).sum());
             //Se non funzionerà qualcosa forse sarà la riga seguente
             //if(player.getPlayerBoard().getResources().values().stream().flatMapToInt(num -> IntStream.of(Integer.parseInt(String.valueOf(num)))).sum()>=2)
             //    moves.add("ACTIVATE_PRODUCTION");
+            System.out.println("check activate production");
             if (player.canActivateProduction()) {
+                System.out.println("add activate production");
                 moves.add("ACTIVATE_PRODUCTION");
             }
-
-
-
+            System.out.println("add get marbles");
             moves.add("GET_MARBLES");
             //todo
             /* method canBuyAndPlaceDevelopmentCard(cardsStack.peek() does not work
-            for (MarketCardStack cardsStack:
-                 game.getMarket().getCardsGrid()) {
+            */
+            for (MarketCardStack cardsStack : game.getMarket().getCardsGrid()) {
                 System.out.println("prima dell'if");
-                 if(player.canBuyAndPlaceDevelopmentCard(cardsStack.peek())){
-                     System.out.println("nell'if");
+                DevelopmentCard topCard = cardsStack.peek();
+                if (player.canBuyAndPlaceDevelopmentCard(topCard)) {
+                    System.out.println("nell'if");
                     moves.add("BUY_CARD");
                     break;
                 }
             }
-
-             */
-
+             //*/
             System.out.println("endIf");
-
         } else {
             moves.add("END_TURN");
         }
 
         //FOR DEBUG
-        moves.add("END_TURN");
+        //moves.add("END_TURN");
 
         if(player.getLeaderCards().size() > 0){
             moves.add("DROP_LEADER");
@@ -162,23 +162,20 @@ public class ClassicGameController implements GameController{
         for (int i = 0; i < player.getLeaderCards().size(); i++) {
             System.out.println("chip");
             //todo revisionare il metodo canPlayLeader
-            /*
-            if(player.canPlayLeader(i)){
+            if (player.canPlayLeader(i)) {
                 moves.add("PLAY_LEADER");
                 break;
             }
-
-             */
             System.out.println("chop");
         }
 
-        if(player.getPlayerBoard().getWarehouse().getShelf("top").getResourceNumber()>0||
-                player.getPlayerBoard().getWarehouse().getShelf("middle").getResourceNumber()>0||
-                player.getPlayerBoard().getWarehouse().getShelf("bottom").getResourceNumber()>0){
-            moves.add("SWITCH_SHELVES");
-        } /* else if (player.getPlayerBoard().getWarehouse().getShelf("extra") != null && player.getPlayerBoard().getWarehouse().getShelf("extra").getResourceNumber() > 0){
-            moves.add("SWITCH_SHELVES");
-        } */
+//        if(player.getPlayerBoard().getWarehouse().getShelf("top").getResourceNumber()>0||
+//                player.getPlayerBoard().getWarehouse().getShelf("middle").getResourceNumber()>0||
+//                player.getPlayerBoard().getWarehouse().getShelf("bottom").getResourceNumber()>0){
+//            moves.add("SWITCH_SHELVES");
+//        } /* else if (player.getPlayerBoard().getWarehouse().getShelf("extra") != null && player.getPlayerBoard().getWarehouse().getShelf("extra").getResourceNumber() > 0){
+//            moves.add("SWITCH_SHELVES");
+//        } */
         System.out.println("computed");
         return moves;
     }

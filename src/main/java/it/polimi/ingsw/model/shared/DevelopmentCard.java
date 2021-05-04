@@ -2,6 +2,7 @@ package it.polimi.ingsw.model.shared;
 
 
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -29,7 +30,14 @@ public class DevelopmentCard implements Serializable {
      * @return The cost of the development card.
      */
     public Map<Resource,Integer> getCost(){
-        return cost;
+        Map<Resource, Integer> costMap = new HashMap<>() {{
+           put(Resource.COIN, 0);
+           put(Resource.SERVANT, 0);
+           put(Resource.SHIELD, 0);
+           put(Resource.STONE, 0);
+        }};
+        costMap.putAll(cost);
+        return costMap;
     }
 
     /**

@@ -47,14 +47,22 @@ public class GameMessageHandler {
 
         room.sendAll(new GameStateMessage(room.getGame()));
 
+        // TODO manda solo lo stato e non manda le possibili mosse
+        System.out.println("1 state sent");
+
         ClientConnection currentPlayer = room.getConnections().get(room.getGame().getPlayers().indexOf(
                 room.getGame().getCurrentPlayer()));
 
+        System.out.println("2 get current player");
 
         room.setCurrentTurn(new Turn(room.getPlayerFromConnection(currentPlayer).getUsername(), gameController.computeNextPossibleMoves(false)));
 
+        System.out.println("3 set current turn");
+
         SelectMoveRequestMessage selectMoveRequestMessage = new SelectMoveRequestMessage(room.getCurrentTurn().getMoves());
+        System.out.println("4 create moves message");
         currentPlayer.sendMessage(selectMoveRequestMessage);
+        System.out.println("5 send moves message");
     }
 
     public void handle(SelectMoveResponseMessage message){
