@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.market.Marble;
 import it.polimi.ingsw.model.market.MarketCardStack;
 import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.model.player.Warehouse;
 import it.polimi.ingsw.model.shared.DevelopmentCard;
 import it.polimi.ingsw.model.shared.LeaderCard;
 import it.polimi.ingsw.model.shared.Resource;
@@ -146,7 +147,6 @@ public class ClassicGameController implements GameController{
                     break;
                 }
             }
-             //*/
             System.out.println("endIf");
         } else {
             moves.add("END_TURN");
@@ -159,6 +159,7 @@ public class ClassicGameController implements GameController{
             moves.add("DROP_LEADER");
         }
 
+        /*
         for (int i = 0; i < player.getLeaderCards().size(); i++) {
             System.out.println("chip");
             //todo revisionare il metodo canPlayLeader
@@ -168,15 +169,21 @@ public class ClassicGameController implements GameController{
             }
             System.out.println("chop");
         }
+        */
 
-//        if(player.getPlayerBoard().getWarehouse().getShelf("top").getResourceNumber()>0||
-//                player.getPlayerBoard().getWarehouse().getShelf("middle").getResourceNumber()>0||
-//                player.getPlayerBoard().getWarehouse().getShelf("bottom").getResourceNumber()>0){
-//            moves.add("SWITCH_SHELVES");
-//        } /* else if (player.getPlayerBoard().getWarehouse().getShelf("extra") != null && player.getPlayerBoard().getWarehouse().getShelf("extra").getResourceNumber() > 0){
-//            moves.add("SWITCH_SHELVES");
-//        } */
+        Warehouse warehouse = player.getPlayerBoard().getWarehouse();
+        if(warehouse.canSwitchShelves(warehouse.getShelf("top"), warehouse.getShelf("middle"))||
+                warehouse.canSwitchShelves(warehouse.getShelf("top"), warehouse.getShelf("bottom"))||
+                warehouse.canSwitchShelves(warehouse.getShelf("top"), warehouse.getShelf("extra"))||
+                warehouse.canSwitchShelves(warehouse.getShelf("middle"), warehouse.getShelf("bottom"))||
+                warehouse.canSwitchShelves(warehouse.getShelf("middle"), warehouse.getShelf("extra"))||
+                warehouse.canSwitchShelves(warehouse.getShelf("bottom"), warehouse.getShelf("extra"))
+        ) moves.add("SWITCH_SHELVES");
+
+
+
         System.out.println("computed");
         return moves;
     }
 }
+
