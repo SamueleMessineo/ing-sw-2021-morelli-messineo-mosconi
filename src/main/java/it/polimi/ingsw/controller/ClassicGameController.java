@@ -123,7 +123,13 @@ public class ClassicGameController implements GameController{
         if(!alreadyPerfomedMove){
             //System.out.println(player.getPlayerBoard().getResources().values().stream().flatMapToInt(num -> IntStream.of(Integer.parseInt(String.valueOf(num)))).sum());
             //Se non funzionerà qualcosa forse sarà la riga seguente
-            if(player.getPlayerBoard().getResources().values().stream().flatMapToInt(num -> IntStream.of(Integer.parseInt(String.valueOf(num)))).sum()>=2)moves.add("ACTIVATE_PRODUCTION");
+            //if(player.getPlayerBoard().getResources().values().stream().flatMapToInt(num -> IntStream.of(Integer.parseInt(String.valueOf(num)))).sum()>=2)
+            //    moves.add("ACTIVATE_PRODUCTION");
+            if (player.canActivateProduction()) {
+                moves.add("ACTIVATE_PRODUCTION");
+            }
+
+
 
             moves.add("GET_MARBLES");
             //todo

@@ -198,5 +198,23 @@ public class Player implements Serializable {
         }
         return false;
     }
-    //TODO public boolean canBuyDevelopmentCard
+
+    public boolean canActivateProduction() {
+        Map<Resource, Integer> allResources = new HashMap<>(playerBoard.getResources());
+
+        for (PlayerCardStack cardStack : playerBoard.getCardStacks()) {
+            DevelopmentCard topCard = cardStack.peek();
+            boolean canActivateCard = true;
+            for (Resource resource : allResources.keySet()) {
+                if (allResources.get(resource) < topCard.getProductionPower().getInput().get(resource)) {
+                    canActivateCard = false;
+                    break;
+                }
+            }
+            if (canActivateCard) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
