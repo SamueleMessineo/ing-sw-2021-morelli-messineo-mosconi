@@ -1,9 +1,6 @@
 package it.polimi.ingsw.model.player;
 
-import it.polimi.ingsw.model.shared.CardType;
-import it.polimi.ingsw.model.shared.DevelopmentCard;
-import it.polimi.ingsw.model.shared.LeaderCard;
-import it.polimi.ingsw.model.shared.Resource;
+import it.polimi.ingsw.model.shared.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -135,18 +132,12 @@ public class Player implements Serializable {
      * @return True if the given leader card is playable, false if it's not.
      */
     public boolean canPlayLeader(int leaderIndex) {
-        System.out.println("can play leader");
         LeaderCard leader = leaderCards.get(leaderIndex);
-        System.out.println(leader);
-        System.out.println("retrieved leader");
         Map<CardType,Integer> cardRequirements=leader.getCardRequirements();
-        System.out.println("card requirements");
         int cardRequirementsLevel= leader.getCardRequirementsLevel();
-        System.out.println("card requirements level");
 
         Map<Resource, Integer> resourceRequirements = leader.getResourceRequirements();
 
-        System.out.println("retrieved card and resource requirements");
 
         if(resourceRequirements != null){
             Map<Resource, Integer> fullResourceRequirements = new HashMap<>(){{
@@ -232,6 +223,36 @@ public class Player implements Serializable {
             }
         }
         return false;
+    }
+
+    public ArrayList<DevelopmentCard> possibleDevelopmentCardProduction(){
+        Map<Resource, Integer> allResources = new HashMap<>(playerBoard.getResources());
+        ArrayList<DevelopmentCard> developmentCardsToActive=new ArrayList<>();
+        for (PlayerCardStack cardStack : playerBoard.getCardStacks()) {
+            if (!cardStack.empty()) {
+                DevelopmentCard topCard = cardStack.peek();
+                developmentCardsToActive.add(topCard);
+                for (Resource resource : allResources.keySet()) {
+                    if (allResources.get(resource) < topCard.getProductionPower().getInput().get(resource)) {
+                        developmentCardsToActive.remove(topCard);
+                        break;
+                    }
+                }
+            }
+        }
+        return developmentCardsToActive;
+    }
+
+    public ArrayList<ProductionPower> possibleProductionPowersToActive(){
+        ArrayList<ProductionPower> productionPowers=new ArrayList<>();
+        if(canActivateProduction()) {
+            ArrayList<DevelopmentCard> developmentCardsToActive = possibleDevelopmentCardProduction();
+            for (DevelopmentCard developmentCard : developmentCardsToActive) {
+                productionPowers.add(developmentCard.getProductionPower());
+            }
+            return productionPowers;
+        }
+        return null;
     }
 
     public boolean canActivateBasicProduction(){

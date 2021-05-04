@@ -405,4 +405,167 @@ public class PlayerTest {
         assertTrue(player.canActivateProduction());
     }
 
+    @Test
+    public void possibleDevelopmentCardProduction(){
+        Map<Resource,Integer>  input=new HashMap<>();
+        Map<Resource, Integer> add_res=new HashMap<>();
+
+        Map<Resource, Integer> emptyMap1 = new HashMap<>();
+
+        add_res.put(Resource.SERVANT, 12);
+        add_res.put(Resource.COIN, 6);
+        add_res.put(Resource.STONE, 9);
+        add_res.put(Resource.SHIELD, 15);
+        player.getPlayerBoard().getStrongbox().addResources(add_res);
+
+//      Cards that player can active
+        input.put(Resource.SERVANT, 12);
+        input.put(Resource.COIN, 6);
+        input.put(Resource.STONE, 9);
+        input.put(Resource.SHIELD, 15);
+
+        ProductionPower productionPower=new ProductionPower(input, emptyMap1);
+
+        assertFalse(player.canActivateProduction());
+
+//        card to active
+        DevelopmentCard developmentCardTest1=new DevelopmentCard(1,CardType.GREEN,emptyMap1,productionPower,0);
+        DevelopmentCard developmentCardTest2=new DevelopmentCard(2,CardType.PURPLE,emptyMap1,productionPower,0);
+//        card to active
+        DevelopmentCard developmentCardTest3=new DevelopmentCard(1,CardType.BLUE,emptyMap1,productionPower,0);
+
+        player.getPlayerBoard().getCardStacks().get(0).push(developmentCardTest1);
+        player.getPlayerBoard().getCardStacks().get(0).push(developmentCardTest2);
+        player.getPlayerBoard().getCardStacks().get(1).push(developmentCardTest3);
+
+//      Cards that player can not active
+        ArrayList<DevelopmentCard> expected=new ArrayList<>();
+
+        input=new HashMap<>();
+
+        input.put(Resource.SERVANT, 15);
+        input.put(Resource.COIN, 6);
+        input.put(Resource.STONE, 9);
+        input.put(Resource.SHIELD, 15);
+
+        productionPower=new ProductionPower(input, emptyMap1);
+
+//      card not to active
+        DevelopmentCard developmentCardTest4=new DevelopmentCard(1,CardType.PURPLE,emptyMap1,productionPower,0);
+        player.getPlayerBoard().getCardStacks().get(2).push(developmentCardTest4);
+
+
+//      Player can active only developmentCard2 and developmentCard3
+        expected.add(developmentCardTest2);
+        expected.add(developmentCardTest3);
+
+        assertEquals(expected, player.possibleDevelopmentCardProduction());
+
+//        add resources on one shelf for active developmentCard4
+
+        Map<Resource,Integer> shelfRes=new HashMap<>();
+        shelfRes.put(Resource.SERVANT,3);
+        player.getPlayerBoard().getWarehouse().getShelf("bottom").addResources(shelfRes);
+
+        expected.add(developmentCardTest4);
+        assertEquals(expected, player.possibleDevelopmentCardProduction());
+    }
+
+    @Test
+    public void possibleProductionPowersToActive()
+    {
+        Map<Resource,Integer>  input=new HashMap<>();
+        Map<Resource, Integer> add_res=new HashMap<>();
+
+        Map<Resource, Integer> emptyMap1 = new HashMap<>();
+
+        add_res.put(Resource.SERVANT, 12);
+        add_res.put(Resource.COIN, 6);
+        add_res.put(Resource.STONE, 9);
+        add_res.put(Resource.SHIELD, 15);
+        player.getPlayerBoard().getStrongbox().addResources(add_res);
+
+//      Cards that player can active
+        input.put(Resource.SERVANT, 12);
+        input.put(Resource.COIN, 6);
+        input.put(Resource.STONE, 9);
+        input.put(Resource.SHIELD, 15);
+
+        ProductionPower productionPower=new ProductionPower(input, emptyMap1);
+
+        assertFalse(player.canActivateProduction());
+
+//        card to active
+        DevelopmentCard developmentCardTest1=new DevelopmentCard(1,CardType.GREEN,emptyMap1,productionPower,0);
+        DevelopmentCard developmentCardTest2=new DevelopmentCard(2,CardType.PURPLE,emptyMap1,productionPower,0);
+//        card to active
+        DevelopmentCard developmentCardTest3=new DevelopmentCard(1,CardType.BLUE,emptyMap1,productionPower,0);
+
+        player.getPlayerBoard().getCardStacks().get(0).push(developmentCardTest1);
+        player.getPlayerBoard().getCardStacks().get(0).push(developmentCardTest2);
+        player.getPlayerBoard().getCardStacks().get(1).push(developmentCardTest3);
+
+//      Cards that player can not active
+        ArrayList<ProductionPower> expected=new ArrayList<>();
+
+        input=new HashMap<>();
+
+        input.put(Resource.SERVANT, 15);
+        input.put(Resource.COIN, 6);
+        input.put(Resource.STONE, 9);
+        input.put(Resource.SHIELD, 15);
+
+        productionPower=new ProductionPower(input, emptyMap1);
+
+//      card not to active
+        DevelopmentCard developmentCardTest4=new DevelopmentCard(1,CardType.PURPLE,emptyMap1,productionPower,0);
+        player.getPlayerBoard().getCardStacks().get(2).push(developmentCardTest4);
+
+
+//      Player can active only developmentCard2 and developmentCard3
+        expected.add(developmentCardTest2.getProductionPower());
+        expected.add(developmentCardTest3.getProductionPower());
+
+        assertEquals(expected, player.possibleProductionPowersToActive());
+
+//        add resources on one shelf for active developmentCard4
+
+        Map<Resource,Integer> shelfRes=new HashMap<>();
+        shelfRes.put(Resource.SERVANT,3);
+        player.getPlayerBoard().getWarehouse().getShelf("bottom").addResources(shelfRes);
+
+        expected.add(developmentCardTest4.getProductionPower());
+        assertEquals(expected, player.possibleProductionPowersToActive());
+    }
+
+    @Test
+    public void canActivateBasicProduction(){
+        assertFalse(player.canActivateBasicProduction());
+        Map<Resource,Integer> shelfRes=new HashMap<>();
+        shelfRes.put(Resource.SERVANT,1);
+        player.getPlayerBoard().getWarehouse().getShelf("top").addResources(shelfRes);
+        assertFalse(player.canActivateBasicProduction());
+
+        shelfRes=new HashMap<>();
+        shelfRes.put(Resource.COIN,1);
+        player.getPlayerBoard().getWarehouse().getShelf("middle").addResources(shelfRes);
+        assertTrue(player.canActivateBasicProduction());
+
+        shelfRes=new HashMap<>();
+        shelfRes.put(Resource.COIN,3);
+        player.getPlayerBoard().getWarehouse().getShelf("bottom").addResources(shelfRes);
+        assertTrue(player.canActivateBasicProduction());
+
+
+        shelfRes=new HashMap<>();
+        shelfRes.put(Resource.COIN,3);
+        player.getPlayerBoard().getWarehouse().getShelf("bottom").useResources(shelfRes);
+
+        shelfRes=new HashMap<>();
+        shelfRes.put(Resource.COIN,1);
+        player.getPlayerBoard().getWarehouse().getShelf("middle").useResources(shelfRes);
+
+        assertFalse(player.canActivateBasicProduction());
+    }
+
 }
