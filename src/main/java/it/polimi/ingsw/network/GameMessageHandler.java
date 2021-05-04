@@ -94,15 +94,17 @@ public class GameMessageHandler {
         room.getCurrentTurn().setWhiteMarbles(resources.get("white"));
 
         if (resources.get("white").size() > 0 && resources.get("white").get(0).equals(Resource.ANY)) {
-            System.out.println(resources.get("white").size());
-            System.out.println(resources.get("conversionOptions"));
+            clientConnection.sendMessage(new SelectResourceForWhiteMarbleRequestMessage(resources.get("white").size(),
+                    resources.get("conversionOptions").get(0), resources.get("conversionOptions").get(1)));
             return;
         }
 
-        askToDropResources(new ArrayList<>() {{
+        List<Resource> allResources = new ArrayList<>() {{
             addAll(room.getCurrentTurn().getNonWhiteMarbles());
             addAll(room.getCurrentTurn().getWhiteMarbles());
-        }});
+        }};
+
+        askToDropResources(allResources);
     }
 
     private void askToDropResources(List<Resource> resources) {

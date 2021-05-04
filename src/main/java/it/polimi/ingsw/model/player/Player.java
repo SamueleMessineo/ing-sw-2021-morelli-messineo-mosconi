@@ -135,16 +135,30 @@ public class Player implements Serializable {
      * @return True if the given leader card is playable, false if it's not.
      */
     public boolean canPlayLeader(int leaderIndex) {
+        System.out.println("can play leader");
         LeaderCard leader = leaderCards.get(leaderIndex);
+        System.out.println(leader);
+        System.out.println("retrieved leader");
         Map<CardType,Integer> cardRequirements=leader.getCardRequirements();
+        System.out.println("card requirements");
         int cardRequirementsLevel= leader.getCardRequirementsLevel();
+        System.out.println("card requirements level");
 
-        //Resource needed to play the LeaderCard
         Map<Resource, Integer> resourceRequirements = leader.getResourceRequirements();
-        if(resourceRequirements!=null && !resourceRequirements.isEmpty()){
+
+        System.out.println("retrieved card and resource requirements");
+
+        if(resourceRequirements != null){
+            Map<Resource, Integer> fullResourceRequirements = new HashMap<>(){{
+                put(Resource.STONE, 0);
+                put(Resource.COIN, 0);
+                put(Resource.SHIELD,0);
+                put(Resource.SERVANT, 0);
+                putAll(resourceRequirements);
+            }};
             Map<Resource, Integer> allResources = playerBoard.getResources();
             for (Resource resource : allResources.keySet()) {
-                if (allResources.get(resource) < resourceRequirements.get(resource)) return false;
+                if (allResources.get(resource) < fullResourceRequirements.get(resource)) return false;
             }
         }
 
