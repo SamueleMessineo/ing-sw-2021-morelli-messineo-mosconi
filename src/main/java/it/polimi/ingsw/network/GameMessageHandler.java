@@ -88,17 +88,20 @@ public class GameMessageHandler {
     }
 
     public void handle(SelectMarblesResponseMessage message){
+        System.out.println("received get marbles response");
         Map<String, List<Resource>> resources = gameController.getMarbles(message.getRowOrColumn(), message.getIndex());
-
+        System.out.println("retrieved resources");
         room.getCurrentTurn().setNonWhiteMarbles(resources.get("notWhite"));
         room.getCurrentTurn().setWhiteMarbles(resources.get("white"));
+        System.out.println("turn set");
 
         if (resources.get("white").size() > 0 && resources.get("white").get(0).equals(Resource.ANY)) {
+            System.out.println("ask for conversion help");
             clientConnection.sendMessage(new SelectResourceForWhiteMarbleRequestMessage(resources.get("white").size(),
                     resources.get("conversionOptions").get(0), resources.get("conversionOptions").get(1)));
             return;
         }
-
+        System.out.println("merge resources");
         List<Resource> allResources = new ArrayList<>() {{
             addAll(room.getCurrentTurn().getNonWhiteMarbles());
             addAll(room.getCurrentTurn().getWhiteMarbles());
@@ -108,6 +111,7 @@ public class GameMessageHandler {
     }
 
     private void askToDropResources(List<Resource> resources) {
+        System.out.println("ask to drop");
         clientConnection.sendMessage(new DropResourceRequestMessage(resources));
     }
 

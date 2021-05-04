@@ -24,8 +24,6 @@ public class SelectMarblesResponseMessage extends GameMessage {
         return rowOrColumn;
     }
 
-
-    @Override
     public void accept(GameMessageHandler handler) {
         handler.handle(this);
     }
