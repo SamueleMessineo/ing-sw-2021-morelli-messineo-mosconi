@@ -10,6 +10,7 @@ import it.polimi.ingsw.network.client.StringMessage;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public interface UI {
 
@@ -36,4 +37,5 @@ public interface UI {
     void discardLeaderCard(ArrayList<LeaderCard> cards);
 
     void switchShelves(ArrayList<Shelf> shelves);
+
 }

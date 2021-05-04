@@ -138,23 +138,24 @@ public class CLI implements UI {
 
     @Override
     public void displayGameState() {
-       displayPlayerBoard(gameState.getPlayerByUsername(username));
+        // displayPlayerBoard(gameState.getPlayerByUsername(username));
 
        //momentary fix
-       if(gameState.getCurrentPlayer()!= gameState.getPlayerByUsername(username)){
+        if(gameState.getCurrentPlayer()!= gameState.getPlayerByUsername(username)){
            for (Player player:
                 gameState.getPlayers()) {
-               if (!player.getUsername().equals(gameState.getCurrentPlayer().getUsername())){
                    displayPlayerBoard(gameState.getPlayerByUsername(player.getUsername()));
                    output.println("Wait your turn");
-               }
            }
-       }
+       } else displayPlayerBoard(gameState.getPlayerByUsername(username));
+
        /* todo this in preferable to the above one but gives problems. Go Fix it
-       while (gameState.getCurrentPlayer()!= gameState.getPlayerByUsername(username)) {
+       /*
+       if (gameState.getCurrentPlayer()!= gameState.getPlayerByUsername(username)) {
           askToDisplayPlayerBoard();
        }
-        */
+       */
+
     }
 
     private void askToDisplayPlayerBoard(){
@@ -198,7 +199,10 @@ public class CLI implements UI {
         }
 
         int selection = askIntegerInput("Select a move", 1, moves.size()+1);
-        if(selection==1)sendMove("VISIT_PLAYER");
+        if(selection==1){
+            sendMove("VISIT_PLAYER");
+            displayPossibleMoves(moves);
+        }
         else sendMove(moves.get(selection-2));
     }
 

@@ -40,11 +40,13 @@ public class Warehouse implements Serializable {
     /**
      * Returns the index of a shelf in the shelf list given the shelf name.
      * @param shelf string containing the shelf name.
-     * @return the index of the shelf in the list.
+     * @return the index of the shelf in the list. If is not contained it is returned -1
      */
     protected int getShelfIndex(String shelf) {
         shelf = shelf.toLowerCase().trim();
-        return shelfNames.indexOf(shelf);
+        if(shelfNames.contains(shelf)) {
+            return shelfNames.indexOf(shelf);
+        } else return -1;
     }
 
     /**
@@ -53,6 +55,7 @@ public class Warehouse implements Serializable {
      * @return the Shelf object corresponding to the given name.
      */
     public Shelf getShelf(String shelf){
+        if (getShelfIndex(shelf) == -1)return null;
         return shelves.get(getShelfIndex(shelf));
     }
 
@@ -149,5 +152,18 @@ public class Warehouse implements Serializable {
         }
 
         return allResources;
+    }
+
+    /**
+     * Check the contents of two shelves can be swapped
+     * @param shelf1 first shelf
+     * @param shelf2 second shelf
+     * @return true if contents of shelf1 and shelf2 can be swapped
+     */
+    public boolean canSwitchShelves(Shelf shelf1, Shelf shelf2){
+        if(shelf1 == null || shelf2 == null)return false;
+        if(shelf1.getResourceNumber() == 0 && shelf2.getResourceNumber()==0)return false;
+        return shelf1.getResourceNumber() <= shelf2.getMaxSize() &&
+                shelf2.getResourceNumber() <= shelf1.getMaxSize();
     }
 }
