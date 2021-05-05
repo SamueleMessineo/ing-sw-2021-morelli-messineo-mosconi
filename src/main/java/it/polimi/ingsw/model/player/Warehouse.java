@@ -160,10 +160,18 @@ public class Warehouse implements Serializable {
      * @param shelf2 second shelf
      * @return true if contents of shelf1 and shelf2 can be swapped
      */
-    public boolean canSwitchShelves(Shelf shelf1, Shelf shelf2){
-        if(shelf1 == null || shelf2 == null)return false;
-        if(shelf1.getResourceNumber() == 0 && shelf2.getResourceNumber()==0)return false;
-        return shelf1.getResourceNumber() <= shelf2.getMaxSize() &&
-                shelf2.getResourceNumber() <= shelf1.getMaxSize();
+    public boolean canSwitchShelves(Shelf shelf1, Shelf shelf2) {
+        if (shelf1 == null || shelf2 == null) return false;
+        if (shelf1.getResourceNumber() == 0 && shelf2.getResourceNumber() == 0) return false;
+        if (shelves.indexOf(shelf1) <= 2 && shelves.indexOf(shelf2) <= 2) {
+            return shelf1.getResourceNumber() <= shelf2.getMaxSize() &&
+                    shelf2.getResourceNumber() <= shelf1.getMaxSize();
+        } else {
+            if (shelves.indexOf(shelf1) > 2 && shelves.indexOf(shelf2) > 2) return false;
+            else {
+                return shelf1.getResourceType().equals(shelf2.getResourceType()) && shelf1.getResourceNumber() <= shelf2.getMaxSize() &&
+                        shelf2.getResourceNumber() <= shelf1.getMaxSize();
+            }
+        }
     }
 }
