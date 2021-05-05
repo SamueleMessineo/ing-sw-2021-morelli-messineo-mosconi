@@ -14,7 +14,7 @@ public class GameUtils {
 
         String gameJSON = gson.toJson(game);
 
-        File outputFile = new File("src/main/resources/" + roomID + ".json");
+        File outputFile = new File("src/main/resources/games/" + roomID + ".json");
         FileWriter writer;
         try {
             writer = new FileWriter(outputFile);
@@ -35,7 +35,7 @@ public class GameUtils {
         Game game = null;
 
         try {
-            reader = new BufferedReader(new FileReader("src/main/resources/" + roomID + ".json"));
+            reader = new BufferedReader(new FileReader("src/main/resources/games/" + roomID + ".json"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
