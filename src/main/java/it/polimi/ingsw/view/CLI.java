@@ -284,12 +284,61 @@ public class CLI implements UI {
     @Override
     public void activateProduction(List<ProductionPower> productionPowers) {
         List<Integer> selectedStacks = null;
-        ProductionPower productionPower = null;
+        ProductionPower selectedProductionPowers = null;
+        Game currentGameState = gameState;
+        int selction;
+        boolean done = false;
+        List<Integer> indexes= new ArrayList<>();
 
-        if(gameState.getCurrentPlayer().canActivateBasicProduction()){
+        if(productionPowers.equals(gameState.getCurrentPlayer().possibleProductionPowersToActive())){
+            if(currentGameState.getCurrentPlayer().canActivateBasicProduction()){
+                indexes.add(0);
+            }
+            for (int i = 1; i <= productionPowers.size(); i++) {
+                indexes.add(i);
+
+            }
+
+            int productionNumber=1;
+            while (!done){
+
+                output.println(gameState.getCurrentPlayer().possibleProductionPowersToActive());
+                String message = "";
+                message+="Select production power N° " +productionNumber+" to activate" ;
+                if(indexes.contains(0) && gameState.getCurrentPlayer().canActivateBasicProduction()){
+                    message+="[0 is basic production]";
+                }
+                message+="\n"+ indexes;
+
+                selction = askIntegerInput(message,indexes.get(0),gameState.getCurrentPlayer().possibleProductionPowersToActive().size());
+
+                if(selction==0){
+                    if(currentGameState.getCurrentPlayer().canActivateBasicProduction()){
+                        selectedProductionPowers= askBasicProductionPowerIO();
+                        indexes.remove(0);
+                    }
+                }else {
+                    selectedStacks.add(selction-1);
+                    List<Integer> currentSelection = new ArrayList<>();
+                    currentSelection.add(selction-1);
+                    currentGameState.getCurrentPlayer().getPlayerBoard().activateProduction(currentSelection);
+                }
+
+                productionNumber++;
+                output.println("Are you done? [y/n]");
+                done = input.nextLine().trim().toLowerCase().startsWith("y");
+            }
+            selction = askIntegerInput("1.Send, 2.Abort",1,2);
+            if(selction==1)client.sendMessage(new ActivateProductionResponseMessage(selectedStacks, selectedProductionPowers));
+            else activateProduction(productionPowers);
+        } else output.println("problem with gameState");
+
+
+        /*
+            if(gameState.getCurrentPlayer().canActivateBasicProduction()){
             output.println("Do you want to activate basic production power? [y/n]");
             if (input.nextLine().toLowerCase().trim().startsWith("y")){
-                productionPower = askBasicProductionPowerIO();
+                selectedProductionPowers= askBasicProductionPowerIO();
             }
         }
 
@@ -304,8 +353,8 @@ public class CLI implements UI {
         }
 
 
-        client.sendMessage(new ActivateProductionResponseMessage(selectedStacks, productionPower));
-
+        client.sendMessage(new ActivateProductionResponseMessage(selectedStacks, selectedProductionPowers));
+        */
 
     }
 
