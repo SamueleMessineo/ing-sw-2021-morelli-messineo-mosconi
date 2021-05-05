@@ -6,12 +6,10 @@ import it.polimi.ingsw.model.market.MarketCardStack;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Warehouse;
 import it.polimi.ingsw.model.shared.DevelopmentCard;
-import it.polimi.ingsw.model.shared.LeaderCard;
 import it.polimi.ingsw.model.shared.Resource;
 import it.polimi.ingsw.server.Room;
 
 import java.util.*;
-import java.util.stream.IntStream;
 
 public class ClassicGameController implements GameController{
     private final Game game;
@@ -118,12 +116,12 @@ public class ClassicGameController implements GameController{
     }
 
     @Override
-    public List<String> computeNextPossibleMoves(boolean alreadyPerfomedMove) {
+    public List<String> computeNextPossibleMoves(boolean alreadyPerformedMove) {
         List<String> moves = new ArrayList<>();
         Player player = game.getCurrentPlayer();
         System.out.println("compute moves");
 
-        if(!alreadyPerfomedMove){
+        if(!alreadyPerformedMove){
             if (player.canActivateProduction()) {
                 moves.add("ACTIVATE_PRODUCTION");
             }
