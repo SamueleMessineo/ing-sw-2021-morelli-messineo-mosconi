@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.market.MarbleStructure;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Shelf;
+import it.polimi.ingsw.model.shared.DevelopmentCard;
 import it.polimi.ingsw.model.shared.LeaderCard;
 import it.polimi.ingsw.model.shared.ProductionPower;
 import it.polimi.ingsw.model.shared.Resource;
@@ -40,5 +41,9 @@ public interface UI {
     void switchShelves(ArrayList<Shelf> shelves);
 
     void activateProduction(List<ProductionPower> productionPowers);
+
+    void buyDevelopmentCard(List<DevelopmentCard> developmentCards);
+
+    void selectStackToPlaceCard(List<DevelopmentCard> stacks);
 
 }

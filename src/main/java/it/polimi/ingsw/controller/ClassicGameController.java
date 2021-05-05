@@ -169,5 +169,17 @@ public class ClassicGameController implements GameController{
         moves.add("ACTIVATE_PRODUCTION");
         return moves;
     }
+
+    public List<DevelopmentCard> getBuyableDevelopementCards(){
+        List<DevelopmentCard> developmentCards = new ArrayList<>();
+
+        for (MarketCardStack cardsStack : game.getMarket().getCardsGrid()) {
+            DevelopmentCard topCard = cardsStack.peek();
+            if (game.getCurrentPlayer().canBuyAndPlaceDevelopmentCard(topCard)) {
+                developmentCards.add(topCard);
+            }
+        }
+        return developmentCards;
+    }
 }
 

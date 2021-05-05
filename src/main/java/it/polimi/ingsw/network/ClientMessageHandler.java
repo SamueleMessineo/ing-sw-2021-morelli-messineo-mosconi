@@ -61,4 +61,12 @@ public class ClientMessageHandler {
     public void handle(ActivateProductionRequestMessage message){
         ui.activateProduction(message.getProductionPowers());
     }
+
+    public void handle(BuyDevelopmentCardRequestMessage message){
+        ui.buyDevelopmentCard(message.getDevelopmentCards());
+    }
+
+    public void handle(SelectStackToPlaceCardRequestMessage message){
+
+    }
 }

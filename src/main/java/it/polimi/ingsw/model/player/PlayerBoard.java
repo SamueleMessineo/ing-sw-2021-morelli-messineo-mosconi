@@ -104,11 +104,15 @@ public class PlayerBoard implements Serializable {
              selectedStacks) {
             ProductionPower productionPower = getCardStacks().get(i).peek().getProductionPower();
 
-            //todo finire di impelementare levando l'input alla warehouse e/o strongbox
+            payResourceCost(productionPower.getInput());
 
             strongbox.addResources(productionPower.getOutput());
         }
         System.out.println("metodo da implementare successivamente");
+    }
+
+    public void payResourceCost(Map<Resource, Integer>cost){
+        //todo
     }
 
     /**

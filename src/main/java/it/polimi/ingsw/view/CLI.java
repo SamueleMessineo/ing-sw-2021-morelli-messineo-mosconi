@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.market.MarbleStructure;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Shelf;
+import it.polimi.ingsw.model.shared.DevelopmentCard;
 import it.polimi.ingsw.model.shared.LeaderCard;
 import it.polimi.ingsw.model.shared.ProductionPower;
 import it.polimi.ingsw.model.shared.Resource;
@@ -386,5 +387,20 @@ public class CLI implements UI {
             }
         }
         return new ProductionPower(input, output);
+    }
+
+    @Override
+    public void buyDevelopmentCard(List<DevelopmentCard> developmentCards) {
+        output.println(developmentCards);
+        int selection = askIntegerInput("Select a card", 1, developmentCards.size())-1;
+        client.sendMessage(new BuyDevelopmentCardResponseMessage(selection));
+
+    }
+
+    @Override
+    public void selectStackToPlaceCard(List<DevelopmentCard> stacks) {
+        output.println(stacks);
+        int selection = askIntegerInput("On which stack you want to put your new card?", 1, stacks.size());
+
     }
 }

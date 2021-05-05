@@ -1,7 +1,13 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.market.Marble;
+import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.model.shared.DevelopmentCard;
+import it.polimi.ingsw.model.shared.LeaderCard;
 import it.polimi.ingsw.model.shared.Resource;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -18,5 +24,7 @@ public interface GameController {
 
     boolean switchShelves(String shelf1, String shelf2);
 
-    List<String> computeNextPossibleMoves(boolean alreadyPerformedMove);
+    List<String> computeNextPossibleMoves(boolean alreadyPerfomedMove);
+
+    public List<DevelopmentCard> getBuyableDevelopementCards();
 }

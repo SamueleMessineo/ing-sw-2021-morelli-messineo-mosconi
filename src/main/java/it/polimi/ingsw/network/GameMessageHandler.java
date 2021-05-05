@@ -2,7 +2,11 @@ package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.controller.Turn;
+import it.polimi.ingsw.model.market.MarketCardStack;
 import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.model.player.PlayerCardStack;
+import it.polimi.ingsw.model.shared.DevelopmentCard;
+import it.polimi.ingsw.model.shared.LeaderCard;
 import it.polimi.ingsw.model.shared.Resource;
 import it.polimi.ingsw.network.client.*;
 import it.polimi.ingsw.network.game.*;
@@ -47,7 +51,7 @@ public class GameMessageHandler {
             if (p.getLeaderCards().size() != 2) return;
         }
 
-       sendStateAndMoves(false);
+       sendStateAndMovesForNextTurn();
     }
 
     public void handle(SelectMoveResponseMessage message){
@@ -68,6 +72,8 @@ public class GameMessageHandler {
                 case("ACTIVATE_PRODUCTION"):
                     clientConnection.sendMessage(new ActivateProductionRequestMessage(room.getPlayerFromConnection(clientConnection).possibleProductionPowersToActive()));
                     break;
+                case ("BUY_CARD"):
+                    clientConnection.sendMessage(new BuyDevelopmentCardRequestMessage(gameController.getBuyableDevelopementCards()));
             }
 
         } else {
@@ -138,7 +144,8 @@ public class GameMessageHandler {
         if(message.getSelectedStacks()!=null){
             room.getGame().getCurrentPlayer().getPlayerBoard().activateProduction(message.getSelectedStacks());
             clientConnection.sendMessage(new StringMessage("Your update strongbox: "+ room.getGame().getCurrentPlayer().getPlayerBoard().getStrongbox()));
-            sendStateAndMoves(true);
+            room.getCurrentTurn().setAlreadyPerformedMove(true);
+            sendNextMoves(room.getCurrentTurn().hasAlreadyPerformedMove());
         }
         if(message.getBasicProduction() != null){
             //activating basic production
@@ -158,18 +165,44 @@ public class GameMessageHandler {
         //TODO: to be completed
     }
 
-    private void endTurn(){
-        gameController.computeCurrentPlayer();
-        sendStateAndMoves(false);
+    public void handle(BuyDevelopmentCardResponseMessage message){
+        DevelopmentCard developmentCard = gameController.getBuyableDevelopementCards().get(message.getSelectedCardIndex());
+        List<DevelopmentCard> stacks = new ArrayList<>();
+        for (PlayerCardStack cardStack:
+        room.getGame().getCurrentPlayer().getPlayerBoard().getCardStacks()){
+            if(cardStack.canPlaceCard(developmentCard))stacks.add(cardStack.peek());
+        }
+        clientConnection.sendMessage(new SelectStackToPlaceCardRequestMessage(stacks));
+
+        room.getCurrentTurn().setBuyedDevelopmentCard(developmentCard);
+    }
+
+    public void handle(SelectStackToPlaceCardResponseMessage message){
+        if(room.getGame().getCurrentPlayer().getPlayerBoard().getCardStacks().get(message.getSelectedStackIndex()).canPlaceCard(room.getCurrentTurn().getBuyedDevelopmentCard())){
+            room.getGame().getCurrentPlayer().getPlayerBoard().getCardStacks().get(message.getSelectedStackIndex()).add(room.getCurrentTurn().getBuyedDevelopmentCard());
+            room.getGame().getCurrentPlayer().getPlayerBoard().payResourceCost(room.getGame().getCurrentPlayer().computeDiscountedCost(room.getCurrentTurn().getBuyedDevelopmentCard()));
+            room.getCurrentTurn().setAlreadyPerformedMove(true);
+            sendNextMoves(room.getCurrentTurn().hasAlreadyPerformedMove());
+
+        }else {
+            clientConnection.sendMessage(new ErrorMessage("Action Could not be completed"));
+            sendNextMoves(room.getCurrentTurn().hasAlreadyPerformedMove());
+        }
 
     }
 
-    private void sendStateAndMoves(boolean hasPerformedAction){
+    private void endTurn(){
+        gameController.computeCurrentPlayer();
+        sendStateAndMovesForNextTurn();
+
+    }
+
+    private void sendStateAndMovesForNextTurn(){
         room.sendAll(new GameStateMessage(room.getGame()));
 
         ClientConnection currentPlayer = room.getConnections().get(room.getGame().getPlayers().indexOf(
                 room.getGame().getCurrentPlayer()));
-        room.setCurrentTurn(new Turn(room.getPlayerFromConnection(currentPlayer).getUsername(), gameController.computeNextPossibleMoves(hasPerformedAction)));
+        room.setCurrentTurn(new Turn(room.getPlayerFromConnection(currentPlayer).getUsername(), gameController.computeNextPossibleMoves(room.getCurrentTurn().hasAlreadyPerformedMove())));
         SelectMoveRequestMessage selectMoveRequestMessage = new SelectMoveRequestMessage(room.getCurrentTurn().getMoves());
         currentPlayer.sendMessage(selectMoveRequestMessage);
     }

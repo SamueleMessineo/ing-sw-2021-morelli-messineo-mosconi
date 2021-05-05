@@ -3,6 +3,7 @@ package it.polimi.ingsw.view;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.market.MarbleStructure;
 import it.polimi.ingsw.model.player.Shelf;
+import it.polimi.ingsw.model.shared.DevelopmentCard;
 import it.polimi.ingsw.model.shared.LeaderCard;
 import it.polimi.ingsw.model.shared.ProductionPower;
 import it.polimi.ingsw.model.shared.Resource;
@@ -91,6 +92,16 @@ public class GUI extends Application implements UI {
 
     @Override
     public void activateProduction(List<ProductionPower> productionPowers) {
+
+    }
+
+    @Override
+    public void buyDevelopmentCard(List<DevelopmentCard> developmentCards) {
+
+    }
+
+    @Override
+    public void selectStackToPlaceCard(List<DevelopmentCard> stacks) {
 
     }
 }

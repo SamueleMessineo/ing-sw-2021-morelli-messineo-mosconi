@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.model.shared.DevelopmentCard;
 import it.polimi.ingsw.model.shared.Resource;
 
 import java.util.List;
@@ -11,6 +12,7 @@ public class Turn {
     private List<Resource> converted = new ArrayList<>();
     private List<Resource> toConvert = new ArrayList<>();
     private List<Resource> conversionOptions = new ArrayList<>();
+    private DevelopmentCard buyedDevelopmentCard;
 
     private boolean alreadyPerformedMove = false;
 
@@ -72,5 +74,11 @@ public class Turn {
         this.conversionOptions = conversionOptions;
     }
 
+    public DevelopmentCard getBuyedDevelopmentCard() {
+        return buyedDevelopmentCard;
+    }
 
+    public void setBuyedDevelopmentCard(DevelopmentCard buyedDevelopmentCard) {
+        this.buyedDevelopmentCard = buyedDevelopmentCard;
+    }
 }

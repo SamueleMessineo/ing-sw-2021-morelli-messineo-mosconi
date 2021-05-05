@@ -192,7 +192,8 @@ public class Player implements Serializable {
     }
 
     public boolean canBuyAndPlaceDevelopmentCard(DevelopmentCard developmentCard){
-        Map<Resource, Integer> cost = developmentCard.getCost();
+        Map<Resource, Integer> cost = computeDiscountedCost(developmentCard);
+
         Map<Resource, Integer> allResources = new HashMap<>(playerBoard.getResources());
         for (Resource resource : allResources.keySet()) {
             if (allResources.get(resource) < cost.get(resource)) return false;
@@ -203,6 +204,18 @@ public class Player implements Serializable {
                 return true;
         }
         return false;
+    }
+
+    public Map<Resource, Integer> computeDiscountedCost(DevelopmentCard developmentCard){
+        Map<Resource, Integer> cost = developmentCard.getCost();
+
+        for (LeaderCard leaderCard:
+                playedLeaderCards) {
+            if(leaderCard.getEffectScope().equals("Market")){
+                cost.put(leaderCard.getEffectObject(), cost.get(leaderCard.getEffectObject())-1);
+            }
+        }
+        return  cost;
     }
 
     public boolean canActivateProduction() {
