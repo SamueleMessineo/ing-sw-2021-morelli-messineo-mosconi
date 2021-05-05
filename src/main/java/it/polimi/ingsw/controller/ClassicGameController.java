@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.market.MarketCardStack;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Warehouse;
 import it.polimi.ingsw.model.shared.DevelopmentCard;
+import it.polimi.ingsw.model.shared.PopesFavorTileState;
 import it.polimi.ingsw.model.shared.Resource;
 import it.polimi.ingsw.server.Room;
 
@@ -36,7 +37,7 @@ public class ClassicGameController implements GameController{
 
     }
 
-    private boolean isGameOver(){
+    public boolean isGameOver() {
         for (Player player:
                 game.getPlayers()) {
             if (player.getFaithTrack().getPosition() == player.getFaithTrack().getMaxposition())return true;
@@ -66,33 +67,51 @@ public class ClassicGameController implements GameController{
             put("toConvert", new ArrayList<>());
         }};
 
-        int nWhiteMarblesToAskConvert = 0;
         List<Resource> effectsObjects = game.getCurrentPlayer().hasActiveEffectOn("Marbles");
         convertedMarbles.put("conversionOptions", effectsObjects);
 
+        // convert all the marbles
         for (Marble marble : marbles) {
             switch (marble) {
-                case RED:
-                    //convertedMarbles.get("notWhite").add(Resource.FAITH);
+                case RED: // convert to vatican point
+                    // move the player forward on the track
+                    game.getCurrentPlayer().getFaithTrack().move();
+                    // check if it landed on a Pope space
+                    int playerOnPope = game.getCurrentPlayer().getFaithTrack().inOnPopeSpace();
+                    if (playerOnPope != -1) {
+                        // activate vatican report
+                        for (Player player : game.getPlayers()) {
+                            if (player.getFaithTrack().isInPopeFavorByLevel(playerOnPope)) {
+                                // if a player is in the popes favour area, activate the corresponding tile
+                                player.getFaithTrack().getPopesFavorTiles().get(playerOnPope)
+                                        .setState(PopesFavorTileState.ACTIVE);
+                            } else {
+                                // if a player is not in the popes favour area, discard the corresponding tile
+                                player.getFaithTrack().getPopesFavorTiles().get(playerOnPope)
+                                        .setState(PopesFavorTileState.DISCARDED);
+                            }
+                        }
+                    }
                     break;
-                case BLUE:
+                case BLUE: // convert to shied
                     convertedMarbles.get("converted").add(Resource.SHIELD);
                     break;
-                case GREY:
+                case GREY: // convert to stone
                     convertedMarbles.get("converted").add(Resource.STONE);
                     break;
-                case PURPLE:
+                case PURPLE: // convert to servant
                     convertedMarbles.get("converted").add(Resource.SERVANT);
                     break;
-                case YELLOW:
+                case YELLOW: // convert to coin
                     convertedMarbles.get("converted").add(Resource.COIN);
                     break;
                 case WHITE:
                     if (effectsObjects.size() == 2) {
-                        // need to ask the user how to convert
-                        //nWhiteMarblesToAskConvert++;
+                        // the player has two active leader cards with effects on the marble structure
+                        // need to ask the user how to convert them
                         convertedMarbles.get("toConvert").add(Resource.ANY);
                     } else if (effectsObjects.size() == 1) {
+                        // the player only has one active leader card with the marbles as scope
                         // can automatically convert
                         convertedMarbles.get("converted").add(effectsObjects.get(0));
                     }

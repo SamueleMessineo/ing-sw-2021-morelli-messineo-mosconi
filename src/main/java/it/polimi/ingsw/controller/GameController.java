@@ -26,5 +26,7 @@ public interface GameController {
 
     List<String> computeNextPossibleMoves(boolean alreadyPerfomedMove);
 
-    public List<DevelopmentCard> getBuyableDevelopementCards();
+    List<DevelopmentCard> getBuyableDevelopementCards();
+
+    boolean isGameOver();
 }

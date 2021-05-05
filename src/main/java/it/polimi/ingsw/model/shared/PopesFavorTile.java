@@ -9,7 +9,7 @@ import java.io.Serializable;
 
 public class PopesFavorTile implements Serializable {
     private final int score;
-    private final PopesFavorTileState state;
+    private PopesFavorTileState state;
 
     public PopesFavorTile(int score){
         this.state=PopesFavorTileState.INACTIVE;
@@ -22,6 +22,10 @@ public class PopesFavorTile implements Serializable {
 
     public PopesFavorTileState getState(){
         return state;
+    }
+
+    public void setState(PopesFavorTileState state) {
+        this.state = state;
     }
 
 }

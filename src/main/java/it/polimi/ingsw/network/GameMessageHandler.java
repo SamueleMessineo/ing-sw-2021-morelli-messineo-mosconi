@@ -86,6 +86,12 @@ public class GameMessageHandler {
         System.out.println("received get marbles response");
         Map<String, List<Resource>> resources = gameController.getMarbles(message.getRowOrColumn(), message.getIndex());
         System.out.println("retrieved resources");
+
+        if (gameController.isGameOver()) {
+            room.sendAll(new StringMessage("GAME OVER"));
+            return;
+        }
+
         room.getCurrentTurn().setConverted(resources.get("converted"));
         room.getCurrentTurn().setToConvert(resources.get("toConvert"));
         room.getCurrentTurn().setConversionOptions(resources.get("conversionOptions"));

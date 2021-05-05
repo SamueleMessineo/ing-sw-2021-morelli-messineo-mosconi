@@ -65,4 +65,9 @@ public class SoloGameController implements GameController {
     public List<DevelopmentCard> getBuyableDevelopementCards() {
         return null;
     }
+
+    @Override
+    public boolean isGameOver() {
+        return false;
+    }
 }
