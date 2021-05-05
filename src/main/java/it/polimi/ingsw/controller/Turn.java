@@ -8,8 +8,10 @@ import java.util.ArrayList;
 public class Turn {
     private String currentPlayer;
     private List<String> moves;
-    private List<Resource> nonWhiteMarbles = new ArrayList<>();
-    private List<Resource> whiteMarbles = new ArrayList<>();
+    private List<Resource> converted = new ArrayList<>();
+    private List<Resource> toConvert = new ArrayList<>();
+    private List<Resource> conversionOptions = new ArrayList<>();
+
     private boolean alreadyPerformedMove = false;
 
     public Turn(String currentPlayer, List<String> moves) {
@@ -46,19 +48,29 @@ public class Turn {
         return alreadyPerformedMove;
     }
 
-    public List<Resource> getNonWhiteMarbles() {
-        return nonWhiteMarbles;
+    public List<Resource> getConverted() {
+        return converted;
     }
 
-    public void setNonWhiteMarbles(List<Resource> nonWhiteMarbles) {
-        this.nonWhiteMarbles = nonWhiteMarbles;
+    public void setConverted(List<Resource> converted) {
+        this.converted = converted;
     }
 
-    public List<Resource> getWhiteMarbles() {
-        return whiteMarbles;
+    public List<Resource> getToConvert() {
+        return toConvert;
     }
 
-    public void setWhiteMarbles(List<Resource> whiteMarbles) {
-        this.whiteMarbles = whiteMarbles;
+    public void setToConvert(List<Resource> toConvert) {
+        this.toConvert = toConvert;
     }
+
+    public List<Resource> getConversionOptions() {
+        return conversionOptions;
+    }
+
+    public void setConversionOptions(List<Resource> conversionOptions) {
+        this.conversionOptions = conversionOptions;
+    }
+
+
 }

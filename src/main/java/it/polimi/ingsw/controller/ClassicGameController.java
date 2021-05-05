@@ -64,13 +64,13 @@ public class ClassicGameController implements GameController{
         }
 
         Map<String, List<Resource>> convertedMarbles = new HashMap<>(){{
-            put("white", new ArrayList<>());
-            put("notWhite", new ArrayList<>());
+            put("converted", new ArrayList<>());
+            put("toConvert", new ArrayList<>());
         }};
 
         int nWhiteMarblesToAskConvert = 0;
-        List<Resource> resources = game.getCurrentPlayer().hasActiveEffectOn("Marbles");
-        convertedMarbles.put("conversionOptions", resources);
+        List<Resource> effectsObjects = game.getCurrentPlayer().hasActiveEffectOn("Marbles");
+        convertedMarbles.put("conversionOptions", effectsObjects);
 
         for (Marble marble : marbles) {
             switch (marble) {
@@ -78,25 +78,25 @@ public class ClassicGameController implements GameController{
                     //convertedMarbles.get("notWhite").add(Resource.FAITH);
                     break;
                 case BLUE:
-                    convertedMarbles.get("notWhite").add(Resource.SHIELD);
+                    convertedMarbles.get("converted").add(Resource.SHIELD);
                     break;
                 case GREY:
-                    convertedMarbles.get("notWhite").add(Resource.STONE);
+                    convertedMarbles.get("converted").add(Resource.STONE);
                     break;
                 case PURPLE:
-                    convertedMarbles.get("notWhite").add(Resource.SERVANT);
+                    convertedMarbles.get("converted").add(Resource.SERVANT);
                     break;
                 case YELLOW:
-                    convertedMarbles.get("notWhite").add(Resource.COIN);
+                    convertedMarbles.get("converted").add(Resource.COIN);
                     break;
                 case WHITE:
-                    if (resources.size() == 2) {
+                    if (effectsObjects.size() == 2) {
                         // need to ask the user how to convert
                         //nWhiteMarblesToAskConvert++;
-                        convertedMarbles.get("white").add(Resource.ANY);
-                    } else if (resources.size() == 1) {
+                        convertedMarbles.get("toConvert").add(Resource.ANY);
+                    } else if (effectsObjects.size() == 1) {
                         // can automatically convert
-                        convertedMarbles.get("white").add(resources.get(0));
+                        convertedMarbles.get("converted").add(effectsObjects.get(0));
                     }
                     break;
                 default:

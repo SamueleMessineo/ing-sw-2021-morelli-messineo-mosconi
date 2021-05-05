@@ -77,26 +77,33 @@ public class GameMessageHandler {
     }
 
     public void handle(SelectMarblesResponseMessage message){
+        System.out.println("received get marbles response");
         Map<String, List<Resource>> resources = gameController.getMarbles(message.getRowOrColumn(), message.getIndex());
-        room.getCurrentTurn().setNonWhiteMarbles(resources.get("notWhite"));
-        room.getCurrentTurn().setWhiteMarbles(resources.get("white"));
+        System.out.println("retrieved resources");
+        room.getCurrentTurn().setConverted(resources.get("converted"));
+        room.getCurrentTurn().setToConvert(resources.get("toConvert"));
+        room.getCurrentTurn().setConversionOptions(resources.get("conversionOptions"));
+        System.out.println("turn set");
 
-        if (resources.get("white").size() > 0 && resources.get("white").get(0).equals(Resource.ANY)) {
-            clientConnection.sendMessage(new SelectResourceForWhiteMarbleRequestMessage(resources.get("white").size(),
+        if (resources.get("toConvert").size() > 0 && resources.get("toConvert").get(0).equals(Resource.ANY)) {
+            System.out.println("ask for conversion help");
+            clientConnection.sendMessage(new SelectResourceForWhiteMarbleRequestMessage(resources.get("toConvert").size(),
                     resources.get("conversionOptions").get(0), resources.get("conversionOptions").get(1)));
             return;
         }
-        List<Resource> allResources = new ArrayList<>();
 
-        allResources.addAll(room.getCurrentTurn().getNonWhiteMarbles());
-        allResources.addAll(room.getCurrentTurn().getWhiteMarbles());
-
-
-        askToDropResources(allResources);
+        askToDropResources();
     }
 
-    private void askToDropResources(List<Resource> resources) {
-        clientConnection.sendMessage(new DropResourceRequestMessage(resources));
+    private void askToDropResources() {
+        System.out.println("merge resources");
+        List<Resource> allResources = new ArrayList<>();
+
+        allResources.addAll(room.getCurrentTurn().getConverted());
+
+        System.out.println("ask to drop");
+
+        clientConnection.sendMessage(new DropResourceRequestMessage(allResources));
     }
 
     public void handle(DropLeaderCardResponseMessage message){
@@ -117,7 +124,14 @@ public class GameMessageHandler {
     }
 
     public void handle(SelectResourceForWhiteMarbleResponseMessage message) {
-
+        List<Resource> resourcesConverted=message.getResources();
+        List<Resource> conversionOptions= room.getCurrentTurn().getConversionOptions();
+        if(!conversionOptions.containsAll(resourcesConverted) && resourcesConverted.size()!= room.getCurrentTurn().getToConvert().size()){
+            clientConnection.sendMessage(new ErrorMessage("Invalid conversion, try again!\n"));
+            return;
+        }
+        room.getCurrentTurn().getConverted().addAll(resourcesConverted);
+        askToDropResources();
     }
 
     public void handle(ActivateProductionResponseMessage message){
@@ -133,6 +147,15 @@ public class GameMessageHandler {
             clientConnection.sendMessage(new ErrorMessage("Nothing could be done"));
             sendNextMoves(false);
         }
+    }
+
+    public void handle(DropResourcesResponseMessage message){
+        List<Resource> resourcesConverted= room.getCurrentTurn().getConverted();
+        if(message.getResourcesToDrop()==null && !resourcesConverted.containsAll(message.getResourcesToDrop())){
+            clientConnection.sendMessage(new ErrorMessage("Nothing could be done"));
+            return;
+        }
+        //TODO: to be completed
     }
 
     private void endTurn(){
@@ -155,8 +178,4 @@ public class GameMessageHandler {
         room.getCurrentTurn().setMoves(gameController.computeNextPossibleMoves(hasPerformedAction));
         clientConnection.sendMessage(new SelectMoveRequestMessage(room.getCurrentTurn().getMoves()));
     }
-
-
-
-
 }
