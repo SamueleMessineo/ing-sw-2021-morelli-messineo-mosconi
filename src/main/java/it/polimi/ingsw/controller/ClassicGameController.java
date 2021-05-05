@@ -157,10 +157,14 @@ public class ClassicGameController implements GameController{
         Warehouse warehouse = player.getPlayerBoard().getWarehouse();
         if(warehouse.canSwitchShelves(warehouse.getShelf("top"), warehouse.getShelf("middle"))||
                 warehouse.canSwitchShelves(warehouse.getShelf("top"), warehouse.getShelf("bottom"))||
-                /*warehouse.canSwitchShelves(warehouse.getShelf("top"), warehouse.getShelf("extra"))||*/
-                warehouse.canSwitchShelves(warehouse.getShelf("middle"), warehouse.getShelf("bottom"))/*||
-                warehouse.canSwitchShelves(warehouse.getShelf("middle"), warehouse.getShelf("extra"))||
-                warehouse.canSwitchShelves(warehouse.getShelf("bottom"), warehouse.getShelf("extra"))*/
+                warehouse.canSwitchShelves(warehouse.getShelf("top"), warehouse.getShelf("extra1"))||
+                warehouse.canSwitchShelves(warehouse.getShelf("top"), warehouse.getShelf("extra2"))||
+                warehouse.canSwitchShelves(warehouse.getShelf("middle"), warehouse.getShelf("bottom"))||
+                warehouse.canSwitchShelves(warehouse.getShelf("middle"), warehouse.getShelf("extra1"))||
+                warehouse.canSwitchShelves(warehouse.getShelf("middle"), warehouse.getShelf("extra2"))||
+                warehouse.canSwitchShelves(warehouse.getShelf("bottom"), warehouse.getShelf("extra1"))||
+                warehouse.canSwitchShelves(warehouse.getShelf("bottom"), warehouse.getShelf("extra2"))
+
         ) moves.add("SWITCH_SHELVES");
 
         //for debug
