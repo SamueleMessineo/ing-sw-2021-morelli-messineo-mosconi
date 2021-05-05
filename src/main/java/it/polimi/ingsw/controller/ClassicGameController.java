@@ -43,7 +43,8 @@ public class ClassicGameController implements GameController{
     public boolean isGameOver() {
         for (Player player:
                 game.getPlayers()) {
-            if (player.getFaithTrack().getPosition() == player.getFaithTrack().getMaxposition())return true;
+            if ((player.getFaithTrack().getPosition() == player.getFaithTrack().getMaxposition())||
+                        player.getPlayerBoard().getCardStacks().get(0).size()+player.getPlayerBoard().getCardStacks().get(1).size()+player.getPlayerBoard().getCardStacks().get(2).size() == 7)return true;
         }
         return false;
     }
