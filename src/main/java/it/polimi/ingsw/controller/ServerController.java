@@ -26,10 +26,11 @@ public class ServerController {
         List<ClientConnection> clientConnections=server.getPendingConnections();
         clientConnections.remove(clientConnection);
 
-        Room room =  new Room(new Game(), numberOfPlayers, privateRoom, clientConnection);
+        int currentRoomId = getRoomId();
+
+        Room room =  new Room(new Game(), numberOfPlayers, privateRoom, clientConnection, currentRoomId);
         room.getGame().addPlayer(username);
 
-        int currentRoomId = getRoomId();
         server.addRoom(currentRoomId,room);
 
         sendRoomDetails(currentRoomId, room, clientConnection);

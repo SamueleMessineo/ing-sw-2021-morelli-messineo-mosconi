@@ -15,11 +15,13 @@ public class Room {
     private ArrayList<ClientConnection> connections = new ArrayList<>();
     private GameController classicGameController;
     private Turn currentTurn;
+    private final int id;
 
-    public Room(Game game, int numberOfPlayers, boolean isPrivate, ClientConnection host) {
+    public Room(Game game, int numberOfPlayers, boolean isPrivate, ClientConnection host, int id) {
         this.game = game;
         this.numberOfPlayers = numberOfPlayers;
         this.isPrivate = isPrivate;
+        this.id = id;
         addConnection(host);
     }
 
@@ -70,5 +72,9 @@ public class Room {
 
     public void setCurrentTurn(Turn currentTurn) {
         this.currentTurn = currentTurn;
+    }
+
+    public int getId() {
+        return id;
     }
 }

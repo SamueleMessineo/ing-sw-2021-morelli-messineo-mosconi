@@ -8,6 +8,7 @@ import it.polimi.ingsw.network.client.*;
 import it.polimi.ingsw.network.game.*;
 import it.polimi.ingsw.server.Room;
 import it.polimi.ingsw.server.ClientConnection;
+import it.polimi.ingsw.utils.GameUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +38,7 @@ public class GameMessageHandler {
 
     public void handle(DropInitialLeaderCardsResponseMessage message){
         gameController.dropInitialLeaderCards(message.getCard1(), message.getCard2(), room.getPlayerFromConnection(clientConnection).getUsername());
+        GameUtils.saveGameState(room.getGame(), room.getId());
         startPlayingIfReady();
     }
 
