@@ -2,6 +2,7 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.shared.DevelopmentCard;
+import it.polimi.ingsw.model.shared.LeaderCard;
 import it.polimi.ingsw.model.shared.Resource;
 import it.polimi.ingsw.network.client.DropInitialLeaderCardsRequestMessage;
 import it.polimi.ingsw.network.client.StringMessage;
@@ -63,6 +64,16 @@ public class SoloGameController implements GameController {
 
     @Override
     public List<DevelopmentCard> getBuyableDevelopementCards() {
+        return null;
+    }
+
+    @Override
+    public void playLeader(int cardIndex) {
+
+    }
+
+    @Override
+    public List<LeaderCard> getPlayableLeaderCards() {
         return null;
     }
 }

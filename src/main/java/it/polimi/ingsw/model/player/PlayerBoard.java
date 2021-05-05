@@ -3,6 +3,7 @@ import it.polimi.ingsw.model.shared.*;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -59,10 +60,16 @@ public class PlayerBoard implements Serializable {
 
     /**
      * Sets the list of extra production powers.
-     * @param extraProductionPowers The new list of extra production powers.
+     * @param inputResource the input rescource the new extra production power.
      */
-    public void setExtraProductionPowers(ArrayList<ProductionPower> extraProductionPowers) {
-        this.extraProductionPowers = extraProductionPowers;
+    public void setExtraProductionPowers(Resource inputResource) {
+        Map<Resource, Integer> inputResources = new HashMap<>();
+        inputResources.put(inputResource, 1);
+        Map<Resource, Integer> outputResources = new HashMap<>();
+        outputResources.put(Resource.ANY, 1);
+        outputResources.put(Resource.FAITH, 1);
+        ProductionPower productionPower = new ProductionPower(inputResources, outputResources);
+        extraProductionPowers.add(productionPower);
     }
 
     /**

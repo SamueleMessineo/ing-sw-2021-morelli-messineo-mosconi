@@ -4,8 +4,11 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.market.Marble;
 import it.polimi.ingsw.model.market.MarketCardStack;
 import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.model.player.Shelf;
 import it.polimi.ingsw.model.player.Warehouse;
 import it.polimi.ingsw.model.shared.DevelopmentCard;
+import it.polimi.ingsw.model.shared.LeaderCard;
+import it.polimi.ingsw.model.shared.ProductionPower;
 import it.polimi.ingsw.model.shared.Resource;
 import it.polimi.ingsw.server.Room;
 
@@ -177,6 +180,31 @@ public class ClassicGameController implements GameController{
             }
         }
         return developmentCards;
+    }
+
+    public List<LeaderCard> getPlayableLeaderCards(){
+        List<LeaderCard> leaderCards = new ArrayList<>();
+
+        for (int i = 0; i < game.getCurrentPlayer().getLeaderCards().size(); i++) {
+            if (game.getCurrentPlayer().canPlayLeader(i)) {
+                leaderCards.add(game.getCurrentPlayer().getLeaderCards().get(i));
+            }
+        }
+        return leaderCards;
+    }
+
+    @Override
+    public void playLeader(int cardIndex) {
+        LeaderCard leaderCard = getPlayableLeaderCards().get(cardIndex);
+        game.getCurrentPlayer().getPlayedLeaderCards().add(leaderCard);
+        game.getCurrentPlayer().getLeaderCards().remove(leaderCard);
+
+        if(leaderCard.getEffectScope().equals("Storage")){
+            game.getCurrentPlayer().getPlayerBoard().expandWarehouse(leaderCard.getEffectObject());
+        }
+        if(leaderCard.getEffectScope().equals("Production")){
+            game.getCurrentPlayer().getPlayerBoard().setExtraProductionPowers(leaderCard.getEffectObject());
+        }
     }
 }
 

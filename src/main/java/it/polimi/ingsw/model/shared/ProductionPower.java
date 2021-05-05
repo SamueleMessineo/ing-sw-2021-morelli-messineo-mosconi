@@ -18,6 +18,8 @@ public class ProductionPower implements Serializable {
         this.output=output;
     }
 
+
+
     /**
      * Fetch the resources to pay to activate the production power
      * @return A list of the Resources

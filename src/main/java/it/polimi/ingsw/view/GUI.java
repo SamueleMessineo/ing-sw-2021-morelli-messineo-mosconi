@@ -104,4 +104,9 @@ public class GUI extends Application implements UI {
     public void selectStackToPlaceCard(List<DevelopmentCard> stacks) {
 
     }
+
+    @Override
+    public void playLeader(List<LeaderCard> leaderCards) {
+
+    }
 }

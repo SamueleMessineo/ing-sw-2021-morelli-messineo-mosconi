@@ -27,4 +27,8 @@ public interface GameController {
     List<String> computeNextPossibleMoves(boolean alreadyPerfomedMove);
 
     public List<DevelopmentCard> getBuyableDevelopementCards();
+
+    public void playLeader(int cardIndex);
+
+    public List<LeaderCard> getPlayableLeaderCards();
 }

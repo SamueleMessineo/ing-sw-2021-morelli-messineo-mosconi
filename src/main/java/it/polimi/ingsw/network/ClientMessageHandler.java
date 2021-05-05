@@ -51,7 +51,7 @@ public class ClientMessageHandler {
     }
 
     public void handle(SwitchShelvesRequestMessage message){
-
+        ui.switchShelves(message.getShelves());
     }
 
     public void handle(SelectResourceForWhiteMarbleRequestMessage message) {
@@ -67,6 +67,11 @@ public class ClientMessageHandler {
     }
 
     public void handle(SelectStackToPlaceCardRequestMessage message){
-
+        ui.selectStackToPlaceCard(message.getDevelopmentCards());
     }
+
+    public void handle(PlayLeaderRequestMessage message){
+        ui.playLeader(message.getLeaderCards());
+    }
+
 }
