@@ -87,6 +87,16 @@ public class Warehouse implements Serializable {
     public boolean canPlaceOnShelf(String shelf, Map<Resource, Integer> resources){
         // TODO check that other shelves don't have same resource type
         Shelf currentShelf = shelves.get(getShelfIndex(shelf));
+        for (Resource resource:
+             resources.keySet()) {
+            if(resources.get(resource) != 0){
+                for (Shelf shelf1:
+                     shelves) {
+                    if(shelf1!= currentShelf && shelf1.getResourceType()!=null && shelf1.getResourceType().equals(resource))return false;
+                }
+            }
+        }
+
         return currentShelf.canPlace(resources);
     }
 

@@ -145,7 +145,6 @@ public class ClassicGameController implements GameController{
         }
 
         for (int i = 0; i < player.getLeaderCards().size(); i++) {
-            //todo revisionare il metodo canPlayLeader
             if (player.canPlayLeader(i)) {
                 moves.add("PLAY_LEADER");
                 break;
@@ -165,8 +164,6 @@ public class ClassicGameController implements GameController{
 
         ) moves.add("SWITCH_SHELVES");
 
-        //for debug
-        moves.add("ACTIVATE_PRODUCTION");
         return moves;
     }
 
