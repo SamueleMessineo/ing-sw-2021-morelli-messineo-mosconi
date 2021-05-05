@@ -1,0 +1,57 @@
+GET MARBLES
+
+-> SelectMoveResponseMessage("GET_MARBLES")
+
+        SelectMarblesRequestMessage(marbleStructure) <-
+
+-> SelectMarblesResponseMessage(rowOrColumn, index)
+
+        SelectResourceForWhiteMarbleRequestMessage(options) <-
+
+-> SelectResourceForWhiteMarbleResponseMessage(selections)
+
+        DropResourceRequestMessage(resources) <-
+
+-> DropResourceResponseMessage(selections)
+
+
+ACTIVATE PRODUCTION
+
+-> SelectMoveResponseMessage("ACTIVATE_PRODUCTION")
+
+        SelectProductionRequestMessage(options) <-
+
+-> SelectProductionResponseMessage(selection)
+
+-------------------------[if default production]-----------------------------
+        SelectInputForDefaultProductionRequestMessage(options) <-
+
+-> SelectInputForDefaultProductionResponseMessage()
+
+        SelectProductionRequestMessage(options) <-
+
+-------------------------[if extra production]-------------------------------
+        SelectOutputForExtraProductionRequestMessage(options) <-
+
+-> SelectOutputForExtraProductionResponseMessage(selection)
+
+        SelectProductionRequestMessage(options) <-
+
+-------------------------[if normal production]------------------------------
+        SelectProductionRequestMessage(options) <-
+
+-----------------------------------------------------------------------------
+
+-> ConfirmActivateProductionMessage()
+
+        GameStateMessage(game) <- [to all players]
+        SelectMoveRequestMessage(options) <- [to current player]
+
+
+BUY DEVELOPMENT CARD
+
+-> SelectMoveResponseMessage("BUY_CARD")
+
+        SelectMarketCardRequestMessage(options) <-
+
+-> SelectMarketCardResponseMessage(selection)
