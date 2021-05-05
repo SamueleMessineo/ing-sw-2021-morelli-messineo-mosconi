@@ -129,7 +129,7 @@ public class CLI implements UI {
 
     }
 
-    public void displayLeaderCards(ArrayList<LeaderCard> leaderCards){
+    public void displayLeaderCards(List<LeaderCard> leaderCards){
         for (int i = 0; i < leaderCards.size(); i++) {
             output.println("Carta numero "+ (i+1) +":" + leaderCards.get(i));
         }
@@ -402,5 +402,12 @@ public class CLI implements UI {
         output.println(stacks);
         int selection = askIntegerInput("On which stack you want to put your new card?", 1, stacks.size());
 
+    }
+
+    @Override
+    public void playLeader(List<LeaderCard> leaderCards) {
+        displayLeaderCards(leaderCards);
+        int selection = askIntegerInput("Select the card number", 1, leaderCards.size())-1;
+        client.sendMessage(new PlayLeaderResponseMessage(selection));
     }
 }

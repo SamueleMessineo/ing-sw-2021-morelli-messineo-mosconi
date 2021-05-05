@@ -63,6 +63,8 @@ public class GameMessageHandler {
                 case("DROP_LEADER"):
                     clientConnection.sendMessage(new DropLeaderCardRequestMessage(room.getPlayerFromConnection(clientConnection).getLeaderCards()));
                     break;
+                case ("PLAY_LEADER"):
+                    clientConnection.sendMessage(new PlayLeaderRequestMessage(gameController.getPlayableLeaderCards()));
                 case("SWITCH_SHELVES"):
                     clientConnection.sendMessage(new SwitchShelvesRequestMessage(room.getPlayerFromConnection(clientConnection).getPlayerBoard().getWarehouse().getShelves()));
                     break;
@@ -122,6 +124,10 @@ public class GameMessageHandler {
         gameController.dropLeader(message.getCard());
         clientConnection.sendMessage(new StringMessage("Your have " +room.getPlayerFromConnection(clientConnection).getFaithTrack().getPosition() +" faith points"));
         sendNextMoves(false);
+    }
+
+    public void handle(PlayLeaderResponseMessage message){
+
     }
 
     public void handle(SwitchShelvesResponseMessage message){
@@ -208,7 +214,7 @@ public class GameMessageHandler {
 
         ClientConnection currentPlayer = room.getConnections().get(room.getGame().getPlayers().indexOf(
                 room.getGame().getCurrentPlayer()));
-        room.setCurrentTurn(new Turn(room.getPlayerFromConnection(currentPlayer).getUsername(), gameController.computeNextPossibleMoves(room.getCurrentTurn().hasAlreadyPerformedMove())));
+        room.setCurrentTurn(new Turn(room.getPlayerFromConnection(currentPlayer).getUsername(), gameController.computeNextPossibleMoves(false)));
         SelectMoveRequestMessage selectMoveRequestMessage = new SelectMoveRequestMessage(room.getCurrentTurn().getMoves());
         currentPlayer.sendMessage(selectMoveRequestMessage);
     }
@@ -217,4 +223,5 @@ public class GameMessageHandler {
         room.getCurrentTurn().setMoves(gameController.computeNextPossibleMoves(hasPerformedAction));
         clientConnection.sendMessage(new SelectMoveRequestMessage(room.getCurrentTurn().getMoves()));
     }
+
 }

@@ -29,4 +29,8 @@ public interface GameController {
     List<DevelopmentCard> getBuyableDevelopementCards();
 
     boolean isGameOver();
+
+    void playLeader(int cardIndex);
+
+    List<LeaderCard> getPlayableLeaderCards();
 }

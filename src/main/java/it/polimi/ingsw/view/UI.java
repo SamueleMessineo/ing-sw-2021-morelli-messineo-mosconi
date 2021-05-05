@@ -46,4 +46,6 @@ public interface UI {
 
     void selectStackToPlaceCard(List<DevelopmentCard> stacks);
 
+    void playLeader(List<LeaderCard> leaderCards);
+
 }
