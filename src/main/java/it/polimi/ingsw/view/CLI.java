@@ -261,9 +261,8 @@ public class CLI implements UI {
     @Override
     public void discardLeaderCard(ArrayList<LeaderCard> cards) {
         displayLeaderCards(cards);
-        int selection = askIntegerInput("Select the card number", 1, 2)-1;
+        int selection = askIntegerInput("Select the card number", 1, cards.size())-1;
         client.sendMessage(new DropLeaderCardResponseMessage(selection));
-
     }
 
     @Override
