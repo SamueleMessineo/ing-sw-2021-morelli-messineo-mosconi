@@ -115,6 +115,21 @@ public class CLI implements UI {
     }
 
     @Override
+    public void selectInitialResources(List<Resource> resources, int amount) {
+        output.println("Select initial resource(s)");
+        List<Resource> selectedResources = new ArrayList<>();
+        for (int i = 0; i < amount; i++) {
+            for (int resourceIndex = 1; resourceIndex <= resources.size(); resourceIndex++) {
+                output.println(resourceIndex + ": " + resources.get(resourceIndex-1));
+            }
+            int selection = askIntegerInput("select resource", 1, resources.size());
+            selectedResources.add(resources.get(selection-1));
+        }
+
+        client.sendMessage(new SelectInitialResourceResponseMessage(selectedResources));
+    }
+
+    @Override
     public void selectLeaderCards(ArrayList<LeaderCard> leaderCards) {
         displayLeaderCards(leaderCards);
         int selection1;

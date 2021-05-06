@@ -15,6 +15,7 @@ import it.polimi.ingsw.server.ClientConnection;
 import it.polimi.ingsw.utils.GameUtils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -28,7 +29,26 @@ public class GameMessageHandler {
         this.gameController = gameController;
         this.clientConnection = clientConnection;
         this.room = room;
-        clientConnection.sendMessage(new DropInitialLeaderCardsRequestMessage(room.getPlayerFromConnection(clientConnection).getLeaderCards()));
+
+        int playingIndex = room.getConnections().indexOf(clientConnection) - room.getGame().getInkwellPlayer();
+        if (playingIndex < 0) {
+            playingIndex += room.getNumberOfPlayers();
+        }
+
+        List<Resource> resourceOptions = new ArrayList<>(Arrays.asList(
+                Resource.COIN, Resource.STONE, Resource.SERVANT, Resource.SHIELD));
+
+        if (playingIndex == 0) {
+            clientConnection.sendMessage(
+                    new DropInitialLeaderCardsRequestMessage(
+                            room.getPlayerFromConnection(clientConnection).getLeaderCards())
+            );
+        } else {
+            int resourceAmount = (playingIndex == 1 || playingIndex == 2) ? 1 : 2;
+            Message message = new SelectInitialResourceRequestMessage(
+                    resourceOptions, resourceAmount);
+            clientConnection.sendMessage(message);
+        }
     }
 
     public void handle(SelectCardMessage message) {
@@ -224,4 +244,10 @@ public class GameMessageHandler {
         clientConnection.sendMessage(new SelectMoveRequestMessage(room.getCurrentTurn().getMoves()));
     }
 
+    public void handle(SelectInitialResourceResponseMessage message) {
+        gameController.giveInitialResources(message.getSelectedResources(),
+                room.getPlayerFromConnection(clientConnection).getUsername());
+        clientConnection.sendMessage(new DropInitialLeaderCardsRequestMessage(
+                room.getPlayerFromConnection(clientConnection).getLeaderCards()));
+    }
 }

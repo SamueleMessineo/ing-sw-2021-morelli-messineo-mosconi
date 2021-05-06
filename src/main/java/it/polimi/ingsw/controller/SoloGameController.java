@@ -39,6 +39,11 @@ public class SoloGameController implements GameController {
     }
 
     @Override
+    public void giveInitialResources(List<Resource> resources, String username) {
+
+    }
+
+    @Override
     public Map<String, List<Resource>> getMarbles(String rowOrColumn, int index) {
         return null;
     }

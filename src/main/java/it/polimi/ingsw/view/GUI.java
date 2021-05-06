@@ -51,6 +51,11 @@ public class GUI extends Application implements UI {
     }
 
     @Override
+    public void selectInitialResources(List<Resource> resources, int amount) {
+
+    }
+
+    @Override
     public void selectLeaderCards(ArrayList<LeaderCard> leaderCards) {
 
     }

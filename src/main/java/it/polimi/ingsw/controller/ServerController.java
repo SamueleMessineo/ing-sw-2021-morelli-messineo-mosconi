@@ -122,12 +122,12 @@ public class ServerController {
     private void startGame(Room room){
         room.sendAll(new StringMessage("Game is starting!"));
         GameController classicGameController = new ClassicGameController(room);
+        classicGameController.startGame();
         room.setGameController(classicGameController);
         for (ClientConnection client:
              room.getConnections()) {
             client.setGameMessageHandler(new GameMessageHandler(classicGameController, client, room));
         }
-        classicGameController.startGame();
     }
 
     private void startSoloGame(Room room){

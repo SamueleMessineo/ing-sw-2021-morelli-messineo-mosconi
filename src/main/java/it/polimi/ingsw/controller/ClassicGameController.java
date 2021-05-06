@@ -29,6 +29,7 @@ public class ClassicGameController implements GameController{
     private void selectStartingPlayer() {
         Random r = new Random();
         int firstPlayerIndex = r.nextInt(game.getPlayers().size());
+        System.out.println("first player index: " + firstPlayerIndex);
         game.setCurrentPlayer(firstPlayerIndex);
         game.setInkwellPlayer(firstPlayerIndex);
     }
@@ -39,6 +40,13 @@ public class ClassicGameController implements GameController{
 
     public void dropInitialLeaderCards(int selection1, int selection2, String player){
         game.getPlayerByUsername(player).dropInitialLeaderCards(selection1, selection2);
+    }
+
+    public void giveInitialResources(List<Resource> resources, String username) {
+        Map<Resource, Integer> resourceMap = new HashMap<>();
+        resourceMap.put(resources.get(0), resources.size());
+        game.getPlayerByUsername(username).getPlayerBoard().getWarehouse()
+                .placeOnShelf(resources.size() == 1 ? "top" : "middle", resourceMap);
 
     }
 

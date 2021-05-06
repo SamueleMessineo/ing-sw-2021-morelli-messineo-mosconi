@@ -24,6 +24,8 @@ public interface UI {
 
     void displayString(String body);
 
+    void selectInitialResources(List<Resource> resources, int amount);
+
     void selectLeaderCards(ArrayList<LeaderCard> leaderCards);
 
     void displayGameState();
