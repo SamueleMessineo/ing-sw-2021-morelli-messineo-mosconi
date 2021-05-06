@@ -129,13 +129,14 @@ public class PlayerBoard implements Serializable {
     public Map<Resource, Integer> getResources() {
         Map<Resource, Integer> strongboxResources = strongbox.getResources();
         Map<Resource, Integer> warehouseResources = warehouse.getResources();
+        Map<Resource, Integer> allResources = new HashMap<>(strongboxResources);
 
-        Map<Resource, Integer> allResources = strongboxResources;
         allResources.forEach(((resource, integer) -> {
             allResources.put(resource, integer + warehouseResources.get(resource));
         }));
 
         return allResources;
+
     }
 
     @Override
