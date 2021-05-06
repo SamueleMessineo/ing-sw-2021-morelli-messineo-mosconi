@@ -9,12 +9,15 @@ import java.io.*;
 public class GameUtils {
 
     public static void saveGameState(Game game, int roomID) {
+        String gamesFolderPath = "src/main/resources/games/";
+
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();
 
         String gameJSON = gson.toJson(game);
 
-        File outputFile = new File("src/main/resources/games/" + roomID + ".json");
+        new File(gamesFolderPath).mkdirs();
+        File outputFile = new File(gamesFolderPath + roomID + ".json");
         FileWriter writer;
         try {
             writer = new FileWriter(outputFile);
@@ -32,17 +35,12 @@ public class GameUtils {
         Gson gson = builder.create();
 
         BufferedReader reader = null;
-        Game game = null;
-
         try {
             reader = new BufferedReader(new FileReader("src/main/resources/games/" + roomID + ".json"));
+            return gson.fromJson(reader, Game.class);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-
-        game = (Game) gson.fromJson(reader, Game.class);
-
-        return game;
+        return null;
     }
-
 }
