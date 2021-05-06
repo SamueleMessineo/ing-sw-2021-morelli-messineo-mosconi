@@ -3,8 +3,7 @@ package it.polimi.ingsw.client;
 import it.polimi.ingsw.network.ClientMessageHandler;
 import it.polimi.ingsw.network.Message;
 import it.polimi.ingsw.network.client.ClientMessage;
-import it.polimi.ingsw.network.setup.CreateRoomMessage;
-import it.polimi.ingsw.server.Server;
+import it.polimi.ingsw.network.pingpong.PongMessage;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -34,7 +33,11 @@ public class ServerConnection{
     public void waitForMessages() {
         while (true) {
             Message m = receiveMessage();
-            ((ClientMessage) m).accept(clientMessageHandler);
+            if (m.getType().equals("CONNECTION")) {
+                sendMessage(new PongMessage());
+            } else {
+                ((ClientMessage) m).accept(clientMessageHandler);
+            }
         }
     }
 

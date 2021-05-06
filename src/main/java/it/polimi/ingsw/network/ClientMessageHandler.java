@@ -2,12 +2,10 @@ package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.client.Client;
 import it.polimi.ingsw.client.ServerConnection;
-import it.polimi.ingsw.model.shared.Resource;
 import it.polimi.ingsw.network.client.*;
 import it.polimi.ingsw.network.client.GameStateMessage;
+import it.polimi.ingsw.network.pingpong.PingMessage;
 import it.polimi.ingsw.view.UI;
-
-import java.util.List;
 
 public class ClientMessageHandler {
     private final ServerConnection serverConnection;

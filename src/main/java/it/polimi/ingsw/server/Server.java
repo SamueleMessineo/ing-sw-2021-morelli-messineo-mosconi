@@ -52,6 +52,7 @@ public class Server {
 
                 pendingConnections.add(clientConnection);
                 executor.submit(clientConnection);
+                executor.submit(clientConnection::checkConnection);
             } catch (IOException e) {
                 System.out.println("Connection error");
             }

@@ -2,6 +2,7 @@ package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.network.*;
 import it.polimi.ingsw.network.game.GameMessage;
+import it.polimi.ingsw.network.pingpong.PingMessage;
 import it.polimi.ingsw.network.setup.SetupMessage;
 
 import java.io.IOException;
@@ -20,6 +21,7 @@ public class ClientConnection implements Runnable{
     private final SetupMessageHandler setupMessageHandler;
     private GameMessageHandler gameMessageHandler;
     private Logger logger;
+    private boolean receivedPong = false;
 
     public ClientConnection(Socket socket, Server server) {
         this.socket = socket;
@@ -42,6 +44,9 @@ public class ClientConnection implements Runnable{
         while (true) {
             Message m = receiveMessage();
             switch (m.getType()) {
+                case "CONNECTION":
+                    receivedPong = true;
+                    break;
                 case "GAME":
                     ((GameMessage) m).accept(gameMessageHandler);
                     break;
@@ -83,5 +88,21 @@ public class ClientConnection implements Runnable{
 
     public void setGameMessageHandler(GameMessageHandler gameMessageHandler) {
         this.gameMessageHandler = gameMessageHandler;
+    }
+
+    public void checkConnection() {
+        while (true) {
+            sendMessage(new PingMessage());
+            long start = System.currentTimeMillis();
+            long end = start + 5*1000; // 5 seconds * 1000 ms/sec
+            while (System.currentTimeMillis() < end);
+            if (receivedPong) {
+                System.out.println("received pong");
+                receivedPong = false;
+            } else {
+                System.out.println("client disconnected");
+                break;
+            }
+        }
     }
 }
