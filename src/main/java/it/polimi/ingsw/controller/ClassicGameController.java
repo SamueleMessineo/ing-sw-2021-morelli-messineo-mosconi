@@ -28,7 +28,9 @@ public class ClassicGameController implements GameController{
 
     private void selectStartingPlayer() {
         Random r = new Random();
-        game.setCurrentPlayer(r.nextInt(game.getPlayers().size()));
+        int firstPlayerIndex = r.nextInt(game.getPlayers().size());
+        game.setCurrentPlayer(firstPlayerIndex);
+        game.setInkwellPlayer(firstPlayerIndex);
     }
 
     public Game getGame() {

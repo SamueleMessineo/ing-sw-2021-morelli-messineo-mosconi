@@ -27,6 +27,7 @@ import java.util.List;
 public class Game implements Serializable {
     private ArrayList<Player> players;
     private int currentPlayer;
+    private int inkwellPlayer;
     private Market market;
     private ArrayList<SoloActionType> soloActionTypes;
     private ArrayList<DevelopmentCard> developmentCards=new ArrayList<>();
@@ -58,6 +59,14 @@ public class Game implements Serializable {
      */
     public void setCurrentPlayer(int playerIndex) {
         currentPlayer = playerIndex;
+    }
+
+    public int getInkwellPlayer() {
+        return inkwellPlayer;
+    }
+
+    public void setInkwellPlayer(int inkwellPlayer) {
+        this.inkwellPlayer = inkwellPlayer;
     }
 
     /**
