@@ -16,6 +16,7 @@ import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public class GUI extends Application implements UI {
@@ -107,6 +108,11 @@ public class GUI extends Application implements UI {
 
     @Override
     public void playLeader(List<LeaderCard> leaderCards) {
+
+    }
+
+    @Override
+    public void gameOver(String winner, Map<String, Integer> standing){
 
     }
 }

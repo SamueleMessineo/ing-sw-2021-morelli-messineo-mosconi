@@ -74,4 +74,8 @@ public class ClientMessageHandler {
         ui.playLeader(message.getLeaderCards());
     }
 
+    public void handle(GameOverMessage message){
+        ui.gameOver(message.getWinner(), message.getStanding());
+    }
+
 }

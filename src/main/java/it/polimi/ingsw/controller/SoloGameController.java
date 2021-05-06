@@ -81,4 +81,14 @@ public class SoloGameController implements GameController {
     public List<LeaderCard> getPlayableLeaderCards() {
         return null;
     }
+
+    @Override
+    public Map<String, Integer> computeStanding() {
+        return null;
+    }
+
+    @Override
+    public String computeWinner() {
+        return null;
+    }
 }

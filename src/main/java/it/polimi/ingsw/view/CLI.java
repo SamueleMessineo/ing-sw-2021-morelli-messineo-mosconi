@@ -410,4 +410,14 @@ public class CLI implements UI {
         int selection = askIntegerInput("Select the card number", 1, leaderCards.size())-1;
         client.sendMessage(new PlayLeaderResponseMessage(selection));
     }
+
+    public void gameOver(String winner, Map<String, Integer> standing){
+        output.println("Game ended, "+winner+" won the game\n"+standing);
+        int selection = askIntegerInput("Do you want to start a new game?", 1,2);
+        if(selection==1)setup();
+        else {
+            output.println("Bye "+username);
+            client.closeConncetion();
+        }
+    }
 }

@@ -12,6 +12,7 @@ import it.polimi.ingsw.network.client.StringMessage;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 public interface UI {
@@ -47,5 +48,7 @@ public interface UI {
     void selectStackToPlaceCard(List<DevelopmentCard> stacks);
 
     void playLeader(List<LeaderCard> leaderCards);
+
+    public void gameOver(String winner, Map<String, Integer> standing);
 
 }

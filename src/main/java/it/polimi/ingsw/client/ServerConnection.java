@@ -61,4 +61,12 @@ public class ServerConnection{
             e.printStackTrace();
         }
     }
+
+    public void close() {
+        try {
+            socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

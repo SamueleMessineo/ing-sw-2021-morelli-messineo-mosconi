@@ -187,6 +187,8 @@ public class GameMessageHandler {
         clientConnection.sendMessage(new SelectStackToPlaceCardRequestMessage(stacks));
 
         room.getCurrentTurn().setBuyedDevelopmentCard(developmentCard);
+
+
     }
 
     public void handle(SelectStackToPlaceCardResponseMessage message){
@@ -195,6 +197,10 @@ public class GameMessageHandler {
             room.getGame().getCurrentPlayer().getPlayerBoard().payResourceCost(room.getGame().getCurrentPlayer().computeDiscountedCost(room.getCurrentTurn().getBuyedDevelopmentCard()));
             room.getCurrentTurn().setAlreadyPerformedMove(true);
             sendNextMoves(room.getCurrentTurn().hasAlreadyPerformedMove());
+
+            if (gameController.isGameOver()) {
+                room.sendAll(new StringMessage("GAME OVER"));
+            }
 
         }else {
             clientConnection.sendMessage(new ErrorMessage("Action Could not be completed"));
@@ -210,13 +216,20 @@ public class GameMessageHandler {
     }
 
     private void sendStateAndMovesForNextTurn(){
-        room.sendAll(new GameStateMessage(room.getGame()));
 
         ClientConnection currentPlayer = room.getConnections().get(room.getGame().getPlayers().indexOf(
                 room.getGame().getCurrentPlayer()));
-        room.setCurrentTurn(new Turn(room.getPlayerFromConnection(currentPlayer).getUsername(), gameController.computeNextPossibleMoves(false)));
-        SelectMoveRequestMessage selectMoveRequestMessage = new SelectMoveRequestMessage(room.getCurrentTurn().getMoves());
-        currentPlayer.sendMessage(selectMoveRequestMessage);
+        room.sendAll(new GameStateMessage(room.getGame()));
+
+        if(!gameController.isGameOver() || (room.getGame().getPlayers().indexOf(room.getPlayerFromConnection(currentPlayer)) != room.getGame().getInkwellPlayer())){
+            room.setCurrentTurn(new Turn(room.getPlayerFromConnection(currentPlayer).getUsername(), gameController.computeNextPossibleMoves(false)));
+            SelectMoveRequestMessage selectMoveRequestMessage = new SelectMoveRequestMessage(room.getCurrentTurn().getMoves());
+            currentPlayer.sendMessage(selectMoveRequestMessage);
+        } else {
+            Map<String, Integer> standing = gameController.computeStanding();
+            String winner = gameController.computeWinner();
+            clientConnection.sendMessage(new GameOverMessage(winner, standing));
+        }
     }
 
     private void sendNextMoves(boolean hasPerformedAction){
