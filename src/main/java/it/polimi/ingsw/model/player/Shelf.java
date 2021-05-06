@@ -1,9 +1,12 @@
 package it.polimi.ingsw.model.player;
 
+import it.polimi.ingsw.model.market.Marble;
 import it.polimi.ingsw.model.shared.Resource;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -24,6 +27,7 @@ public class Shelf implements Storage, Serializable {
         this.maxSize = maxSize;
         resourceType = initialResourceType;
     }
+
 
     /**
      * Returns the type of the resource type of the shelf.
@@ -110,16 +114,15 @@ public class Shelf implements Storage, Serializable {
 
     @Override
     public String toString() {
-        if (resourceType==null){
-            return "";
-        } else if(resourceNumber == 0){
-            return "EMPTY";
+        if (resourceType==null || resourceNumber == 0){
+            return "Max size: "+getMaxSize()+": EMPTY";
         }
         else{
-            return "Shelf{" +
-                    "resourceType=" + resourceType +
-                    ", resourceNumber=" + resourceNumber +
-                    '}';
+           String resourceList="Max size: "+getMaxSize()+"   ";
+           for(int i=0; i<resourceNumber;i++){
+               resourceList+=resourceType.toString()+" ";
+           }
+            return resourceList;
         }
     }
 }

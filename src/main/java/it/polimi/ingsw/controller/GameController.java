@@ -3,6 +3,7 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.market.Marble;
 import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.model.player.Shelf;
 import it.polimi.ingsw.model.shared.DevelopmentCard;
 import it.polimi.ingsw.model.shared.LeaderCard;
 import it.polimi.ingsw.model.shared.Resource;
@@ -41,4 +42,6 @@ public interface GameController {
     Map<String, Integer> computeStanding();
 
     String computeWinner();
+
+    int dropResource(List<Resource> resourcesToDrop, Map<Shelf,List<Resource>> resourcesPlaced);
 }

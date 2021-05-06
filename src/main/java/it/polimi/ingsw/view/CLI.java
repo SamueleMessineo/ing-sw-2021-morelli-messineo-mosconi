@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.market.MarbleStructure;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Shelf;
+import it.polimi.ingsw.model.player.Warehouse;
 import it.polimi.ingsw.model.shared.DevelopmentCard;
 import it.polimi.ingsw.model.shared.LeaderCard;
 import it.polimi.ingsw.model.shared.ProductionPower;
@@ -287,9 +288,70 @@ public class CLI implements UI {
 
     @Override
     public void dropResources(List<Resource> resources) {
-        output.println("This are the resources you just got");
-        output.println(resources);
+        Warehouse warehouse=gameState.getCurrentPlayer().getPlayerBoard().getWarehouse();
+        List<String> names=warehouse.getShelfNames();
+        String shelfWherePlaceMarble;
+        List<String> possibleShelves;
+        Map<Shelf,List<Resource>> resourcesPlaced=new HashMap<>();
+        List<Resource> resourcesToDrop= new ArrayList<>();
+
+        Resource resource;
+
+        while(!resources.isEmpty()){
+            displayShelves(warehouse.getShelfNames());
+
+            output.println("\nYou are going to drop this resources:");
+            displayResourcesList(resourcesToDrop);
+
+            output.println("Place or drop this resources");
+            displayResourcesList(resources);
+
+            int selection = askIntegerInput("Select resource", 1, resources.size());
+
+            resource=resources.get(selection-1);
+            possibleShelves=warehouse.possibleShelvesToPlaceResource(resource);
+            if(!possibleShelves.isEmpty()){
+                selection = askIntegerInput(resource+"\nDo you want place or drop the resource?\n1:Place\n2:Discard", 1,2);
+                if(selection==1) {
+                    displayShelves(possibleShelves);
+                    selection = askIntegerInput("Where do you want place the resource?", 1, possibleShelves.size());
+                    shelfWherePlaceMarble = possibleShelves.get(selection - 1);
+                    Map<Resource, Integer> resourceMap = new HashMap<>();
+                    resourceMap.put(resource, 1);
+                    warehouse.getShelf(shelfWherePlaceMarble).addResources(resourceMap);
+                    resources.remove(resource);
+                }else {
+                    resources.remove(resource);
+                    resourcesToDrop.add(resource);
+                    System.out.println("Discard: "+resource);
+                }
+            }
+            else{
+                output.println("You can not place this Resource...");
+                resources.remove(resource);
+                resourcesToDrop.add(resource);
+                output.println("Discard: "+resource);
+            }
+        }
+        client.sendMessage(new DropResourcesResponseMessage(resourcesPlaced,resourcesToDrop));
+
     }
+
+    private void displayResourcesList(List<Resource> resources){
+        for (int i = 0; i < resources.size(); i++) {
+            output.print((i+1) +":" + resources.get(i)+"; ");
+        }
+        output.println("\n");
+    }
+
+    private void displayShelves(List<String> shelvesNames){
+        Warehouse warehouse=gameState.getCurrentPlayer().getPlayerBoard().getWarehouse();
+        output.println("\nWAREHOUSE:");
+        for(String name: shelvesNames){
+            output.println(name+": "+warehouse.getShelf(name));
+        }
+    }
+
 
     @Override
     public void discardLeaderCard(ArrayList<LeaderCard> cards) {
@@ -443,12 +505,12 @@ public class CLI implements UI {
         client.sendMessage(new PlayLeaderResponseMessage(selection));
     }
 
-    public void gameOver(String winner, Map<String, Integer> standing){
-        output.println("Game ended, "+winner+" won the game\n"+standing);
-        int selection = askIntegerInput("Do you want to start a new game?", 1,2);
-        if(selection==1)setup();
+    public void gameOver(String winner, Map<String, Integer> standing) {
+        output.println("Game ended, " + winner + " won the game\n" + standing);
+        int selection = askIntegerInput("Do you want to start a new game?", 1, 2);
+        if (selection == 1) setup();
         else {
-            output.println("Bye "+username);
+            output.println("Bye " + username);
             client.closeConncetion();
         }
     }

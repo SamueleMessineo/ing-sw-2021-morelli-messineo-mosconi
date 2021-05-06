@@ -1,11 +1,9 @@
 package it.polimi.ingsw.model.player;
+import it.polimi.ingsw.model.market.Marble;
 import it.polimi.ingsw.model.shared.*;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Structure containing a list of shelves the player can store resources onto.
@@ -99,6 +97,20 @@ public class Warehouse implements Serializable {
         return currentShelf.canPlace(resources);
     }
 
+    public boolean canPlaceOnShelf(Shelf currentShelf, Map<Resource, Integer> resources){
+        for (Resource resource:
+                resources.keySet()) {
+            if(resources.get(resource) != 0){
+                for (Shelf shelf1:
+                        shelves) {
+                    if(shelf1!= currentShelf && shelf1.getResourceType()!=null && shelf1.getResourceType().equals(resource))return false;
+                }
+            }
+        }
+
+        return currentShelf.canPlace(resources);
+    }
+
     /**
      * Places some resources on a given shelf.
      * @param shelf shelf name on which to place the resources.
@@ -182,5 +194,16 @@ public class Warehouse implements Serializable {
                         shelf2.getResourceNumber() <= shelf1.getMaxSize();
             }
         }
+    }
+
+    public List<String> possibleShelvesToPlaceResource(Resource resource){
+        List<String> shelvesNamesToPlaceMarble=new ArrayList<>();
+        Map<Resource,Integer> resourceMap=new HashMap<>();
+        resourceMap.put(resource,1);
+        for (String shelfName: getShelfNames()){
+            if(canPlaceOnShelf(shelfName,resourceMap))
+                shelvesNamesToPlaceMarble.add(shelfName);
+        }
+        return shelvesNamesToPlaceMarble;
     }
 }

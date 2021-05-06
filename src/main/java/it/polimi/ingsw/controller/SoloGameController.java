@@ -1,6 +1,7 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.player.Shelf;
 import it.polimi.ingsw.model.shared.DevelopmentCard;
 import it.polimi.ingsw.model.shared.LeaderCard;
 import it.polimi.ingsw.model.shared.Resource;
@@ -101,4 +102,10 @@ public class SoloGameController implements GameController {
     public String computeWinner() {
         return null;
     }
+
+    @Override
+    public int dropResource(List<Resource> resourcesToDrop, Map<Shelf,List<Resource>> resourcesPlaced){
+        return 0;
+    }
+
 }

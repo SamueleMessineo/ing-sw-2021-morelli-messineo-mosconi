@@ -11,6 +11,7 @@ import it.polimi.ingsw.model.shared.PopesFavorTileState;
 import it.polimi.ingsw.model.shared.LeaderCard;
 import it.polimi.ingsw.model.shared.ProductionPower;
 import it.polimi.ingsw.model.shared.Resource;
+import it.polimi.ingsw.network.game.DropResourcesResponseMessage;
 import it.polimi.ingsw.server.Room;
 
 import java.util.*;
@@ -276,6 +277,15 @@ public class ClassicGameController implements GameController{
             }
         }
         return winner;
+    }
+
+    @Override
+    public int dropResource(List<Resource> resourcesToDrop, Map<Shelf,List<Resource>> resourcesPlaced){
+        Warehouse warehouse=game.getCurrentPlayer().getPlayerBoard().getWarehouse();
+        for(Shelf shelf:resourcesPlaced.keySet()){
+
+        }
+        return 0;
     }
 }
 

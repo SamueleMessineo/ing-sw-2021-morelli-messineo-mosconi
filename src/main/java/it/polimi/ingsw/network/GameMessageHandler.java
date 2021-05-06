@@ -77,7 +77,6 @@ public class GameMessageHandler {
         for (Player p : room.getGame().getPlayers()) {
             if (p.getLeaderCards().size() != 2) return;
         }
-
        sendStateAndMovesForNextTurn();
     }
 
@@ -139,7 +138,6 @@ public class GameMessageHandler {
     private void askToDropResources() {
         System.out.println("merge resources");
         List<Resource> allResources = new ArrayList<>();
-
         allResources.addAll(room.getCurrentTurn().getConverted());
 
         System.out.println("ask to drop");
@@ -201,7 +199,7 @@ public class GameMessageHandler {
             clientConnection.sendMessage(new ErrorMessage("Nothing could be done"));
             return;
         }
-        //TODO: to be completed
+        gameController.dropResource(message.getResourcesToDrop(),message.getResourcesPlaced());
     }
 
     public void handle(BuyDevelopmentCardResponseMessage message){
