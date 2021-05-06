@@ -217,7 +217,7 @@
     "cost": {
       "COIN": 2
     },
-    "produciontPower": {
+    "productionPower": {
       "input": {
         "SHIELD": 1
       },
@@ -235,7 +235,7 @@
       "COIN": 1,
       "SERVANT": 1
     },
-    "produciontPower": {
+    "productionPower": {
       "input": {
         "STONE": 1
       },
@@ -251,7 +251,7 @@
     "cost": {
       "COIN": 3
     },
-    "produciontPower": {
+    "productionPower": {
       "input": {
         "STONE": 2
       },
@@ -270,7 +270,7 @@
       "COIN": 2,
       "SERVANT": 2
     },
-    "produciontPower": {
+    "productionPower": {
       "input": {
         "STONE": 1,
         "SHIELD": 1
@@ -288,7 +288,7 @@
     "cost": {
       "COIN": 4
     },
-    "produciontPower": {
+    "productionPower": {
       "input": {
         "SERVANT": 1
       },
@@ -305,7 +305,7 @@
       "STONE": 2,
       "COIN": 3
     },
-    "produciontPower": {
+    "productionPower": {
       "input": {
         "STONE": 1,
         "COIN": 1
@@ -322,7 +322,7 @@
     "cost": {
       "SERVANT": 2
     },
-    "produciontPower": {
+    "productionPower": {
       "input": {
         "SHIELD": 2,
         "FAITH": 2
@@ -340,7 +340,7 @@
     "cost": {
       "SERVANT": 1
     },
-    "produciontPower": {
+    "productionPower": {
       "input": {
         "SERVANT": 1
       },
@@ -357,7 +357,7 @@
     "cost": {
       "COIN": 6
     },
-    "produciontPower": {
+    "productionPower": {
       "input": {
         "SERVANT": 2
       },
@@ -375,7 +375,7 @@
       "STONE": 2,
       "COIN": 5
     },
-    "produciontPower": {
+    "productionPower": {
       "input": {
         "SHIELD": 1,
         "COIN": 1
@@ -394,7 +394,7 @@
     "cost": {
       "COIN": 7
     },
-    "produciontPower": {
+    "productionPower": {
       "input": {
         "SHIELD": 1,
         "FAITH": 3
@@ -413,7 +413,7 @@
       "STONE": 4,
       "COIN": 4
     },
-    "produciontPower": {
+    "productionPower": {
       "input": {
         "SERVANT": 1
       },
@@ -424,9 +424,6 @@
     },
     "score": 12
   },
-
-
-
 
   {
     "level": 1,

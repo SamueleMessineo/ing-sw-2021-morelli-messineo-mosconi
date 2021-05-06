@@ -3,6 +3,7 @@ package it.polimi.ingsw.view;
 import it.polimi.ingsw.client.Client;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.market.MarbleStructure;
+import it.polimi.ingsw.model.market.MarketCardStack;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Shelf;
 import it.polimi.ingsw.model.shared.DevelopmentCard;
@@ -138,7 +139,7 @@ public class CLI implements UI {
     @Override
     public void displayGameState() {
         // displayPlayerBoard(gameState.getPlayerByUsername(username));
-
+        displayGameBoard();
        //momentary fix
         if(gameState.getCurrentPlayer()!= gameState.getPlayerByUsername(username)){
            for (Player player:
@@ -154,6 +155,26 @@ public class CLI implements UI {
           askToDisplayPlayerBoard();
        }
        */
+
+    }
+
+    private void displayGameBoard(){
+        output.println(gameState.getMarket().getMarbleStructure());
+        System.out.println("\nCards Market:");
+
+
+        for (int i = 11; i >= 0; i-=3) {
+            output.println(gameState.getMarket().getCardsGrid().get(i));
+            output.println("\n");
+        }
+        for (int i = 10; i >= 0; i-=3) {
+            output.println(gameState.getMarket().getCardsGrid().get(i));
+            output.println("\n");
+        }
+        for (int i = 9; i >= 0; i-=3) {
+            output.println(gameState.getMarket().getCardsGrid().get(i));
+            output.println("\n");
+        }
 
     }
 
