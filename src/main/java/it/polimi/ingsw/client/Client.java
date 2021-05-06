@@ -41,4 +41,8 @@ public class Client {
     public UI getUi() {
         return ui;
     }
+
+    public void closeConncetion(){
+        serverConnection.close();
+    }
 }

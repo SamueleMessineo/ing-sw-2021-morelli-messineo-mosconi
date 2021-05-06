@@ -3,6 +3,7 @@ package it.polimi.ingsw.view;
 import it.polimi.ingsw.client.Client;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.market.MarbleStructure;
+import it.polimi.ingsw.model.market.MarketCardStack;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Shelf;
 import it.polimi.ingsw.model.shared.DevelopmentCard;
@@ -153,7 +154,7 @@ public class CLI implements UI {
     @Override
     public void displayGameState() {
         // displayPlayerBoard(gameState.getPlayerByUsername(username));
-
+        displayGameBoard();
        //momentary fix
         if(gameState.getCurrentPlayer()!= gameState.getPlayerByUsername(username)){
            for (Player player:
@@ -169,6 +170,26 @@ public class CLI implements UI {
           askToDisplayPlayerBoard();
        }
        */
+
+    }
+
+    private void displayGameBoard(){
+        output.println(gameState.getMarket().getMarbleStructure());
+        System.out.println("\nCards Market:");
+
+
+        for (int i = 11; i >= 0; i-=3) {
+            output.println(gameState.getMarket().getCardsGrid().get(i));
+            output.println("\n");
+        }
+        for (int i = 10; i >= 0; i-=3) {
+            output.println(gameState.getMarket().getCardsGrid().get(i));
+            output.println("\n");
+        }
+        for (int i = 9; i >= 0; i-=3) {
+            output.println(gameState.getMarket().getCardsGrid().get(i));
+            output.println("\n");
+        }
 
     }
 
@@ -424,5 +445,15 @@ public class CLI implements UI {
         displayLeaderCards(leaderCards);
         int selection = askIntegerInput("Select the card number", 1, leaderCards.size())-1;
         client.sendMessage(new PlayLeaderResponseMessage(selection));
+    }
+
+    public void gameOver(String winner, Map<String, Integer> standing){
+        output.println("Game ended, "+winner+" won the game\n"+standing);
+        int selection = askIntegerInput("Do you want to start a new game?", 1,2);
+        if(selection==1)setup();
+        else {
+            output.println("Bye "+username);
+            client.closeConncetion();
+        }
     }
 }

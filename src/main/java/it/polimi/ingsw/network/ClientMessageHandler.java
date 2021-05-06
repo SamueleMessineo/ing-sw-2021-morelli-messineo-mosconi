@@ -80,4 +80,8 @@ public class ClientMessageHandler {
     public void handle(SelectInitialResourceRequestMessage message) {
         ui.selectInitialResources(message.getResources(), message.getAmount());
     }
+    public void handle(GameOverMessage message){
+        ui.gameOver(message.getWinner(), message.getStanding());
+    }
+
 }

@@ -35,4 +35,8 @@ public interface GameController {
     void playLeader(int cardIndex);
 
     List<LeaderCard> getPlayableLeaderCards();
+
+    Map<String, Integer> computeStanding();
+
+    String computeWinner();
 }

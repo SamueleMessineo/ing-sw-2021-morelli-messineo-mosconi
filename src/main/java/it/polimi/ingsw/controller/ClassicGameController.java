@@ -236,5 +236,41 @@ public class ClassicGameController implements GameController{
             game.getCurrentPlayer().getPlayerBoard().setExtraProductionPowers(leaderCard.getEffectObject());
         }
     }
+
+    @Override
+    public Map<String, Integer> computeStanding() {
+        Map<String, Integer> standing = new HashMap<>();
+        List<Player> standingList = new ArrayList<>();
+
+        standingList.add(game.getPlayers().get(0));
+
+        for (Player player:
+                game.getPlayers()) {
+            if(player.getVP() >= standingList.get(0).getVP())standingList.add(0,player);
+        }
+
+        int points;
+        for (Player player:
+                standingList) {
+             points = player.getVP();
+             standing.put(player.getUsername(), points);
+        }
+
+        return standing;
+    }
+
+    @Override
+    public String computeWinner() {
+        String winner = game.getPlayers().get(0).getUsername();
+        int points =  game.getPlayers().get(0).getVP();
+
+        for (Player player:
+                game.getPlayers()) {
+            if(player.getVP() >= points){
+                winner=player.getUsername();
+            }
+        }
+        return winner;
+    }
 }
 

@@ -44,6 +44,7 @@ public class Market implements Serializable {
             cardsGrid.add(new MarketCardStack(j, CardType.YELLOW));
             cardsGrid.add(new MarketCardStack(j, CardType.PURPLE));
         }
+
     }
 
     /**
@@ -54,6 +55,7 @@ public class Market implements Serializable {
         int i=0;
         int j = 4;
         for (int k = 0; k < 12; k++) {
+
             MarketCardStack cardStack = cardsGrid.get(k);
             cardStack.addAll(developmentCards.subList(i, j));
 

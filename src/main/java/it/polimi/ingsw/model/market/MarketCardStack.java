@@ -28,4 +28,9 @@ public class MarketCardStack extends Stack<DevelopmentCard> implements Serializa
     public int getLevel() {
         return level;
     }
+
+    @Override
+    public synchronized String toString() {
+        return peek().toString();
+    }
 }
