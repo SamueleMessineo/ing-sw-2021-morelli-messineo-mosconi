@@ -3,24 +3,20 @@ package it.polimi.ingsw.view;
 import it.polimi.ingsw.client.Client;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.market.MarbleStructure;
-import it.polimi.ingsw.model.market.MarketCardStack;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Shelf;
 import it.polimi.ingsw.model.shared.DevelopmentCard;
 import it.polimi.ingsw.model.shared.LeaderCard;
 import it.polimi.ingsw.model.shared.ProductionPower;
 import it.polimi.ingsw.model.shared.Resource;
-import it.polimi.ingsw.network.client.SelectMoveRequestMessage;
 import it.polimi.ingsw.network.game.*;
 import it.polimi.ingsw.network.setup.CreateRoomMessage;
 import it.polimi.ingsw.network.setup.JoinPrivateRoomMessage;
 import it.polimi.ingsw.network.setup.JoinPublicRoomMessage;
 
-import javax.management.timer.Timer;
 import java.io.PrintStream;
 import java.security.InvalidParameterException;
 import java.util.*;
-import java.util.concurrent.TimeoutException;
 
 public class CLI implements UI {
 
@@ -147,7 +143,7 @@ public class CLI implements UI {
 
     public void displayLeaderCards(List<LeaderCard> leaderCards){
         for (int i = 0; i < leaderCards.size(); i++) {
-            output.println("Carta numero "+ (i+1) +":" + leaderCards.get(i));
+            output.println("Card number "+ (i+1) +":" + leaderCards.get(i));
         }
     }
 
@@ -322,7 +318,7 @@ public class CLI implements UI {
         List<Integer> selectedStacks = null;
         ProductionPower selectedProductionPowers = null;
         Game currentGameState = gameState;
-        int selction;
+        int selection;
         boolean done = false;
         List<Integer> indexes= new ArrayList<>();
 
@@ -346,17 +342,17 @@ public class CLI implements UI {
                 }
                 message+="\n"+ indexes;
 
-                selction = askIntegerInput(message,indexes.get(0),gameState.getCurrentPlayer().possibleProductionPowersToActive().size());
+                selection = askIntegerInput(message,indexes.get(0),gameState.getCurrentPlayer().possibleProductionPowersToActive().size());
 
-                if(selction==0){
+                if(selection==0){
                     if(currentGameState.getCurrentPlayer().canActivateBasicProduction()){
                         selectedProductionPowers= askBasicProductionPowerIO();
                         indexes.remove(0);
                     }
                 }else {
-                    selectedStacks.add(selction-1);
+                    selectedStacks.add(selection-1);
                     List<Integer> currentSelection = new ArrayList<>();
-                    currentSelection.add(selction-1);
+                    currentSelection.add(selection-1);
                     currentGameState.getCurrentPlayer().getPlayerBoard().activateProduction(currentSelection);
                 }
 
@@ -364,8 +360,8 @@ public class CLI implements UI {
                 output.println("Are you done? [y/n]");
                 done = input.nextLine().trim().toLowerCase().startsWith("y");
             }
-            selction = askIntegerInput("1.Send, 2.Abort",1,2);
-            if(selction==1)client.sendMessage(new ActivateProductionResponseMessage(selectedStacks, selectedProductionPowers));
+            selection = askIntegerInput("1.Send, 2.Abort",1,2);
+            if(selection==1)client.sendMessage(new ActivateProductionResponseMessage(selectedStacks, selectedProductionPowers));
             else activateProduction(productionPowers);
         } else output.println("problem with gameState");
 
@@ -437,7 +433,7 @@ public class CLI implements UI {
     public void selectStackToPlaceCard(List<DevelopmentCard> stacks) {
         output.println(stacks);
         int selection = askIntegerInput("On which stack you want to put your new card?", 1, stacks.size());
-
+        // TODO
     }
 
     @Override
