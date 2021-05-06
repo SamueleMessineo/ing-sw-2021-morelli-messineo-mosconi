@@ -38,6 +38,12 @@ public class ClassicGameController implements GameController{
         return game;
     }
 
+    public void movePlayer(String player, int positions) {
+        for (int i = 0; i < positions; i++) {
+            game.getPlayerByUsername(player).getFaithTrack().move();
+        }
+    }
+
     public void dropInitialLeaderCards(int selection1, int selection2, String player){
         game.getPlayerByUsername(player).dropInitialLeaderCards(selection1, selection2);
     }
@@ -47,7 +53,6 @@ public class ClassicGameController implements GameController{
         resourceMap.put(resources.get(0), resources.size());
         game.getPlayerByUsername(username).getPlayerBoard().getWarehouse()
                 .placeOnShelf(resources.size() == 1 ? "top" : "middle", resourceMap);
-
     }
 
     public boolean isGameOver() {

@@ -39,6 +39,11 @@ public class SoloGameController implements GameController {
     }
 
     @Override
+    public void movePlayer(String username, int positions) {
+
+    }
+
+    @Override
     public void giveInitialResources(List<Resource> resources, String username) {
 
     }

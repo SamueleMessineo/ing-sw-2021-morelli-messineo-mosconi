@@ -30,9 +30,15 @@ public class GameMessageHandler {
         this.clientConnection = clientConnection;
         this.room = room;
 
+        // calculate the player's position in the playing order
         int playingIndex = room.getConnections().indexOf(clientConnection) - room.getGame().getInkwellPlayer();
         if (playingIndex < 0) {
             playingIndex += room.getNumberOfPlayers();
+        }
+
+        if (playingIndex == 2 || playingIndex == 3) {
+            // give 1 faith point if the player is the third or fourth to play
+            gameController.movePlayer(room.getPlayerFromConnection(clientConnection).getUsername(), 1);
         }
 
         List<Resource> resourceOptions = new ArrayList<>(Arrays.asList(
@@ -44,6 +50,7 @@ public class GameMessageHandler {
                             room.getPlayerFromConnection(clientConnection).getLeaderCards())
             );
         } else {
+            // ask players to choose the type of resources they want to receive
             int resourceAmount = (playingIndex == 1 || playingIndex == 2) ? 1 : 2;
             Message message = new SelectInitialResourceRequestMessage(
                     resourceOptions, resourceAmount);

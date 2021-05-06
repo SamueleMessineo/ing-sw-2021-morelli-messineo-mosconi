@@ -16,6 +16,8 @@ public interface GameController {
 
     void dropInitialLeaderCards(int selection1, int selection2, String player);
 
+    void movePlayer(String username, int positions);
+
     void giveInitialResources(List<Resource> resources, String username);
 
     Map<String, List<Resource>> getMarbles(String rowOrColumn, int index);
