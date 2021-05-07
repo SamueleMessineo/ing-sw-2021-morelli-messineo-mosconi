@@ -199,7 +199,8 @@ public class GameMessageHandler {
             clientConnection.sendMessage(new ErrorMessage("Nothing could be done"));
             return;
         }
-        gameController.dropResource(message.getResourcesToDrop(),message.getResourcesPlaced());
+        gameController.dropResource(message.getResourcesPlaced(),message.getResourcesToDrop());
+        room.sendAll(new GameStateMessage(room.getGame()));
     }
 
     public void handle(BuyDevelopmentCardResponseMessage message){
@@ -212,8 +213,6 @@ public class GameMessageHandler {
         clientConnection.sendMessage(new SelectStackToPlaceCardRequestMessage(stacks));
 
         room.getCurrentTurn().setBuyedDevelopmentCard(developmentCard);
-
-
     }
 
     public void handle(SelectStackToPlaceCardResponseMessage message){

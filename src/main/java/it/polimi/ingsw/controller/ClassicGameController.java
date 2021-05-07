@@ -280,11 +280,15 @@ public class ClassicGameController implements GameController{
     }
 
     @Override
-    public int dropResource(List<Resource> resourcesToDrop, Map<Shelf,List<Resource>> resourcesPlaced){
+    public int dropResource(Map<String,List<Resource>> resourcesPlaced,List<Resource> resourcesToDrop){
         Warehouse warehouse=game.getCurrentPlayer().getPlayerBoard().getWarehouse();
-        for(Shelf shelf:resourcesPlaced.keySet()){
-
+        for(String name:resourcesPlaced.keySet()){
+            List<Resource> resourcesToAddList=resourcesPlaced.get(name);
+            Map<Resource,Integer> resourcesToAddMap=new HashMap<>();
+            resourcesToAddMap.put(resourcesToAddList.get(0),resourcesToAddList.size());
+            warehouse.getShelf(name).addResources(resourcesToAddMap);
         }
+
         return 0;
     }
 }

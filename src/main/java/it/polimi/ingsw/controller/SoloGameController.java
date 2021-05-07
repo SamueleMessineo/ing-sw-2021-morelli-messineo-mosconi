@@ -104,7 +104,7 @@ public class SoloGameController implements GameController {
     }
 
     @Override
-    public int dropResource(List<Resource> resourcesToDrop, Map<Shelf,List<Resource>> resourcesPlaced){
+    public int dropResource(Map<String,List<Resource>> resourcesPlaced,List<Resource> resourcesToDrop){
         return 0;
     }
 

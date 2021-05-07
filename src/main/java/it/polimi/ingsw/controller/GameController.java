@@ -43,5 +43,5 @@ public interface GameController {
 
     String computeWinner();
 
-    int dropResource(List<Resource> resourcesToDrop, Map<Shelf,List<Resource>> resourcesPlaced);
+    int dropResource(Map<String,List<Resource>> resourcesPlaced, List<Resource> resourcesToDrop);
 }

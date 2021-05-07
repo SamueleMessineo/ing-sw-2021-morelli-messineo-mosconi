@@ -292,49 +292,65 @@ public class CLI implements UI {
         List<String> names=warehouse.getShelfNames();
         String shelfWherePlaceMarble;
         List<String> possibleShelves;
-        Map<Shelf,List<Resource>> resourcesPlaced=new HashMap<>();
+        int selection1;
+        Map<String,List<Resource>> resourcesPlaced=new HashMap<>();
         List<Resource> resourcesToDrop= new ArrayList<>();
 
         Resource resource;
 
-        while(!resources.isEmpty()){
+        while(!resources.isEmpty()) {
             displayShelves(warehouse.getShelfNames());
-
-            output.println("\nYou are going to drop this resources:");
-            displayResourcesList(resourcesToDrop);
-
-            output.println("Place or drop this resources");
+            output.println("\nYou must place or drop this resources");
             displayResourcesList(resources);
+            selection1 = askIntegerInput("Select:\n1:Place or drop resource\n2:Switch shelves", 1, 2);
+            switch (selection1) {
+                case (1):
+                    displayResourcesList(resources);
+                    selection1 = askIntegerInput("Select resource", 1, resources.size());
 
-            int selection = askIntegerInput("Select resource", 1, resources.size());
+                    resource = resources.get(selection1 - 1);
+                    possibleShelves = warehouse.possibleShelvesToPlaceResource(resource);
+                    if (!possibleShelves.isEmpty()) {
+                        selection1 = askIntegerInput(resource + "\nDo you want place or drop the resource?\n1:Place\n2:Discard", 1, 3);
+                        switch (selection1) {
+                            case (1):
+                                output.println("\nYou are going to drop this resources:");
+                                displayResourcesList(resourcesToDrop);
 
-            resource=resources.get(selection-1);
-            possibleShelves=warehouse.possibleShelvesToPlaceResource(resource);
-            if(!possibleShelves.isEmpty()){
-                selection = askIntegerInput(resource+"\nDo you want place or drop the resource?\n1:Place\n2:Discard", 1,2);
-                if(selection==1) {
-                    displayShelves(possibleShelves);
-                    selection = askIntegerInput("Where do you want place the resource?", 1, possibleShelves.size());
-                    shelfWherePlaceMarble = possibleShelves.get(selection - 1);
-                    Map<Resource, Integer> resourceMap = new HashMap<>();
-                    resourceMap.put(resource, 1);
-                    warehouse.getShelf(shelfWherePlaceMarble).addResources(resourceMap);
-                    resources.remove(resource);
-                }else {
-                    resources.remove(resource);
-                    resourcesToDrop.add(resource);
-                    System.out.println("Discard: "+resource);
-                }
-            }
-            else{
-                output.println("You can not place this Resource...");
-                resources.remove(resource);
-                resourcesToDrop.add(resource);
-                output.println("Discard: "+resource);
+
+
+                                displayShelves(possibleShelves);
+                                do {
+                                    shelfWherePlaceMarble = input.nextLine().toLowerCase().trim();
+                                } while (!possibleShelves.contains(shelfWherePlaceMarble));
+                                Map<Resource, Integer> resourceMap = new HashMap<>();
+                                resourceMap.put(resource, 1);
+                                warehouse.getShelf(shelfWherePlaceMarble).addResources(resourceMap);
+                                resources.remove(resource);
+                                if(resourcesPlaced.get(shelfWherePlaceMarble)==null)
+                                    resourcesPlaced.put(shelfWherePlaceMarble,new ArrayList<>());
+                                resourcesPlaced.get(shelfWherePlaceMarble).add(resource);
+                                break;
+                            case (2):
+                                resources.remove(resource);
+                                resourcesToDrop.add(resource);
+                                System.out.println("Discard: " + resource);
+                                break;
+                        }
+                    } else {
+                        output.println("You can not place this Resource...");
+                        resources.remove(resource);
+                        resourcesToDrop.add(resource);
+                        output.println("Discard: " + resource);
+                    }
+                    break;
+                case (2):
+                    client.sendMessage(new SelectMoveResponseMessage("SWITCH_SHELVES"));
+                    break;
             }
         }
+        output.println(resourcesPlaced);
         client.sendMessage(new DropResourcesResponseMessage(resourcesPlaced,resourcesToDrop));
-
     }
 
     private void displayResourcesList(List<Resource> resources){
