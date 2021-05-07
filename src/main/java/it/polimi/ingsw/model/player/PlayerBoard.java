@@ -113,7 +113,13 @@ public class PlayerBoard implements Serializable {
 
             payResourceCost(productionPower.getInput());
 
-            strongbox.addResources(productionPower.getOutput());
+            Map<Resource,Integer> ouput=new HashMap<>();
+            ouput.put(Resource.SHIELD,0);
+            ouput.put(Resource.COIN,0);
+            ouput.put(Resource.SERVANT,0);
+            ouput.put(Resource.STONE,0);
+            ouput.putAll(productionPower.getOutput());
+            strongbox.addResources(ouput);
         }
         System.out.println("metodo da implementare successivamente");
     }
