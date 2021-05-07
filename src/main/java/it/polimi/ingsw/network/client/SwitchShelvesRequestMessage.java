@@ -6,13 +6,13 @@ import it.polimi.ingsw.network.ClientMessageHandler;
 import java.util.ArrayList;
 
 public class SwitchShelvesRequestMessage extends ClientMessage{
-    private final ArrayList<Shelf> shelves;
+    private final ArrayList<String> shelves;
 
-    public SwitchShelvesRequestMessage(ArrayList<Shelf> shelves) {
+    public SwitchShelvesRequestMessage(ArrayList<String> shelves) {
         this.shelves = shelves;
     }
 
-    public ArrayList<Shelf> getShelves() {
+    public ArrayList<String> getShelves() {
         return shelves;
     }
 

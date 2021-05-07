@@ -41,7 +41,7 @@ public interface UI {
 
     void discardLeaderCard(ArrayList<LeaderCard> cards);
 
-    void switchShelves(ArrayList<Shelf> shelves);
+    void switchShelves(ArrayList<String> shelves);
 
     void activateProduction(List<ProductionPower> productionPowers);
 

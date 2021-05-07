@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.market.MarbleStructure;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Shelf;
+import it.polimi.ingsw.model.player.Warehouse;
 import it.polimi.ingsw.model.shared.DevelopmentCard;
 import it.polimi.ingsw.model.shared.LeaderCard;
 import it.polimi.ingsw.model.shared.ProductionPower;
@@ -243,25 +244,25 @@ public class CLI implements UI {
                 askToDisplayPlayerBoard();
                 break;
             case ("ACTIVATE_PRODUCTION"):
-                client.sendMessage(new SelectMoveResponseMessage("ACTIVATE_PRODUCTION"));
+                client.sendMessage(new SelectMoveResponseMessage(move));
                 break;
             case ("GET_MARBLES"):
-                client.sendMessage(new SelectMoveResponseMessage("GET_MARBLES"));
+                client.sendMessage(new SelectMoveResponseMessage(move));
                 break;
             case ("BUY_CARD"):
-                System.out.println("buying card");
+                client.sendMessage(new SelectMoveResponseMessage(move));
                 break;
             case ("PLAY_LEADER"):
-                System.out.println("PLaying leader");
+                client.sendMessage(new SelectMoveResponseMessage(move));
                 break;
             case ("DROP_LEADER"):
-                client.sendMessage(new SelectMoveResponseMessage("DROP_LEADER"));
+                client.sendMessage(new SelectMoveResponseMessage(move));
                 break;
             case ("SWITCH_SHELVES"):
-                client.sendMessage(new SelectMoveResponseMessage("SWITCH_SHELVES"));
+                client.sendMessage(new SelectMoveResponseMessage(move));
                 break;
             case ("END_TURN"):
-                client.sendMessage(new SelectMoveResponseMessage("END_TURN"));
+                client.sendMessage(new SelectMoveResponseMessage(move));
                 break;
         }
     }
@@ -298,11 +299,20 @@ public class CLI implements UI {
         client.sendMessage(new DropLeaderCardResponseMessage(selection));
     }
 
+    private void displayShelves(List<String> shelvesNames){
+        Warehouse warehouse=gameState.getCurrentPlayer().getPlayerBoard().getWarehouse();
+        output.println("\nWAREHOUSE:");
+        for(String name: shelvesNames){
+            output.println(name+": "+warehouse.getShelf(name));
+        }
+    }
+
     @Override
-    public void switchShelves(ArrayList<Shelf> shelves) {
-        output.println(shelves);
+    public void switchShelves(ArrayList<String> shelves) {
+        displayShelves(shelves);
         String selection1;
         String selection2;
+        output.println("Select the name of the shelves you want to switch");
         do {
             selection1 = input.nextLine().toLowerCase().trim();
             selection2 = input.nextLine().toLowerCase().trim();

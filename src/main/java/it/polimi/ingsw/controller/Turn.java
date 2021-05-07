@@ -17,7 +17,6 @@ public class Turn {
     private boolean alreadyPerformedMove = false;
 
     public Turn(String currentPlayer, List<String> moves) {
-        System.out.println("turn constructor");
         this.currentPlayer = currentPlayer;
         this.moves = moves;
     }

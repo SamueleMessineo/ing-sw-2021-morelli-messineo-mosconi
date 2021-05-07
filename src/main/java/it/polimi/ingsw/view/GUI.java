@@ -92,7 +92,7 @@ public class GUI extends Application implements UI {
     }
 
     @Override
-    public void switchShelves(ArrayList<Shelf> shelves) {
+    public void switchShelves(ArrayList<String> shelves) {
 
     }
 

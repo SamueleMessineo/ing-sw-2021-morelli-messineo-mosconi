@@ -58,27 +58,41 @@ public class GameMessageHandler {
         }
     }
 
-    public void handle(SelectCardMessage message) {
-        System.out.println(message.getNum());
-    }
-
-    public void handle(EndTurnMessage message) {
-        System.out.println(message.getName());
-    }
-
-
-    public void handle(DropInitialLeaderCardsResponseMessage message){
-        gameController.dropInitialLeaderCards(message.getCard1(), message.getCard2(), room.getPlayerFromConnection(clientConnection).getUsername());
-        GameUtils.saveGameState(room.getGame(), room.getId());
-        startPlayingIfReady();
-    }
-
     private void startPlayingIfReady() {
         for (Player p : room.getGame().getPlayers()) {
             if (p.getLeaderCards().size() != 2) return;
         }
 
-       sendStateAndMovesForNextTurn();
+        sendStateAndMovesForNextTurn();
+    }
+
+    private void askToDropResources() {
+        System.out.println("merge resources");
+        List<Resource> allResources = new ArrayList<>();
+
+        allResources.addAll(room.getCurrentTurn().getConverted());
+
+        System.out.println("ask to drop");
+
+        clientConnection.sendMessage(new DropResourceRequestMessage(allResources));
+    }
+
+    public void handle(SelectCardMessage message) {
+        System.out.println(message.getNum());
+    }
+
+
+    public void handle(SelectInitialResourceResponseMessage message) {
+        gameController.giveInitialResources(message.getSelectedResources(),
+                room.getPlayerFromConnection(clientConnection).getUsername());
+        clientConnection.sendMessage(new DropInitialLeaderCardsRequestMessage(
+                room.getPlayerFromConnection(clientConnection).getLeaderCards()));
+    }
+
+    public void handle(DropInitialLeaderCardsResponseMessage message){
+        gameController.dropInitialLeaderCards(message.getCard1(), message.getCard2(), room.getPlayerFromConnection(clientConnection).getUsername());
+        GameUtils.saveGameState(room.getGame(), room.getId());
+        startPlayingIfReady();
     }
 
     public void handle(SelectMoveResponseMessage message){
@@ -93,16 +107,16 @@ public class GameMessageHandler {
                 case ("PLAY_LEADER"):
                     clientConnection.sendMessage(new PlayLeaderRequestMessage(gameController.getPlayableLeaderCards()));
                 case("SWITCH_SHELVES"):
-                    clientConnection.sendMessage(new SwitchShelvesRequestMessage(room.getPlayerFromConnection(clientConnection).getPlayerBoard().getWarehouse().getShelves()));
-                    break;
-                case("END_TURN"):
-                    endTurn();
+                    clientConnection.sendMessage(new SwitchShelvesRequestMessage(room.getPlayerFromConnection(clientConnection).getPlayerBoard().getWarehouse().getShelfNames()));
                     break;
                 case("ACTIVATE_PRODUCTION"):
                     clientConnection.sendMessage(new ActivateProductionRequestMessage(room.getPlayerFromConnection(clientConnection).possibleProductionPowersToActive()));
                     break;
                 case ("BUY_CARD"):
                     clientConnection.sendMessage(new BuyDevelopmentCardRequestMessage(gameController.getBuyableDevelopementCards()));
+                case("END_TURN"):
+                    endTurn();
+                    break;
             }
 
         } else {
@@ -136,32 +150,21 @@ public class GameMessageHandler {
         askToDropResources();
     }
 
-    private void askToDropResources() {
-        System.out.println("merge resources");
-        List<Resource> allResources = new ArrayList<>();
-
-        allResources.addAll(room.getCurrentTurn().getConverted());
-
-        System.out.println("ask to drop");
-
-        clientConnection.sendMessage(new DropResourceRequestMessage(allResources));
-    }
 
     public void handle(DropLeaderCardResponseMessage message){
         gameController.dropLeader(message.getCard());
         clientConnection.sendMessage(new StringMessage("Your have " +room.getPlayerFromConnection(clientConnection).getFaithTrack().getPosition() +" faith points"));
-        sendNextMoves(false);
+        sendNextMoves();
     }
 
     public void handle(PlayLeaderResponseMessage message){
-
+        gameController.playLeader(message.getCardIndex());
+        sendNextMoves();
     }
 
     public void handle(SwitchShelvesResponseMessage message){
         if(gameController.switchShelves(message.getShelf1(), message.getShelf2())){
-            clientConnection.sendMessage(new StringMessage("Your updated warehouse\n" + room.getPlayerFromConnection(clientConnection).getPlayerBoard().getWarehouse().getShelf("top") +
-                    room.getPlayerFromConnection(clientConnection).getPlayerBoard().getWarehouse().getShelf("middle") + room.getPlayerFromConnection(clientConnection).getPlayerBoard().getWarehouse().getShelf("bottom") + room.getPlayerFromConnection(clientConnection).getPlayerBoard().getWarehouse().getShelf("extra")));
-                    sendNextMoves(false);
+                    sendNextMoves();
         } else {
             clientConnection.sendMessage(new ErrorMessage("You cannot switch these two shelves\n"));
             clientConnection.sendMessage((new SelectMoveRequestMessage(room.getCurrentTurn().getMoves())));
@@ -184,14 +187,14 @@ public class GameMessageHandler {
             room.getGame().getCurrentPlayer().getPlayerBoard().activateProduction(message.getSelectedStacks());
             clientConnection.sendMessage(new StringMessage("Your update strongbox: "+ room.getGame().getCurrentPlayer().getPlayerBoard().getStrongbox()));
             room.getCurrentTurn().setAlreadyPerformedMove(true);
-            sendNextMoves(room.getCurrentTurn().hasAlreadyPerformedMove());
+            sendNextMoves();
         }
         if(message.getBasicProduction() != null){
             //activating basic production
         }
         else {
             clientConnection.sendMessage(new ErrorMessage("Nothing could be done"));
-            sendNextMoves(false);
+            sendNextMoves();
         }
     }
 
@@ -223,7 +226,7 @@ public class GameMessageHandler {
             room.getGame().getCurrentPlayer().getPlayerBoard().getCardStacks().get(message.getSelectedStackIndex()).add(room.getCurrentTurn().getBuyedDevelopmentCard());
             room.getGame().getCurrentPlayer().getPlayerBoard().payResourceCost(room.getGame().getCurrentPlayer().computeDiscountedCost(room.getCurrentTurn().getBuyedDevelopmentCard()));
             room.getCurrentTurn().setAlreadyPerformedMove(true);
-            sendNextMoves(room.getCurrentTurn().hasAlreadyPerformedMove());
+            sendNextMoves();
 
             if (gameController.isGameOver()) {
                 room.sendAll(new StringMessage("GAME OVER"));
@@ -231,14 +234,8 @@ public class GameMessageHandler {
 
         }else {
             clientConnection.sendMessage(new ErrorMessage("Action Could not be completed"));
-            sendNextMoves(room.getCurrentTurn().hasAlreadyPerformedMove());
+            sendNextMoves();
         }
-
-    }
-
-    private void endTurn(){
-        gameController.computeCurrentPlayer();
-        sendStateAndMovesForNextTurn();
 
     }
 
@@ -259,15 +256,19 @@ public class GameMessageHandler {
         }
     }
 
-    private void sendNextMoves(boolean hasPerformedAction){
-        room.getCurrentTurn().setMoves(gameController.computeNextPossibleMoves(hasPerformedAction));
+    private void sendNextMoves(){
+        room.getCurrentTurn().setMoves(gameController.computeNextPossibleMoves(room.getCurrentTurn().hasAlreadyPerformedMove()));
         clientConnection.sendMessage(new SelectMoveRequestMessage(room.getCurrentTurn().getMoves()));
     }
 
-    public void handle(SelectInitialResourceResponseMessage message) {
-        gameController.giveInitialResources(message.getSelectedResources(),
-                room.getPlayerFromConnection(clientConnection).getUsername());
-        clientConnection.sendMessage(new DropInitialLeaderCardsRequestMessage(
-                room.getPlayerFromConnection(clientConnection).getLeaderCards()));
+    public void handle(EndTurnMessage message) {
+        System.out.println(message.getName());
     }
+
+    private void endTurn(){
+        gameController.computeCurrentPlayer();
+        sendStateAndMovesForNextTurn();
+
+    }
+
 }
