@@ -157,7 +157,6 @@ public class ClassicGameController implements GameController{
     public List<String> computeNextPossibleMoves(boolean alreadyPerformedMove) {
         List<String> moves = new ArrayList<>();
         Player player = game.getCurrentPlayer();
-        System.out.println("compute moves");
 
         if(!alreadyPerformedMove){
             if (player.canActivateProduction()) {
