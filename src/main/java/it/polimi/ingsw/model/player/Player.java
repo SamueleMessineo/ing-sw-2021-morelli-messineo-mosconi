@@ -192,18 +192,10 @@ public class Player implements Serializable {
     }
 
     public boolean canBuyAndPlaceDevelopmentCard(DevelopmentCard developmentCard){
-        Map<Resource, Integer> cost = computeDiscountedCost(developmentCard);
+        Map<Resource, Integer> cardCost = computeDiscountedCost(developmentCard);
 
-        Map<Resource, Integer> allResources = new HashMap<>(playerBoard.getResources());
-        for (Resource resource : allResources.keySet()) {
-            if (allResources.get(resource) < cost.get(resource)) return false;
-        }
-
-        for (PlayerCardStack playerCardStack: this.getPlayerBoard().getCardStacks()){
-            if(playerCardStack.canPlaceCard(developmentCard))
-                return true;
-        }
-        return false;
+        return playerBoard.canPayResources(cardCost)
+                && playerBoard.canPlaceDevelopmentCard(developmentCard);
     }
 
     public Map<Resource, Integer> computeDiscountedCost(DevelopmentCard developmentCard){

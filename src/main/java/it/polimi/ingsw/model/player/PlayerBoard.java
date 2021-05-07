@@ -118,8 +118,56 @@ public class PlayerBoard implements Serializable {
         System.out.println("metodo da implementare successivamente");
     }
 
+    public boolean canPlaceDevelopmentCard(DevelopmentCard card) {
+        for (PlayerCardStack playerCardStack: cardStacks){
+            if(playerCardStack.canPlaceCard(card))
+                return true;
+        }
+        return false;
+    }
+
+    public boolean canPayResources(Map<Resource, Integer>cost) {
+        Map<Resource, Integer> allResources = new HashMap<>(getResources());
+        for (Resource resource : cost.keySet()) {
+            if (allResources.get(resource) < cost.get(resource)) return false;
+        }
+        return true;
+    }
+
     public void payResourceCost(Map<Resource, Integer>cost){
-        //todo
+        if (!canPayResources(cost)) return;
+
+        for (Resource resource : cost.keySet()) {
+            boolean placed = false;
+            // try to remove from shelves and extra slots
+            for (Shelf shelf : warehouse.getShelves()) {
+                if (shelf.getResourceType() != null && shelf.getResourceType().equals(resource)) {
+                    int n = shelf.getResourceNumber() - cost.get(resource);
+                    if (n >= 0) {
+                        Map<Resource, Integer> resourceCost = new HashMap<>();
+                        resourceCost.put(resource, cost.get(resource));
+                        shelf.useResources(resourceCost);
+                        placed = true;
+                        break;
+                    } else {
+                        Map<Resource, Integer> fullShelfResources = new HashMap<>();
+                        fullShelfResources.put(shelf.getResourceType(), shelf.getResourceNumber());
+                        shelf.useResources(fullShelfResources);
+                        cost.put(resource, -n);
+                    }
+                }
+            }
+            // remove from strongbox
+            if (!placed) {
+                Map<Resource, Integer> resourceCost = new HashMap<>();
+                resourceCost.put(Resource.SERVANT, 0);
+                resourceCost.put(Resource.COIN, 0);
+                resourceCost.put(Resource.STONE, 0);
+                resourceCost.put(Resource.SHIELD, 0);
+                resourceCost.put(resource, cost.get(resource));
+                strongbox.useResources(resourceCost);
+            }
+        }
     }
 
     /**
