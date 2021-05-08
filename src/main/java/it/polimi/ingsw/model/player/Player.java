@@ -227,6 +227,21 @@ public class Player implements Serializable {
                 }
             }
         }
+        if(getPlayerBoard().getExtraProductionPowers() != null){
+            for (ProductionPower productionPower:
+                    getPlayerBoard().getExtraProductionPowers()) {
+                boolean canActivatePower = true;
+                for (Resource resource : allResources.keySet()) {
+                    if (allResources.get(resource) < productionPower.getInput().get(resource)) {
+                        canActivatePower = false;
+                        break;
+                    }
+                }
+                if (canActivatePower) {
+                    return true;
+                }
+            }
+            }
         return false;
     }
 
@@ -248,16 +263,32 @@ public class Player implements Serializable {
         return developmentCardsToActive;
     }
 
+    public ArrayList<ProductionPower> possibleExtraProductionPower(){
+        Map<Resource, Integer> allResources = new HashMap<>(playerBoard.getResources());
+        ArrayList<ProductionPower> extraProductionPowersToActive=new ArrayList<>();
+        if(getPlayerBoard().getExtraProductionPowers() != null){
+            for (ProductionPower productionPower:
+                    getPlayerBoard().getExtraProductionPowers()) {
+                for (Resource resource : allResources.keySet()) {
+                    if (allResources.get(resource) < productionPower.getInput().get(resource)) {
+                        extraProductionPowersToActive.add(productionPower);
+                    }
+                }
+            }
+        }
+        return extraProductionPowersToActive;
+    }
+
     public ArrayList<ProductionPower> possibleProductionPowersToActive(){
         ArrayList<ProductionPower> productionPowers=new ArrayList<>();
         if(canActivateProduction()) {
-            ArrayList<DevelopmentCard> developmentCardsToActive = possibleDevelopmentCardProduction();
-            for (DevelopmentCard developmentCard : developmentCardsToActive) {
+            for (DevelopmentCard developmentCard : possibleDevelopmentCardProduction()) {
                 productionPowers.add(developmentCard.getProductionPower());
             }
+            productionPowers.addAll(possibleExtraProductionPower());
             return productionPowers;
         }
-        return null;
+        return productionPowers;
     }
 
     public boolean canActivateBasicProduction(){

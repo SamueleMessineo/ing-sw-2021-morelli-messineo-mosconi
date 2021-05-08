@@ -8,10 +8,12 @@ import java.util.List;
 public class ActivateProductionResponseMessage extends GameMessage {
     private final List<Integer> selectedStacks;
     private final ProductionPower basicProduction;
+    private final List<Integer> extraProductionPowers;
 
-    public ActivateProductionResponseMessage(List<Integer> selectedStacks, ProductionPower productionPower) {
+    public ActivateProductionResponseMessage(List<Integer> selectedStacks, ProductionPower basicProduction, List<Integer> extraProductionPowers) {
         this.selectedStacks = selectedStacks;
-        this.basicProduction = productionPower;
+        this.basicProduction = basicProduction;
+        this.extraProductionPowers = extraProductionPowers;
     }
 
     public List<Integer> getSelectedStacks() {
@@ -20,6 +22,10 @@ public class ActivateProductionResponseMessage extends GameMessage {
 
     public ProductionPower getBasicProduction() {
         return basicProduction;
+    }
+
+    public List<Integer> getExtraProductionPowers() {
+        return extraProductionPowers;
     }
 
     public void accept(GameMessageHandler handler) {

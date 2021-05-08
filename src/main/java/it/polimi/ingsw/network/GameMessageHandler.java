@@ -2,11 +2,9 @@ package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.controller.GameController;
 import it.polimi.ingsw.controller.Turn;
-import it.polimi.ingsw.model.market.MarketCardStack;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.PlayerCardStack;
 import it.polimi.ingsw.model.shared.DevelopmentCard;
-import it.polimi.ingsw.model.shared.LeaderCard;
 import it.polimi.ingsw.model.shared.Resource;
 import it.polimi.ingsw.network.client.*;
 import it.polimi.ingsw.network.game.*;
@@ -183,14 +181,16 @@ public class GameMessageHandler {
     }
 
     public void handle(ActivateProductionResponseMessage message){
-        if(message.getSelectedStacks()!=null){
-            room.getGame().getCurrentPlayer().getPlayerBoard().activateProduction(message.getSelectedStacks());
-            clientConnection.sendMessage(new StringMessage("Your update strongbox: "+ room.getGame().getCurrentPlayer().getPlayerBoard().getStrongbox()));
+        if(message.getSelectedStacks()!=null || message.getBasicProduction() != null ) {
+            if (message.getSelectedStacks() != null) {
+                room.getGame().getCurrentPlayer().getPlayerBoard().activateProduction(message.getSelectedStacks());
+            }
+            if (message.getBasicProduction() != null) {
+                room.getGame().getCurrentPlayer().getPlayerBoard().activateProductionPower(message.getBasicProduction());
+            }
+            clientConnection.sendMessage(new StringMessage("Your update strongbox: " + room.getGame().getCurrentPlayer().getPlayerBoard().getStrongbox()));
             room.getCurrentTurn().setAlreadyPerformedMove(true);
             sendNextMoves();
-        }
-        if(message.getBasicProduction() != null){
-            //activating basic production
         }
         else {
             clientConnection.sendMessage(new ErrorMessage("Nothing could be done"));

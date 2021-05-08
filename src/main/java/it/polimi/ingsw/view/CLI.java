@@ -18,6 +18,8 @@ import it.polimi.ingsw.network.setup.JoinPublicRoomMessage;
 import java.io.PrintStream;
 import java.security.InvalidParameterException;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class CLI implements UI {
 
@@ -26,7 +28,9 @@ public class CLI implements UI {
     private final PrintStream output;
     private String username;
     private Game gameState;
-    
+
+    private ExecutorService executor = Executors.newCachedThreadPool();
+
     public CLI(Client client) {
         this.client = client;
         input = new Scanner(System.in);
@@ -133,12 +137,13 @@ public class CLI implements UI {
         int selection1;
         int selection2;
         do {
-            selection1 = askIntegerInput("select the first card to drop", 1,4)-1;
-            selection2 = askIntegerInput("select the second card to drop", 1,4)-1;
+            selection1 = askIntegerInput("Select the first card to drop", 1,4)-1;
+            selection2 = askIntegerInput("Select the second card to drop", 1,4)-1;
             if(selection1==selection2)output.println("You must select two distinct cards");
         } while (selection1 == selection2);
 
         client.sendMessage(new DropInitialLeaderCardsResponseMessage(selection1, selection2));
+        output.println("Waiting for other players to select their cards");
 
     }
 
@@ -151,8 +156,10 @@ public class CLI implements UI {
     @Override
     public void displayGameState() {
         // displayPlayerBoard(gameState.getPlayerByUsername(username));
+
         displayGameBoard();
        //momentary fix
+
         if(gameState.getCurrentPlayer()!= gameState.getPlayerByUsername(username)){
            for (Player player:
                 gameState.getPlayers()) {
@@ -161,17 +168,16 @@ public class CLI implements UI {
            }
        } else displayPlayerBoard(gameState.getPlayerByUsername(username));
 
-       /* todo this in preferable to the above one but gives problems. Go Fix it
-       /*
+       // todo this in preferable to the above one but gives problems. Go Fix it
+        /*
        if (gameState.getCurrentPlayer()!= gameState.getPlayerByUsername(username)) {
-          askToDisplayPlayerBoard();
+           executor.submit(this::askToDisplayPlayerBoard);
        }
-       */
-
+         */
     }
 
     private void displayGameBoard(){
-        output.println(gameState.getMarket().getMarbleStructure());
+        output.println("\n" + gameState.getMarket().getMarbleStructure());
         System.out.println("\nCards Market:");
 
 
@@ -325,12 +331,13 @@ public class CLI implements UI {
 
     @Override
     public void activateProduction(List<ProductionPower> productionPowers) {
-        List<Integer> selectedStacks = null;
-        ProductionPower selectedProductionPowers = null;
+        List<Integer> selectedStacks = new ArrayList<>();
+        ProductionPower selectedBasicProductionPowers = null;
         Game currentGameState = gameState;
-        int selection;
+        Integer selection;
         boolean done = false;
         List<Integer> indexes= new ArrayList<>();
+        List<Integer> extraProductionPowers = new ArrayList<>();
 
         if(productionPowers.equals(gameState.getCurrentPlayer().possibleProductionPowersToActive())){
             if(currentGameState.getCurrentPlayer().canActivateBasicProduction()){
@@ -338,15 +345,13 @@ public class CLI implements UI {
             }
             for (int i = 1; i <= productionPowers.size(); i++) {
                 indexes.add(i);
-
             }
 
             int productionNumber=1;
             while (!done){
-
                 output.println(gameState.getCurrentPlayer().possibleProductionPowersToActive());
-                String message = "";
-                message+="Select production power N° " +productionNumber+" to activate" ;
+                String message;
+                message ="Select production power N° " +productionNumber+" to activate" ;
                 if(indexes.contains(0) && gameState.getCurrentPlayer().canActivateBasicProduction()){
                     message+="[0 is basic production]";
                 }
@@ -354,25 +359,33 @@ public class CLI implements UI {
 
                 selection = askIntegerInput(message,indexes.get(0),gameState.getCurrentPlayer().possibleProductionPowersToActive().size());
 
-                if(selection==0){
-                    if(currentGameState.getCurrentPlayer().canActivateBasicProduction()){
-                        selectedProductionPowers= askBasicProductionPowerIO();
-                        indexes.remove(0);
-                    }
-                }else {
-                    selectedStacks.add(selection-1);
-                    List<Integer> currentSelection = new ArrayList<>();
-                    currentSelection.add(selection-1);
-                    currentGameState.getCurrentPlayer().getPlayerBoard().activateProduction(currentSelection);
-                }
+                if(indexes.contains(selection)) {
 
-                productionNumber++;
+                    if (selection == 0) {
+                        if (currentGameState.getCurrentPlayer().canActivateBasicProduction()) {
+                            selectedBasicProductionPowers = askBasicProductionPowerIO();
+                            currentGameState.getCurrentPlayer().getPlayerBoard().payResourceCost(selectedBasicProductionPowers.getInput());
+                        }
+                    } else {
+                            currentGameState.getCurrentPlayer().getPlayerBoard().payResourceCost(currentGameState.getCurrentPlayer().possibleProductionPowersToActive().get(selection - 1).getInput());
+                            if (gameState.getCurrentPlayer().getPlayerBoard().getExtraProductionPowers().contains(currentGameState.getCurrentPlayer().possibleProductionPowersToActive().get(selection - 1))){
+                                extraProductionPowers.add(selection - (gameState.getCurrentPlayer().possibleProductionPowersToActive().size()-1));
+                            } else {
+                                selectedStacks.add(selection - 1);
+                            }
+
+                    }
+                    indexes.remove((Integer) selection);
+                    productionNumber++;
+                } else output.println("Selection not valid");
+
+
                 output.println("Are you done? [y/n]");
                 done = input.nextLine().trim().toLowerCase().startsWith("y");
             }
-            selection = askIntegerInput("1.Send, 2.Abort",1,2);
-            if(selection==1)client.sendMessage(new ActivateProductionResponseMessage(selectedStacks, selectedProductionPowers));
-            else activateProduction(productionPowers);
+
+
+            client.sendMessage(new ActivateProductionResponseMessage(selectedStacks, selectedBasicProductionPowers, extraProductionPowers));
         } else output.println("problem with gameState");
 
 

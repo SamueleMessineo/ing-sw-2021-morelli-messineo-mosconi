@@ -110,18 +110,20 @@ public class PlayerBoard implements Serializable {
         for (Integer i:
              selectedStacks) {
             ProductionPower productionPower = getCardStacks().get(i).peek().getProductionPower();
-
-            payResourceCost(productionPower.getInput());
-
-            Map<Resource,Integer> ouput=new HashMap<>();
-            ouput.put(Resource.SHIELD,0);
-            ouput.put(Resource.COIN,0);
-            ouput.put(Resource.SERVANT,0);
-            ouput.put(Resource.STONE,0);
-            ouput.putAll(productionPower.getOutput());
-            strongbox.addResources(ouput);
+            activateProductionPower(productionPower);
         }
-        System.out.println("metodo da implementare successivamente");
+    }
+
+    public void activateProductionPower(ProductionPower productionPower){
+        payResourceCost(productionPower.getInput());
+
+        Map<Resource,Integer> ouput=new HashMap<>();
+        ouput.put(Resource.SHIELD,0);
+        ouput.put(Resource.COIN,0);
+        ouput.put(Resource.SERVANT,0);
+        ouput.put(Resource.STONE,0);
+        ouput.putAll(productionPower.getOutput());
+        strongbox.addResources(ouput);
     }
 
     public boolean canPlaceDevelopmentCard(DevelopmentCard card) {
