@@ -12,6 +12,7 @@ import it.polimi.ingsw.server.Room;
 import it.polimi.ingsw.server.ClientConnection;
 import it.polimi.ingsw.utils.GameUtils;
 
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -78,7 +79,6 @@ public class GameMessageHandler {
     public void handle(SelectCardMessage message) {
         System.out.println(message.getNum());
     }
-
 
     public void handle(SelectInitialResourceResponseMessage message) {
         gameController.giveInitialResources(message.getSelectedResources(),
@@ -147,7 +147,6 @@ public class GameMessageHandler {
 
         askToDropResources();
     }
-
 
     public void handle(DropLeaderCardResponseMessage message){
         gameController.dropLeader(message.getCard());
@@ -243,7 +242,7 @@ public class GameMessageHandler {
 
         ClientConnection currentPlayer = room.getConnections().get(room.getGame().getPlayers().indexOf(
                 room.getGame().getCurrentPlayer()));
-        room.sendAll(new GameStateMessage(room.getGame()));
+        room.sendAll(new UpdateAndDisplayGameStateMessage(room.getGame()));
 
         if(!gameController.isGameOver() || (room.getGame().getPlayers().indexOf(room.getPlayerFromConnection(currentPlayer)) != room.getGame().getInkwellPlayer())){
             room.setCurrentTurn(new Turn(room.getPlayerFromConnection(currentPlayer).getUsername(), gameController.computeNextPossibleMoves(false)));
@@ -258,6 +257,7 @@ public class GameMessageHandler {
 
     private void sendNextMoves(){
         room.getCurrentTurn().setMoves(gameController.computeNextPossibleMoves(room.getCurrentTurn().hasAlreadyPerformedMove()));
+        clientConnection.sendMessage(new UpdateGameStateMessage(room.getGame()));
         clientConnection.sendMessage(new SelectMoveRequestMessage(room.getCurrentTurn().getMoves()));
     }
 

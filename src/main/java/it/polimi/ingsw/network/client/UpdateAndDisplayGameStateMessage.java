@@ -3,11 +3,11 @@ package it.polimi.ingsw.network.client;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.network.ClientMessageHandler;
 
-public class GameStateMessage extends ClientMessage {
+public class UpdateAndDisplayGameStateMessage extends ClientMessage {
 
     private final Game game;
 
-    public GameStateMessage(Game game) {
+    public UpdateAndDisplayGameStateMessage(Game game) {
         this.game = game;
     }
 
@@ -15,7 +15,5 @@ public class GameStateMessage extends ClientMessage {
         return game;
     }
 
-    public void accept(ClientMessageHandler handler) {
-        handler.handle(this);
-    }
+    public void accept(ClientMessageHandler handler) { handler.handle(this); }
 }

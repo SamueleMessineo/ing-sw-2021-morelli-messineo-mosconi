@@ -3,8 +3,7 @@ package it.polimi.ingsw.network;
 import it.polimi.ingsw.client.Client;
 import it.polimi.ingsw.client.ServerConnection;
 import it.polimi.ingsw.network.client.*;
-import it.polimi.ingsw.network.client.GameStateMessage;
-import it.polimi.ingsw.network.pingpong.PingMessage;
+import it.polimi.ingsw.network.client.UpdateGameStateMessage;
 import it.polimi.ingsw.view.UI;
 
 public class ClientMessageHandler {
@@ -34,7 +33,12 @@ public class ClientMessageHandler {
         ui.displayPossibleMoves(message.getMoves());
     }
 
-    public void handle(GameStateMessage message) {
+    public void handle(UpdateGameStateMessage message) {
+        ui.setGameState(message.getGame());
+
+    }
+
+    public void handle(UpdateAndDisplayGameStateMessage message){
         ui.setGameState(message.getGame());
         ui.displayGameState();
     }
