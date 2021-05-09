@@ -65,6 +65,7 @@ public class ClassicGameController implements GameController{
     public void computeCurrentPlayer(){
         int nextPlayer = (game.getPlayers().indexOf(game.getCurrentPlayer()) + 1) % game.getPlayers().size();
         game.setCurrentPlayer(nextPlayer);
+        System.out.println(nextPlayer);
         if (!game.getPlayers().get(nextPlayer).isActive()) computeCurrentPlayer();
     }
 
@@ -155,7 +156,7 @@ public class ClassicGameController implements GameController{
         Player player = game.getCurrentPlayer();
 
         if(!alreadyPerformedMove){
-            if (player.canActivateProduction()) {
+            if (player.canActivateProduction() || player.canActivateBasicProduction()) {
                 moves.add("ACTIVATE_PRODUCTION");
             }
             moves.add("GET_MARBLES");

@@ -21,14 +21,19 @@ import java.util.Map;
 public class GameMessageHandler {
 
     private final GameController gameController;
-    private final ClientConnection clientConnection;
+    private ClientConnection clientConnection;
     private final Room room;
+    private boolean ready;
 
     public GameMessageHandler(GameController gameController, ClientConnection clientConnection, Room room) {
         this.gameController = gameController;
         this.clientConnection = clientConnection;
         this.room = room;
+        ready = false;
 
+    }
+
+    public void initialSelections(){
         // calculate the player's position in the playing order
         int playingIndex = room.getConnections().indexOf(clientConnection) - room.getGame().getInkwellPlayer();
         if (playingIndex < 0) {
@@ -55,6 +60,7 @@ public class GameMessageHandler {
                     resourceOptions, resourceAmount);
             clientConnection.sendMessage(message);
         }
+
     }
 
     private void startPlayingIfReady() {
@@ -90,6 +96,7 @@ public class GameMessageHandler {
     public void handle(DropInitialLeaderCardsResponseMessage message){
         gameController.dropInitialLeaderCards(message.getCard1(), message.getCard2(), room.getPlayerFromConnection(clientConnection).getUsername());
         GameUtils.saveGameState(room.getGame(), room.getId());
+        ready = true;
         startPlayingIfReady();
     }
 
@@ -187,6 +194,12 @@ public class GameMessageHandler {
             if (message.getBasicProduction() != null) {
                 room.getGame().getCurrentPlayer().getPlayerBoard().activateProductionPower(message.getBasicProduction());
             }
+            if(message.getExtraProductionPowers() != null){
+                for (int i = 0; i < message.getExtraProductionPowers().size(); i++) {
+                    room.getGame().getCurrentPlayer().getPlayerBoard().activateProductionPower(room.getGame().getCurrentPlayer().getPlayerBoard().getExtraProductionPowers().get(message.getExtraProductionPowers().get(i)));
+                }
+
+            }
             clientConnection.sendMessage(new StringMessage("Your update strongbox: " + room.getGame().getCurrentPlayer().getPlayerBoard().getStrongbox()));
             room.getCurrentTurn().setAlreadyPerformedMove(true);
             sendNextMoves();
@@ -261,9 +274,6 @@ public class GameMessageHandler {
         clientConnection.sendMessage(new SelectMoveRequestMessage(room.getCurrentTurn().getMoves()));
     }
 
-    public void handle(EndTurnMessage message) {
-        System.out.println(message.getName());
-    }
 
     private void endTurn(){
         gameController.computeCurrentPlayer();
@@ -272,9 +282,31 @@ public class GameMessageHandler {
 
     public void deactivateConnection(ClientConnection connection) {
         connection.setConnected(false);
-        room.getPlayerFromConnection(connection).setActive(false);
-        room.sendAll(new StringMessage(room.getPlayerFromConnection(connection).getUsername() + " disconnected"));
+        Player disconnectedPlayer = room.getPlayerFromConnection(connection);
+        if(!ready){
+            disconnectedPlayer.setActive(false);
+            room.sendAll(new StringMessage("Game ended for lack of players"));
+            return;
+        }
+        room.sendAll(new StringMessage(disconnectedPlayer.getUsername() + " disconnected"));
         room.sendAll(new UpdateGameStateMessage(room.getGame()));
+        if(disconnectedPlayer.equals(room.getGame().getPlayerByUsername(room.getCurrentTurn().getCurrentPlayer()))){
+            endTurn();
+        }
+        disconnectedPlayer.setActive(false);
+        if(room.getGame().getPlayers().size() == 1){
+            System.out.println("game over");
+            room.sendAll(new StringMessage("Game ended for lack of players"));
+            // room.sendAll(new GameOverMessage(gameController.computeWinner(), gameController.computeStanding()));
+        }
+
     }
 
+    public void setClientConnection(ClientConnection clientConnection) {
+        this.clientConnection = clientConnection;
+    }
+
+    public boolean isReady() {
+        return ready;
+    }
 }

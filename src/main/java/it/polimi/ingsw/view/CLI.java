@@ -363,8 +363,15 @@ public class CLI implements UI {
 
                     if (selection == 0) {
                         if (currentGameState.getCurrentPlayer().canActivateBasicProduction()) {
-                            selectedBasicProductionPowers = askBasicProductionPowerIO();
-                            currentGameState.getCurrentPlayer().getPlayerBoard().payResourceCost(selectedBasicProductionPowers.getInput());
+                            do{
+
+                                selectedBasicProductionPowers = askBasicProductionPowerIO();
+                                if(gameState.getCurrentPlayer().getPlayerBoard().canPayResources(selectedBasicProductionPowers.getInput())){
+                                    currentGameState.getCurrentPlayer().getPlayerBoard().payResourceCost(selectedBasicProductionPowers.getInput());
+                                    break;
+                                } else output.println("You do not have the selected input. Retry");
+                            } while (true);
+
                         }
                     } else {
                             currentGameState.getCurrentPlayer().getPlayerBoard().payResourceCost(currentGameState.getCurrentPlayer().possibleProductionPowersToActive().get(selection - 1).getInput());

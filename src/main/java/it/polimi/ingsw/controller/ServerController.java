@@ -6,6 +6,7 @@ import it.polimi.ingsw.network.GameMessageHandler;
 import it.polimi.ingsw.network.client.ErrorMessage;
 import it.polimi.ingsw.network.client.RoomDetailsMessage;
 import it.polimi.ingsw.network.client.StringMessage;
+import it.polimi.ingsw.network.client.UpdateGameStateMessage;
 import it.polimi.ingsw.server.Room;
 
 import it.polimi.ingsw.server.ClientConnection;
@@ -45,14 +46,42 @@ public class ServerController {
             clientConnection.sendMessage(new ErrorMessage("room not found."));
             return;
         }
-        if (server.getRooms().get(roomId).getGame().getPlayers().stream().anyMatch(player -> player.getUsername().equals(username))) {
+        Room room = server.getRooms().get(roomId);
+        //server.getRooms().get(roomId).getGame().getPlayers().stream().anyMatch(player -> player.getUsername().equals(username))
+        if (!room.isFull() && room.getGame().getPlayerByUsername(username)!=null) {
             clientConnection.sendMessage(new ErrorMessage("username is taken."));
             return;
         }
-        Room room = server.getRooms().get(roomId);
-        if (room.isFull()) {
+
+        if (room.isFull() && room.getGame().getPlayerByUsername(username)==null) {
             clientConnection.sendMessage(new ErrorMessage("room is full."));
             return;
+        }
+        //to handle reconnection
+        if(room.isFull() && room.getGame().getPlayerByUsername(username)!=null){
+           if(room.getGame().getPlayers().stream().noneMatch(player -> player.getUsername().equals(username))){
+               room.getGame().getPlayerByUsername(username).setActive(true);
+
+               clientConnection.setGameMessageHandler((room.getConnections().get(room.getGame().getPlayers().indexOf(room.getGame().getPlayerByUsername(username))).getGameMessageHandler()));
+               clientConnection.getGameMessageHandler().setClientConnection(clientConnection);
+               room.getConnections().remove(room.getGame().getPlayers().indexOf(room.getGame().getPlayerByUsername(username)));
+               room.getConnections().add(room.getGame().getPlayers().indexOf(room.getGame().getPlayerByUsername(username)), clientConnection);
+               List<ClientConnection> clientConnections=server.getPendingConnections();
+               clientConnections.remove(clientConnection);
+               if(!clientConnection.getGameMessageHandler().isReady()){
+                   clientConnection.getGameMessageHandler().initialSelections();
+               }
+               else {
+                   room.sendAll(new StringMessage(username + " is back in the game!"));
+                   room.sendAll(new UpdateGameStateMessage(room.getGame()));
+               }
+
+               return;
+           }
+           else {
+               clientConnection.sendMessage(new ErrorMessage("room is full."));
+               return;
+           }
         }
         room.getGame().addPlayer(username);
         List<ClientConnection> clientConnections=server.getPendingConnections();
@@ -127,6 +156,7 @@ public class ServerController {
         for (ClientConnection client:
              room.getConnections()) {
             client.setGameMessageHandler(new GameMessageHandler(classicGameController, client, room));
+            client.getGameMessageHandler().initialSelections();
         }
     }
 

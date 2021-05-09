@@ -16,10 +16,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.Serializable;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * Defines the main game class, it holds all the information of a game in progress
@@ -62,6 +59,9 @@ public class Game implements Serializable {
         currentPlayer = playerIndex;
     }
 
+    /**
+     * @return the index of the first player to play the game
+     */
     public int getInkwellPlayer() {
         return inkwellPlayer;
     }
@@ -79,7 +79,7 @@ public class Game implements Serializable {
     }
 
     /**
-     * Returns the list of players in the game.
+     * Returns the list of active players in the game.
      * @return The list of players in the game.
      */
     public ArrayList<Player> getPlayers() {
@@ -141,6 +141,11 @@ public class Game implements Serializable {
     }
 
     public Player getPlayerByUsername(String username){
-        return players.stream().filter(player -> player.getUsername().toLowerCase().trim().equals(username.toLowerCase().trim())).findFirst().orElseThrow();
+        try {
+            return players.stream().filter(player -> player.getUsername().toLowerCase().trim().equals(username.toLowerCase().trim())).findFirst().orElseThrow();
+        } catch (NoSuchElementException e){
+            return null;
+        }
+
     }
 }

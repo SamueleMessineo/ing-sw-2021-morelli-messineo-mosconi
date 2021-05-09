@@ -94,7 +94,7 @@ public class ClientConnection implements Runnable{
     }
 
     public void checkConnection() {
-        while (true) {
+        while (isConnected()) {
             sendMessage(new PingMessage());
             long start = System.currentTimeMillis();
             long end = start + 5*1000; // 5 seconds * 1000 ms/sec
@@ -104,10 +104,15 @@ public class ClientConnection implements Runnable{
                 receivedPong = false;
             } else {
                 System.out.println("client disconnected");
+                System.out.println(gameMessageHandler);
                 gameMessageHandler.deactivateConnection(this);
                 break;
             }
         }
+    }
+
+    public GameMessageHandler getGameMessageHandler() {
+        return gameMessageHandler;
     }
 
     public boolean isConnected() {
