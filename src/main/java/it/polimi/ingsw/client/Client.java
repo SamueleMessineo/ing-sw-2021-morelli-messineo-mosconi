@@ -29,8 +29,8 @@ public class Client {
 
         serverConnection = new ServerConnection(socket, this);
         ExecutorService executor = Executors.newCachedThreadPool();
-        executor.submit(serverConnection::waitForMessages);
-
+        executor.submit(serverConnection);
+        //executor.submit(ui);
         ui.setup();
     }
 

@@ -17,6 +17,7 @@ import java.io.FileReader;
 import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -82,7 +83,11 @@ public class Game implements Serializable {
      * @return The list of players in the game.
      */
     public ArrayList<Player> getPlayers() {
-        return players;
+        ArrayList<Player> activePlayers = new ArrayList<>();
+        for (Player p : players) {
+            if (p.isActive()) activePlayers.add(p);
+        }
+        return activePlayers;
     }
 
     /**

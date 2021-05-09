@@ -120,4 +120,9 @@ public class GUI extends Application implements UI {
     public void gameOver(String winner, Map<String, Integer> standing){
 
     }
+
+    @Override
+    public void run() {
+
+    }
 }

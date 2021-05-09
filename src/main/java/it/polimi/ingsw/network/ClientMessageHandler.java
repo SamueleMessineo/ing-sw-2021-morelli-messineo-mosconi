@@ -6,9 +6,13 @@ import it.polimi.ingsw.network.client.*;
 import it.polimi.ingsw.network.client.UpdateGameStateMessage;
 import it.polimi.ingsw.view.UI;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 public class ClientMessageHandler {
     private final ServerConnection serverConnection;
     private final UI ui;
+    ExecutorService executor = Executors.newCachedThreadPool();
 
     public ClientMessageHandler(Client client, ServerConnection serverConnection){
         this.serverConnection = serverConnection;
@@ -16,26 +20,28 @@ public class ClientMessageHandler {
     }
 
     public void handle(RoomDetailsMessage roomDetailsMessage){
-        ui.displayRoomDetails(roomDetailsMessage.getPlayers(), roomDetailsMessage.getPlayersNum(), roomDetailsMessage.getRoomId());
+        executor.submit(() -> ui.displayRoomDetails(roomDetailsMessage.getPlayers(),
+                roomDetailsMessage.getPlayersNum(), roomDetailsMessage.getRoomId()));
     }
 
     public void handle(ErrorMessage message) {
-        ui.displayError(message.getBody());
+        executor.submit(() -> ui.displayError(message.getBody()));
     }
 
-    public void handle(StringMessage message){ ui.displayString(message.getBody());}
+    public void handle(StringMessage message) {
+        executor.submit(() -> ui.displayString(message.getBody()));
+    }
 
     public void handle(DropInitialLeaderCardsRequestMessage message){
-        ui.selectLeaderCards(message.getLeaderCards());
+        executor.submit(() -> ui.selectLeaderCards(message.getLeaderCards()));
     }
 
     public void handle(SelectMoveRequestMessage message) {
-        ui.displayPossibleMoves(message.getMoves());
+        executor.submit(() -> ui.displayPossibleMoves(message.getMoves()));
     }
 
     public void handle(UpdateGameStateMessage message) {
-        ui.setGameState(message.getGame());
-
+        executor.submit(() -> ui.setGameState(message.getGame()));
     }
 
     public void handle(UpdateAndDisplayGameStateMessage message){
@@ -44,19 +50,19 @@ public class ClientMessageHandler {
     }
 
     public void handle(SelectMarblesRequestMessage message){
-        ui.displayMarbles(message.getMarbleStructure());
+        executor.submit(() -> ui.displayMarbles(message.getMarbleStructure()));
     }
 
     public void handle(DropResourceRequestMessage message){
-        ui.dropResources(message.getResources());
+        executor.submit(() -> ui.dropResources(message.getResources()));
     }
 
     public void handle(DropLeaderCardRequestMessage message){
-        ui.discardLeaderCard(message.getLeaderCards());
+        executor.submit(() -> ui.discardLeaderCard(message.getLeaderCards()));
     }
 
     public void handle(SwitchShelvesRequestMessage message){
-        ui.switchShelves(message.getShelves());
+        executor.submit(() -> ui.switchShelves(message.getShelves()));
     }
 
     public void handle(SelectResourceForWhiteMarbleRequestMessage message) {
@@ -64,26 +70,25 @@ public class ClientMessageHandler {
     }
 
     public void handle(ActivateProductionRequestMessage message){
-        ui.activateProduction(message.getProductionPowers());
+        executor.submit(() -> ui.activateProduction(message.getProductionPowers()));
     }
 
     public void handle(BuyDevelopmentCardRequestMessage message){
-        ui.buyDevelopmentCard(message.getDevelopmentCards());
+        executor.submit(() -> ui.buyDevelopmentCard(message.getDevelopmentCards()));
     }
 
     public void handle(SelectStackToPlaceCardRequestMessage message){
-        ui.selectStackToPlaceCard(message.getDevelopmentCards());
+        executor.submit(() -> ui.selectStackToPlaceCard(message.getDevelopmentCards()));
     }
 
     public void handle(PlayLeaderRequestMessage message){
-        ui.playLeader(message.getLeaderCards());
+        executor.submit(() -> ui.playLeader(message.getLeaderCards()));
     }
 
     public void handle(SelectInitialResourceRequestMessage message) {
-        ui.selectInitialResources(message.getResources(), message.getAmount());
+        executor.submit(() -> ui.selectInitialResources(message.getResources(), message.getAmount()));
     }
     public void handle(GameOverMessage message){
-        ui.gameOver(message.getWinner(), message.getStanding());
+        executor.submit(() -> ui.gameOver(message.getWinner(), message.getStanding()));
     }
-
 }

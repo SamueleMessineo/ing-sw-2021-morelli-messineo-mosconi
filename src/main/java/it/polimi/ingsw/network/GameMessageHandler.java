@@ -268,7 +268,13 @@ public class GameMessageHandler {
     private void endTurn(){
         gameController.computeCurrentPlayer();
         sendStateAndMovesForNextTurn();
+    }
 
+    public void deactivateConnection(ClientConnection connection) {
+        connection.setConnected(false);
+        room.getPlayerFromConnection(connection).setActive(false);
+        room.sendAll(new StringMessage(room.getPlayerFromConnection(connection).getUsername() + " disconnected"));
+        room.sendAll(new UpdateGameStateMessage(room.getGame()));
     }
 
 }

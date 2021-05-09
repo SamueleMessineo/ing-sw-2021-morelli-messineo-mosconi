@@ -29,8 +29,8 @@ public class SoloGameController implements GameController {
 
     public void leaderCardsSelectionStep(){
         ClientConnection player = room.getConnections().get(0);
-        player.sendMessage(new StringMessage("Single game started"));
-        player.sendMessage(new DropInitialLeaderCardsRequestMessage(room.getPlayerFromConnection(player).getLeaderCards()));
+        //player.sendMessage(new StringMessage("Single game started"));
+        //player.sendMessage(new DropInitialLeaderCardsRequestMessage(room.getPlayerFromConnection(player).getLeaderCards()));
     }
 
     @Override

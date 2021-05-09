@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
-public interface UI {
+public interface UI extends Runnable {
 
     void displayRoomDetails(ArrayList<String> players, int playersNum, int RoomId);
 

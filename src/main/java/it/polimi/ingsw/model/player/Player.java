@@ -19,6 +19,7 @@ public class Player implements Serializable {
     private final PlayerBoard playerBoard;
     private ArrayList<LeaderCard> leaderCards;
     private ArrayList<LeaderCard> playedLeaderCards;
+    private boolean active = true;
 
     public Player(String username) {
         this.username = username;
@@ -301,5 +302,13 @@ public class Player implements Serializable {
                 return true;
         }
         return false;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }

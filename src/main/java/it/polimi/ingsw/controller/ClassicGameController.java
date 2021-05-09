@@ -63,11 +63,9 @@ public class ClassicGameController implements GameController{
     }
 
     public void computeCurrentPlayer(){
-        if (game.getPlayers().indexOf(game.getCurrentPlayer()) + 1 < game.getPlayers().size()) {
-            game.setCurrentPlayer(game.getPlayers().indexOf(game.getCurrentPlayer()) + 1);
-        } else {
-            game.setCurrentPlayer(0);
-        }
+        int nextPlayer = (game.getPlayers().indexOf(game.getCurrentPlayer()) + 1) % game.getPlayers().size();
+        game.setCurrentPlayer(nextPlayer);
+        if (!game.getPlayers().get(nextPlayer).isActive()) computeCurrentPlayer();
     }
 
     @Override

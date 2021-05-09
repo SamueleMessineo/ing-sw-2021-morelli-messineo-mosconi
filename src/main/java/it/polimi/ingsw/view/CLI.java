@@ -475,4 +475,9 @@ public class CLI implements UI {
             client.closeConncetion();
         }
     }
+
+    @Override
+    public void run() {
+        setup();
+    }
 }

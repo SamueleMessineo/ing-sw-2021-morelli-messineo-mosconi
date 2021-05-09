@@ -22,6 +22,7 @@ public class ClientConnection implements Runnable{
     private GameMessageHandler gameMessageHandler;
     private Logger logger;
     private boolean receivedPong = false;
+    private boolean connected = true;
 
     public ClientConnection(Socket socket, Server server) {
         this.socket = socket;
@@ -63,7 +64,8 @@ public class ClientConnection implements Runnable{
             m = (Message) inputStream.readObject();
             //logger.info(m.toString());
         } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+            receivedPong = false;
+            //e.printStackTrace();
         }
         return m;
     }
@@ -73,6 +75,7 @@ public class ClientConnection implements Runnable{
             outputStream.reset();
             outputStream.writeObject(m);
             outputStream.flush();
+            //logger.warning(m.toString());
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -97,12 +100,21 @@ public class ClientConnection implements Runnable{
             long end = start + 5*1000; // 5 seconds * 1000 ms/sec
             while (System.currentTimeMillis() < end);
             if (receivedPong) {
-                System.out.println("received pong from ");
+                //System.out.println("received pong from ");
                 receivedPong = false;
             } else {
                 System.out.println("client disconnected");
+                gameMessageHandler.deactivateConnection(this);
                 break;
             }
         }
+    }
+
+    public boolean isConnected() {
+        return connected;
+    }
+
+    public void setConnected(boolean connected) {
+        this.connected = connected;
     }
 }

@@ -48,9 +48,9 @@ public class Room {
     }
 
     public void sendAll(Message m){
-        for (ClientConnection connection:
-             connections) {
-            connection.sendMessage(m);
+        for (ClientConnection connection : connections) {
+            if (connection.isConnected())
+                connection.sendMessage(m);
         }
     }
 

@@ -10,7 +10,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
-public class ServerConnection{
+public class ServerConnection implements Runnable {
     private final Socket socket;
     private final Client client;
     private ObjectInputStream inputStream;
@@ -57,7 +57,7 @@ public class ServerConnection{
 
     public void sendMessage(Message m) {
         try {
-            outputStream.reset();
+            //outputStream.reset();
             outputStream.writeObject(m);
             outputStream.flush();
         } catch (IOException e) {
@@ -70,6 +70,19 @@ public class ServerConnection{
             socket.close();
         } catch (IOException e) {
             e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void run() {
+        while (true) {
+            Message m = receiveMessage();
+            //System.out.println(m + " " + m.getType());
+            if (m.getType().equals("CONNECTION")) {
+                sendMessage(new PongMessage());
+            } else {
+                ((ClientMessage) m).accept(clientMessageHandler);
+            }
         }
     }
 }
