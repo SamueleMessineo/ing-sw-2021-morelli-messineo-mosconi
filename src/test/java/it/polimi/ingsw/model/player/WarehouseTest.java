@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model.player;
 
+import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.shared.Resource;
+import it.polimi.ingsw.utils.GameUtils;
 import org.junit.Test;
 
 import java.util.HashMap;
@@ -128,4 +130,201 @@ public class WarehouseTest {
             put(Resource.SERVANT, 0);
         }}, warehouse.getResources());
     }
+
+    @Test
+    public void canPlaceResources(){
+        Map<Resource,Integer> resToAdd= GameUtils.emptyResourceMap();
+        resToAdd.put(Resource.SERVANT,7);
+        assertFalse(warehouse.canPlaceResources(resToAdd));
+
+        resToAdd= GameUtils.emptyResourceMap();
+        resToAdd.put(Resource.SERVANT,3);
+        resToAdd.put(Resource.COIN,8);
+        assertFalse(warehouse.canPlaceResources(resToAdd));
+
+        resToAdd= GameUtils.emptyResourceMap();
+        resToAdd.put(Resource.SERVANT,3);
+        resToAdd.put(Resource.COIN,2);
+        resToAdd.put(Resource.STONE,2);
+        assertFalse(warehouse.canPlaceResources(resToAdd));
+
+        resToAdd= GameUtils.emptyResourceMap();
+        resToAdd.put(Resource.SERVANT,2);
+        resToAdd.put(Resource.COIN,2);
+        resToAdd.put(Resource.STONE,2);
+        assertFalse(warehouse.canPlaceResources(resToAdd));
+
+        resToAdd= GameUtils.emptyResourceMap();
+        resToAdd.put(Resource.SERVANT,3);
+        resToAdd.put(Resource.COIN,3);
+        assertFalse(warehouse.canPlaceResources(resToAdd));
+
+        resToAdd= GameUtils.emptyResourceMap();
+        resToAdd.put(Resource.SERVANT,1);
+        resToAdd.put(Resource.COIN,1);
+        resToAdd.put(Resource.STONE,1);
+        resToAdd.put(Resource.SHIELD,1);
+        assertFalse(warehouse.canPlaceResources(resToAdd));
+
+        resToAdd= GameUtils.emptyResourceMap();
+        resToAdd.put(Resource.SERVANT,1);
+        resToAdd.put(Resource.COIN,1);
+        resToAdd.put(Resource.STONE,1);
+        resToAdd.put(Resource.SHIELD,0);
+        assertTrue(warehouse.canPlaceResources(resToAdd));
+
+        resToAdd= GameUtils.emptyResourceMap();
+        resToAdd.put(Resource.SERVANT,1);
+        resToAdd.put(Resource.COIN,2);
+        resToAdd.put(Resource.STONE,2);
+        resToAdd.put(Resource.SHIELD,0);
+        assertTrue(warehouse.canPlaceResources(resToAdd));
+
+        resToAdd= GameUtils.emptyResourceMap();
+        resToAdd.put(Resource.SERVANT,0);
+        resToAdd.put(Resource.COIN,2);
+        resToAdd.put(Resource.STONE,3);
+        resToAdd.put(Resource.SHIELD,0);
+        assertTrue(warehouse.canPlaceResources(resToAdd));
+
+        resToAdd= GameUtils.emptyResourceMap();
+        resToAdd.put(Resource.SERVANT,1);
+        resToAdd.put(Resource.COIN,0);
+        resToAdd.put(Resource.STONE,3);
+        resToAdd.put(Resource.SHIELD,0);
+        assertTrue(warehouse.canPlaceResources(resToAdd));
+
+//        Test for Warehouse with 1 extra shelf
+        warehouse.addNewShelf("extra1",new Shelf(2,Resource.SERVANT));
+
+        resToAdd= GameUtils.emptyResourceMap();
+        resToAdd.put(Resource.SERVANT,9);
+        resToAdd.put(Resource.COIN,0);
+        resToAdd.put(Resource.STONE,0);
+        resToAdd.put(Resource.SHIELD,0);
+        assertFalse(warehouse.canPlaceResources(resToAdd));
+
+        resToAdd= GameUtils.emptyResourceMap();
+        resToAdd.put(Resource.SERVANT,2);
+        resToAdd.put(Resource.COIN,5);
+        resToAdd.put(Resource.STONE,3);
+        resToAdd.put(Resource.SHIELD,0);
+        assertFalse(warehouse.canPlaceResources(resToAdd));
+
+        resToAdd= GameUtils.emptyResourceMap();
+        resToAdd.put(Resource.SERVANT,2);
+        resToAdd.put(Resource.COIN,2);
+        resToAdd.put(Resource.STONE,3);
+        resToAdd.put(Resource.SHIELD,2);
+        assertFalse(warehouse.canPlaceResources(resToAdd));
+
+        resToAdd= GameUtils.emptyResourceMap();
+        resToAdd.put(Resource.SERVANT,3);
+        resToAdd.put(Resource.COIN,1);
+        resToAdd.put(Resource.STONE,2);
+        resToAdd.put(Resource.SHIELD,2);
+        assertFalse(warehouse.canPlaceResources(resToAdd));
+
+        resToAdd= GameUtils.emptyResourceMap();
+        resToAdd.put(Resource.SERVANT,3);
+        resToAdd.put(Resource.COIN,1);
+        resToAdd.put(Resource.STONE,2);
+        resToAdd.put(Resource.SHIELD,2);
+        assertFalse(warehouse.canPlaceResources(resToAdd));
+
+        resToAdd= GameUtils.emptyResourceMap();
+        resToAdd.put(Resource.SERVANT,6);
+        resToAdd.put(Resource.COIN,1);
+        resToAdd.put(Resource.STONE,0);
+        resToAdd.put(Resource.SHIELD,0);
+        assertFalse(warehouse.canPlaceResources(resToAdd));
+
+        resToAdd= GameUtils.emptyResourceMap();
+        resToAdd.put(Resource.SERVANT,2);
+        resToAdd.put(Resource.COIN,2);
+        resToAdd.put(Resource.STONE,2);
+        resToAdd.put(Resource.SHIELD,2);
+        assertFalse(warehouse.canPlaceResources(resToAdd));
+
+        resToAdd= GameUtils.emptyResourceMap();
+        resToAdd.put(Resource.SERVANT,2);
+        resToAdd.put(Resource.COIN,2);
+        resToAdd.put(Resource.STONE,2);
+        resToAdd.put(Resource.SHIELD,1);
+        assertTrue(warehouse.canPlaceResources(resToAdd));
+
+        resToAdd= GameUtils.emptyResourceMap();
+        resToAdd.put(Resource.SERVANT,3);
+        resToAdd.put(Resource.COIN,2);
+        resToAdd.put(Resource.STONE,3);
+        resToAdd.put(Resource.SHIELD,0);
+        assertTrue(warehouse.canPlaceResources(resToAdd));
+
+        resToAdd= GameUtils.emptyResourceMap();
+        resToAdd.put(Resource.SERVANT,2);
+        resToAdd.put(Resource.COIN,2);
+        resToAdd.put(Resource.STONE,3);
+        resToAdd.put(Resource.SHIELD,1);
+        assertTrue(warehouse.canPlaceResources(resToAdd));
+
+        resToAdd= GameUtils.emptyResourceMap();
+        resToAdd.put(Resource.SERVANT,1);
+        resToAdd.put(Resource.COIN,2);
+        resToAdd.put(Resource.STONE,2);
+        resToAdd.put(Resource.SHIELD,1);
+        assertTrue(warehouse.canPlaceResources(resToAdd));
+
+        //        Test for Warehouse with 2 extra shelf
+        warehouse.addNewShelf("extra1",new Shelf(2,Resource.COIN));
+
+        resToAdd= GameUtils.emptyResourceMap();
+        resToAdd.put(Resource.SERVANT,11);
+        resToAdd.put(Resource.COIN,0);
+        resToAdd.put(Resource.STONE,0);
+        resToAdd.put(Resource.SHIELD,0);
+        assertFalse(warehouse.canPlaceResources(resToAdd));
+
+        resToAdd= GameUtils.emptyResourceMap();
+        resToAdd.put(Resource.SERVANT,2);
+        resToAdd.put(Resource.COIN,5);
+        resToAdd.put(Resource.STONE,3);
+        resToAdd.put(Resource.SHIELD,1);
+        assertFalse(warehouse.canPlaceResources(resToAdd));
+
+        resToAdd= GameUtils.emptyResourceMap();
+        resToAdd.put(Resource.SERVANT,3);
+        resToAdd.put(Resource.COIN,3);
+        resToAdd.put(Resource.STONE,3);
+        resToAdd.put(Resource.SHIELD,2);
+        assertFalse(warehouse.canPlaceResources(resToAdd));
+
+        resToAdd= GameUtils.emptyResourceMap();
+        resToAdd.put(Resource.SERVANT,3);
+        resToAdd.put(Resource.COIN,1);
+        resToAdd.put(Resource.STONE,2);
+        resToAdd.put(Resource.SHIELD,2);
+        assertFalse(warehouse.canPlaceResources(resToAdd));
+
+        resToAdd= GameUtils.emptyResourceMap();
+        resToAdd.put(Resource.SERVANT,6);
+        resToAdd.put(Resource.COIN,1);
+        resToAdd.put(Resource.STONE,0);
+        resToAdd.put(Resource.SHIELD,0);
+        assertFalse(warehouse.canPlaceResources(resToAdd));
+
+        resToAdd= GameUtils.emptyResourceMap();
+        resToAdd.put(Resource.SERVANT,5);
+        resToAdd.put(Resource.COIN,5);
+        resToAdd.put(Resource.STONE,2);
+        resToAdd.put(Resource.SHIELD,2);
+        assertFalse(warehouse.canPlaceResources(resToAdd));
+
+        resToAdd= GameUtils.emptyResourceMap();
+        resToAdd.put(Resource.SERVANT,2);
+        resToAdd.put(Resource.COIN,2);
+        resToAdd.put(Resource.STONE,2);
+        resToAdd.put(Resource.SHIELD,1);
+        assertTrue(warehouse.canPlaceResources(resToAdd));
+    }
+//    TODO:complete test
 }
