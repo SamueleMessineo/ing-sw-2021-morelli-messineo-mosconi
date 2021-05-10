@@ -39,12 +39,7 @@ public class CLI implements UI {
     }
 
     public void setup(){
-        output.println("Good morning Sir,");
-        output.println("how shall I call you?");
-        username = input.nextLine();
-        output.println("Welcome " + username + ", nice to meet you");
-        output.println("Only online game available for now");
-
+        askUsername();
         output.println("Do wou want to create a room or join an existing one?");
         int selection = askIntegerInput("1: create\n2: join", 1, 2);
 
@@ -77,6 +72,13 @@ public class CLI implements UI {
                 client.sendMessage(new JoinPublicRoomMessage(playersNumber, username));
             }
         }
+    }
+
+    public void askUsername(){
+        output.println("Good morning Sir,");
+        output.println("how shall I call you?");
+        username = input.nextLine();
+        output.println("Welcome " + username + ", nice to meet you");
     }
 
     @Override
@@ -147,7 +149,7 @@ public class CLI implements UI {
         } while (selection1 == selection2);
 
         client.sendMessage(new DropInitialLeaderCardsResponseMessage(selection1, selection2));
-        output.println("Waiting for other players to select their cards");
+
 
     }
 
@@ -505,5 +507,9 @@ public class CLI implements UI {
     @Override
     public void run() {
         setup();
+    }
+
+    public String getUsername() {
+        return username;
     }
 }

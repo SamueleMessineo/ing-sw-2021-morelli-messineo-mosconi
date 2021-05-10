@@ -53,4 +53,8 @@ public interface UI extends Runnable {
 
     public void gameOver(String winner, Map<String, Integer> standing);
 
+    public void askUsername();
+
+    public String getUsername();
+
 }

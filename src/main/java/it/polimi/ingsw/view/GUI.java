@@ -125,4 +125,14 @@ public class GUI extends Application implements UI {
     public void run() {
 
     }
+
+    @Override
+    public void askUsername() {
+
+    }
+
+    @Override
+    public String getUsername() {
+        return null;
+    }
 }

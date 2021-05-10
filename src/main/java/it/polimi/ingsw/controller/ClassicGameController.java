@@ -18,6 +18,8 @@ public class ClassicGameController {
         this.game = room.getGame();
     }
 
+    public ClassicGameController(Game game) { this.game = game; }
+
     public void startGame(){
         selectStartingPlayer();
     }
