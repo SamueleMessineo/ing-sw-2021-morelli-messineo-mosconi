@@ -1,11 +1,9 @@
 package it.polimi.ingsw.model.player;
 import it.polimi.ingsw.model.shared.*;
+import it.polimi.ingsw.utils.GameUtils;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Structure containing a list of shelves the player can store resources onto.
@@ -147,12 +145,7 @@ public class Warehouse implements Serializable {
      * @return all resources in a Map.
      */
     public Map<Resource, Integer> getResources(){
-        Map<Resource, Integer> allResources = new HashMap<>(){{
-            put(Resource.COIN, 0);
-            put(Resource.STONE, 0);
-            put(Resource.SHIELD, 0);
-            put(Resource.SERVANT, 0);
-        }};
+        Map<Resource, Integer> allResources = GameUtils.emptyResourceMap();
         for (Shelf shelf : shelves) {
             if (shelf.getResourceType() != null) {
                 allResources.put(shelf.getResourceType(),
@@ -190,5 +183,92 @@ public class Warehouse implements Serializable {
             if (allResources.get(resource) < cost.get(resource)) return false;
         }
         return true;
+    }
+
+    public boolean canPlaceResources(Map<Resource,Integer> resourcesToPlace){
+        Map<Resource,Integer> resourcesInWarehouse=new HashMap<>(getResources());
+        int numOfResourcesToPlaceInWarehouse=0;
+        int maxResourcesInWarehouse=0;
+
+        Map<Resource,Integer> resourcesToPlaceInWarehouse=GameUtils.sumResourcesMaps(resourcesToPlace,resourcesInWarehouse);
+        for(Resource resource:resourcesToPlaceInWarehouse.keySet()){
+            numOfResourcesToPlaceInWarehouse+=resourcesToPlaceInWarehouse.get(resource);
+        }
+
+        for(String nameShelf:getShelfNames()){
+            maxResourcesInWarehouse+=getShelf(nameShelf).getMaxSize();
+        }
+
+        if(numOfResourcesToPlaceInWarehouse>maxResourcesInWarehouse)
+            return false;
+
+        if(getShelfNames().contains("extra1")||getShelfNames().contains("extra2")){
+            return canPlaceResourcesInWarehouseWithExtraShelves(resourcesToPlace);
+        }else {
+            return canPlaceResourcesInWarehouseWithoutExtraShelves(resourcesToPlaceInWarehouse);
+        }
+    }
+
+    private boolean canPlaceResourcesInWarehouseWithoutExtraShelves(Map<Resource,Integer> resourcesToPlace){
+        int numOfTypeRes=0;
+
+        for(Resource resource:resourcesToPlace.keySet()){
+            if(resourcesToPlace.get(resource)>0)
+                numOfTypeRes++;
+        }
+
+        if(numOfTypeRes>3){
+            return false;
+        }
+
+        for(int i=1; i<=3;i++){
+            for(Resource resource:resourcesToPlace.keySet()){
+                if(resourcesToPlace.get(resource)>=1 && resourcesToPlace.get(resource)<=i) {
+                    resourcesToPlace.put(resource, 0);
+                    break;
+                }
+            }
+        }
+
+        return resourcesToPlace.equals(GameUtils.emptyResourceMap());
+    }
+
+    private boolean canPlaceResourcesInWarehouseWithExtraShelves(Map<Resource,Integer> resourcesToPlace) {
+        System.out.println();
+        System.out.println(resourcesToPlace);
+
+
+        List<Resource> resTypeExtraShelf=new ArrayList<>();
+        for(String shelf:getShelfNames()){
+            if(shelf=="extra1"){
+                resTypeExtraShelf.add(getShelf("extra1").getResourceType());
+                resTypeExtraShelf.add(Resource.ANY);
+            }else if(shelf=="extra2"){
+                resTypeExtraShelf.remove(Resource.ANY);
+                resTypeExtraShelf.add(getShelf("extra2").getResourceType());
+            }
+        }
+
+        System.out.println(resTypeExtraShelf);
+        for (Resource resource : resourcesToPlace.keySet()) {
+            if (resTypeExtraShelf.contains(resource)) {
+                if(resourcesToPlace.get(resource)>2 && (
+                        (resource.equals(resTypeExtraShelf.get(0)) && resourcesToPlace.get(resource)<=5) ||
+                        (resource.equals(resTypeExtraShelf.get(1)) && resourcesToPlace.get(resource)<=4))){
+                    resourcesToPlace.put(resource, resourcesToPlace.get(resource) - 2);
+                }
+                else if(resourcesToPlace.get(resource)==2 || resourcesToPlace.get(resource)==1){
+                    resourcesToPlace.put(resource, 0);
+                }
+                else {
+                    return false;
+                }
+                resTypeExtraShelf.remove(resource);
+            }
+        }
+
+
+        System.out.println(resourcesToPlace);
+        return canPlaceResourcesInWarehouseWithoutExtraShelves(resourcesToPlace);
     }
 }
