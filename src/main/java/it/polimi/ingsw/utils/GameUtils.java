@@ -55,4 +55,18 @@ public class GameUtils {
         emptyMap.put(Resource.STONE,0);
         return emptyMap;
     }
+
+    public static Map<Resource, Integer> sumResourcesMaps(Map<Resource, Integer> map1, Map<Resource, Integer> map2){
+        Map<Resource, Integer> mapToAdd1=emptyResourceMap();
+        mapToAdd1.putAll(map1);
+        Map<Resource, Integer> mapToAdd2=emptyResourceMap();
+        mapToAdd2.putAll(map2);
+
+        Map<Resource, Integer> sum=emptyResourceMap();
+
+        for(Resource resource:sum.keySet()){
+            sum.put(resource, mapToAdd1.get(resource) + mapToAdd2.get(resource));
+        }
+        return sum;
+    }
 }
