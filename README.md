@@ -21,7 +21,7 @@ Final project for the Software Engineering course at Polytechnic of Milan, 2021.
 |Parameter editor|✖️|
 |Offline games|✖️|
 |Multiple games|✔️|
-|Disconnection resilience|✖️|
+|Disconnection resilience|✔️|
 
 ## How to start
 
