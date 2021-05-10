@@ -43,5 +43,40 @@ public class GameUtilsTest {
         assertEquals(sum,GameUtils.sumResourcesMaps(map1,map2));
 
 
+        map1=new HashMap<>();
+        map1.put(Resource.STONE,4);
+        map1.put(Resource.COIN,5);
+
+        map2=new HashMap<>();
+        map2.put(Resource.SHIELD,1);
+        map2.put(Resource.SERVANT,9);
+
+        sum=new HashMap<>();
+        sum.put(Resource.STONE,4);
+        sum.put(Resource.COIN,5);
+        sum.put(Resource.SHIELD,1);
+        sum.put(Resource.SERVANT,9);
+
+        assertEquals(sum,GameUtils.sumResourcesMaps(map1,map2));
+
+        map1=new HashMap<>();
+        map1.put(Resource.STONE,21);
+        map1.put(Resource.COIN,12);
+
+        map2=new HashMap<>();
+        map2.put(Resource.STONE,6);
+        map2.put(Resource.COIN,7);
+        map2.put(Resource.SHIELD,1);
+        map2.put(Resource.SERVANT,9);
+
+        sum=new HashMap<>();
+        sum.put(Resource.STONE,27);
+        sum.put(Resource.COIN,19);
+        sum.put(Resource.SHIELD,1);
+        sum.put(Resource.SERVANT,9);
+
+        assertEquals(sum,GameUtils.sumResourcesMaps(map1,map2));
+
+
     }
 }
