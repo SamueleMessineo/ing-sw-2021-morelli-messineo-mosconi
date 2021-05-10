@@ -15,7 +15,6 @@ public class SoloGameController extends ClassicGameController {
         super(room);
         game=super.getGame();
         game.setLorenzoIlMagnifico(new Player("LorenzoIlMagnifico"));
-        //todo check if player username is LorenzoIlMagnifico
         game.setSoloActionTypes();
     }
 
