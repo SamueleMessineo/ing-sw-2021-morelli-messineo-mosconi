@@ -178,13 +178,15 @@ public class Game implements Serializable {
     public void removeCardsByLorenzo(SoloActionType soloActionType){
         for (MarketCardStack stack:
              market.getCardsGrid()) {
-            if(!stack.isEmpty() && stack.getType().toString().equals(soloActionType.name())){
-                stack.pop();
-                if(!stack.isEmpty()){
-                    stack.pop();
-                }
+            if(!stack.isEmpty()){
+               if( stack.getType().toString().equals(soloActionType.name())){
+                     stack.pop();
+                    if(!stack.isEmpty()){
+                      stack.pop();
+                     } else System.out.println("emptied 1");
                 return;
-            }
+             }else  System.out.println("emptied 2");
+            } else System.out.println("emptied 3");
         }
     }
 }

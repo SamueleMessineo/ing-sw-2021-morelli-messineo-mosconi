@@ -155,10 +155,12 @@ public class ClassicGameController {
             }
             moves.add("GET_MARBLES");
             for (MarketCardStack cardsStack : game.getMarket().getCardsGrid()) {
-                DevelopmentCard topCard = cardsStack.peek();
-                if (player.canBuyAndPlaceDevelopmentCard(topCard)) {
-                    moves.add("BUY_CARD");
-                    break;
+                if(!cardsStack.isEmpty()) {
+                    DevelopmentCard topCard = cardsStack.peek();
+                    if (player.canBuyAndPlaceDevelopmentCard(topCard)) {
+                        moves.add("BUY_CARD");
+                        break;
+                    }
                 }
             }
         } else {

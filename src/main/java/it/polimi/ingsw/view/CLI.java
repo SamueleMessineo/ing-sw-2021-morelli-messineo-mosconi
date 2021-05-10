@@ -161,7 +161,7 @@ public class CLI implements UI {
     public void displayGameState() {
         // displayPlayerBoard(gameState.getPlayerByUsername(username));
 
-        displayGameBoard();
+       displayGameBoard();
        //momentary fix
 
         if(gameState.getCurrentPlayer()!= gameState.getPlayerByUsername(username)){
@@ -194,12 +194,18 @@ public class CLI implements UI {
 
         }
         for (int i = 10; i >= 0; i-=3) {
-            output.println(gameState.getMarket().getCardsGrid().get(i));
-            output.println("\n");
+            if(gameState.getMarket().getCardsGrid().get(i).isEmpty()) System.out.println("Empty Stack");
+            else {
+                output.println(gameState.getMarket().getCardsGrid().get(i));
+                output.println("\n");
+            }
         }
         for (int i = 9; i >= 0; i-=3) {
-            output.println(gameState.getMarket().getCardsGrid().get(i));
-            output.println("\n");
+            if(gameState.getMarket().getCardsGrid().get(i).isEmpty()) System.out.println("Empty Stack");
+            else {
+                output.println(gameState.getMarket().getCardsGrid().get(i));
+                output.println("\n");
+            }
         }
 
     }
