@@ -1,6 +1,6 @@
 package it.polimi.ingsw.network;
 
-import it.polimi.ingsw.controller.GameController;
+import it.polimi.ingsw.controller.ClassicGameController;
 import it.polimi.ingsw.controller.Turn;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.PlayerCardStack;
@@ -20,12 +20,12 @@ import java.util.Map;
 
 public class GameMessageHandler {
 
-    private final GameController gameController;
+    private final ClassicGameController gameController;
     private ClientConnection clientConnection;
     private final Room room;
     private boolean ready;
 
-    public GameMessageHandler(GameController gameController, ClientConnection clientConnection, Room room) {
+    public GameMessageHandler(ClassicGameController gameController, ClientConnection clientConnection, Room room) {
         this.gameController = gameController;
         this.clientConnection = clientConnection;
         this.room = room;
@@ -276,7 +276,7 @@ public class GameMessageHandler {
 
 
     private void endTurn(){
-        gameController.computeCurrentPlayer();
+        gameController.computeNextPlayer();
         sendStateAndMovesForNextTurn();
     }
 

@@ -183,4 +183,12 @@ public class Warehouse implements Serializable {
             }
         }
     }
+
+    public boolean canPayResources(Map<Resource, Integer>cost) {
+        Map<Resource, Integer> allResources = new HashMap<>(getResources());
+        for (Resource resource : cost.keySet()) {
+            if (allResources.get(resource) < cost.get(resource)) return false;
+        }
+        return true;
+    }
 }

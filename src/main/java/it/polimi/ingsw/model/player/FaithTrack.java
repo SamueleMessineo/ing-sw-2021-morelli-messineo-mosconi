@@ -11,7 +11,7 @@ import java.util.List;
  */
 public class FaithTrack implements Serializable {
     private int position;
-    private final int maxposition=24;
+    private static final int maxposition=24;
     private final ArrayList<PopesFavorTile> popesFavorTiles = new ArrayList<>();
     private final List<Integer> VP = Arrays.asList(0,1,2,4,6,9,12,16,20);
 
@@ -26,7 +26,7 @@ public class FaithTrack implements Serializable {
     /**
      * @return the max_position in the Faithtrack
      */
-    public int getMaxposition() {
+    public static int getMaxposition() {
         return maxposition;
     }
     /**

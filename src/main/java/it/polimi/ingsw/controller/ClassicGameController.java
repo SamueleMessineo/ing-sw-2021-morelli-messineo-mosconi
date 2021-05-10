@@ -3,17 +3,15 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.market.Marble;
 import it.polimi.ingsw.model.market.MarketCardStack;
+import it.polimi.ingsw.model.player.FaithTrack;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Warehouse;
-import it.polimi.ingsw.model.shared.DevelopmentCard;
-import it.polimi.ingsw.model.shared.PopesFavorTileState;
-import it.polimi.ingsw.model.shared.LeaderCard;
-import it.polimi.ingsw.model.shared.Resource;
+import it.polimi.ingsw.model.shared.*;
 import it.polimi.ingsw.server.Room;
 
 import java.util.*;
 
-public class ClassicGameController implements GameController{
+public class ClassicGameController {
     private final Game game;
 
     public ClassicGameController(Room room) {
@@ -56,20 +54,19 @@ public class ClassicGameController implements GameController{
     public boolean isGameOver() {
         for (Player player:
                 game.getPlayers()) {
-            if ((player.getFaithTrack().getPosition() == player.getFaithTrack().getMaxposition())||
+            if ((player.getFaithTrack().getPosition() == FaithTrack.getMaxposition())||
                         player.getPlayerBoard().getCardStacks().get(0).size()+player.getPlayerBoard().getCardStacks().get(1).size()+player.getPlayerBoard().getCardStacks().get(2).size() == 7)return true;
         }
         return false;
     }
 
-    public void computeCurrentPlayer(){
+    public void computeNextPlayer(){
         int nextPlayer = (game.getPlayers().indexOf(game.getCurrentPlayer()) + 1) % game.getPlayers().size();
         game.setCurrentPlayer(nextPlayer);
         System.out.println(nextPlayer);
-        if (!game.getPlayers().get(nextPlayer).isActive()) computeCurrentPlayer();
+        if (!game.getPlayers().get(nextPlayer).isActive()) computeNextPlayer();
     }
 
-    @Override
     public Map<String, List<Resource>> getMarbles(String rowOrColumn, int index) {
         List<Marble> marbles;
         if(rowOrColumn.equals("ROW")){
@@ -139,18 +136,15 @@ public class ClassicGameController implements GameController{
         return convertedMarbles;
     }
 
-    @Override
     public void dropLeader(int card) {
         game.getCurrentPlayer().getFaithTrack().move();
         game.getCurrentPlayer().dropLeaderCard(card);
     }
 
-    @Override
     public boolean switchShelves(String shelf1, String shelf2) {
         return game.getCurrentPlayer().getPlayerBoard().getWarehouse().switchShelves(shelf1, shelf2);
     }
 
-    @Override
     public List<String> computeNextPossibleMoves(boolean alreadyPerformedMove) {
         List<String> moves = new ArrayList<>();
         Player player = game.getCurrentPlayer();
@@ -224,7 +218,6 @@ public class ClassicGameController implements GameController{
         return leaderCards;
     }
 
-    @Override
     public void playLeader(int cardIndex) {
         LeaderCard leaderCard = getPlayableLeaderCards().get(cardIndex);
         game.getCurrentPlayer().getPlayedLeaderCards().add(leaderCard);
@@ -238,7 +231,6 @@ public class ClassicGameController implements GameController{
         }
     }
 
-    @Override
     public Map<String, Integer> computeStanding() {
         Map<String, Integer> standing = new HashMap<>();
         List<Player> standingList = new ArrayList<>();
@@ -260,7 +252,6 @@ public class ClassicGameController implements GameController{
         return standing;
     }
 
-    @Override
     public String computeWinner() {
         String winner = game.getPlayers().get(0).getUsername();
         int points =  game.getPlayers().get(0).getVP();
@@ -273,5 +264,8 @@ public class ClassicGameController implements GameController{
         }
         return winner;
     }
+
+
+
 }
 

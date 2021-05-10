@@ -27,9 +27,10 @@ public class Game implements Serializable {
     private int currentPlayer;
     private int inkwellPlayer;
     private Market market;
-    private ArrayList<SoloActionType> soloActionTypes;
+    private Stack<SoloActionType> soloActionTypes;
     private ArrayList<DevelopmentCard> developmentCards=new ArrayList<>();
     private ArrayList<LeaderCard> leaderCards=new ArrayList<>();
+    private Player LorenzoIlMagnifico;
 
     public Game()  {
         this.players = new ArrayList<Player>();
@@ -141,11 +142,49 @@ public class Game implements Serializable {
     }
 
     public Player getPlayerByUsername(String username){
+        if(username.trim().replaceAll(" ","").toLowerCase().equals("lorenzoilmagnifico"))return getLorenzoIlMagnifico();
         try {
             return players.stream().filter(player -> player.getUsername().toLowerCase().trim().equals(username.toLowerCase().trim())).findFirst().orElseThrow();
         } catch (NoSuchElementException e){
             return null;
         }
 
+    }
+
+    public Player getLorenzoIlMagnifico() {
+        return LorenzoIlMagnifico;
+    }
+
+    public void setLorenzoIlMagnifico(Player lorenzoIlMagnifico) {
+        LorenzoIlMagnifico = lorenzoIlMagnifico;
+    }
+
+    public void setSoloActionTypes() {
+        soloActionTypes = new Stack<>();
+        soloActionTypes.add(SoloActionType.PLUS_ONE);
+        soloActionTypes.add(SoloActionType.PLUS_TWO);
+        soloActionTypes.add(SoloActionType.GREEN);
+        soloActionTypes.add(SoloActionType.BLUE);
+        soloActionTypes.add(SoloActionType.PURPLE);
+        soloActionTypes.add(SoloActionType.YELLOW);
+
+        Collections.shuffle(soloActionTypes);
+    }
+
+    public Stack<SoloActionType> getSoloActionTypes() {
+        return soloActionTypes;
+    }
+
+    public void removeCardsByLorenzo(SoloActionType soloActionType){
+        for (MarketCardStack stack:
+             market.getCardsGrid()) {
+            if(!stack.isEmpty() && stack.getType().toString().equals(soloActionType.name())){
+                stack.pop();
+                if(!stack.isEmpty()){
+                    stack.pop();
+                }
+                return;
+            }
+        }
     }
 }
