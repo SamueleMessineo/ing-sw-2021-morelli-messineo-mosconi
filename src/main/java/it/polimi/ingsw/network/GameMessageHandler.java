@@ -187,7 +187,7 @@ public class GameMessageHandler {
     }
 
     public void handle(ActivateProductionResponseMessage message){
-        if(message.getSelectedStacks()!=null || message.getBasicProduction() != null ) {
+        if(message.getSelectedStacks()!=null || message.getBasicProduction() != null || message.getExtraProductionPowers() != null) {
             if (message.getSelectedStacks() != null) {
                 room.getGame().getCurrentPlayer().getPlayerBoard().activateProduction(message.getSelectedStacks());
             }

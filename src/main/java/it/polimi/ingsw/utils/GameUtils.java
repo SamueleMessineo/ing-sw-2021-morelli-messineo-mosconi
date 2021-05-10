@@ -3,8 +3,11 @@ package it.polimi.ingsw.utils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.shared.Resource;
 
 import java.io.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class GameUtils {
 
@@ -42,5 +45,14 @@ public class GameUtils {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static Map<Resource, Integer> emptyResourceMap(){
+        Map<Resource,Integer> emptyMap=new HashMap<>();
+        emptyMap.put(Resource.SHIELD,0);
+        emptyMap.put(Resource.COIN,0);
+        emptyMap.put(Resource.SERVANT,0);
+        emptyMap.put(Resource.STONE,0);
+        return emptyMap;
     }
 }

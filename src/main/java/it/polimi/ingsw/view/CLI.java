@@ -339,6 +339,7 @@ public class CLI implements UI {
         List<Integer> indexes= new ArrayList<>();
         List<Integer> extraProductionPowers = new ArrayList<>();
 
+
         if(productionPowers.equals(gameState.getCurrentPlayer().possibleProductionPowersToActive())){
             if(currentGameState.getCurrentPlayer().canActivateBasicProduction()){
                 indexes.add(0);
