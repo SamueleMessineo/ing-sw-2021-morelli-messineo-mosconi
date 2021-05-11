@@ -147,7 +147,7 @@ public class Warehouse implements Serializable {
     public Map<Resource, Integer> getResources(){
         Map<Resource, Integer> allResources = GameUtils.emptyResourceMap();
         for (Shelf shelf : shelves) {
-            if (shelf.getResourceType() != null) {
+            if (shelf.getResourceType() != Resource.ANY) {
                 allResources.put(shelf.getResourceType(),
                         allResources.get(shelf.getResourceType()) + shelf.getResourceNumber());
             }
@@ -269,66 +269,61 @@ public class Warehouse implements Serializable {
         return canPlaceResourcesInWarehouseWithoutExtraShelves(resourcesToPlace);
     }
 
-    public void placeResourceInWarehouse(Map<Resource, Integer> resourcesToPlace){
-        Map<Resource,Integer> resourcesInWarehouse=new HashMap<>(getResources());
-        Map<Resource,Integer> mapToAddRes;
-        Map<Resource,Integer> resourcesToPlaceInWarehouse=GameUtils.sumResourcesMaps(resourcesToPlace,resourcesInWarehouse);
-        List<Shelf> shelves=getShelves();
-
-        for(Shelf shelf:shelves){
-            mapToAddRes=new HashMap<>();
-            for(Resource resource:shelf.getResources().keySet()){
-                if(shelf.getResources().get(resource)!=0)
-                    mapToAddRes.put(resource,shelf.getResources().get(resource));
-            }
-            shelf.useResources(mapToAddRes);
-        }
-
-        if(getShelfNames().contains("extra1")) {
-            for (Resource resource : resourcesToPlaceInWarehouse.keySet()) {
-                mapToAddRes = new HashMap<>();
-                if (resource.equals(getShelf("extra1").getResourceType())) {
-                    if (resourcesToPlaceInWarehouse.get(resource) > 2) {
-                        mapToAddRes.put(resource, 2);
-                        resourcesToPlaceInWarehouse.put(resource, resourcesToPlaceInWarehouse.get(resource) - 2);
-                    } else {
-                        mapToAddRes.put(resource, resourcesToPlaceInWarehouse.get(resource));
-                        resourcesToPlaceInWarehouse.put(resource, 0);
-                    }
-                    getShelf("extra1").addResources(mapToAddRes);
-                    break;
-                }
-            }
-        }else if (getShelfNames().contains("extra2")) {
-                for (Resource resource : resourcesToPlaceInWarehouse.keySet()) {
-                    mapToAddRes = new HashMap<>();
-                    if (resource.equals(getShelf("extra2").getResourceType())) {
-                        if (resourcesToPlaceInWarehouse.get(resource) > 2) {
-                            mapToAddRes.put(resource, 2);
-                            resourcesToPlaceInWarehouse.put(resource, resourcesToPlaceInWarehouse.get(resource) - 2);
-                        } else {
-                            mapToAddRes.put(resource, resourcesToPlaceInWarehouse.get(resource));
-                            resourcesToPlaceInWarehouse.put(resource, 0);
-                        }
-                        getShelf("extra2").addResources(mapToAddRes);
-                        break;
-                }
-            }
-        }
-
-
-        for(int i=1; i<=3;i++){
-            for(Resource resource:resourcesToPlaceInWarehouse.keySet()){
-                if(resourcesToPlaceInWarehouse.get(resource)>=1 && resourcesToPlaceInWarehouse.get(resource)<=i) {
-                    mapToAddRes=new HashMap<>();
-                    mapToAddRes.put(resource, resourcesToPlaceInWarehouse.get(resource));
-                    resourcesToPlaceInWarehouse.put(resource,0);
-                    shelves.get(i-1).addResources(mapToAddRes);
-                    break;
-                }
-            }
-        }
-//        TODO: fix Method
-    }
+//    public void placeResourceInWarehouse(Map<Resource, Integer> resourcesToPlace){
+//        Map<Resource,Integer> resourcesInWarehouse=new HashMap<>(getResources());
+//        Map<Resource,Integer> mapToAddRes;
+//        Map<Resource,Integer> resourcesToPlaceInWarehouse=GameUtils.sumResourcesMaps(resourcesToPlace,resourcesInWarehouse);
+//        List<Shelf> shelves=getShelves();
+//        Resource resourceType;
+//
+//        for(Shelf shelf:shelves){
+//            mapToAddRes=new HashMap<>();
+//            for(Resource resource:shelf.getResources().keySet()){
+//                if(shelf.getResources().get(resource)!=0)
+//                    mapToAddRes.put(resource,shelf.getResources().get(resource));
+//            }
+//            shelf.useResources(mapToAddRes);
+//        }
+//        if(getShelfNames().contains("extra1")) {
+//            resourceType=getShelf("extra1").getResourceType();
+//            mapToAddRes = new HashMap<>();
+//            if (resourcesToPlaceInWarehouse.get(resourceType) > 2 && resourcesInWarehouse.get(resourceType)<=5) {
+//                mapToAddRes = new HashMap<>();
+//                mapToAddRes.put(resourceType, 2);
+//                resourcesToPlaceInWarehouse.put(resourceType, resourcesToPlaceInWarehouse.get(resourceType) - 2);
+//            } else {
+//                mapToAddRes.put(resourceType, resourcesToPlaceInWarehouse.get(resourceType));
+//                resourcesToPlaceInWarehouse.put(resourceType, 0);
+//            }
+//            getShelf("extra1").addResources(mapToAddRes);
+//        }
+//        if (getShelfNames().contains("extra2")) {
+//            resourceType=getShelf("extra2").getResourceType();
+//            System.out.println(resourceType);
+//            mapToAddRes = new HashMap<>();
+//            if (resourcesToPlaceInWarehouse.get(resourceType) > 2 && resourcesInWarehouse.get(resourceType)<=4) {
+//                    mapToAddRes = new HashMap<>();
+//                    mapToAddRes.put(resourceType, 2);
+//                    resourcesToPlaceInWarehouse.put(resourceType, resourcesToPlaceInWarehouse.get(resourceType) - 2);
+//            } else {
+//                mapToAddRes.put(resourceType, resourcesToPlaceInWarehouse.get(resourceType));
+//                resourcesToPlaceInWarehouse.put(resourceType, 0);
+//            }
+//                getShelf("extra2").addResources(mapToAddRes);
+//        }
+//
+//        for(int i=1; i<=3;i++){
+//            for(Resource resource:resourcesToPlaceInWarehouse.keySet()){
+//                if(resourcesToPlaceInWarehouse.get(resource)>=1 && resourcesToPlaceInWarehouse.get(resource)<=i) {
+//                    mapToAddRes=new HashMap<>();
+//                    mapToAddRes.put(resource, resourcesToPlaceInWarehouse.get(resource));
+//                    resourcesToPlaceInWarehouse.put(resource,0);
+//                    shelves.get(i-1).addResources(mapToAddRes);
+//                    break;
+//                }
+//            }
+//        }
+////        TODO: fix Method
+//    }
 }
 
