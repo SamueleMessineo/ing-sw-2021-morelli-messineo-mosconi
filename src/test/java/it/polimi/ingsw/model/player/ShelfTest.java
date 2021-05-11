@@ -17,7 +17,7 @@ public class ShelfTest {
     @Test
     public void getResourceType() {
         Shelf shelf = new Shelf(3);
-        assertNull(shelf.getResourceType());
+        assertEquals(Resource.ANY,shelf.getResourceType());
         shelf.addResources(new HashMap<>(){{
             put(Resource.COIN, 2);
         }});
