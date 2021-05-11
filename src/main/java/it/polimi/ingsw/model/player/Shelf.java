@@ -12,7 +12,7 @@ import java.util.Map;
  * number of resources all of the same type.
  */
 public class Shelf implements Storage, Serializable {
-    private Resource resourceType=null;
+    private Resource resourceType=Resource.ANY;
     private int resourceNumber=0;
     private final int maxSize;
     private boolean fixed = false;
@@ -33,7 +33,6 @@ public class Shelf implements Storage, Serializable {
     public Resource getResourceType() {
         return resourceType;
     }
-
     /**
      * Returns the number of resources currently placed on this shelf.
      * @return The number of resources currently placed on this shelf.
@@ -47,12 +46,8 @@ public class Shelf implements Storage, Serializable {
      * @return The map of the resources on this shelf.
      */
     public Map<Resource, Integer> getResources() {
-        Map<Resource, Integer> contents = new HashMap<>();
-        contents.put(Resource.SHIELD, 0);
-        contents.put(Resource.COIN, 0);
-        contents.put(Resource.SERVANT, 0);
-        contents.put(Resource.STONE, 0);
-        if (resourceType != null) {
+        Map<Resource, Integer> contents = GameUtils.emptyResourceMap();
+        if (resourceType != Resource.ANY) {
             contents.put(resourceType, resourceNumber);
         }
         return contents;
@@ -73,7 +68,7 @@ public class Shelf implements Storage, Serializable {
     public void addResources(Map<Resource, Integer> resources){
         if (resources.keySet().toArray().length == 1) {
             Map.Entry<Resource, Integer> entry = resources.entrySet().iterator().next();
-            if ((resourceType == null || resourceType.equals(entry.getKey())) && entry.getValue() <= maxSize - resourceNumber) {
+            if ((resourceType == Resource.ANY || resourceType.equals(entry.getKey())) && entry.getValue() <= maxSize - resourceNumber) {
                 resourceNumber += entry.getValue();
                 resourceType = entry.getKey();
             }
@@ -101,7 +96,7 @@ public class Shelf implements Storage, Serializable {
     public void useResources(Map<Resource, Integer> resources) {
         Map<Resource,Integer> resourcesToUse= GameUtils.emptyResourceMap();
         resourcesToUse.putAll(resources);
-        Resource resourceToUse = null;
+        Resource resourceToUse = Resource.ANY;
         int i=0;
         for(Resource resource: resourcesToUse.keySet()){
             if(resourcesToUse.get(resource)==0)
@@ -115,13 +110,14 @@ public class Shelf implements Storage, Serializable {
 
         if(resourceToUse.equals(resourceType) && resourcesToUse.get(resourceToUse)<=resourceNumber){
             resourceNumber-=resourcesToUse.get(resourceToUse);
-            if(resourceNumber==0 && !fixed) resourceType=null;
+            if(resourceNumber==0 && !fixed) resourceType=Resource.ANY;
         }
     }
 
     @Override
     public String toString() {
-        if (resourceType==null){
+        if (resourceType==Resource.ANY
+        ){
             return "";
         } else if(resourceNumber == 0){
             return "EMPTY";
