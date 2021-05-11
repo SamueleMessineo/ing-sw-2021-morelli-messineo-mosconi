@@ -60,7 +60,6 @@ public class GameMessageHandler {
                     resourceOptions, resourceAmount);
             clientConnection.sendMessage(message);
         }
-
     }
 
     private void startPlayingIfReady() {
@@ -230,8 +229,6 @@ public class GameMessageHandler {
         clientConnection.sendMessage(new SelectStackToPlaceCardRequestMessage(stacks));
 
         room.getCurrentTurn().setBuyedDevelopmentCard(developmentCard);
-
-
     }
 
     public void handle(SelectStackToPlaceCardResponseMessage message){
@@ -240,10 +237,6 @@ public class GameMessageHandler {
             room.getGame().getCurrentPlayer().getPlayerBoard().payResourceCost(room.getGame().getCurrentPlayer().computeDiscountedCost(room.getCurrentTurn().getBuyedDevelopmentCard()));
             room.getCurrentTurn().setAlreadyPerformedMove(true);
             sendNextMoves();
-
-            if (gameController.isGameOver()) {
-                room.sendAll(new StringMessage("GAME OVER"));
-            }
 
         }else {
             clientConnection.sendMessage(new ErrorMessage("Action Could not be completed"));

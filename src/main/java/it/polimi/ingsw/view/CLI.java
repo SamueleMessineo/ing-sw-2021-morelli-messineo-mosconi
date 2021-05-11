@@ -252,7 +252,7 @@ public class CLI implements UI {
         gameState = game;
     }
 
-    public void displayMarbles(MarbleStructure marbleStructure){
+    public void selectMarbles(MarbleStructure marbleStructure){
         output.println(marbleStructure.toString());
 
         int selection = GameUtils.askIntegerInput("Do you want to shift a row or a column?\n1.Row\n2.Column", 1,2, output, input);

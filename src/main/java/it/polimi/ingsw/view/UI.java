@@ -35,7 +35,7 @@ public interface UI extends Runnable {
 
     void setGameState(Game game);
 
-    void displayMarbles(MarbleStructure marbleStructure);
+    void selectMarbles(MarbleStructure marbleStructure);
 
     void dropResources(List<Resource> resources);
 
