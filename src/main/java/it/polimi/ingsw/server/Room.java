@@ -1,6 +1,6 @@
 package it.polimi.ingsw.server;
 
-import it.polimi.ingsw.controller.GameController;
+import it.polimi.ingsw.controller.ClassicGameController;
 import it.polimi.ingsw.controller.Turn;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.player.Player;
@@ -13,7 +13,7 @@ public class Room {
     private final int numberOfPlayers;
     private final boolean isPrivate;
     private ArrayList<ClientConnection> connections = new ArrayList<>();
-    private GameController classicGameController;
+    private ClassicGameController gameController;
     private Turn currentTurn;
     private final int id;
 
@@ -54,8 +54,8 @@ public class Room {
         }
     }
 
-    public void setGameController(GameController classicGameController) {
-        this.classicGameController = classicGameController;
+    public void setGameController(ClassicGameController gameController) {
+        this.gameController = gameController;
     }
 
     public ArrayList<ClientConnection> getConnections() {

@@ -1,104 +1,53 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.Game;
-import it.polimi.ingsw.model.shared.DevelopmentCard;
-import it.polimi.ingsw.model.shared.LeaderCard;
+import it.polimi.ingsw.model.player.FaithTrack;
+import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.model.shared.CardType;
 import it.polimi.ingsw.model.shared.Resource;
-import it.polimi.ingsw.network.client.DropInitialLeaderCardsRequestMessage;
-import it.polimi.ingsw.network.client.StringMessage;
+import it.polimi.ingsw.model.shared.SoloActionType;
 import it.polimi.ingsw.server.Room;
-import it.polimi.ingsw.server.ClientConnection;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-
-public class SoloGameController implements GameController {
-    private final Room room;
+public class SoloGameController extends ClassicGameController {
     private final Game game;
 
     public SoloGameController(Room room) {
-        this.room = room;
-        this.game = room.getGame();
-    }
-
-    public void startGame(){
-        ClientConnection player = room.getConnections().get(0);
-        leaderCardsSelectionStep();
-    }
-
-    public void leaderCardsSelectionStep(){
-        ClientConnection player = room.getConnections().get(0);
-        //player.sendMessage(new StringMessage("Single game started"));
-        //player.sendMessage(new DropInitialLeaderCardsRequestMessage(room.getPlayerFromConnection(player).getLeaderCards()));
-    }
-
-    @Override
-    public void dropInitialLeaderCards(int selection1, int selection2, String player) {
-
-    }
-
-    @Override
-    public void movePlayer(String username, int positions) {
-
-    }
-
-    @Override
-    public void giveInitialResources(List<Resource> resources, String username) {
-
-    }
-
-    @Override
-    public Map<String, List<Resource>> getMarbles(String rowOrColumn, int index) {
-        return null;
-    }
-
-    public void computeCurrentPlayer(){
-
-    }
-
-    @Override
-    public void dropLeader(int card) {
-
-    }
-
-    @Override
-    public boolean switchShelves(String shelf1, String shelf2) {
-        return false;
-    }
-
-    @Override
-    public List<String> computeNextPossibleMoves(boolean alreadyPerfomedMove) {
-        return new ArrayList<>();
-    }
-
-    @Override
-    public List<DevelopmentCard> getBuyableDevelopementCards() {
-        return null;
+        super(room);
+        game=super.getGame();
+        game.setLorenzoIlMagnifico(new Player("LorenzoIlMagnifico"));
+        game.setSoloActionTypes();
     }
 
     @Override
     public boolean isGameOver() {
-        return false;
+
+        for (CardType cardType:
+                CardType.values()) {
+            System.out.println(cardType.name());
+            if(game.getMarket().getCardsGrid().stream().filter(developmentCards -> (cardType.name().equals(developmentCards.getType().name()))&&(!developmentCards.isEmpty())).count() == 0)return true;
+        }
+
+        if(game.getLorenzoIlMagnifico().getFaithTrack().getPosition() == FaithTrack.getMaxposition())return true;
+
+
+        return super.isGameOver();
     }
 
     @Override
-    public void playLeader(int cardIndex) {
-
-    }
-
-    @Override
-    public List<LeaderCard> getPlayableLeaderCards() {
-        return null;
-    }
-
-    @Override
-    public Map<String, Integer> computeStanding() {
-        return null;
-    }
-
-    @Override
-    public String computeWinner() {
-        return null;
+    public void computeNextPlayer() {
+        SoloActionType soloActionType = game.getSoloActionTypes().pop();
+        switch (soloActionType){
+            case PLUS_ONE:
+                game.getLorenzoIlMagnifico().getFaithTrack().move();
+                game.setSoloActionTypes();
+                break;
+            case PLUS_TWO:
+                game.getLorenzoIlMagnifico().getFaithTrack().move();
+                game.getLorenzoIlMagnifico().getFaithTrack().move();
+                break;
+            default:
+                game.removeCardsByLorenzo(soloActionType);
+                break;
+        }
     }
 }

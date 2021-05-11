@@ -14,6 +14,7 @@ import it.polimi.ingsw.network.game.*;
 import it.polimi.ingsw.network.setup.CreateRoomMessage;
 import it.polimi.ingsw.network.setup.JoinPrivateRoomMessage;
 import it.polimi.ingsw.network.setup.JoinPublicRoomMessage;
+import it.polimi.ingsw.utils.GameUtils;
 
 import java.io.PrintStream;
 import java.security.InvalidParameterException;
@@ -57,7 +58,10 @@ public class CLI implements UI {
                 output.println("Is this a private game? [y/n]");
                 privateGame= input.nextLine().toLowerCase().startsWith("y");
             }
-
+            if(username.trim().toLowerCase().equals("lorenzoilmagnifico")&&playersNum==1){
+                displayError("There is only one 'Lorenzo Il Magnifico'");
+                setup();
+            }
             client.sendMessage(new CreateRoomMessage(privateGame, playersNum, username));
         }
         else {
@@ -157,7 +161,7 @@ public class CLI implements UI {
     public void displayGameState() {
         // displayPlayerBoard(gameState.getPlayerByUsername(username));
 
-        displayGameBoard();
+       displayGameBoard();
        //momentary fix
 
         if(gameState.getCurrentPlayer()!= gameState.getPlayerByUsername(username)){
@@ -182,16 +186,26 @@ public class CLI implements UI {
 
 
         for (int i = 11; i >= 0; i-=3) {
-            output.println(gameState.getMarket().getCardsGrid().get(i));
-            output.println("\n");
+            if(gameState.getMarket().getCardsGrid().get(i).isEmpty()) System.out.println("Empty Stack");
+            else {
+                output.println(gameState.getMarket().getCardsGrid().get(i));
+                output.println("\n");
+            }
+
         }
         for (int i = 10; i >= 0; i-=3) {
-            output.println(gameState.getMarket().getCardsGrid().get(i));
-            output.println("\n");
+            if(gameState.getMarket().getCardsGrid().get(i).isEmpty()) System.out.println("Empty Stack");
+            else {
+                output.println(gameState.getMarket().getCardsGrid().get(i));
+                output.println("\n");
+            }
         }
         for (int i = 9; i >= 0; i-=3) {
-            output.println(gameState.getMarket().getCardsGrid().get(i));
-            output.println("\n");
+            if(gameState.getMarket().getCardsGrid().get(i).isEmpty()) System.out.println("Empty Stack");
+            else {
+                output.println(gameState.getMarket().getCardsGrid().get(i));
+                output.println("\n");
+            }
         }
 
     }
@@ -202,8 +216,8 @@ public class CLI implements UI {
         for (Player player:
                 gameState.getPlayers()) {
             output.print(player.getUsername() + "(" + player.getVP() + " points) ");
-
         }
+        if(gameState.getLorenzoIlMagnifico() != null)output.print("LorenzoIlMagnifico (" + gameState.getLorenzoIlMagnifico().getVP() + ")");
         output.println("]");
         output.print("username: ");
         Player player;
@@ -338,43 +352,48 @@ public class CLI implements UI {
         boolean done = false;
         List<Integer> indexes= new ArrayList<>();
         List<Integer> extraProductionPowers = new ArrayList<>();
+        Map<Resource, Integer> WarehouseInputs = GameUtils.emptyResourceMap();
+        Map<Resource, Integer> StrongboxInputs = GameUtils.emptyResourceMap();
+        Map<Resource, Integer> outputs = GameUtils.emptyResourceMap();
 
+        int typeOfPayment = askIntegerInput("Do you want to select where to pay from or use smart payment?[1.normal(not yet implemented), 2.smart]",1,2);
 
-        if(productionPowers.equals(gameState.getCurrentPlayer().possibleProductionPowersToActive())){
-            if(currentGameState.getCurrentPlayer().canActivateBasicProduction()){
-                indexes.add(0);
-            }
-            for (int i = 1; i <= productionPowers.size(); i++) {
-                indexes.add(i);
-            }
-
-            int productionNumber=1;
-            while (!done){
-                output.println(gameState.getCurrentPlayer().possibleProductionPowersToActive());
-                String message;
-                message ="Select production power N° " +productionNumber+" to activate" ;
-                if(indexes.contains(0) && gameState.getCurrentPlayer().canActivateBasicProduction()){
-                    message+="[0 is basic production]";
+        if(typeOfPayment == 2){
+            if(productionPowers.equals(gameState.getCurrentPlayer().possibleProductionPowersToActive())){
+                if(currentGameState.getCurrentPlayer().canActivateBasicProduction()){
+                    indexes.add(0);
                 }
-                message+="\n"+ indexes;
+                for (int i = 1; i <= productionPowers.size(); i++) {
+                    indexes.add(i);
+                }
+                int productionNumber=1;
+                while (!done){
+                    output.println(gameState.getCurrentPlayer().possibleProductionPowersToActive());
+                    String message;
+                    message ="Select production power N° " +productionNumber+" to activate" ;
+                    if(indexes.contains(0) && gameState.getCurrentPlayer().canActivateBasicProduction()){
+                        message+="[0 is basic production]";
+                    }
+                    message+="\n"+ indexes;
 
-                selection = askIntegerInput(message,indexes.get(0),gameState.getCurrentPlayer().possibleProductionPowersToActive().size());
+                    selection = askIntegerInput(message,indexes.get(0),gameState.getCurrentPlayer().possibleProductionPowersToActive().size());
 
-                if(indexes.contains(selection)) {
+                    if(indexes.contains(selection)) {
 
-                    if (selection == 0) {
-                        if (currentGameState.getCurrentPlayer().canActivateBasicProduction()) {
-                            do{
+                        if (selection == 0) {
+                            if (currentGameState.getCurrentPlayer().canActivateBasicProduction()) {
+                                do{
 
-                                selectedBasicProductionPowers = askBasicProductionPowerIO();
-                                if(gameState.getCurrentPlayer().getPlayerBoard().canPayResources(selectedBasicProductionPowers.getInput())){
-                                    currentGameState.getCurrentPlayer().getPlayerBoard().payResourceCost(selectedBasicProductionPowers.getInput());
-                                    break;
-                                } else output.println("You do not have the selected input. Retry");
-                            } while (true);
+                                    selectedBasicProductionPowers = askBasicProductionPowerIO();
 
-                        }
-                    } else {
+                                    if(gameState.getCurrentPlayer().getPlayerBoard().canPayResources(selectedBasicProductionPowers.getInput())){
+                                        currentGameState.getCurrentPlayer().getPlayerBoard().payResourceCost(selectedBasicProductionPowers.getInput());
+                                        break;
+                                    } else output.println("You do not have the selected input. Retry");
+                                } while (true);
+
+                            }
+                        } else {
                             currentGameState.getCurrentPlayer().getPlayerBoard().payResourceCost(currentGameState.getCurrentPlayer().possibleProductionPowersToActive().get(selection - 1).getInput());
                             if (gameState.getCurrentPlayer().getPlayerBoard().getExtraProductionPowers().contains(currentGameState.getCurrentPlayer().possibleProductionPowersToActive().get(selection - 1))){
                                 extraProductionPowers.add(selection - (gameState.getCurrentPlayer().possibleProductionPowersToActive().size()-1));
@@ -382,19 +401,18 @@ public class CLI implements UI {
                                 selectedStacks.add(selection - 1);
                             }
 
-                    }
-                    indexes.remove((Integer) selection);
-                    productionNumber++;
-                } else output.println("Selection not valid");
+                        }
+                        indexes.remove((Integer) selection);
+                        productionNumber++;
+                    } else output.println("Selection not valid");
 
 
-                output.println("Are you done? [y/n]");
-                done = input.nextLine().trim().toLowerCase().startsWith("y");
-            }
-
-
-            client.sendMessage(new ActivateProductionResponseMessage(selectedStacks, selectedBasicProductionPowers, extraProductionPowers));
-        } else output.println("problem with gameState");
+                    output.println("Are you done? [y/n]");
+                    done = input.nextLine().trim().toLowerCase().startsWith("y");
+                }
+                client.sendMessage(new ActivateProductionResponseMessage(selectedStacks, selectedBasicProductionPowers, extraProductionPowers));
+            } else output.println("problem with gameState");
+        }
 
 
         /*

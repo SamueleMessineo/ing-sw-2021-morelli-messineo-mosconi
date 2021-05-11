@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.player;
 import it.polimi.ingsw.model.shared.*;
+import it.polimi.ingsw.utils.GameUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -117,11 +118,7 @@ public class PlayerBoard implements Serializable {
     public void activateProductionPower(ProductionPower productionPower){
         payResourceCost(productionPower.getInput());
 
-        Map<Resource,Integer> ouput=new HashMap<>();
-        ouput.put(Resource.SHIELD,0);
-        ouput.put(Resource.COIN,0);
-        ouput.put(Resource.SERVANT,0);
-        ouput.put(Resource.STONE,0);
+        Map<Resource,Integer> ouput = GameUtils.emptyResourceMap();
         ouput.putAll(productionPower.getOutput());
         strongbox.addResources(ouput);
     }
