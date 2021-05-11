@@ -196,6 +196,6 @@ public class PlayerBoard implements Serializable {
     public String toString() {
         return "Top shelf: " + warehouse.getShelf("top").toString() + "\nMiddle shelf: "
                 + warehouse.getShelf("middle").toString() + "\nBottom shelf: "
-                + warehouse.getShelf("bottom").toString() + "\nStrongbox: " + strongbox.toString();
+                + warehouse.getShelf("bottom").toString() + "\n 🧰 Strongbox: " + strongbox.toString();
     }
 }

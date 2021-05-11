@@ -146,16 +146,16 @@ public class CLI implements UI {
     public void displayGameState() {
         // displayPlayerBoard(gameState.getPlayerByUsername(username));
 
-       displayGameBoard();
+       Display.displayGameBoard(gameState.getMarket(), output);
        //momentary fix
 
         if(gameState.getCurrentPlayer()!= gameState.getPlayerByUsername(username)){
            for (Player player:
                 gameState.getPlayers()) {
-                   displayPlayerBoard(gameState.getPlayerByUsername(player.getUsername()));
+                   Display.displayPlayerBoard(gameState.getPlayerByUsername(player.getUsername()), output);
                    output.println("Wait your turn");
            }
-       } else displayPlayerBoard(gameState.getPlayerByUsername(username));
+       } else Display.displayPlayerBoard(gameState.getPlayerByUsername(username), output);
 
        // todo this in preferable to the above one but gives problems. Go Fix it
         /*
@@ -163,36 +163,6 @@ public class CLI implements UI {
            executor.submit(this::askToDisplayPlayerBoard);
        }
          */
-    }
-
-    private void displayGameBoard(){
-        output.println("\n" + gameState.getMarket().getMarbleStructure());
-        System.out.println("\nCards Market:");
-
-
-        for (int i = 11; i >= 0; i-=3) {
-            if(gameState.getMarket().getCardsGrid().get(i).isEmpty()) System.out.println("Empty Stack");
-            else {
-                output.println(gameState.getMarket().getCardsGrid().get(i));
-                output.println("\n");
-            }
-
-        }
-        for (int i = 10; i >= 0; i-=3) {
-            if(gameState.getMarket().getCardsGrid().get(i).isEmpty()) System.out.println("Empty Stack");
-            else {
-                output.println(gameState.getMarket().getCardsGrid().get(i));
-                output.println("\n");
-            }
-        }
-        for (int i = 9; i >= 0; i-=3) {
-            if(gameState.getMarket().getCardsGrid().get(i).isEmpty()) System.out.println("Empty Stack");
-            else {
-                output.println(gameState.getMarket().getCardsGrid().get(i));
-                output.println("\n");
-            }
-        }
-
     }
 
     private void askToDisplayPlayerBoard(){
@@ -210,22 +180,10 @@ public class CLI implements UI {
 
             try {
                 player = gameState.getPlayerByUsername(input.nextLine());
-                displayPlayerBoard(player);
+                Display.displayPlayerBoard(player, output);
             } catch (NoSuchElementException e) {
                 output.println("Username not found");
             }
-    }
-
-    private void displayPlayerBoard(Player player){
-        output.println(player.getUsername() + " playerBoard: ");
-        output.println("\nFaith track positions");
-        output.println("position: " + player.getFaithTrack().getPosition());
-        output.println("\nStorage");
-        output.println(player.getPlayerBoard());
-        output.println("\nCards");
-        for (int i = 0; i < 3 ; i++) {
-            output.println(player.getPlayerBoard().getCardStacks().get(i).toString());
-        }
     }
 
     public void displayPossibleMoves(List<String> moves){
@@ -253,7 +211,7 @@ public class CLI implements UI {
     }
 
     public void selectMarbles(MarbleStructure marbleStructure){
-        output.println(marbleStructure.toString());
+        Display.displayMarbleStructure(marbleStructure, output);
 
         int selection = GameUtils.askIntegerInput("Do you want to shift a row or a column?\n1.Row\n2.Column", 1,2, output, input);
 
@@ -316,13 +274,7 @@ public class CLI implements UI {
         boolean done = false;
         List<Integer> indexes= new ArrayList<>();
         List<Integer> extraProductionPowers = new ArrayList<>();
-        Map<Resource, Integer> WarehouseInputs = GameUtils.emptyResourceMap();
-        Map<Resource, Integer> StrongboxInputs = GameUtils.emptyResourceMap();
-        Map<Resource, Integer> outputs = GameUtils.emptyResourceMap();
 
-        int typeOfPayment = GameUtils.askIntegerInput("Do you want to select where to pay from or use smart payment?[1.normal(not yet implemented), 2.smart]",1,2, output, input);
-
-        if(typeOfPayment == 2){
             if(productionPowers.equals(gameState.getCurrentPlayer().possibleProductionPowersToActive())){
                 if(currentGameState.getCurrentPlayer().canActivateBasicProduction()){
                     indexes.add(0);
@@ -369,37 +321,11 @@ public class CLI implements UI {
                         indexes.remove((Integer) selection);
                         productionNumber++;
                     } else output.println("Selection not valid");
-
-
                     output.println("Are you done? [y/n]");
                     done = input.nextLine().trim().toLowerCase().startsWith("y");
                 }
                 client.sendMessage(new ActivateProductionResponseMessage(selectedStacks, selectedBasicProductionPowers, extraProductionPowers));
             } else output.println("problem with gameState");
-        }
-
-
-        /*
-            if(gameState.getCurrentPlayer().canActivateBasicProduction()){
-            output.println("Do you want to activate basic production power? [y/n]");
-            if (input.nextLine().toLowerCase().trim().startsWith("y")){
-                selectedProductionPowers= askBasicProductionPowerIO();
-            }
-        }
-
-        if(gameState.getCurrentPlayer().canActivateProduction()){
-            selectedStacks = new ArrayList<>();
-            output.println("Do you want to activate production on the first stack? [y/n]");
-            if(input.nextLine().trim().toLowerCase().startsWith("y"))selectedStacks.add(1);
-            output.println("Do you want to activate production on the second stack? [y/n]");
-            if(input.nextLine().trim().toLowerCase().startsWith("y"))selectedStacks.add(2);
-            output.println("Do you want to activate production on the third stack? [y/n]");
-            if(input.nextLine().trim().toLowerCase().startsWith("y"))selectedStacks.add(3);
-        }
-
-
-        client.sendMessage(new ActivateProductionResponseMessage(selectedStacks, selectedProductionPowers));
-        */
 
     }
 

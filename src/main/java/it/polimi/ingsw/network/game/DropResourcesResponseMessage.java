@@ -9,10 +9,8 @@ import java.util.Map;
 
 public class DropResourcesResponseMessage extends GameMessage{
     private final List<Resource> resourcesToDrop;
-    Map<String,List<Resource>> resourcesPlaced;
 
-    public DropResourcesResponseMessage(Map<String,List<Resource>> resourcesPlaced, List<Resource> resourcesToDrop) {
-        this.resourcesPlaced=resourcesPlaced;
+    public DropResourcesResponseMessage(List<Resource> resourcesToDrop) {
         this.resourcesToDrop = resourcesToDrop;
     }
 
@@ -20,13 +18,10 @@ public class DropResourcesResponseMessage extends GameMessage{
         return resourcesToDrop;
     }
 
-    public Map<String, List<Resource>> getResourcesPlaced() {
-        return resourcesPlaced;
-    }
-
     public void accept(GameMessageHandler handler) {
         handler.handle(this);
     }
+
 
 }
 
