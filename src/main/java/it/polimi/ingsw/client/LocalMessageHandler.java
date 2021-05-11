@@ -5,6 +5,7 @@ import it.polimi.ingsw.controller.Turn;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.PlayerCardStack;
 import it.polimi.ingsw.model.shared.DevelopmentCard;
+import it.polimi.ingsw.model.shared.Resource;
 import it.polimi.ingsw.network.client.*;
 import it.polimi.ingsw.network.game.*;
 import it.polimi.ingsw.view.UI;
@@ -43,8 +44,10 @@ public class LocalMessageHandler {
         ui.displayPossibleMoves(currentTurn.getMoves());
     }
 
-    private void nextMoves(){
+    private void nextMoves(boolean alreadyPerformedMoves){
         if(!checkGameOver()){
+            currentTurn.setAlreadyPerformedMove(alreadyPerformedMoves);
+            currentTurn.setMoves(gameController.computeNextPossibleMoves(currentTurn.hasAlreadyPerformedMove()));
             ui.setGameState(gameController.getGame());
             ui.displayGameState();
             ui.displayPossibleMoves(currentTurn.getMoves());
@@ -98,17 +101,17 @@ public class LocalMessageHandler {
     public void handle(DropLeaderCardResponseMessage message){
         gameController.dropLeader(message.getCard());
         ui.displayString("Your have " +player.getFaithTrack().getPosition() +" faith points");
-        nextMoves();
+        nextMoves(false);
     }
 
     public void handle(PlayLeaderResponseMessage message){
         gameController.playLeader(message.getCardIndex());
-        nextMoves();
+        nextMoves(false);
     }
 
     public void handle(SwitchShelvesResponseMessage message){
         if(gameController.switchShelves(message.getShelf1(), message.getShelf2())){
-            nextMoves();
+            nextMoves(false);
         } else {
             ui.displayError("You cannot switch these two shelves\n");
             ui.displayPossibleMoves(currentTurn.getMoves());
@@ -126,16 +129,43 @@ public class LocalMessageHandler {
         currentTurn.setBuyedDevelopmentCard(developmentCard);
     }
 
+    public void handle(SelectResourceForWhiteMarbleResponseMessage message) {
+        List<Resource> resourcesConverted=message.getResources();
+        List<Resource> conversionOptions= currentTurn.getConversionOptions();
+        if(!conversionOptions.containsAll(resourcesConverted) && resourcesConverted.size()!= currentTurn.getToConvert().size()){
+            ui.displayError("Invalid conversion, try again!\n");
+            return;
+        }
+        currentTurn.getConverted().addAll(resourcesConverted);
+        askToDropResources();
+    }
+
+    private void askToDropResources() {
+        System.out.println("merge resources");
+        List<Resource> allResources = new ArrayList<>();
+
+        allResources.addAll(currentTurn.getConverted());
+
+        System.out.println("ask to drop");
+
+        ui.dropResources(allResources);
+    }
+
+    public void handle(SelectMarblesResponseMessage message){
+        //todo
+    }
+
+
     public void handle(SelectStackToPlaceCardResponseMessage message){
         if(player.getPlayerBoard().getCardStacks().get(message.getSelectedStackIndex()).canPlaceCard(currentTurn.getBuyedDevelopmentCard())){
             player.getPlayerBoard().getCardStacks().get(message.getSelectedStackIndex()).add(currentTurn.getBuyedDevelopmentCard());
             player.getPlayerBoard().payResourceCost(player.computeDiscountedCost(currentTurn.getBuyedDevelopmentCard()));
             currentTurn.setAlreadyPerformedMove(true);
-            nextMoves();
+            nextMoves(true);
 
         }else {
             ui.displayError("Action Could not be completed");
-            nextMoves();
+            nextMoves(false);
         }
 
     }
