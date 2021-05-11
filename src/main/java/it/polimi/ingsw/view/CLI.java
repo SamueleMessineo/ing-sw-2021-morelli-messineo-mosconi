@@ -310,6 +310,9 @@ public class CLI implements UI {
     public void dropResources(List<Resource> resources) {
         output.println("This are the resources you just got");
         output.println(resources);
+
+
+        client.sendMessage(new DropResourcesResponseMessage(resources));
     }
 
     @Override

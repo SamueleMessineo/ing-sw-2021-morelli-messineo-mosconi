@@ -201,9 +201,12 @@ public class GameMessageHandler {
 
     public void handle(DropResourcesResponseMessage message){
         List<Resource> resourcesConverted= room.getCurrentTurn().getConverted();
-        if(message.getResourcesToDrop()==null && !resourcesConverted.containsAll(message.getResourcesToDrop())){
+        if(message.getResourcesToDrop()==null || !resourcesConverted.containsAll(message.getResourcesToDrop())){
             clientConnection.sendMessage(new ErrorMessage("Nothing could be done"));
-            return;
+        }else {
+            //place resources
+            room.getCurrentTurn().setAlreadyPerformedMove(true);
+            sendNextMoves();
         }
         //TODO: to be completed
     }
