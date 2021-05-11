@@ -23,7 +23,6 @@ public class LocalMessageHandler {
     }
 
     public void handle(DropInitialLeaderCardsResponseMessage message){
-        System.out.println("dropping");
         gameController.dropInitialLeaderCards(message.getCard1(), message.getCard2(), player.getUsername());
         ui.setGameState(gameController.getGame());
         ui.displayGameState();

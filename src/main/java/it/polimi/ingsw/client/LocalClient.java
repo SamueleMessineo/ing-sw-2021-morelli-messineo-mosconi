@@ -27,7 +27,6 @@ public class LocalClient extends Client {
 
     @Override
     public void sendMessage(Message m) {
-        System.out.println("handling");
         GameMessage gameMessage = (GameMessage)m;
         gameMessage.accept(localMessageHandler);
     }
