@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.player;
 
 import it.polimi.ingsw.model.shared.Resource;
+import it.polimi.ingsw.utils.GameUtils;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -98,13 +99,23 @@ public class Shelf implements Storage, Serializable {
      * @param resources The map of resources to remove from the shelf.
      */
     public void useResources(Map<Resource, Integer> resources) {
+        Map<Resource,Integer> resourcesToUse= GameUtils.emptyResourceMap();
+        resourcesToUse.putAll(resources);
+        Resource resourceToUse = null;
+        int i=0;
+        for(Resource resource: resourcesToUse.keySet()){
+            if(resourcesToUse.get(resource)==0)
+                i++;
+            else
+                resourceToUse=resource;
+        }
+        
+        if(i!=3)
+            return;
 
-        if (resources.keySet().toArray().length == 1) {
-            Map.Entry<Resource, Integer> entry = resources.entrySet().iterator().next();
-            if (entry.getKey().equals(resourceType) && entry.getValue() <= resourceNumber) {
-                resourceNumber -= entry.getValue();
-                if (resourceNumber == 0 && !fixed) resourceType = null;
-            }
+        if(resourceToUse.equals(resourceType) && resourcesToUse.get(resourceToUse)<=resourceNumber){
+            resourceNumber-=resourcesToUse.get(resourceToUse);
+            if(resourceNumber==0 && !fixed) resourceType=null;
         }
     }
 
