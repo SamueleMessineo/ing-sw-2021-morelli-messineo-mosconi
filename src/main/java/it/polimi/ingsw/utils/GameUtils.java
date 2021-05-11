@@ -6,8 +6,10 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.shared.Resource;
 
 import java.io.*;
+import java.security.InvalidParameterException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 
 public class GameUtils {
 
@@ -68,5 +70,23 @@ public class GameUtils {
             sum.put(resource, mapToAdd1.get(resource) + mapToAdd2.get(resource));
         }
         return sum;
+    }
+
+    public static int askIntegerInput(String message, int minBoundary, int maxBoundary, PrintStream output, Scanner input) {
+        int selection;
+        while (true) {
+            output.println(message);
+            try {
+                selection = Integer.parseInt(input.nextLine());
+                if (selection < minBoundary || selection > maxBoundary) {
+                    throw new InvalidParameterException();
+                } else {
+                    break;
+                }
+            } catch (NumberFormatException | InvalidParameterException e) {
+                output.println("selection not valid");
+            }
+        }
+        return selection;
     }
 }

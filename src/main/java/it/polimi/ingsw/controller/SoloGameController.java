@@ -18,6 +18,13 @@ public class SoloGameController extends ClassicGameController {
         game.setSoloActionTypes();
     }
 
+    public SoloGameController(Game game) {
+        super(game);
+        this.game = game;
+        game.setLorenzoIlMagnifico(new Player("LorenzoIlMagnifico"));
+        game.setSoloActionTypes();
+    }
+
     @Override
     public boolean isGameOver() {
 

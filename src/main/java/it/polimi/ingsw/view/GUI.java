@@ -77,7 +77,7 @@ public class GUI extends Application implements UI {
     }
 
     @Override
-    public void displayMarbles(MarbleStructure marbleStructure) {
+    public void selectMarbles(MarbleStructure marbleStructure) {
 
     }
 
@@ -124,5 +124,15 @@ public class GUI extends Application implements UI {
     @Override
     public void run() {
 
+    }
+
+    @Override
+    public void askUsername() {
+
+    }
+
+    @Override
+    public String getUsername() {
+        return null;
     }
 }

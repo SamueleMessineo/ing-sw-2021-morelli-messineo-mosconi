@@ -39,17 +39,12 @@ public class CLI implements UI {
     }
 
     public void setup(){
-        output.println("Good morning Sir,");
-        output.println("how shall I call you?");
-        username = input.nextLine();
-        output.println("Welcome " + username + ", nice to meet you");
-        output.println("Only online game available for now");
-
+        askUsername();
         output.println("Do wou want to create a room or join an existing one?");
-        int selection = askIntegerInput("1: create\n2: join", 1, 2);
+        int selection = GameUtils.askIntegerInput("1: create\n2: join", 1, 2, output, input);
 
         if (selection == 1) {
-            int playersNum = askIntegerInput("How many players is this game for?",1,4);
+            int playersNum = GameUtils.askIntegerInput("How many players is this game for?",1,4, output, input);
 
             boolean privateGame;
             if(playersNum==1){
@@ -66,17 +61,24 @@ public class CLI implements UI {
         }
         else {
             output.println("Do you have a RoomID or do you want to join a public game");
-            selection = askIntegerInput("1: RoomId, 2: PublicGame", 1, 2);
+            selection = GameUtils.askIntegerInput("1: RoomId, 2: PublicGame", 1, 2, output, input);
 
             if (selection == 1) {
-                int roomId = askIntegerInput("Insert roomId", 1000, 9999);
+                int roomId = GameUtils.askIntegerInput("Insert roomId", 1000, 9999, output, input);
                 client.sendMessage(new JoinPrivateRoomMessage(roomId, username));
             }
             else {
-                int playersNumber = askIntegerInput("Insert desired number of players [0 for random]", 0, 4);
+                int playersNumber = GameUtils.askIntegerInput("Insert desired number of players [0 for random]", 0, 4, output, input);
                 client.sendMessage(new JoinPublicRoomMessage(playersNumber, username));
             }
         }
+    }
+
+    public void askUsername(){
+        output.println("Good morning Sir,");
+        output.println("how shall I call you?");
+        username = input.nextLine();
+        output.println("Welcome " + username + ", nice to meet you");
     }
 
     @Override
@@ -98,23 +100,7 @@ public class CLI implements UI {
 
     }
 
-    private int askIntegerInput(String message, int minBoundary, int maxBoundary) {
-        int selection;
-        while (true) {
-            output.println(message);
-            try {
-                selection = Integer.parseInt(input.nextLine());
-                if (selection < minBoundary || selection > maxBoundary) {
-                    throw new InvalidParameterException();
-                } else {
-                    break;
-                }
-            } catch (NumberFormatException | InvalidParameterException e) {
-                output.println("selection not valid");
-            }
-        }
-        return selection;
-    }
+   
 
     public void displayString(String body){
         output.println(body);
@@ -128,7 +114,7 @@ public class CLI implements UI {
             for (int resourceIndex = 1; resourceIndex <= resources.size(); resourceIndex++) {
                 output.println(resourceIndex + ": " + resources.get(resourceIndex-1));
             }
-            int selection = askIntegerInput("select resource", 1, resources.size());
+            int selection = GameUtils.askIntegerInput("select resource", 1, resources.size(), output, input);
             selectedResources.add(resources.get(selection-1));
         }
 
@@ -141,13 +127,12 @@ public class CLI implements UI {
         int selection1;
         int selection2;
         do {
-            selection1 = askIntegerInput("Select the first card to drop", 1,4)-1;
-            selection2 = askIntegerInput("Select the second card to drop", 1,4)-1;
+            selection1 = GameUtils.askIntegerInput("Select the first card to drop", 1,4, output, input)-1;
+            selection2 = GameUtils.askIntegerInput("Select the second card to drop", 1,4, output, input)-1;
             if(selection1==selection2)output.println("You must select two distinct cards");
         } while (selection1 == selection2);
 
         client.sendMessage(new DropInitialLeaderCardsResponseMessage(selection1, selection2));
-        output.println("Waiting for other players to select their cards");
 
     }
 
@@ -250,7 +235,7 @@ public class CLI implements UI {
             output.println((i+2)+". " + moves.get(i).toLowerCase());
         }
 
-        int selection = askIntegerInput("Select a move", 1, moves.size()+1);
+        int selection = GameUtils.askIntegerInput("Select a move", 1, moves.size()+1, output, input);
         if(selection==1){
             sendMove("VISIT_PLAYER");
             displayPossibleMoves(moves);
@@ -259,49 +244,25 @@ public class CLI implements UI {
     }
 
     private void sendMove(String move){
-        switch (move){
-            case("VISIT_PLAYER"):
-                askToDisplayPlayerBoard();
-                break;
-            case ("ACTIVATE_PRODUCTION"):
-                client.sendMessage(new SelectMoveResponseMessage(move));
-                break;
-            case ("GET_MARBLES"):
-                client.sendMessage(new SelectMoveResponseMessage(move));
-                break;
-            case ("BUY_CARD"):
-                client.sendMessage(new SelectMoveResponseMessage(move));
-                break;
-            case ("PLAY_LEADER"):
-                client.sendMessage(new SelectMoveResponseMessage(move));
-                break;
-            case ("DROP_LEADER"):
-                client.sendMessage(new SelectMoveResponseMessage(move));
-                break;
-            case ("SWITCH_SHELVES"):
-                client.sendMessage(new SelectMoveResponseMessage(move));
-                break;
-            case ("END_TURN"):
-                client.sendMessage(new SelectMoveResponseMessage(move));
-                break;
-        }
+        if(move.equals("VISIT_PLAYER"))askToDisplayPlayerBoard();
+        else client.sendMessage(new SelectMoveResponseMessage(move));
     }
 
     public void setGameState(Game game){
         gameState = game;
     }
 
-    public void displayMarbles(MarbleStructure marbleStructure){
+    public void selectMarbles(MarbleStructure marbleStructure){
         output.println(marbleStructure.toString());
 
-        int selection = askIntegerInput("Do you want to shift a row or a column?\n1.Row\n2.Column", 1,2);
+        int selection = GameUtils.askIntegerInput("Do you want to shift a row or a column?\n1.Row\n2.Column", 1,2, output, input);
 
         int selectionIndex;
         if (selection == 1){
-            selectionIndex = askIntegerInput("Which row do you want to shift?", 1,3)-1;
+            selectionIndex = GameUtils.askIntegerInput("Which row do you want to shift?", 1,3, output, input)-1;
             client.sendMessage(new SelectMarblesResponseMessage("ROW",selectionIndex));
         } else {
-            selectionIndex = askIntegerInput("Which column do you want to shift?", 1,4)-1;
+            selectionIndex = GameUtils.askIntegerInput("Which column do you want to shift?", 1,4, output, input)-1;
             client.sendMessage(new SelectMarblesResponseMessage("COLUMN",selectionIndex));
         }
     }
@@ -318,7 +279,7 @@ public class CLI implements UI {
     @Override
     public void discardLeaderCard(ArrayList<LeaderCard> cards) {
         displayLeaderCards(cards);
-        int selection = askIntegerInput("Select the card number", 1, cards.size())-1;
+        int selection = GameUtils.askIntegerInput("Select the card number", 1, cards.size(), output, input)-1;
         client.sendMessage(new DropLeaderCardResponseMessage(selection));
     }
 
@@ -359,7 +320,7 @@ public class CLI implements UI {
         Map<Resource, Integer> StrongboxInputs = GameUtils.emptyResourceMap();
         Map<Resource, Integer> outputs = GameUtils.emptyResourceMap();
 
-        int typeOfPayment = askIntegerInput("Do you want to select where to pay from or use smart payment?[1.normal(not yet implemented), 2.smart]",1,2);
+        int typeOfPayment = GameUtils.askIntegerInput("Do you want to select where to pay from or use smart payment?[1.normal(not yet implemented), 2.smart]",1,2, output, input);
 
         if(typeOfPayment == 2){
             if(productionPowers.equals(gameState.getCurrentPlayer().possibleProductionPowersToActive())){
@@ -379,7 +340,7 @@ public class CLI implements UI {
                     }
                     message+="\n"+ indexes;
 
-                    selection = askIntegerInput(message,indexes.get(0),gameState.getCurrentPlayer().possibleProductionPowersToActive().size());
+                    selection = GameUtils.askIntegerInput(message,indexes.get(0),gameState.getCurrentPlayer().possibleProductionPowersToActive().size(), output, input);
 
                     if(indexes.contains(selection)) {
 
@@ -443,40 +404,40 @@ public class CLI implements UI {
     }
 
     private ProductionPower askBasicProductionPowerIO(){
-        Map<Resource, Integer> input = new HashMap<>();
-        Map<Resource, Integer> output = new HashMap<>();
+        Map<Resource, Integer> resInput = new HashMap<>();
+        Map<Resource, Integer> resOutput = new HashMap<>();
         List<Integer> resources = new ArrayList<>();
-        resources.add(askIntegerInput("What is the first resource you want to put as input?\n1.SHIELD, 2.SERVANT, 3.STONE, 4.COIN",1,4));
-        resources.add(askIntegerInput("What is the second resource you want to put as input?\n1.SHIELD, 2.SERVANT, 3.STONE, 4.COIN",1,4));
-        resources.add(askIntegerInput("What is the resource you want as output?\n1.SHIELD, 2.SERVANT, 3.STONE, 4.COIN",1,4));
+        resources.add(GameUtils.askIntegerInput("What is the first resource you want to put as input?\n1.SHIELD, 2.SERVANT, 3.STONE, 4.COIN",1,4, output, input));
+        resources.add(GameUtils.askIntegerInput("What is the second resource you want to put as input?\n1.SHIELD, 2.SERVANT, 3.STONE, 4.COIN",1,4, output, input));
+        resources.add(GameUtils.askIntegerInput("What is the resource you want as output?\n1.SHIELD, 2.SERVANT, 3.STONE, 4.COIN",1,4, output, input));
 
         for (int i = 0; i < 3; i++) {
             switch (resources.get(i)){
                 case (1):
-                    if(i<2)input.put(Resource.SHIELD, 1);
-                    else output.put(Resource.SHIELD,1);
+                    if(i<2)resInput.put(Resource.SHIELD, 1);
+                    else resOutput.put(Resource.SHIELD,1);
                     break;
                 case (2):
-                    if(i<2)input.put(Resource.SERVANT, 1);
-                    else output.put(Resource.SERVANT,1);
+                    if(i<2)resInput.put(Resource.SERVANT, 1);
+                    else resOutput.put(Resource.SERVANT,1);
                     break;
                 case (3):
-                    if(i<2)input.put(Resource.STONE, 1);
-                    else output.put(Resource.STONE,1);
+                    if(i<2)resInput.put(Resource.STONE, 1);
+                    else resOutput.put(Resource.STONE,1);
                     break;
                 case (4):
-                    if(i<2)input.put(Resource.COIN, 1);
-                    else output.put(Resource.COIN,1);
+                    if(i<2)resInput.put(Resource.COIN, 1);
+                    else resOutput.put(Resource.COIN,1);
                     break;
             }
         }
-        return new ProductionPower(input, output);
+        return new ProductionPower(resInput, resOutput);
     }
 
     @Override
     public void buyDevelopmentCard(List<DevelopmentCard> developmentCards) {
         output.println(developmentCards);
-        int selection = askIntegerInput("Select a card", 1, developmentCards.size())-1;
+        int selection = GameUtils.askIntegerInput("Select a card", 1, developmentCards.size(), output, input)-1;
         client.sendMessage(new BuyDevelopmentCardResponseMessage(selection));
 
     }
@@ -484,20 +445,20 @@ public class CLI implements UI {
     @Override
     public void selectStackToPlaceCard(List<DevelopmentCard> stacks) {
         output.println(stacks);
-        int selection = askIntegerInput("On which stack you want to put your new card?", 1, stacks.size());
+        int selection = GameUtils.askIntegerInput("On which stack you want to put your new card?", 1, stacks.size(), output, input);
         // TODO
     }
 
     @Override
     public void playLeader(List<LeaderCard> leaderCards) {
         displayLeaderCards(leaderCards);
-        int selection = askIntegerInput("Select the card number", 1, leaderCards.size())-1;
+        int selection = GameUtils.askIntegerInput("Select the card number", 1, leaderCards.size(), output, input)-1;
         client.sendMessage(new PlayLeaderResponseMessage(selection));
     }
 
     public void gameOver(String winner, Map<String, Integer> standing){
         output.println("Game ended, "+winner+" won the game\n"+standing);
-        int selection = askIntegerInput("Do you want to start a new game?", 1,2);
+        int selection = GameUtils.askIntegerInput("Do you want to start a new game?", 1,2, output, input);
         if(selection==1)setup();
         else {
             output.println("Bye "+username);
@@ -508,5 +469,9 @@ public class CLI implements UI {
     @Override
     public void run() {
         setup();
+    }
+
+    public String getUsername() {
+        return username;
     }
 }

@@ -35,7 +35,7 @@ public interface UI extends Runnable {
 
     void setGameState(Game game);
 
-    void displayMarbles(MarbleStructure marbleStructure);
+    void selectMarbles(MarbleStructure marbleStructure);
 
     void dropResources(List<Resource> resources);
 
@@ -52,5 +52,9 @@ public interface UI extends Runnable {
     void playLeader(List<LeaderCard> leaderCards);
 
     public void gameOver(String winner, Map<String, Integer> standing);
+
+    public void askUsername();
+
+    public String getUsername();
 
 }

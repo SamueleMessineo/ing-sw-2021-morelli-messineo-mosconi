@@ -50,7 +50,7 @@ public class ClientMessageHandler {
     }
 
     public void handle(SelectMarblesRequestMessage message){
-        executor.submit(() -> ui.displayMarbles(message.getMarbleStructure()));
+        executor.submit(() -> ui.selectMarbles(message.getMarbleStructure()));
     }
 
     public void handle(DropResourceRequestMessage message){
