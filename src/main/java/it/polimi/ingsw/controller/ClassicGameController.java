@@ -199,6 +199,8 @@ public class ClassicGameController {
         return moves;
     }
 
+
+
     public List<DevelopmentCard> getBuyableDevelopementCards(){
         List<DevelopmentCard> developmentCards = new ArrayList<>();
 
@@ -220,6 +222,21 @@ public class ClassicGameController {
             }
         }
         return leaderCards;
+    }
+
+    public void activateProduction(List<Integer> selectedStacks, ProductionPower basicProduction, List<Integer> extraProductionPowers){
+        if (selectedStacks != null) {
+            game.getCurrentPlayer().getPlayerBoard().activateProduction(selectedStacks);
+        }
+        if (basicProduction != null) {
+           game.getCurrentPlayer().getPlayerBoard().activateProductionPower(basicProduction);
+        }
+        if(extraProductionPowers != null){
+            for (Integer extraProductionPower : extraProductionPowers) {
+                game.getCurrentPlayer().getPlayerBoard().activateProductionPower(game.getCurrentPlayer().getPlayerBoard().getExtraProductionPowers().get(extraProductionPower));
+            }
+
+        }
     }
 
     public void playLeader(int cardIndex) {

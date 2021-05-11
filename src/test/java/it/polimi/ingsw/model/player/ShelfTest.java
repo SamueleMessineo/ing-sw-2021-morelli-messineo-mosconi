@@ -17,7 +17,7 @@ public class ShelfTest {
     @Test
     public void getResourceType() {
         Shelf shelf = new Shelf(3);
-        assertNull(shelf.getResourceType());
+        assertEquals(Resource.ANY,shelf.getResourceType());
         shelf.addResources(new HashMap<>(){{
             put(Resource.COIN, 2);
         }});
@@ -99,6 +99,23 @@ public class ShelfTest {
         expected.put(Resource.COIN, 0);
         expected.put(Resource.SERVANT, 0);
         expected.put(Resource.STONE, 1);
+
+        assertEquals(expected, shelf.getResources());
+
+        shelf = new Shelf(3);
+
+        newResources = new HashMap<>();
+        newResources.put(Resource.STONE, 3);
+
+        shelf.addResources(newResources);
+        newResources.put(Resource.STONE, 1);
+        shelf.useResources(newResources);
+
+        expected = new HashMap<>();
+        expected.put(Resource.SHIELD, 0);
+        expected.put(Resource.COIN, 0);
+        expected.put(Resource.SERVANT, 0);
+        expected.put(Resource.STONE, 2);
 
         assertEquals(expected, shelf.getResources());
     }
