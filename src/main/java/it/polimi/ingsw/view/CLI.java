@@ -35,6 +35,25 @@ public class CLI implements UI {
         this.client = client;
         input = new Scanner(System.in);
         output= new PrintStream(System.out);
+        output.println(
+                "+-----------------------------------------------------------------------------------------+\n" +
+                "|                                                                                         |\n" +
+                "| ███╗   ███╗ █████╗ ███████╗████████╗███████╗██████╗ ███████╗     ██████╗ ███████╗       |\n" +
+                "| ████╗ ████║██╔══██╗██╔════╝╚══██╔══╝██╔════╝██╔══██╗██╔════╝    ██╔═══██╗██╔════╝       |\n" +
+                "| ██╔████╔██║███████║███████╗   ██║   █████╗  ██████╔╝███████╗    ██║   ██║█████╗         |\n" +
+                "| ██║╚██╔╝██║██╔══██║╚════██║   ██║   ██╔══╝  ██╔══██╗╚════██║    ██║   ██║██╔══╝         |\n" +
+                "| ██║ ╚═╝ ██║██║  ██║███████║   ██║   ███████╗██║  ██║███████║    ╚██████╔╝██║            |\n" +
+                "| ╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝   ╚═╝   ╚══════╝╚═╝  ╚═╝╚══════╝     ╚═════╝ ╚═╝            |\n" +
+                "|                                                                                         |\n" +
+                "| ██████╗ ███████╗███╗   ██╗ █████╗ ██╗███████╗███████╗ █████╗ ███╗   ██╗ ██████╗███████╗ |\n" +
+                "| ██╔══██╗██╔════╝████╗  ██║██╔══██╗██║██╔════╝██╔════╝██╔══██╗████╗  ██║██╔════╝██╔════╝ |\n" +
+                "| ██████╔╝█████╗  ██╔██╗ ██║███████║██║███████╗███████╗███████║██╔██╗ ██║██║     █████╗   |\n" +
+                "| ██╔══██╗██╔══╝  ██║╚██╗██║██╔══██║██║╚════██║╚════██║██╔══██║██║╚██╗██║██║     ██╔══╝   |\n" +
+                "| ██║  ██║███████╗██║ ╚████║██║  ██║██║███████║███████║██║  ██║██║ ╚████║╚██████╗███████╗ |\n" +
+                "| ╚═╝  ╚═╝╚══════╝╚═╝  ╚═══╝╚═╝  ╚═╝╚═╝╚══════╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═══╝ ╚═════╝╚══════╝ |\n" +
+                "|                                                                                         |\n" +
+                "| developed by Bruno Morelli, Samuele Messineo and Alberto Mosconi                        |\n" +
+                "+-----------------------------------------------------------------------------------------+");
     }
 
     public void setup(){
@@ -49,7 +68,7 @@ public class CLI implements UI {
             if(playersNum==1){
                 privateGame = true;
             } else {
-                output.println("Is this a private game? [y/n]");
+                output.println("Is this a private game? [Y/n]");
                 privateGame= input.nextLine().toLowerCase().startsWith("y");
             }
             if(username.trim().toLowerCase().equals("lorenzoilmagnifico")&&playersNum==1){
@@ -74,10 +93,8 @@ public class CLI implements UI {
     }
 
     public void askUsername(){
-        output.println("Good morning Sir,");
-        output.println("how shall I call you?");
+        output.println("Enter your username: ");
         username = input.nextLine();
-        output.println("Welcome " + username + ", nice to meet you");
     }
 
     @Override

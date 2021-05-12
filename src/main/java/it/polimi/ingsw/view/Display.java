@@ -9,6 +9,7 @@ import it.polimi.ingsw.model.shared.Resource;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Display {
 
@@ -35,17 +36,17 @@ public class Display {
     private static String displayMarble(Marble marble){
         switch (marble){
             case BLUE:
-                return "🔵";
+                return "\u001B[34m⬤\u001B[0m";
             case RED:
-                return  "🔴";
+                return "\u001B[31m⬤\u001B[0m";
             case PURPLE:
-                return "🟣";
+                return "\u001B[35m⬤\u001B[0m";
             case YELLOW:
-                return "🟡";
+                return "\u001B[33m⬤\u001B[0m";
             case GREY:
-                return "⚫️";
+                return "\u001B[37m⬤\u001B[0m";
             case WHITE:
-                return "⚪️";
+                return "\u001B[0m⬤\u001B[0m";
         }
         return "";
     }
