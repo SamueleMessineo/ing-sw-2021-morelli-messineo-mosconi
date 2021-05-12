@@ -381,10 +381,13 @@ public class CLI implements UI {
     }
 
     @Override
-    public void selectStackToPlaceCard(List<DevelopmentCard> stacks) {
-        output.println(stacks);
-        int selection = GameUtils.askIntegerInput("On which stack you want to put your new card?", 1, stacks.size(), output, input);
-        // TODO
+    public void selectStackToPlaceCard(List<Integer> stackIndexes) {
+        for (Integer index:
+             stackIndexes) {
+            output.println(gameState.getCurrentPlayer().getPlayerBoard().getCardStacks().get(index));
+        }
+        int selection = GameUtils.askIntegerInput("On which stack you want to put your new card?", 1, stackIndexes.size(), output, input);
+        client.sendMessage(new SelectStackToPlaceCardResponseMessage(selection));
     }
 
     @Override

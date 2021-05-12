@@ -107,7 +107,7 @@ public class GUI extends Application implements UI {
     }
 
     @Override
-    public void selectStackToPlaceCard(List<DevelopmentCard> stacks) {
+    public void selectStackToPlaceCard(List<Integer> stacks) {
 
     }
 

@@ -219,14 +219,14 @@ public class GameMessageHandler {
     public void handle(BuyDevelopmentCardResponseMessage message){
         System.out.println("handling");
         DevelopmentCard developmentCard = gameController.getBuyableDevelopementCards().get(message.getSelectedCardIndex());
-        List<DevelopmentCard> stacks = new ArrayList<>();
+        List<Integer> stacks = new ArrayList<>();
+        List<PlayerCardStack> allStacks = room.getGame().getCurrentPlayer().getPlayerBoard().getCardStacks();
         for (PlayerCardStack cardStack:
-        room.getGame().getCurrentPlayer().getPlayerBoard().getCardStacks()){
+        allStacks){
             System.out.println("for");
             System.out.println(cardStack.toString());
             if(cardStack.size()== 0 || cardStack.canPlaceCard(developmentCard)){
-                if(cardStack.size() == 0)stacks.add(null);
-                else stacks.add(cardStack.peek());
+                stacks.add(allStacks.indexOf(cardStack));
             }
         }
 
@@ -243,7 +243,7 @@ public class GameMessageHandler {
             sendNextMoves();
 
         }else {
-            clientConnection.sendMessage(new ErrorMessage("Action Could not be completed"));
+            clientConnection.sendMessage(new StringMessage("Action Could not be completed"));
             sendNextMoves();
         }
 

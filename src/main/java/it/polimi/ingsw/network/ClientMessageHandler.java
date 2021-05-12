@@ -78,7 +78,7 @@ public class ClientMessageHandler {
     }
 
     public void handle(SelectStackToPlaceCardRequestMessage message){
-        executor.submit(() -> ui.selectStackToPlaceCard(message.getDevelopmentCards()));
+        executor.submit(() -> ui.selectStackToPlaceCard(message.getStacks()));
     }
 
     public void handle(PlayLeaderRequestMessage message){

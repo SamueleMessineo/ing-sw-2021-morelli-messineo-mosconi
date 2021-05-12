@@ -120,10 +120,10 @@ public class LocalMessageHandler {
 
     public void handle(BuyDevelopmentCardResponseMessage message){
         DevelopmentCard developmentCard = gameController.getBuyableDevelopementCards().get(message.getSelectedCardIndex());
-        List<DevelopmentCard> stacks = new ArrayList<>();
+        List<Integer> stacks = new ArrayList<>();
         for (PlayerCardStack cardStack:
                 player.getPlayerBoard().getCardStacks()){
-            if(cardStack.canPlaceCard(developmentCard))stacks.add(cardStack.peek());
+            if(cardStack.canPlaceCard(developmentCard))stacks.add(player.getPlayerBoard().getCardStacks().indexOf(cardStack));
         }
         ui.selectStackToPlaceCard(stacks);
         currentTurn.setBuyedDevelopmentCard(developmentCard);
