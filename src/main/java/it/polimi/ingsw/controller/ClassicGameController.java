@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Warehouse;
 import it.polimi.ingsw.model.shared.*;
 import it.polimi.ingsw.server.Room;
+import it.polimi.ingsw.utils.GameUtils;
 
 import java.security.InvalidParameterException;
 import java.util.*;
@@ -70,7 +71,7 @@ public class ClassicGameController {
         if (!game.getPlayers().get(nextPlayer).isActive()) computeNextPlayer();
     }
 
-    public Map<String, List<Resource>> getMarbles(String rowOrColumn, int index) {
+    public Map<String, Map<Resource, Integer>> getMarbles(String rowOrColumn, int index) {
         List<Marble> marbles;
         if(rowOrColumn.equals("ROW")){
             marbles = game.getMarket().getMarbleStructure().shiftRow(index);
@@ -78,16 +79,21 @@ public class ClassicGameController {
             marbles = game.getMarket().getMarbleStructure().shiftColumn(index);
         }
 
-        Map<String, List<Resource>> convertedMarbles = new HashMap<>(){{
-            put("converted", new ArrayList<>());
-            put("toConvert", new ArrayList<>());
+        Map<String, Map<Resource, Integer>> convertedMarbles = new HashMap<>(){{
+            put("converted", new HashMap<>());
+            put("toConvert", new HashMap<>());
+            put("conversionOptions", new HashMap<>());
         }};
-
+        convertedMarbles.get("toConvert").put(Resource.ANY, 0);
         List<Resource> effectsObjects = game.getCurrentPlayer().hasActiveEffectOn("Marbles");
-        convertedMarbles.put("conversionOptions", effectsObjects);
+        for (Resource effectObject : effectsObjects) {
+            convertedMarbles.get("conversionOptions").put(effectObject, 1);
+        }
 
         // convert all the marbles
         for (Marble marble : marbles) {
+            String key = "converted";
+            Resource resource = null;
             switch (marble) {
                 case RED: // convert to vatican point
                     // move the player forward on the track
@@ -109,51 +115,56 @@ public class ClassicGameController {
                         }
                     }
                     break;
-                case BLUE: // convert to shied
-                    convertedMarbles.get("converted").add(Resource.SHIELD);
-                    break;
-                case GREY: // convert to stone
-                    convertedMarbles.get("converted").add(Resource.STONE);
-                    break;
-                case PURPLE: // convert to servant
-                    convertedMarbles.get("converted").add(Resource.SERVANT);
-                    break;
-                case YELLOW: // convert to coin
-                    convertedMarbles.get("converted").add(Resource.COIN);
-                    break;
                 case WHITE:
                     if (effectsObjects.size() == 2) {
                         // the player has two active leader cards with effects on the marble structure
                         // need to ask the user how to convert them
-                        convertedMarbles.get("toConvert").add(Resource.ANY);
+                        key = "toConvert";
+                        resource = Resource.ANY;
                     } else if (effectsObjects.size() == 1) {
                         // the player only has one active leader card with the marbles as scope
                         // can automatically convert
-                        convertedMarbles.get("converted").add(effectsObjects.get(0));
+                        resource = effectsObjects.get(0);
                     }
                     break;
                 default:
+                    resource = GameUtils.convertMarbleToResource(marble);
                     break;
             }
+            convertedMarbles.put(key, GameUtils.incrementValueInResourceMap(
+                    convertedMarbles.get(key), resource, 1));
         }
         return convertedMarbles;
     }
 
-    public void giveResourcesToPlayer(List<Resource> resources, String playerUsername)
+    public void giveResourcesToPlayer(Map<Resource, Integer> resources, String playerUsername)
             throws InvalidParameterException {
-        Map<Resource, Integer> resourceMap = new HashMap<>();
-        for (Resource resource : resources) {
-            if (resourceMap.containsKey(resource))
-                resourceMap.put(resource, resourceMap.get(resource) + 1);
-            else
-                resourceMap.put(resource, 1);
-        }
         Player p = game.getPlayerByUsername(playerUsername);
-        if (!p.getPlayerBoard().getWarehouse().canPlaceResources(resourceMap)) {
+        if (!p.getPlayerBoard().getWarehouse().canPlaceResources(resources)) {
             throw new InvalidParameterException("Not enough space to place these resources");
         } else {
-            p.getPlayerBoard().getWarehouse().placeResources(resourceMap);
+            p.getPlayerBoard().getWarehouse().placeResources(resources);
         }
+    }
+
+    public void dropPlayerResources(Map<Resource, Integer> obtainedResources, Map<Resource,
+            Integer> resourcesToDrop, String playerUsername) throws InvalidParameterException {
+        if (resourcesToDrop == null) throw new InvalidParameterException();
+        for (Resource r : resourcesToDrop.keySet()) {
+            if (!obtainedResources.containsKey(r) ||
+                    obtainedResources.get(r) < resourcesToDrop.get(r)) {
+                throw new InvalidParameterException();
+            }
+        }
+        Player player = game.getPlayerByUsername(playerUsername);
+        Map<Resource, Integer> resourcesToAdd = new HashMap<>(obtainedResources);
+        for (Resource r : resourcesToDrop.keySet()) {
+            resourcesToAdd = GameUtils.incrementValueInResourceMap(resourcesToAdd, r, -resourcesToDrop.get(r));
+        }
+        if (!player.getPlayerBoard().getWarehouse().canPlaceResources(resourcesToAdd))
+            throw new InvalidParameterException();
+
+        player.getPlayerBoard().getWarehouse().placeResources(resourcesToAdd);
     }
 
     public void dropLeader(int card) {
@@ -216,8 +227,6 @@ public class ClassicGameController {
 
         return moves;
     }
-
-
 
     public List<DevelopmentCard> getBuyableDevelopementCards(){
         List<DevelopmentCard> developmentCards = new ArrayList<>();

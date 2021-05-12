@@ -37,7 +37,7 @@ public interface UI extends Runnable {
 
     void selectMarbles(MarbleStructure marbleStructure);
 
-    void dropResources(List<Resource> resources);
+    void dropResources(Map<Resource, Integer> resources);
 
     void discardLeaderCard(ArrayList<LeaderCard> cards);
 

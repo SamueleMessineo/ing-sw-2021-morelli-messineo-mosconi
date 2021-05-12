@@ -11,6 +11,7 @@ import it.polimi.ingsw.network.game.*;
 import it.polimi.ingsw.view.UI;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -132,22 +133,18 @@ public class LocalMessageHandler {
     public void handle(SelectResourceForWhiteMarbleResponseMessage message) {
         List<Resource> resourcesConverted=message.getResources();
         List<Resource> conversionOptions= currentTurn.getConversionOptions();
-        if(!conversionOptions.containsAll(resourcesConverted) && resourcesConverted.size()!= currentTurn.getToConvert().size()){
+        if(!conversionOptions.containsAll(resourcesConverted) && resourcesConverted.size()!= currentTurn.getToConvert()){
             ui.displayError("Invalid conversion, try again!\n");
             return;
         }
-        currentTurn.getConverted().addAll(resourcesConverted);
+//        currentTurn.getConverted().addAll(resourcesConverted);
         askToDropResources();
     }
 
     private void askToDropResources() {
         System.out.println("merge resources");
-        List<Resource> allResources = new ArrayList<>();
-
-        allResources.addAll(currentTurn.getConverted());
-
+        Map<Resource, Integer> allResources = new HashMap<>(currentTurn.getConverted());
         System.out.println("ask to drop");
-
         ui.dropResources(allResources);
     }
 

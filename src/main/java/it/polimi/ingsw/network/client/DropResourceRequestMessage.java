@@ -4,15 +4,16 @@ import it.polimi.ingsw.model.shared.Resource;
 import it.polimi.ingsw.network.ClientMessageHandler;
 
 import java.util.List;
+import java.util.Map;
 
 public class DropResourceRequestMessage extends ClientMessage {
-    private final List<Resource> resources;
+    private final Map<Resource, Integer> resources;
 
-    public DropResourceRequestMessage(List<Resource> resources) {
+    public DropResourceRequestMessage(Map<Resource, Integer> resources) {
         this.resources = resources;
     }
 
-    public List<Resource> getResources() {
+    public Map<Resource, Integer> getResources() {
         return resources;
     }
 

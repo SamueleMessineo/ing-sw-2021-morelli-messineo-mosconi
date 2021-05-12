@@ -3,6 +3,9 @@ package it.polimi.ingsw.utils;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import it.polimi.ingsw.model.Game;
+import it.polimi.ingsw.model.market.Marble;
+import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.model.shared.PopesFavorTileState;
 import it.polimi.ingsw.model.shared.Resource;
 
 import java.io.*;
@@ -99,5 +102,25 @@ public class GameUtils {
             }
         }
         return selection;
+    }
+
+    public static Map<Resource, Integer> incrementValueInResourceMap(Map<Resource, Integer> resourceMap, Resource resource, int amount) {
+        if (resourceMap.containsKey(resource)) amount += resourceMap.get(resource);
+        resourceMap.put(resource, amount);
+        return resourceMap;
+    }
+
+    public static Resource convertMarbleToResource(Marble marble) {
+        switch (marble) {
+            case BLUE: // convert to shied
+                return Resource.SHIELD;
+            case GREY: // convert to stone
+                return Resource.STONE;
+            case PURPLE: // convert to servant
+                return Resource.SERVANT;
+            case YELLOW: // convert to coin:
+                return Resource.COIN;
+        }
+        return null;
     }
 }

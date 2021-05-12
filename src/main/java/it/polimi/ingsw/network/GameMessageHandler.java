@@ -14,10 +14,7 @@ import it.polimi.ingsw.utils.GameUtils;
 
 
 import java.security.InvalidParameterException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class GameMessageHandler {
 
@@ -73,15 +70,11 @@ public class GameMessageHandler {
 
     private void askToDropResources() {
         System.out.println("merge resources");
-        List<Resource> allResources = new ArrayList<>();
-
-        allResources.addAll(room.getCurrentTurn().getConverted());
-
+        Map<Resource, Integer> allResources = new HashMap<>(room.getCurrentTurn().getConverted());
         System.out.println("ask to drop");
-
+        System.out.println(allResources);
         clientConnection.sendMessage(new DropResourceRequestMessage(allResources));
     }
-
 
     public void handle(SelectInitialResourceResponseMessage message) {
         gameController.giveInitialResources(message.getSelectedResources(),
@@ -130,36 +123,26 @@ public class GameMessageHandler {
 
     public void handle(SelectMarblesResponseMessage message){
         System.out.println("received get marbles response");
-        Map<String, List<Resource>> resources = gameController.getMarbles(message.getRowOrColumn(), message.getIndex());
+        Map<String, Map<Resource, Integer>> resources = gameController.getMarbles(message.getRowOrColumn(), message.getIndex());
         System.out.println("retrieved resources");
 
         if (gameController.isGameOver()) {
             room.sendAll(new StringMessage("GAME OVER"));
             return;
         }
-
         room.getCurrentTurn().setConverted(resources.get("converted"));
-        room.getCurrentTurn().setToConvert(resources.get("toConvert"));
-        room.getCurrentTurn().setConversionOptions(resources.get("conversionOptions"));
+        room.getCurrentTurn().setToConvert(resources.get("toConvert").get(Resource.ANY));
+        room.getCurrentTurn().setConversionOptions(new ArrayList<>(resources.get("conversionOptions").keySet()));
         System.out.println("turn set");
 
-        if (resources.get("toConvert").size() > 0 && resources.get("toConvert").get(0).equals(Resource.ANY)) {
+        if (resources.get("toConvert").containsKey(Resource.ANY) &&
+                resources.get("toConvert").get(Resource.ANY) > 0) {
             System.out.println("ask for conversion help");
-            clientConnection.sendMessage(new SelectResourceForWhiteMarbleRequestMessage(resources.get("toConvert").size(),
-                    resources.get("conversionOptions").get(0), resources.get("conversionOptions").get(1)));
+//            clientConnection.sendMessage(new SelectResourceForWhiteMarbleRequestMessage(resources.get("toConvert").size(),
+//                    resources.get("conversionOptions").get(0), resources.get("conversionOptions").get(1)));
             return;
         }
-        try {
-            gameController.giveResourcesToPlayer(room.getCurrentTurn().getConverted(),
-                    room.getCurrentTurn().getCurrentPlayer());
-            GameUtils.saveGameState(gameController.getGame(), room.getId());
-            room.sendAll(new UpdateAndDisplayGameStateMessage(gameController.getGame()));
-            room.getCurrentTurn().setAlreadyPerformedMove(true);
-            sendNextMoves();
-        } catch (InvalidParameterException e) {
-            System.out.println("not enough space");
-            askToDropResources();
-        }
+        askToDropResources();
     }
 
     public void handle(DropLeaderCardResponseMessage message){
@@ -185,11 +168,11 @@ public class GameMessageHandler {
     public void handle(SelectResourceForWhiteMarbleResponseMessage message) {
         List<Resource> resourcesConverted=message.getResources();
         List<Resource> conversionOptions= room.getCurrentTurn().getConversionOptions();
-        if(!conversionOptions.containsAll(resourcesConverted) && resourcesConverted.size()!= room.getCurrentTurn().getToConvert().size()){
+        if(!conversionOptions.containsAll(resourcesConverted) && resourcesConverted.size()!= room.getCurrentTurn().getToConvert()){
             clientConnection.sendMessage(new ErrorMessage("Invalid conversion, try again!\n"));
             return;
         }
-        room.getCurrentTurn().getConverted().addAll(resourcesConverted);
+        //room.getCurrentTurn().getConverted().addAll(resourcesConverted);
         askToDropResources();
     }
 
@@ -207,15 +190,17 @@ public class GameMessageHandler {
     }
 
     public void handle(DropResourcesResponseMessage message){
-        List<Resource> resourcesConverted= room.getCurrentTurn().getConverted();
-        if(message.getResourcesToDrop()==null || !resourcesConverted.containsAll(message.getResourcesToDrop())){
-            clientConnection.sendMessage(new ErrorMessage("Nothing could be done"));
-        }else {
-            //place resources
-            room.getCurrentTurn().setAlreadyPerformedMove(true);
-            sendNextMoves();
+        Map<Resource, Integer> resourcesConverted = room.getCurrentTurn().getConverted();
+        // check if the selected resources are valid
+        try {
+            gameController.dropPlayerResources(resourcesConverted, message.getResourcesToDrop(),
+                    room.getPlayerFromConnection(clientConnection).getUsername());
+        } catch (InvalidParameterException e) {
+            clientConnection.sendMessage(new ErrorMessage("The selected resources are invalid"));
+            return;
         }
-        //TODO: to be completed
+        room.getCurrentTurn().setAlreadyPerformedMove(true);
+        sendNextMoves();
     }
 
     public void handle(BuyDevelopmentCardResponseMessage message){

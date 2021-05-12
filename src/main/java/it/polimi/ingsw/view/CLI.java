@@ -238,12 +238,35 @@ public class CLI implements UI {
     }
 
     @Override
-    public void dropResources(List<Resource> resources) {
-        output.println("This are the resources you just got");
-        output.println(resources);
+    public void dropResources(Map<Resource, Integer> resources) {
+        output.println("Choose which resources to drop:");
+        Map<Resource, Integer> resourceMap = new LinkedHashMap<>(resources);
+        output.println(Display.displayResources(resourceMap));
+        List<Resource> uniqueResources = new ArrayList<>(resourceMap.keySet());
+        for (int i = 0; i < uniqueResources.size(); i++) {
+            output.print((i+1) + ". " + uniqueResources.get(i).name() + " | ");
+        }
+        output.println((uniqueResources.size()+1) + ". Confirm");
 
+        Map<Resource, Integer> droppedResources = GameUtils.emptyResourceMap();
+        while (true) {
+            // ask the user to select the type of resource to drop
+            int selectedResourceIndex = GameUtils.askIntegerInput("Select a resource:",
+                    1, uniqueResources.size()+1, output, input)-1;
+            if (selectedResourceIndex == uniqueResources.size()) break;
+            Resource selectedResource = uniqueResources.get(selectedResourceIndex);
+            if (resourceMap.get(selectedResource) < 1) {
+                output.println("Already dropped");
+                continue;
+            }
+            // ask the user to tell how many units of the selected resource to drop
+            int selectedAmount = GameUtils.askIntegerInput("Select quantity:",
+                    1, resourceMap.get(selectedResource), output, input);
 
-        client.sendMessage(new DropResourcesResponseMessage(resources));
+            resourceMap = GameUtils.incrementValueInResourceMap(resourceMap, selectedResource, -selectedAmount);
+            droppedResources = GameUtils.incrementValueInResourceMap(droppedResources, selectedResource, selectedAmount);
+        }
+        client.sendMessage(new DropResourcesResponseMessage(droppedResources));
     }
 
     @Override

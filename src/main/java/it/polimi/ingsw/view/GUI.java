@@ -82,7 +82,7 @@ public class GUI extends Application implements UI {
     }
 
     @Override
-    public void dropResources(List<Resource> resources) {
+    public void dropResources(Map<Resource, Integer> resources) {
 
     }
 

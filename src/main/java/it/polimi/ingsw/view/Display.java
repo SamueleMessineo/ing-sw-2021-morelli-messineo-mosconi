@@ -8,8 +8,7 @@ import it.polimi.ingsw.model.shared.CardType;
 import it.polimi.ingsw.model.shared.Resource;
 
 import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 
 public class Display {
 
@@ -149,5 +148,14 @@ public class Display {
                 return "\u001B[33m";
         }
         return "\u001B[0m";
+    }
+
+    public static String displayResources(Map<Resource, Integer> resourceMap) {
+        String output = "";
+
+        for (Resource r : resourceMap.keySet()) {
+            output += resourceMap.get(r) + "x" + r + " ";
+        }
+        return output;
     }
 }
