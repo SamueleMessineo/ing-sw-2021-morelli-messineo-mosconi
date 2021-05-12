@@ -14,10 +14,7 @@ import it.polimi.ingsw.utils.GameUtils;
 
 
 import java.security.InvalidParameterException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class GameMessageHandler {
 
@@ -117,6 +114,7 @@ public class GameMessageHandler {
                     break;
                 case ("BUY_CARD"):
                     clientConnection.sendMessage(new BuyDevelopmentCardRequestMessage(gameController.getBuyableDevelopementCards()));
+                    break;
                 case("END_TURN"):
                     endTurn();
                     break;
@@ -219,15 +217,22 @@ public class GameMessageHandler {
     }
 
     public void handle(BuyDevelopmentCardResponseMessage message){
+        System.out.println("handling");
         DevelopmentCard developmentCard = gameController.getBuyableDevelopementCards().get(message.getSelectedCardIndex());
         List<DevelopmentCard> stacks = new ArrayList<>();
         for (PlayerCardStack cardStack:
         room.getGame().getCurrentPlayer().getPlayerBoard().getCardStacks()){
-            if(cardStack.canPlaceCard(developmentCard))stacks.add(cardStack.peek());
+            System.out.println("for");
+            System.out.println(cardStack.toString());
+            if(cardStack.size()== 0 || cardStack.canPlaceCard(developmentCard)){
+                if(cardStack.size() == 0)stacks.add(null);
+                else stacks.add(cardStack.peek());
+            }
         }
-        clientConnection.sendMessage(new SelectStackToPlaceCardRequestMessage(stacks));
 
         room.getCurrentTurn().setBuyedDevelopmentCard(developmentCard);
+        clientConnection.sendMessage(new SelectStackToPlaceCardRequestMessage(stacks));
+
     }
 
     public void handle(SelectStackToPlaceCardResponseMessage message){

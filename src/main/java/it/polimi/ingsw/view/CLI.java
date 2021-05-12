@@ -112,8 +112,6 @@ public class CLI implements UI {
         Display.displayRoomDetails(players, playersNum, RoomId, output);
     }
 
-
-
     public void displayString(String body){
         output.println(body);
     }
@@ -374,8 +372,10 @@ public class CLI implements UI {
 
     @Override
     public void buyDevelopmentCard(List<DevelopmentCard> developmentCards) {
+        int selection;
         output.println(developmentCards);
-        int selection = GameUtils.askIntegerInput("Select a card", 1, developmentCards.size(), output, input)-1;
+        selection = GameUtils.askIntegerInput("Select a card", 1, developmentCards.size(), output, input)-1;
+        System.out.println(selection);
         client.sendMessage(new BuyDevelopmentCardResponseMessage(selection));
 
     }

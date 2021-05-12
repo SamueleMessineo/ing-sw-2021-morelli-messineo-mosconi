@@ -188,7 +188,7 @@ public class ClassicGameController {
         }
 
         //FOR DEBUG
-        moves.add("END_TURN");
+        //moves.add("END_TURN");
 
         if(player.getLeaderCards().size() > 0){
             moves.add("DROP_LEADER");
@@ -228,6 +228,7 @@ public class ClassicGameController {
                 developmentCards.add(topCard);
             }
         }
+        System.out.println(developmentCards);
         return developmentCards;
     }
 
