@@ -9,6 +9,7 @@ import it.polimi.ingsw.model.player.Warehouse;
 import it.polimi.ingsw.model.shared.*;
 import it.polimi.ingsw.server.Room;
 
+import java.security.InvalidParameterException;
 import java.util.*;
 
 public class ClassicGameController {
@@ -136,6 +137,23 @@ public class ClassicGameController {
             }
         }
         return convertedMarbles;
+    }
+
+    public void giveResourcesToPlayer(List<Resource> resources, String playerUsername)
+            throws InvalidParameterException {
+        Map<Resource, Integer> resourceMap = new HashMap<>();
+        for (Resource resource : resources) {
+            if (resourceMap.containsKey(resource))
+                resourceMap.put(resource, resourceMap.get(resource) + 1);
+            else
+                resourceMap.put(resource, 1);
+        }
+        Player p = game.getPlayerByUsername(playerUsername);
+        if (!p.getPlayerBoard().getWarehouse().canPlaceResources(resourceMap)) {
+            throw new InvalidParameterException("Not enough space to place these resources");
+        } else {
+            p.getPlayerBoard().getWarehouse().placeResources(resourceMap);
+        }
     }
 
     public void dropLeader(int card) {

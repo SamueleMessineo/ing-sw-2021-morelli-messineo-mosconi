@@ -13,6 +13,7 @@ import it.polimi.ingsw.server.ClientConnection;
 import it.polimi.ingsw.utils.GameUtils;
 
 
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -148,8 +149,17 @@ public class GameMessageHandler {
                     resources.get("conversionOptions").get(0), resources.get("conversionOptions").get(1)));
             return;
         }
-
-        askToDropResources();
+        try {
+            gameController.giveResourcesToPlayer(room.getCurrentTurn().getConverted(),
+                    room.getCurrentTurn().getCurrentPlayer());
+            GameUtils.saveGameState(gameController.getGame(), room.getId());
+            room.sendAll(new UpdateAndDisplayGameStateMessage(gameController.getGame()));
+            room.getCurrentTurn().setAlreadyPerformedMove(true);
+            sendNextMoves();
+        } catch (InvalidParameterException e) {
+            System.out.println("not enough space");
+            askToDropResources();
+        }
     }
 
     public void handle(DropLeaderCardResponseMessage message){
