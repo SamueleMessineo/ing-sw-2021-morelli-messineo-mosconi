@@ -81,9 +81,6 @@ public class GameMessageHandler {
         clientConnection.sendMessage(new DropResourceRequestMessage(allResources));
     }
 
-    public void handle(SelectCardMessage message) {
-        System.out.println(message.getNum());
-    }
 
     public void handle(SelectInitialResourceResponseMessage message) {
         gameController.giveInitialResources(message.getSelectedResources(),
@@ -276,7 +273,7 @@ public class GameMessageHandler {
         }
         room.sendAll(new StringMessage(disconnectedPlayer.getUsername() + " disconnected"));
         room.sendAll(new UpdateGameStateMessage(room.getGame()));
-        if(disconnectedPlayer.equals(room.getGame().getPlayerByUsername(room.getCurrentTurn().getCurrentPlayer()))){
+        if(room.getCurrentTurn()!= null && disconnectedPlayer.equals(room.getGame().getPlayerByUsername(room.getCurrentTurn().getCurrentPlayer()))){
             endTurn();
         }
         disconnectedPlayer.setActive(false);
