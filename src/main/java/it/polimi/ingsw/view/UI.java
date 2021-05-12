@@ -47,7 +47,7 @@ public interface UI extends Runnable {
 
     void buyDevelopmentCard(List<DevelopmentCard> developmentCards);
 
-    void selectStackToPlaceCard(List<DevelopmentCard> stacks);
+    void selectStackToPlaceCard(List<Integer> stacks);
 
     void playLeader(List<LeaderCard> leaderCards);
 

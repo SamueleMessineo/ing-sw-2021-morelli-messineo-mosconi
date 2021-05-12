@@ -100,11 +100,9 @@ public class ClientConnection implements Runnable{
             long end = start + 5*1000; // 5 seconds * 1000 ms/sec
             while (System.currentTimeMillis() < end);
             if (receivedPong) {
-                //System.out.println("received pong from ");
                 receivedPong = false;
             } else {
                 System.out.println("client disconnected");
-                System.out.println(gameMessageHandler);
                 gameMessageHandler.deactivateConnection(this);
                 break;
             }

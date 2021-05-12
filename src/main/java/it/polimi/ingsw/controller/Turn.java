@@ -16,7 +16,7 @@ public class Turn {
     private int toConvert;
 //    private List<Resource> toConvert = new ArrayList<>();
     private List<Resource> conversionOptions = new ArrayList<>();
-    private DevelopmentCard buyedDevelopmentCard;
+    private DevelopmentCard boughtDevelopmentCard;
 
     private boolean alreadyPerformedMove = false;
 
@@ -92,11 +92,11 @@ public class Turn {
         this.conversionOptions = conversionOptions;
     }
 
-    public DevelopmentCard getBuyedDevelopmentCard() {
-        return buyedDevelopmentCard;
+    public DevelopmentCard getBoughtDevelopmentCard() {
+        return boughtDevelopmentCard;
     }
 
-    public void setBuyedDevelopmentCard(DevelopmentCard buyedDevelopmentCard) {
-        this.buyedDevelopmentCard = buyedDevelopmentCard;
+    public void setBoughtDevelopmentCard(DevelopmentCard boughtDevelopmentCard) {
+        this.boughtDevelopmentCard = boughtDevelopmentCard;
     }
 }

@@ -35,25 +35,7 @@ public class CLI implements UI {
         this.client = client;
         input = new Scanner(System.in);
         output= new PrintStream(System.out);
-        output.println(
-                "+-----------------------------------------------------------------------------------------+\n" +
-                "|                                                                                         |\n" +
-                "| ███╗   ███╗ █████╗ ███████╗████████╗███████╗██████╗ ███████╗     ██████╗ ███████╗       |\n" +
-                "| ████╗ ████║██╔══██╗██╔════╝╚══██╔══╝██╔════╝██╔══██╗██╔════╝    ██╔═══██╗██╔════╝       |\n" +
-                "| ██╔████╔██║███████║███████╗   ██║   █████╗  ██████╔╝███████╗    ██║   ██║█████╗         |\n" +
-                "| ██║╚██╔╝██║██╔══██║╚════██║   ██║   ██╔══╝  ██╔══██╗╚════██║    ██║   ██║██╔══╝         |\n" +
-                "| ██║ ╚═╝ ██║██║  ██║███████║   ██║   ███████╗██║  ██║███████║    ╚██████╔╝██║            |\n" +
-                "| ╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝   ╚═╝   ╚══════╝╚═╝  ╚═╝╚══════╝     ╚═════╝ ╚═╝            |\n" +
-                "|                                                                                         |\n" +
-                "| ██████╗ ███████╗███╗   ██╗ █████╗ ██╗███████╗███████╗ █████╗ ███╗   ██╗ ██████╗███████╗ |\n" +
-                "| ██╔══██╗██╔════╝████╗  ██║██╔══██╗██║██╔════╝██╔════╝██╔══██╗████╗  ██║██╔════╝██╔════╝ |\n" +
-                "| ██████╔╝█████╗  ██╔██╗ ██║███████║██║███████╗███████╗███████║██╔██╗ ██║██║     █████╗   |\n" +
-                "| ██╔══██╗██╔══╝  ██║╚██╗██║██╔══██║██║╚════██║╚════██║██╔══██║██║╚██╗██║██║     ██╔══╝   |\n" +
-                "| ██║  ██║███████╗██║ ╚████║██║  ██║██║███████║███████║██║  ██║██║ ╚████║╚██████╗███████╗ |\n" +
-                "| ╚═╝  ╚═╝╚══════╝╚═╝  ╚═══╝╚═╝  ╚═╝╚═╝╚══════╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═══╝ ╚═════╝╚══════╝ |\n" +
-                "|                                                                                         |\n" +
-                "| developed by Bruno Morelli, Samuele Messineo and Alberto Mosconi                        |\n" +
-                "+-----------------------------------------------------------------------------------------+");
+
     }
 
     public void setup(){
@@ -99,10 +81,10 @@ public class CLI implements UI {
 
     @Override
     public void displayError(String body) {
-        System.out.println("ERROR!");
-        System.out.println(body);
+        output.println("ERROR!");
+        output.println(body);
 
-        System.out.println("press enter to retry...");
+        output.println("press enter to retry...");
         input.nextLine();
         setup();
     }
@@ -111,8 +93,6 @@ public class CLI implements UI {
     public void displayRoomDetails(ArrayList<String> players, int playersNum, int RoomId) {
         Display.displayRoomDetails(players, playersNum, RoomId, output);
     }
-
-
 
     public void displayString(String body){
         output.println(body);
@@ -365,8 +345,8 @@ public class CLI implements UI {
     }
 
     private ProductionPower askBasicProductionPowerIO(){
-        Map<Resource, Integer> resInput = new HashMap<>();
-        Map<Resource, Integer> resOutput = new HashMap<>();
+        Map<Resource, Integer> resInput = GameUtils.emptyResourceMap();
+        Map<Resource, Integer> resOutput = GameUtils.emptyResourceMap();
         List<Integer> resources = new ArrayList<>();
         resources.add(GameUtils.askIntegerInput("What is the first resource you want to put as input?\n1.SHIELD, 2.SERVANT, 3.STONE, 4.COIN",1,4, output, input));
         resources.add(GameUtils.askIntegerInput("What is the second resource you want to put as input?\n1.SHIELD, 2.SERVANT, 3.STONE, 4.COIN",1,4, output, input));
@@ -375,19 +355,19 @@ public class CLI implements UI {
         for (int i = 0; i < 3; i++) {
             switch (resources.get(i)){
                 case (1):
-                    if(i<2)resInput.put(Resource.SHIELD, 1);
+                    if(i<2)resInput.put(Resource.SHIELD, resInput.get(Resource.SHIELD) + 1);
                     else resOutput.put(Resource.SHIELD,1);
                     break;
                 case (2):
-                    if(i<2)resInput.put(Resource.SERVANT, 1);
+                    if(i<2)resInput.put(Resource.SERVANT,resInput.get(Resource.SERVANT) + 1);
                     else resOutput.put(Resource.SERVANT,1);
                     break;
                 case (3):
-                    if(i<2)resInput.put(Resource.STONE, 1);
+                    if(i<2)resInput.put(Resource.STONE,resInput.get(Resource.STONE) + 1);
                     else resOutput.put(Resource.STONE,1);
                     break;
                 case (4):
-                    if(i<2)resInput.put(Resource.COIN, 1);
+                    if(i<2)resInput.put(Resource.COIN, resInput.get(Resource.COIN) + 1);
                     else resOutput.put(Resource.COIN,1);
                     break;
             }
@@ -397,17 +377,22 @@ public class CLI implements UI {
 
     @Override
     public void buyDevelopmentCard(List<DevelopmentCard> developmentCards) {
+        int selection;
         output.println(developmentCards);
-        int selection = GameUtils.askIntegerInput("Select a card", 1, developmentCards.size(), output, input)-1;
+        selection = GameUtils.askIntegerInput("Select a card", 1, developmentCards.size(), output, input)-1;
+        System.out.println(selection);
         client.sendMessage(new BuyDevelopmentCardResponseMessage(selection));
 
     }
 
     @Override
-    public void selectStackToPlaceCard(List<DevelopmentCard> stacks) {
-        output.println(stacks);
-        int selection = GameUtils.askIntegerInput("On which stack you want to put your new card?", 1, stacks.size(), output, input);
-        // TODO
+    public void selectStackToPlaceCard(List<Integer> stackIndexes) {
+        for (Integer index:
+             stackIndexes) {
+            output.println(gameState.getCurrentPlayer().getPlayerBoard().getCardStacks().get(index));
+        }
+        int selection = GameUtils.askIntegerInput("On which stack you want to put your new card?", 1, stackIndexes.size(), output, input);
+        client.sendMessage(new SelectStackToPlaceCardResponseMessage(selection));
     }
 
     @Override

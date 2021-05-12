@@ -65,7 +65,7 @@ public class FaithTrack implements Serializable {
         if(position%8==0) return position/8;
         else return -1;
 
-        //può capitare che il giocatore passa la casella senza fermarsi?
+        //può capitare che il giocatore passi la casella senza fermarsi?
     }
 
     /**

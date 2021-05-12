@@ -181,14 +181,16 @@ public class ClassicGameController {
         Player player = game.getCurrentPlayer();
 
         if(!alreadyPerformedMove){
-            if (player.canActivateProduction() || player.canActivateBasicProduction()) {
+            moves.add("GET_MARBLES");
+            if (player.canActivateBasicProduction() || player.canActivateProduction()) {
+                System.out.println("add acitvate production");
                 moves.add("ACTIVATE_PRODUCTION");
             }
-            moves.add("GET_MARBLES");
             for (MarketCardStack cardsStack : game.getMarket().getCardsGrid()) {
                 if(!cardsStack.isEmpty()) {
                     DevelopmentCard topCard = cardsStack.peek();
                     if (player.canBuyAndPlaceDevelopmentCard(topCard)) {
+                        System.out.println("add buy card;");
                         moves.add("BUY_CARD");
                         break;
                     }
@@ -199,7 +201,7 @@ public class ClassicGameController {
         }
 
         //FOR DEBUG
-        moves.add("END_TURN");
+        //moves.add("END_TURN");
 
         if(player.getLeaderCards().size() > 0){
             moves.add("DROP_LEADER");
@@ -266,10 +268,23 @@ public class ClassicGameController {
         }
     }
 
+    public void movePlayer(Player playerToMove, int positions){
+        for (int i = 0; i < positions; i++) {
+            game.getCurrentPlayer().getFaithTrack().move();
+            if(playerToMove.getFaithTrack().inOnPopeSpace()!= 0){
+                for (Player player:
+                     game.getPlayers()) {
+                    if(player.getFaithTrack().isInPopeFavorByLevel(playerToMove.getFaithTrack().inOnPopeSpace())){
+                        player.getFaithTrack().getPopesFavorTiles().get(playerToMove.getFaithTrack().inOnPopeSpace()-1).setState(PopesFavorTileState.ACTIVE);
+                    } else        player.getFaithTrack().getPopesFavorTiles().get(playerToMove.getFaithTrack().inOnPopeSpace()-1).setState(PopesFavorTileState.INACTIVE);
+                }
+            }
+        }
+    }
+
     public void playLeader(int cardIndex) {
         LeaderCard leaderCard = getPlayableLeaderCards().get(cardIndex);
-        game.getCurrentPlayer().getPlayedLeaderCards().add(leaderCard);
-        game.getCurrentPlayer().getLeaderCards().remove(leaderCard);
+        game.getCurrentPlayer().playLeaderCard(leaderCard);
 
         if(leaderCard.getEffectScope().equals("Storage")){
             game.getCurrentPlayer().getPlayerBoard().expandWarehouse(leaderCard.getEffectObject());
