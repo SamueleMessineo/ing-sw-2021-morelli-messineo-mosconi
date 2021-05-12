@@ -184,10 +184,10 @@ public class Game implements Serializable {
                     stack.pop();
                     if(!stack.isEmpty()){
                         stack.pop();
-                    } else System.out.println("emptied 1");
+                    }
                     return;
-                }else  System.out.println("emptied 2");
-            } else System.out.println("emptied 3");
+                }
+            }
         }
     }
 

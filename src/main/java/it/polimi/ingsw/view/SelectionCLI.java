@@ -13,6 +13,7 @@ public class SelectionCLI {
     }
 
     public boolean playingOnLine(){
+        Display.displayWelcomeMessage(output);
         do {
             output.println("Do you want to play online?[y/n]");
             String selection = input.nextLine().trim().toLowerCase();

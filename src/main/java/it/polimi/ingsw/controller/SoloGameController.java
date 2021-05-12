@@ -30,7 +30,6 @@ public class SoloGameController extends ClassicGameController {
 
         for (CardType cardType:
                 CardType.values()) {
-            System.out.println(cardType.name());
             if(game.getMarket().getCardsGrid().stream().filter(developmentCards -> (cardType.name().equals(developmentCards.getType().name()))&&(!developmentCards.isEmpty())).count() == 0)return true;
         }
 
@@ -45,12 +44,11 @@ public class SoloGameController extends ClassicGameController {
         SoloActionType soloActionType = game.getSoloActionTypes().pop();
         switch (soloActionType){
             case PLUS_ONE:
-                game.getLorenzoIlMagnifico().getFaithTrack().move();
+                movePlayer(game.getLorenzoIlMagnifico(), 1);
                 game.setSoloActionTypes();
                 break;
             case PLUS_TWO:
-                game.getLorenzoIlMagnifico().getFaithTrack().move();
-                game.getLorenzoIlMagnifico().getFaithTrack().move();
+              movePlayer(game.getLorenzoIlMagnifico(), 2);
                 break;
             default:
                 game.removeCardsByLorenzo(soloActionType);

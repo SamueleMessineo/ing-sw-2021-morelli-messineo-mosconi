@@ -217,28 +217,25 @@ public class GameMessageHandler {
     }
 
     public void handle(BuyDevelopmentCardResponseMessage message){
-        System.out.println("handling");
         DevelopmentCard developmentCard = gameController.getBuyableDevelopementCards().get(message.getSelectedCardIndex());
         List<Integer> stacks = new ArrayList<>();
         List<PlayerCardStack> allStacks = room.getGame().getCurrentPlayer().getPlayerBoard().getCardStacks();
         for (PlayerCardStack cardStack:
         allStacks){
-            System.out.println("for");
-            System.out.println(cardStack.toString());
             if(cardStack.size()== 0 || cardStack.canPlaceCard(developmentCard)){
                 stacks.add(allStacks.indexOf(cardStack));
             }
         }
 
-        room.getCurrentTurn().setBuyedDevelopmentCard(developmentCard);
+        room.getCurrentTurn().setBoughtDevelopmentCard(developmentCard);
         clientConnection.sendMessage(new SelectStackToPlaceCardRequestMessage(stacks));
 
     }
 
     public void handle(SelectStackToPlaceCardResponseMessage message){
-        if(room.getGame().getCurrentPlayer().getPlayerBoard().getCardStacks().get(message.getSelectedStackIndex()).canPlaceCard(room.getCurrentTurn().getBuyedDevelopmentCard())){
-            room.getGame().getCurrentPlayer().getPlayerBoard().getCardStacks().get(message.getSelectedStackIndex()).add(room.getCurrentTurn().getBuyedDevelopmentCard());
-            room.getGame().getCurrentPlayer().getPlayerBoard().payResourceCost(room.getGame().getCurrentPlayer().computeDiscountedCost(room.getCurrentTurn().getBuyedDevelopmentCard()));
+        if(room.getGame().getCurrentPlayer().getPlayerBoard().getCardStacks().get(message.getSelectedStackIndex()).canPlaceCard(room.getCurrentTurn().getBoughtDevelopmentCard())){
+            room.getGame().getCurrentPlayer().getPlayerBoard().getCardStacks().get(message.getSelectedStackIndex()).add(room.getCurrentTurn().getBoughtDevelopmentCard());
+            room.getGame().getCurrentPlayer().getPlayerBoard().payResourceCost(room.getGame().getCurrentPlayer().computeDiscountedCost(room.getCurrentTurn().getBoughtDevelopmentCard()));
             room.getCurrentTurn().setAlreadyPerformedMove(true);
             sendNextMoves();
 

@@ -6,7 +6,6 @@ import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.PlayerCardStack;
 import it.polimi.ingsw.model.shared.DevelopmentCard;
 import it.polimi.ingsw.model.shared.Resource;
-import it.polimi.ingsw.network.client.*;
 import it.polimi.ingsw.network.game.*;
 import it.polimi.ingsw.view.UI;
 
@@ -126,7 +125,7 @@ public class LocalMessageHandler {
             if(cardStack.canPlaceCard(developmentCard))stacks.add(player.getPlayerBoard().getCardStacks().indexOf(cardStack));
         }
         ui.selectStackToPlaceCard(stacks);
-        currentTurn.setBuyedDevelopmentCard(developmentCard);
+        currentTurn.setBoughtDevelopmentCard(developmentCard);
     }
 
     public void handle(SelectResourceForWhiteMarbleResponseMessage message) {
@@ -157,9 +156,9 @@ public class LocalMessageHandler {
 
 
     public void handle(SelectStackToPlaceCardResponseMessage message){
-        if(player.getPlayerBoard().getCardStacks().get(message.getSelectedStackIndex()).canPlaceCard(currentTurn.getBuyedDevelopmentCard())){
-            player.getPlayerBoard().getCardStacks().get(message.getSelectedStackIndex()).add(currentTurn.getBuyedDevelopmentCard());
-            player.getPlayerBoard().payResourceCost(player.computeDiscountedCost(currentTurn.getBuyedDevelopmentCard()));
+        if(player.getPlayerBoard().getCardStacks().get(message.getSelectedStackIndex()).canPlaceCard(currentTurn.getBoughtDevelopmentCard())){
+            player.getPlayerBoard().getCardStacks().get(message.getSelectedStackIndex()).add(currentTurn.getBoughtDevelopmentCard());
+            player.getPlayerBoard().payResourceCost(player.computeDiscountedCost(currentTurn.getBoughtDevelopmentCard()));
             currentTurn.setAlreadyPerformedMove(true);
             nextMoves(true);
 
