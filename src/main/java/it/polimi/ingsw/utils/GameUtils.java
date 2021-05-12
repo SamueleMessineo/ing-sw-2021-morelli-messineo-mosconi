@@ -7,9 +7,7 @@ import it.polimi.ingsw.model.shared.Resource;
 
 import java.io.*;
 import java.security.InvalidParameterException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public class GameUtils {
 
@@ -70,6 +68,19 @@ public class GameUtils {
             sum.put(resource, mapToAdd1.get(resource) + mapToAdd2.get(resource));
         }
         return sum;
+    }
+
+    public static LinkedHashMap<Resource, Integer> sortResourceMapByValues(Map<Resource, Integer> resources) {
+        LinkedHashMap<Resource, Integer> sorted = new LinkedHashMap<>(resources);
+
+        List<Map.Entry<Resource, Integer>> entries = new ArrayList<>(sorted.entrySet());
+        entries.sort((o1, o2) -> o2.getValue() - o1.getValue());
+        sorted.clear();
+
+        for (Map.Entry<Resource, Integer> e : entries) {
+            sorted.put(e.getKey(), e.getValue());
+        }
+        return sorted;
     }
 
     public static int askIntegerInput(String message, int minBoundary, int maxBoundary, PrintStream output, Scanner input) {
