@@ -7,6 +7,6 @@ import java.io.Serializable;
  */
 public enum SoloActionType implements Serializable {
     GREEN, YELLOW,PURPLE, BLUE, PLUS_ONE,PLUS_TWO,
-    ;
+
 
 }

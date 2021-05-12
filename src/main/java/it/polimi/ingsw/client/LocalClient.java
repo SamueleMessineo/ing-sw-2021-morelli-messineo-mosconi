@@ -2,6 +2,7 @@ package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.controller.ClassicGameController;
 import it.polimi.ingsw.controller.LocalGameController;
+import it.polimi.ingsw.controller.SoloGameController;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.network.Message;
 import it.polimi.ingsw.network.game.GameMessage;
@@ -15,7 +16,7 @@ public class LocalClient extends Client {
     public LocalClient(boolean withCLI) {
         super(withCLI);
         ui = super.getUi();
-        ClassicGameController gameController = new LocalGameController(new Game());
+        ClassicGameController gameController = new SoloGameController(new Game());
         localMessageHandler = new LocalMessageHandler(ui,gameController);
     }
 

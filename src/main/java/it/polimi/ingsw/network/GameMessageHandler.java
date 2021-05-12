@@ -271,7 +271,7 @@ public class GameMessageHandler {
         Player disconnectedPlayer = room.getPlayerFromConnection(connection);
         if(!ready){
             disconnectedPlayer.setActive(false);
-            room.sendAll(new StringMessage("Game ended for lack of players"));
+            room.sendAll(new StringMessage(disconnectedPlayer.getUsername() + " disconnected"));
             return;
         }
         room.sendAll(new StringMessage(disconnectedPlayer.getUsername() + " disconnected"));

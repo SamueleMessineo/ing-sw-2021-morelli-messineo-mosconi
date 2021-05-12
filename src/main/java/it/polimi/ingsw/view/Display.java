@@ -8,9 +8,17 @@ import it.polimi.ingsw.model.shared.CardType;
 import it.polimi.ingsw.model.shared.Resource;
 
 import java.io.PrintStream;
+import java.util.ArrayList;
 
 public class Display {
 
+
+    public static void displayRoomDetails(ArrayList<String> players, int playersNum, int RoomId, PrintStream output) {
+        output.println("Game details:");
+        output.println("🧑🏻‍💻" + players);
+        output.println("🔢" + playersNum);
+        output.println("⌘" + RoomId);
+    }
 
     public static void displayMarbleStructure(MarbleStructure marbleStructure, PrintStream output){
         String result = "Marble Structure: \n";
@@ -65,7 +73,19 @@ public class Display {
         displayMarbleStructure(market.getMarbleStructure(), output);
         System.out.println("\nCards Market:\n");
 
+        /*
+        for (int i = 11; i > 8; i--) {
+            displayCardsLine(market, i, output);
+        }
 
+         */
+
+        for (int i = 0; i < 12; i++) {
+            if(market.getCardsGrid().get(i).isEmpty()) System.out.println("Empty Stack");
+            else displayDevelopmentCard(market, i, output);
+        }
+
+        /*
         for (int i = 11; i >= 0; i-=3) {
             if(market.getCardsGrid().get(i).isEmpty()) System.out.println("Empty Stack");
             else {
@@ -85,6 +105,8 @@ public class Display {
                 displayDevelopmentCard(market, i, output);
             }
         }
+        */
+
 
     }
 
@@ -98,6 +120,7 @@ public class Display {
         for (int i = 0; i < 3 ; i++) {
             output.println(player.getPlayerBoard().getCardStacks().get(i).toString());
         }
+        output.println();
     }
 
     private static void displayDevelopmentCard(Market market, int i, PrintStream output){
@@ -105,6 +128,12 @@ public class Display {
         output.println(market.getCardsGrid().get(i));
         output.print("\u001B[0m");
         output.println("\n");
+    }
+
+    private static void displayCardsLine(Market market, int i, PrintStream output){
+        output.println(paintCard(market.getCardsGrid().get(i).getType()) +  market.getCardsGrid().get(i).peek().getCost() +"\u001B[0m" + "               " + paintCard(market.getCardsGrid().get(i-3).getType()) +  market.getCardsGrid().get(i-3).peek().getCost() +"\u001B[0m" + "               " + paintCard(market.getCardsGrid().get(i-6).getType()) +  market.getCardsGrid().get(i).peek().getCost() +"\u001B[0m" + "               " + paintCard(market.getCardsGrid().get(i-9).getType()) +  market.getCardsGrid().get(i-9).peek().getCost() +"\u001B[0m" + "               ");
+        output.println(paintCard(market.getCardsGrid().get(i).getType()) +  market.getCardsGrid().get(i).peek().getProductionPower() +"\u001B[0m" + "               " + paintCard(market.getCardsGrid().get(i-3).getType()) +  market.getCardsGrid().get(i-3).peek().getProductionPower() +"\u001B[0m" + "               " + paintCard(market.getCardsGrid().get(i-6).getType()) +  market.getCardsGrid().get(i).peek().getProductionPower() +"\u001B[0m" + "               " + paintCard(market.getCardsGrid().get(i-9).getType()) +  market.getCardsGrid().get(i-9).peek().getProductionPower() +"\u001B[0m" + "               ");
+        output.println(paintCard(market.getCardsGrid().get(i).getType()) +  market.getCardsGrid().get(i).peek().getScore() +"\u001B[0m" + "               " + paintCard(market.getCardsGrid().get(i-3).getType()) +  market.getCardsGrid().get(i-3).peek().getScore() +"\u001B[0m" + "               " + paintCard(market.getCardsGrid().get(i-6).getType()) +  market.getCardsGrid().get(i).peek().getScore() +"\u001B[0m" + "               " + paintCard(market.getCardsGrid().get(i-9).getType()) +  market.getCardsGrid().get(i-9).peek().getScore() +"\u001B[0m" + "               ");
     }
 
     private static String paintCard(CardType cardType){

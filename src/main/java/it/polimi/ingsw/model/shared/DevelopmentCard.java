@@ -74,7 +74,7 @@ public class DevelopmentCard implements Serializable {
 
     @Override
     public String toString() {
-        return "level: " + level + "\n" + cost + "\n" + productionPower.toString() + "\nscore: " + score;
+        return "level: " + level + "\n" + "cost " + cost + "\n" + productionPower.toString() + "\nscore: " + score;
     }
 
 }

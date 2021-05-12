@@ -30,7 +30,6 @@ public class CLI implements UI {
     private String username;
     private Game gameState;
 
-    private ExecutorService executor = Executors.newCachedThreadPool();
 
     public CLI(Client client) {
         this.client = client;
@@ -93,14 +92,10 @@ public class CLI implements UI {
 
     @Override
     public void displayRoomDetails(ArrayList<String> players, int playersNum, int RoomId) {
-        output.println("Game details:");
-        output.println(players);
-        output.println(playersNum);
-        output.println(RoomId);
-
+        Display.displayRoomDetails(players, playersNum, RoomId, output);
     }
 
-   
+
 
     public void displayString(String body){
         output.println(body);

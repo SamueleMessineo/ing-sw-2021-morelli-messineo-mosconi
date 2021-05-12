@@ -38,9 +38,9 @@ public class ProductionPower implements Serializable {
 
     @Override
     public String toString() {
-        return "ProductionPower{" +
-                "input=" + input +
-                ", output=" + output +
+        return "power{" +
+                input + "-->" +
+                 output +
                 '}';
     }
 }
