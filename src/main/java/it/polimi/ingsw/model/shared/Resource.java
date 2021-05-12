@@ -17,7 +17,7 @@ public enum Resource implements Serializable {
             case FAITH:
                 return "✝";
             case SERVANT:
-                return "🧞";
+                return "S🧞";
             case SHIELD:
                 return "🛡";
             case STONE:

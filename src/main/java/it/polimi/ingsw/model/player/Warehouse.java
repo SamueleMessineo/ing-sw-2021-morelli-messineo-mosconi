@@ -211,16 +211,13 @@ public class Warehouse implements Serializable {
 
     private boolean canPlaceResourcesInWarehouseWithoutExtraShelves(Map<Resource,Integer> resourcesToPlace){
         int numOfTypeRes=0;
-
         for(Resource resource:resourcesToPlace.keySet()){
             if(resourcesToPlace.get(resource)>0)
                 numOfTypeRes++;
         }
-
         if(numOfTypeRes>3){
             return false;
         }
-
         for(int i=1; i<=3;i++){
             for(Resource resource:resourcesToPlace.keySet()){
                 if(resourcesToPlace.get(resource)>=1 && resourcesToPlace.get(resource)<=i) {
@@ -229,43 +226,25 @@ public class Warehouse implements Serializable {
                 }
             }
         }
-
         return resourcesToPlace.equals(GameUtils.emptyResourceMap());
     }
 
     private boolean canPlaceResourcesInWarehouseWithExtraShelves(Map<Resource,Integer> resourcesToPlace) {
-
-
-
         List<Resource> resTypeExtraShelf=new ArrayList<>();
-        for(String shelf:getShelfNames()){
-            if(shelf.equals("extra1")){
-                resTypeExtraShelf.add(getShelf("extra1").getResourceType());
-                resTypeExtraShelf.add(Resource.ANY);
-            }else if(shelf.equals("extra2")){
-                resTypeExtraShelf.remove(Resource.ANY);
-                resTypeExtraShelf.add(getShelf("extra2").getResourceType());
-            }
-        }
+        if (shelfNames.contains("extra1"))
+            resTypeExtraShelf.add(getShelf("extra1").getResourceType());
+
+        if (shelfNames.contains("extra2"))
+            resTypeExtraShelf.add(getShelf("extra2").getResourceType());
+        else
+            resTypeExtraShelf.add(Resource.ANY);
 
         for (Resource resource : resourcesToPlace.keySet()) {
             if (resTypeExtraShelf.contains(resource)) {
-                if(resourcesToPlace.get(resource)>2 && (
-                        (resource.equals(resTypeExtraShelf.get(0)) && resourcesToPlace.get(resource)<=5) ||
-                        (resource.equals(resTypeExtraShelf.get(1)) && resourcesToPlace.get(resource)<=4))){
-                    resourcesToPlace.put(resource, resourcesToPlace.get(resource) - 2);
-                }
-                else if(resourcesToPlace.get(resource)==2 || resourcesToPlace.get(resource)==1){
-                    resourcesToPlace.put(resource, 0);
-                }
-                else {
-                    return false;
-                }
-                resTypeExtraShelf.remove(resource);
+                if (resourcesToPlace.get(resource) > 5) return false;
+                resourcesToPlace.put(resource, Math.max(resourcesToPlace.get(resource)-2, 0));
             }
         }
-
-
         return canPlaceResourcesInWarehouseWithoutExtraShelves(resourcesToPlace);
     }
 

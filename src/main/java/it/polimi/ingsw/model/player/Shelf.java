@@ -24,6 +24,7 @@ public class Shelf implements Storage, Serializable {
     public Shelf (int maxSize, Resource initialResourceType) {
         this.maxSize = maxSize;
         resourceType = initialResourceType;
+        fixed = true;
     }
 
     /**
@@ -116,13 +117,9 @@ public class Shelf implements Storage, Serializable {
 
     @Override
     public String toString() {
-        if (resourceType==Resource.ANY
-        ){
-            return "";
-        } else if(resourceNumber == 0){
+        if (resourceType==Resource.ANY){
             return "EMPTY";
-        }
-        else{
+        } else {
             return "Shelf{" +
                     "resourceType=" + resourceType +
                     ", resourceNumber=" + resourceNumber +
