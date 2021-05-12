@@ -342,8 +342,8 @@ public class CLI implements UI {
     }
 
     private ProductionPower askBasicProductionPowerIO(){
-        Map<Resource, Integer> resInput = new HashMap<>();
-        Map<Resource, Integer> resOutput = new HashMap<>();
+        Map<Resource, Integer> resInput = GameUtils.emptyResourceMap();
+        Map<Resource, Integer> resOutput = GameUtils.emptyResourceMap();
         List<Integer> resources = new ArrayList<>();
         resources.add(GameUtils.askIntegerInput("What is the first resource you want to put as input?\n1.SHIELD, 2.SERVANT, 3.STONE, 4.COIN",1,4, output, input));
         resources.add(GameUtils.askIntegerInput("What is the second resource you want to put as input?\n1.SHIELD, 2.SERVANT, 3.STONE, 4.COIN",1,4, output, input));
@@ -352,19 +352,19 @@ public class CLI implements UI {
         for (int i = 0; i < 3; i++) {
             switch (resources.get(i)){
                 case (1):
-                    if(i<2)resInput.put(Resource.SHIELD, 1);
+                    if(i<2)resInput.put(Resource.SHIELD, resInput.get(Resource.SHIELD) + 1);
                     else resOutput.put(Resource.SHIELD,1);
                     break;
                 case (2):
-                    if(i<2)resInput.put(Resource.SERVANT, 1);
+                    if(i<2)resInput.put(Resource.SERVANT,resInput.get(Resource.SERVANT) + 1);
                     else resOutput.put(Resource.SERVANT,1);
                     break;
                 case (3):
-                    if(i<2)resInput.put(Resource.STONE, 1);
+                    if(i<2)resInput.put(Resource.STONE,resInput.get(Resource.STONE) + 1);
                     else resOutput.put(Resource.STONE,1);
                     break;
                 case (4):
-                    if(i<2)resInput.put(Resource.COIN, 1);
+                    if(i<2)resInput.put(Resource.COIN, resInput.get(Resource.COIN) + 1);
                     else resOutput.put(Resource.COIN,1);
                     break;
             }
