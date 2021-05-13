@@ -179,18 +179,10 @@ public class ClassicGameController {
         Player player = game.getCurrentPlayer();
 
         if(!alreadyPerformedMove){
-            moves.add("GET_MARBLES");
-            if (player.canActivateBasicProduction())moves.add("ACTIVATE_PRODUCTION");
-            /*
+
             if (player.canActivateBasicProduction() || player.canActivateProduction()) {
-                System.out.println("add acitvate basic production");
                 moves.add("ACTIVATE_PRODUCTION");
             }
-
-            System.out.println("ppppppp");
-
-             */
-
 
             for (MarketCardStack cardsStack : game.getMarket().getCardsGrid()) {
                 if(!cardsStack.isEmpty()) {
