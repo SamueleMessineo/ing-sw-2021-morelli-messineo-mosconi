@@ -38,6 +38,11 @@ public class ClassicGameController {
         return game;
     }
 
+    public void movePlayer(String player, int positions) {
+        for (int i = 0; i < positions; i++) {
+            game.getPlayerByUsername(player).getFaithTrack().move();
+        }
+    }
 
     public void dropInitialLeaderCards(int selection1, int selection2, String player){
         game.getPlayerByUsername(player).dropInitialLeaderCards(selection1, selection2);
