@@ -38,12 +38,6 @@ public class ClassicGameController {
         return game;
     }
 
-    public void movePlayer(String player, int positions) {
-        for (int i = 0; i < positions; i++) {
-            game.getPlayerByUsername(player).getFaithTrack().move();
-        }
-    }
-
     public void dropInitialLeaderCards(int selection1, int selection2, String player){
         game.getPlayerByUsername(player).dropInitialLeaderCards(selection1, selection2);
     }
@@ -268,23 +262,32 @@ public class ClassicGameController {
         }
     }
 
-    public void movePlayer(Player playerToMove, int positions){
+    public void movePlayer(String playerName, int positions){
+        Player playerToMove = game.getPlayerByUsername(playerName);
         for (int i = 0; i < positions; i++) {
-            game.getCurrentPlayer().getFaithTrack().move();
-            if(playerToMove.getFaithTrack().inOnPopeSpace()!= 0){
-                for (Player player:
-                     game.getPlayers()) {
-                    if(player.getFaithTrack().isInPopeFavorByLevel(playerToMove.getFaithTrack().inOnPopeSpace())){
-                        player.getFaithTrack().getPopesFavorTiles().get(playerToMove.getFaithTrack().inOnPopeSpace()-1).setState(PopesFavorTileState.ACTIVE);
-                    } else        player.getFaithTrack().getPopesFavorTiles().get(playerToMove.getFaithTrack().inOnPopeSpace()-1).setState(PopesFavorTileState.INACTIVE);
-                }
+            playerToMove.getFaithTrack().move();
+            tryPopeReport(playerToMove);
+        }
+    }
 
-                for (Player player:
-                        game.getInactivePlayers()) {
-                    if(player.getFaithTrack().isInPopeFavorByLevel(playerToMove.getFaithTrack().inOnPopeSpace())){
-                        player.getFaithTrack().getPopesFavorTiles().get(playerToMove.getFaithTrack().inOnPopeSpace()-1).setState(PopesFavorTileState.ACTIVE);
-                    } else        player.getFaithTrack().getPopesFavorTiles().get(playerToMove.getFaithTrack().inOnPopeSpace()-1).setState(PopesFavorTileState.INACTIVE);
-                }
+    private void tryPopeReport(Player playerToMove){
+        System.out.println(1);
+        if(playerToMove.getFaithTrack().inOnPopeSpace()!= -1){
+            System.out.println(2);
+            for (Player player:
+                    game.getPlayers()) {
+                System.out.println(3);
+                if(player.getFaithTrack().isInPopeFavorByLevel(playerToMove.getFaithTrack().inOnPopeSpace())){
+                    player.getFaithTrack().getPopesFavorTiles().get(playerToMove.getFaithTrack().inOnPopeSpace()-1).setState(PopesFavorTileState.ACTIVE);
+                } else        player.getFaithTrack().getPopesFavorTiles().get(playerToMove.getFaithTrack().inOnPopeSpace()-1).setState(PopesFavorTileState.INACTIVE);
+                System.out.println(4);
+            }
+
+            for (Player player:
+                    game.getInactivePlayers()) {
+                if(player.getFaithTrack().isInPopeFavorByLevel(playerToMove.getFaithTrack().inOnPopeSpace())){
+                    player.getFaithTrack().getPopesFavorTiles().get(playerToMove.getFaithTrack().inOnPopeSpace()-1).setState(PopesFavorTileState.ACTIVE);
+                } else        player.getFaithTrack().getPopesFavorTiles().get(playerToMove.getFaithTrack().inOnPopeSpace()-1).setState(PopesFavorTileState.INACTIVE);
             }
         }
     }

@@ -41,8 +41,9 @@ public class SoloGameController extends ClassicGameController {
     }
 
     @Override
-    public void movePlayer(Player playerToMove, int positions) {
-        super.movePlayer(playerToMove, positions);
+    public void movePlayer(String playerName, int positions) {
+        super.movePlayer(playerName, positions);
+        Player playerToMove = game.getPlayerByUsername(playerName);
         if (playerToMove.getFaithTrack().inOnPopeSpace()!= 0){
             if(game.getLorenzoIlMagnifico().getFaithTrack().isInPopeFavorByLevel(playerToMove.getFaithTrack().inOnPopeSpace())){
                 game.getLorenzoIlMagnifico().getFaithTrack().getPopesFavorTiles().get(playerToMove.getFaithTrack().inOnPopeSpace()-1).setState(PopesFavorTileState.ACTIVE);
@@ -55,11 +56,11 @@ public class SoloGameController extends ClassicGameController {
         SoloActionType soloActionType = game.getSoloActionTypes().pop();
         switch (soloActionType){
             case PLUS_ONE:
-                movePlayer(game.getLorenzoIlMagnifico(), 1);
+                movePlayer("lorenzoilmagnifico", 1);
                 game.setSoloActionTypes();
                 break;
             case PLUS_TWO:
-              movePlayer(game.getLorenzoIlMagnifico(), 2);
+              movePlayer("lorenzoilmagnifico", 2);
                 break;
             default:
                 game.removeCardsByLorenzo(soloActionType);
