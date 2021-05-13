@@ -179,7 +179,7 @@ public class ClassicGameController {
         Player player = game.getCurrentPlayer();
 
         if(!alreadyPerformedMove){
-
+            moves.add("GET_MARBLES");
             if (player.canActivateBasicProduction() || player.canActivateProduction()) {
                 moves.add("ACTIVATE_PRODUCTION");
             }
@@ -271,7 +271,7 @@ public class ClassicGameController {
         Player playerToMove = game.getPlayerByUsername(playerName);
         for (int i = 0; i < positions; i++) {
             playerToMove.getFaithTrack().move();
-            //tryPopeReport(playerToMove);
+            tryPopeReport(playerToMove);
         }
     }
 
