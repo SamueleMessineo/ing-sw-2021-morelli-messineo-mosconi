@@ -1,5 +1,6 @@
 package it.polimi.ingsw.network.client;
 
+import it.polimi.ingsw.client.LocalMessageHandler;
 import it.polimi.ingsw.model.market.MarbleStructure;
 import it.polimi.ingsw.network.ClientMessageHandler;
 

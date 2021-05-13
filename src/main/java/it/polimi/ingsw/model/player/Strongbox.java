@@ -50,10 +50,4 @@ public class Strongbox implements Storage, Serializable {
         return Resource.COIN.toString() +": " + resources.get(Resource.COIN) + " " + Resource.SERVANT.toString() +": " + resources.get(Resource.SERVANT) + " " + Resource.STONE.toString() +": " + resources.get(Resource.STONE)+ " " + Resource.SHIELD.toString() +": " + resources.get(Resource.SHIELD);
     }
 
-    public boolean canPayResources(Map<Resource, Integer>cost) {
-        for (Resource resource : cost.keySet()) {
-            if (resources.get(resource) < cost.get(resource)) return false;
-        }
-        return true;
-    }
 }

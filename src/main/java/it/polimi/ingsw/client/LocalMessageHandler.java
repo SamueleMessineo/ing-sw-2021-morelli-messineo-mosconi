@@ -6,9 +6,11 @@ import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.PlayerCardStack;
 import it.polimi.ingsw.model.shared.DevelopmentCard;
 import it.polimi.ingsw.model.shared.Resource;
+import it.polimi.ingsw.network.client.ErrorMessage;
 import it.polimi.ingsw.network.game.*;
 import it.polimi.ingsw.view.UI;
 
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -125,8 +127,9 @@ public class LocalMessageHandler {
                 player.getPlayerBoard().getCardStacks()){
             if(cardStack.canPlaceCard(developmentCard))stacks.add(player.getPlayerBoard().getCardStacks().indexOf(cardStack));
         }
-        ui.selectStackToPlaceCard(stacks);
         currentTurn.setBoughtDevelopmentCard(developmentCard);
+        ui.selectStackToPlaceCard(stacks);
+
     }
 
     public void handle(SelectResourceForWhiteMarbleResponseMessage message) {
@@ -148,7 +151,27 @@ public class LocalMessageHandler {
     }
 
     public void handle(SelectMarblesResponseMessage message){
-        //todo
+        System.out.println("received get marbles response");
+        Map<String, Map<Resource, Integer>> resources = gameController.getMarbles(message.getRowOrColumn(), message.getIndex());
+        System.out.println("retrieved resources");
+        System.out.println(resources);
+
+        currentTurn.setConverted(resources.get("converted"));
+        currentTurn.setToConvert(resources.get("toConvert").get(Resource.ANY));
+        currentTurn.setConversionOptions(new ArrayList<>(resources.get("conversionOptions").keySet()));
+        System.out.println("turn set");
+
+        if (resources.get("toConvert").containsKey(Resource.ANY) &&
+                resources.get("toConvert").get(Resource.ANY) > 0) {
+            System.out.println("ask for conversion help");
+//            clientConnection.sendMessage(new SelectResourceForWhiteMarbleRequestMessage(resources.get("toConvert").size(),
+//                    resources.get("conversionOptions").get(0), resources.get("conversionOptions").get(1)));
+            return;
+        }
+        if (resources.get("converted").keySet().size() == 0) {
+            nextMoves(true);
+        } else
+            askToDropResources();
     }
 
 
@@ -164,5 +187,22 @@ public class LocalMessageHandler {
             nextMoves(false);
         }
 
+    }
+
+    public void handle(DropResourcesResponseMessage message){
+        System.out.println("handling");
+        Map<Resource, Integer> resourcesConverted =currentTurn.getConverted();
+        System.out.println(resourcesConverted);
+        // check if the selected resources are valid
+        try {
+            gameController.dropPlayerResources(resourcesConverted, message.getResourcesToDrop(),
+                    player.getUsername());
+        } catch (InvalidParameterException e) {
+            System.out.println(e.getMessage());
+            ui.displayString("The selected resources are invalid");
+            return;
+        }
+
+        nextMoves(true);
     }
 }

@@ -128,10 +128,6 @@ public class GameMessageHandler {
         System.out.println("retrieved resources");
         System.out.println(resources);
 
-        if (gameController.isGameOver()) {
-            room.sendAll(new StringMessage("GAME OVER"));
-            return;
-        }
         room.getCurrentTurn().setConverted(resources.get("converted"));
         room.getCurrentTurn().setToConvert(resources.get("toConvert").get(Resource.ANY));
         room.getCurrentTurn().setConversionOptions(new ArrayList<>(resources.get("conversionOptions").keySet()));
@@ -213,15 +209,7 @@ public class GameMessageHandler {
 
     public void handle(BuyDevelopmentCardResponseMessage message){
         DevelopmentCard developmentCard = gameController.getBuyableDevelopementCards().get(message.getSelectedCardIndex());
-        List<Integer> stacks = new ArrayList<>();
-        List<PlayerCardStack> allStacks = room.getGame().getCurrentPlayer().getPlayerBoard().getCardStacks();
-        for (PlayerCardStack cardStack:
-        allStacks){
-            if(cardStack.size()== 0 || cardStack.canPlaceCard(developmentCard)){
-                stacks.add(allStacks.indexOf(cardStack));
-            }
-        }
-
+        List<Integer> stacks = gameController.getStacksToPlaceCard(room.getGame().getCurrentPlayer(), developmentCard);
         room.getCurrentTurn().setBoughtDevelopmentCard(developmentCard);
         clientConnection.sendMessage(new SelectStackToPlaceCardRequestMessage(stacks));
 
@@ -233,7 +221,7 @@ public class GameMessageHandler {
             room.getGame().getCurrentPlayer().getPlayerBoard().payResourceCost(room.getGame().getCurrentPlayer().computeDiscountedCost(room.getCurrentTurn().getBoughtDevelopmentCard()));
             room.getCurrentTurn().setAlreadyPerformedMove(true);
             sendNextMoves();
-
+            System.out.println("sent");
         }else {
             clientConnection.sendMessage(new StringMessage("Action Could not be completed"));
             sendNextMoves();

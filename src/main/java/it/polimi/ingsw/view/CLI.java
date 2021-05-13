@@ -290,7 +290,12 @@ public class CLI implements UI {
         List<Integer> indexes= new ArrayList<>();
         List<Integer> extraProductionPowers = new ArrayList<>();
 
-            if(productionPowers.equals(gameState.getCurrentPlayer().possibleProductionPowersToActive())){
+        System.out.println(productionPowers);
+        System.out.println("---------");
+        System.out.println(gameState.getCurrentPlayer().possibleProductionPowersToActive());
+        System.out.println(productionPowers.equals(gameState.getCurrentPlayer().possibleProductionPowersToActive()));
+
+        //   if(productionPowers.equals(gameState.getCurrentPlayer().possibleProductionPowersToActive())){
                 if(currentGameState.getCurrentPlayer().canActivateBasicProduction()){
                     indexes.add(0);
                 }
@@ -340,7 +345,7 @@ public class CLI implements UI {
                     done = input.nextLine().trim().toLowerCase().startsWith("y");
                 }
                 client.sendMessage(new ActivateProductionResponseMessage(selectedStacks, selectedBasicProductionPowers, extraProductionPowers));
-            } else output.println("problem with gameState");
+        //   } else output.println("problem with gameState");
 
     }
 
@@ -380,7 +385,6 @@ public class CLI implements UI {
         int selection;
         output.println(developmentCards);
         selection = GameUtils.askIntegerInput("Select a card", 1, developmentCards.size(), output, input)-1;
-        System.out.println(selection);
         client.sendMessage(new BuyDevelopmentCardResponseMessage(selection));
 
     }
@@ -389,10 +393,11 @@ public class CLI implements UI {
     public void selectStackToPlaceCard(List<Integer> stackIndexes) {
         for (Integer index:
              stackIndexes) {
+            System.out.println(stackIndexes.indexOf(index)+1);
             output.println(gameState.getCurrentPlayer().getPlayerBoard().getCardStacks().get(index));
         }
-        int selection = GameUtils.askIntegerInput("On which stack you want to put your new card?", 1, stackIndexes.size(), output, input);
-        client.sendMessage(new SelectStackToPlaceCardResponseMessage(selection));
+        int selection = GameUtils.askIntegerInput("On which stack you want to put your new card?", 1, stackIndexes.size(), output, input)-1;
+        client.sendMessage(new SelectStackToPlaceCardResponseMessage(stackIndexes.get(selection)));
     }
 
     @Override

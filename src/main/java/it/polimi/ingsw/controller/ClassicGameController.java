@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.market.Marble;
 import it.polimi.ingsw.model.market.MarketCardStack;
 import it.polimi.ingsw.model.player.FaithTrack;
 import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.model.player.PlayerCardStack;
 import it.polimi.ingsw.model.player.Warehouse;
 import it.polimi.ingsw.model.shared.*;
 import it.polimi.ingsw.server.Room;
@@ -173,15 +174,24 @@ public class ClassicGameController {
     }
 
     public List<String> computeNextPossibleMoves(boolean alreadyPerformedMove) {
+        System.out.println("computing");
         List<String> moves = new ArrayList<>();
         Player player = game.getCurrentPlayer();
 
         if(!alreadyPerformedMove){
             moves.add("GET_MARBLES");
+            if (player.canActivateBasicProduction())moves.add("ACTIVATE_PRODUCTION");
+            /*
             if (player.canActivateBasicProduction() || player.canActivateProduction()) {
-                System.out.println("add acitvate production");
+                System.out.println("add acitvate basic production");
                 moves.add("ACTIVATE_PRODUCTION");
             }
+
+            System.out.println("ppppppp");
+
+             */
+
+
             for (MarketCardStack cardsStack : game.getMarket().getCardsGrid()) {
                 if(!cardsStack.isEmpty()) {
                     DevelopmentCard topCard = cardsStack.peek();
@@ -223,6 +233,7 @@ public class ClassicGameController {
 
         ) moves.add("SWITCH_SHELVES");
 
+        System.out.println("computed");
         return moves;
     }
 
@@ -268,21 +279,17 @@ public class ClassicGameController {
         Player playerToMove = game.getPlayerByUsername(playerName);
         for (int i = 0; i < positions; i++) {
             playerToMove.getFaithTrack().move();
-            tryPopeReport(playerToMove);
+            //tryPopeReport(playerToMove);
         }
     }
 
     private void tryPopeReport(Player playerToMove){
-        System.out.println(1);
         if(playerToMove.getFaithTrack().inOnPopeSpace()!= -1){
-            System.out.println(2);
             for (Player player:
                     game.getPlayers()) {
-                System.out.println(3);
                 if(player.getFaithTrack().isInPopeFavorByLevel(playerToMove.getFaithTrack().inOnPopeSpace())){
                     player.getFaithTrack().getPopesFavorTiles().get(playerToMove.getFaithTrack().inOnPopeSpace()-1).setState(PopesFavorTileState.ACTIVE);
                 } else        player.getFaithTrack().getPopesFavorTiles().get(playerToMove.getFaithTrack().inOnPopeSpace()-1).setState(PopesFavorTileState.INACTIVE);
-                System.out.println(4);
             }
 
             for (Player player:
@@ -340,6 +347,17 @@ public class ClassicGameController {
         return winner;
     }
 
+    public List<Integer> getStacksToPlaceCard(Player player, DevelopmentCard developmentCard){
+        List<Integer> stacks = new ArrayList<>();
+        List<PlayerCardStack> allStacks = player.getPlayerBoard().getCardStacks();
+        for (PlayerCardStack cardStack:
+                allStacks){
+            if(cardStack.size()== 0 || cardStack.canPlaceCard(developmentCard)){
+                stacks.add(allStacks.indexOf(cardStack));
+            }
+        }
+        return stacks;
+    }
 
 
 }

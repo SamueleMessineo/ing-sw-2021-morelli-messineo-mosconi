@@ -4,9 +4,13 @@ import it.polimi.ingsw.model.market.Marble;
 import it.polimi.ingsw.model.market.MarbleStructure;
 import it.polimi.ingsw.model.market.Market;
 import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.model.player.PlayerBoard;
+import it.polimi.ingsw.model.player.Strongbox;
+import it.polimi.ingsw.model.player.Warehouse;
 import it.polimi.ingsw.model.shared.CardType;
 import it.polimi.ingsw.model.shared.Resource;
 
+import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.*;
 
@@ -98,36 +102,13 @@ public class Display {
         for (int i = 11; i > 8; i--) {
             displayCardsLine(market, i, output);
         }
-
          */
+
 
         for (int i = 0; i < 12; i++) {
             if(market.getCardsGrid().get(i).isEmpty()) System.out.println("Empty Stack");
             else displayDevelopmentCard(market, i, output);
         }
-
-        /*
-        for (int i = 11; i >= 0; i-=3) {
-            if(market.getCardsGrid().get(i).isEmpty()) System.out.println("Empty Stack");
-            else {
-                displayDevelopmentCard(market, i, output);
-            }
-
-        }
-        for (int i = 1; i <= 10; i+=3) {
-            if(market.getCardsGrid().get(i).isEmpty()) System.out.println("Empty Stack");
-            else {
-                displayDevelopmentCard(market, i, output);
-            }
-        }
-        for (int i = 9; i >= 0; i-=3) {
-            if(market.getCardsGrid().get(i).isEmpty()) System.out.println("Empty Stack");
-            else {
-                displayDevelopmentCard(market, i, output);
-            }
-        }
-        */
-
 
     }
 
@@ -136,12 +117,31 @@ public class Display {
         output.println("\n ✝ Faith track positions");
         output.println("position: " + player.getFaithTrack().getPosition());
         output.println("\n 🏦 Storage");
-        output.println(player.getPlayerBoard());
+        displayWarehouse(player.getPlayerBoard().getWarehouse(), output);
+        output.print("strongbox: ");
+        displayStrongbox(player.getPlayerBoard().getStrongbox(), output);
         output.println("\n 🂡 Cards");
         for (int i = 0; i < 3 ; i++) {
             output.println(player.getPlayerBoard().getCardStacks().get(i).toString());
         }
         output.println();
+    }
+
+    private static void displayWarehouse(Warehouse warehouse, PrintStream output){
+        output.println("    " + warehouse.getShelf("top").getResourceType());
+        output.print("   ");
+        for (int i = 0; i < warehouse.getShelf("middle").getResourceNumber(); i++) output.print(warehouse.getShelf("middle").getResourceType());
+        for (int i = warehouse.getShelf("middle").getResourceNumber(); i < 2; i++ ) output.print(Resource.ANY);
+        output.println();
+        output.print("  ");
+        for (int i = 0; i < warehouse.getShelf("bottom").getResourceNumber(); i++) output.print(warehouse.getShelf("bottom").getResourceType());
+        for (int i = warehouse.getShelf("bottom").getResourceNumber(); i < 3; i++ ) output.print(Resource.ANY);
+        output.println();
+    }
+
+    private static void displayStrongbox(Strongbox strongbox, PrintStream output) {
+        Map<Resource, Integer> resources = strongbox.getResources();
+        output.println(Resource.COIN.toString() +": " + resources.get(Resource.COIN) + " " + Resource.SERVANT.toString() +": " + resources.get(Resource.SERVANT) + " " + Resource.STONE.toString() +": " + resources.get(Resource.STONE)+ " " + Resource.SHIELD.toString() +": " + resources.get(Resource.SHIELD));
     }
 
     private static void displayDevelopmentCard(Market market, int i, PrintStream output){

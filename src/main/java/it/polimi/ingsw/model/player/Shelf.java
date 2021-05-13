@@ -117,6 +117,7 @@ public class Shelf implements Storage, Serializable {
 
     @Override
     public String toString() {
+        String result = "";
         if (resourceType==Resource.ANY){
             return "EMPTY";
         } else {

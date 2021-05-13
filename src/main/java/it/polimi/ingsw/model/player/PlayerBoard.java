@@ -1,4 +1,5 @@
 package it.polimi.ingsw.model.player;
+import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.shared.*;
 import it.polimi.ingsw.utils.GameUtils;
 
@@ -173,6 +174,7 @@ public class PlayerBoard implements Serializable {
                 strongbox.useResources(resourceCost);
             }
         }
+        System.out.println("payed");
     }
 
     /**
@@ -182,7 +184,10 @@ public class PlayerBoard implements Serializable {
     public Map<Resource, Integer> getResources() {
         Map<Resource, Integer> strongboxResources = strongbox.getResources();
         Map<Resource, Integer> warehouseResources = warehouse.getResources();
-        Map<Resource, Integer> allResources = new HashMap<>(strongboxResources);
+        Map<Resource, Integer> allResources = GameUtils.emptyResourceMap();
+
+        GameUtils.sumResourcesMaps(allResources, strongboxResources);
+        GameUtils.sumResourcesMaps(allResources, warehouseResources);
 
         allResources.forEach(((resource, integer) -> {
             allResources.put(resource, integer + warehouseResources.get(resource));

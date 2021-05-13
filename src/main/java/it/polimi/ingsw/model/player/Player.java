@@ -217,7 +217,7 @@ public class Player implements Serializable {
             if (!cardStack.empty()) {
                 DevelopmentCard topCard = cardStack.peek();
                 boolean canActivateCard = true;
-                for (Resource resource : allResources.keySet()) {
+                for (Resource resource : topCard.getProductionPower().getInput().keySet()) {
                     if (allResources.get(resource) < topCard.getProductionPower().getInput().get(resource)) {
                         canActivateCard = false;
                         break;
@@ -228,7 +228,8 @@ public class Player implements Serializable {
                 }
             }
         }
-        if(getPlayerBoard().getExtraProductionPowers() != null){
+
+        if(!getPlayerBoard().getExtraProductionPowers().isEmpty()){
             for (ProductionPower productionPower:
                     getPlayerBoard().getExtraProductionPowers()) {
                 boolean canActivatePower = true;
@@ -243,6 +244,7 @@ public class Player implements Serializable {
                 }
             }
             }
+
         return false;
     }
 
@@ -253,7 +255,7 @@ public class Player implements Serializable {
             if (!cardStack.empty()) {
                 DevelopmentCard topCard = cardStack.peek();
                 developmentCardsToActive.add(topCard);
-                for (Resource resource : allResources.keySet()) {
+                for (Resource resource : topCard.getProductionPower().getInput().keySet()) {
                     if (allResources.get(resource) < topCard.getProductionPower().getInput().get(resource)) {
                         developmentCardsToActive.remove(topCard);
                         break;
