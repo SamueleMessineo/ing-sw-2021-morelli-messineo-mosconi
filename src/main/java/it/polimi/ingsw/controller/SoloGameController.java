@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.player.FaithTrack;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.shared.CardType;
+import it.polimi.ingsw.model.shared.PopesFavorTileState;
 import it.polimi.ingsw.model.shared.Resource;
 import it.polimi.ingsw.model.shared.SoloActionType;
 import it.polimi.ingsw.server.Room;
@@ -40,15 +41,26 @@ public class SoloGameController extends ClassicGameController {
     }
 
     @Override
+    public void movePlayer(String playerName, int positions) {
+        super.movePlayer(playerName, positions);
+        Player playerToMove = game.getPlayerByUsername(playerName);
+        if (playerToMove.getFaithTrack().inOnPopeSpace()!= 0){
+            if(game.getLorenzoIlMagnifico().getFaithTrack().isInPopeFavorByLevel(playerToMove.getFaithTrack().inOnPopeSpace())){
+                game.getLorenzoIlMagnifico().getFaithTrack().getPopesFavorTiles().get(playerToMove.getFaithTrack().inOnPopeSpace()-1).setState(PopesFavorTileState.ACTIVE);
+            } else game.getLorenzoIlMagnifico().getFaithTrack().getPopesFavorTiles().get(playerToMove.getFaithTrack().inOnPopeSpace()-1).setState(PopesFavorTileState.INACTIVE);
+        }
+    }
+
+    @Override
     public void computeNextPlayer() {
         SoloActionType soloActionType = game.getSoloActionTypes().pop();
         switch (soloActionType){
             case PLUS_ONE:
-                movePlayer(game.getLorenzoIlMagnifico(), 1);
+                movePlayer("lorenzoilmagnifico", 1);
                 game.setSoloActionTypes();
                 break;
             case PLUS_TWO:
-              movePlayer(game.getLorenzoIlMagnifico(), 2);
+              movePlayer("lorenzoilmagnifico", 2);
                 break;
             default:
                 game.removeCardsByLorenzo(soloActionType);
