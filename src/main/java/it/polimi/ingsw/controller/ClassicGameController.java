@@ -254,6 +254,15 @@ public class ClassicGameController {
 
     public void activateProduction(List<Integer> selectedStacks, ProductionPower basicProduction, List<Integer> extraProductionPowers){
         if (selectedStacks != null) {
+            /*for (Integer i:
+                 selectedStacks) {
+                for (int j = 0; j < game.getCurrentPlayer().getPlayerBoard().getCardStacks().get(i).peek().getProductionPower().getOutput().get(Resource.FAITH); j++) {
+                    game.getCurrentPlayer().getFaithTrack().move();
+                }
+            }
+
+             */
+
             game.getCurrentPlayer().getPlayerBoard().activateProduction(selectedStacks);
         }
         if (basicProduction != null) {
@@ -275,7 +284,7 @@ public class ClassicGameController {
         }
     }
 
-    private void tryPopeReport(Player playerToMove){
+    public void tryPopeReport(Player playerToMove){
         if(playerToMove.getFaithTrack().inOnPopeSpace()!= -1){
             for (Player player:
                     game.getPlayers()) {

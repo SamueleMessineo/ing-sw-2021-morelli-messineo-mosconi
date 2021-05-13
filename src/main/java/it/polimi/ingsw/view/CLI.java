@@ -290,12 +290,6 @@ public class CLI implements UI {
         List<Integer> indexes= new ArrayList<>();
         List<Integer> extraProductionPowers = new ArrayList<>();
 
-        System.out.println(productionPowers);
-        System.out.println("---------");
-        System.out.println(gameState.getCurrentPlayer().possibleProductionPowersToActive());
-        System.out.println(productionPowers.equals(gameState.getCurrentPlayer().possibleProductionPowersToActive()));
-
-        //   if(productionPowers.equals(gameState.getCurrentPlayer().possibleProductionPowersToActive())){
                 if(currentGameState.getCurrentPlayer().canActivateBasicProduction()){
                     indexes.add(0);
                 }
@@ -319,19 +313,16 @@ public class CLI implements UI {
                         if (selection == 0) {
                             if (currentGameState.getCurrentPlayer().canActivateBasicProduction()) {
                                 do{
-
                                     selectedBasicProductionPowers = askBasicProductionPowerIO();
-
                                     if(gameState.getCurrentPlayer().getPlayerBoard().canPayResources(selectedBasicProductionPowers.getInput())){
                                         currentGameState.getCurrentPlayer().getPlayerBoard().payResourceCost(selectedBasicProductionPowers.getInput());
                                         break;
                                     } else output.println("You do not have the selected input. Retry");
                                 } while (true);
-
                             }
                         } else {
                             currentGameState.getCurrentPlayer().getPlayerBoard().payResourceCost(currentGameState.getCurrentPlayer().possibleProductionPowersToActive().get(selection - 1).getInput());
-                            if (gameState.getCurrentPlayer().getPlayerBoard().getExtraProductionPowers().contains(currentGameState.getCurrentPlayer().possibleProductionPowersToActive().get(selection - 1))){
+                            if (gameState.getCurrentPlayer().getPlayerBoard().getExtraProductionPowers()!= null && gameState.getCurrentPlayer().getPlayerBoard().getExtraProductionPowers().contains(currentGameState.getCurrentPlayer().possibleProductionPowersToActive().get(selection - 1))){
                                 extraProductionPowers.add(selection - (gameState.getCurrentPlayer().possibleProductionPowersToActive().size()-1));
                             } else {
                                 selectedStacks.add(selection - 1);
@@ -345,7 +336,7 @@ public class CLI implements UI {
                     done = input.nextLine().trim().toLowerCase().startsWith("y");
                 }
                 client.sendMessage(new ActivateProductionResponseMessage(selectedStacks, selectedBasicProductionPowers, extraProductionPowers));
-        //   } else output.println("problem with gameState");
+
 
     }
 

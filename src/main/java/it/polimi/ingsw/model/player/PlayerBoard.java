@@ -118,7 +118,6 @@ public class PlayerBoard implements Serializable {
 
     public void activateProductionPower(ProductionPower productionPower){
         payResourceCost(productionPower.getInput());
-
         Map<Resource,Integer> ouput = GameUtils.emptyResourceMap();
         ouput.putAll(productionPower.getOutput());
         strongbox.addResources(ouput);
@@ -135,7 +134,7 @@ public class PlayerBoard implements Serializable {
     public boolean canPayResources(Map<Resource, Integer>cost) {
         Map<Resource, Integer> allResources = new HashMap<>(getResources());
         for (Resource resource : cost.keySet()) {
-            if (allResources.get(resource) < cost.get(resource)) return false;
+            if (allResources.get(resource) == null || allResources.get(resource) < cost.get(resource)) return false;
         }
         return true;
     }
@@ -165,16 +164,11 @@ public class PlayerBoard implements Serializable {
             }
             // remove from strongbox
             if (!placed) {
-                Map<Resource, Integer> resourceCost = new HashMap<>();
-                resourceCost.put(Resource.SERVANT, 0);
-                resourceCost.put(Resource.COIN, 0);
-                resourceCost.put(Resource.STONE, 0);
-                resourceCost.put(Resource.SHIELD, 0);
+                Map<Resource, Integer> resourceCost = GameUtils.emptyResourceMap();
                 resourceCost.put(resource, cost.get(resource));
                 strongbox.useResources(resourceCost);
             }
         }
-        System.out.println("payed");
     }
 
     /**

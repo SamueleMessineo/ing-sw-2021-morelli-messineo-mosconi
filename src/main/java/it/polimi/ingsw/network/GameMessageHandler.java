@@ -102,6 +102,7 @@ public class GameMessageHandler {
                     break;
                 case ("PLAY_LEADER"):
                     clientConnection.sendMessage(new PlayLeaderRequestMessage(gameController.getPlayableLeaderCards()));
+                    break;
                 case("SWITCH_SHELVES"):
                     clientConnection.sendMessage(new SwitchShelvesRequestMessage(room.getPlayerFromConnection(clientConnection).getPlayerBoard().getWarehouse().getShelfNames()));
                     break;
