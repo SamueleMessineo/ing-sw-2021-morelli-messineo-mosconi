@@ -79,12 +79,11 @@ public class ClassicGameController {
             marbles = game.getMarket().getMarbleStructure().shiftColumn(index);
         }
 
-        Map<String, Map<Resource, Integer>> convertedMarbles = new HashMap<>(){{
-            put("converted", new HashMap<>());
-            put("toConvert", new HashMap<>());
-            put("conversionOptions", new HashMap<>());
-        }};
+        Map<String, Map<Resource, Integer>> convertedMarbles = new HashMap<>();
+        convertedMarbles.put("converted", new HashMap<>());
+        convertedMarbles.put("toConvert", new HashMap<>());
         convertedMarbles.get("toConvert").put(Resource.ANY, 0);
+        convertedMarbles.put("conversionOptions", new HashMap<>());
         List<Resource> effectsObjects = game.getCurrentPlayer().hasActiveEffectOn("Marbles");
         for (Resource effectObject : effectsObjects) {
             convertedMarbles.get("conversionOptions").put(effectObject, 1);
@@ -92,30 +91,30 @@ public class ClassicGameController {
 
         // convert all the marbles
         for (Marble marble : marbles) {
-            String key = "converted";
-            Resource resource = null;
-            switch (marble) {
-                case RED: // convert to vatican point
-                    // move the player forward on the track
-                    game.getCurrentPlayer().getFaithTrack().move();
-                    // check if it landed on a Pope space
-                    int playerOnPope = game.getCurrentPlayer().getFaithTrack().inOnPopeSpace();
-                    if (playerOnPope != -1) {
-                        // activate vatican report
-                        for (Player player : game.getPlayers()) {
-                            if (player.getFaithTrack().isInPopeFavorByLevel(playerOnPope)) {
-                                // if a player is in the popes favour area, activate the corresponding tile
-                                player.getFaithTrack().getPopesFavorTiles().get(playerOnPope)
-                                        .setState(PopesFavorTileState.ACTIVE);
-                            } else {
-                                // if a player is not in the popes favour area, discard the corresponding tile
-                                player.getFaithTrack().getPopesFavorTiles().get(playerOnPope)
-                                        .setState(PopesFavorTileState.DISCARDED);
-                            }
+            System.out.println(marble.name());
+            if (marble == Marble.RED) {
+                // move the player forward on the track
+                game.getCurrentPlayer().getFaithTrack().move();
+                // check if it landed on a Pope space
+                int playerOnPope = game.getCurrentPlayer().getFaithTrack().inOnPopeSpace();
+                if (playerOnPope != -1) {
+                    // activate vatican report
+                    for (Player player : game.getPlayers()) {
+                        if (player.getFaithTrack().isInPopeFavorByLevel(playerOnPope)) {
+                            // if a player is in the popes favour area, activate the corresponding tile
+                            player.getFaithTrack().getPopesFavorTiles().get(playerOnPope)
+                                    .setState(PopesFavorTileState.ACTIVE);
+                        } else {
+                            // if a player is not in the popes favour area, discard the corresponding tile
+                            player.getFaithTrack().getPopesFavorTiles().get(playerOnPope)
+                                    .setState(PopesFavorTileState.DISCARDED);
                         }
                     }
-                    break;
-                case WHITE:
+                }
+            } else {
+                String key = "converted";
+                Resource resource = null;
+                if (marble == Marble.WHITE) {
                     if (effectsObjects.size() == 2) {
                         // the player has two active leader cards with effects on the marble structure
                         // need to ask the user how to convert them
@@ -125,14 +124,15 @@ public class ClassicGameController {
                         // the player only has one active leader card with the marbles as scope
                         // can automatically convert
                         resource = effectsObjects.get(0);
+                    } else {
+                        continue;
                     }
-                    break;
-                default:
+                } else {
                     resource = GameUtils.convertMarbleToResource(marble);
-                    break;
+                }
+                convertedMarbles.put(key, GameUtils.incrementValueInResourceMap(
+                        convertedMarbles.get(key), resource, 1));
             }
-            convertedMarbles.put(key, GameUtils.incrementValueInResourceMap(
-                    convertedMarbles.get(key), resource, 1));
         }
         return convertedMarbles;
     }
@@ -149,11 +149,13 @@ public class ClassicGameController {
 
     public void dropPlayerResources(Map<Resource, Integer> obtainedResources, Map<Resource,
             Integer> resourcesToDrop, String playerUsername) throws InvalidParameterException {
-        if (resourcesToDrop == null) throw new InvalidParameterException();
+        if (resourcesToDrop == null) throw new InvalidParameterException("array is null");
+        System.out.println(obtainedResources);
+        System.out.println(resourcesToDrop);
         for (Resource r : resourcesToDrop.keySet()) {
             if (!obtainedResources.containsKey(r) ||
                     obtainedResources.get(r) < resourcesToDrop.get(r)) {
-                throw new InvalidParameterException();
+                throw new InvalidParameterException("resources not in original map");
             }
         }
         Player player = game.getPlayerByUsername(playerUsername);
@@ -162,7 +164,7 @@ public class ClassicGameController {
             resourcesToAdd = GameUtils.incrementValueInResourceMap(resourcesToAdd, r, -resourcesToDrop.get(r));
         }
         if (!player.getPlayerBoard().getWarehouse().canPlaceResources(resourcesToAdd))
-            throw new InvalidParameterException();
+            throw new InvalidParameterException("not enough");
 
         player.getPlayerBoard().getWarehouse().placeResources(resourcesToAdd);
     }

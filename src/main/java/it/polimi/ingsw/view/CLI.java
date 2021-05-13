@@ -228,7 +228,7 @@ public class CLI implements UI {
         }
         output.println((uniqueResources.size()+1) + ". Confirm");
 
-        Map<Resource, Integer> droppedResources = GameUtils.emptyResourceMap();
+        Map<Resource, Integer> droppedResources = new HashMap<>();
         while (true) {
             // ask the user to select the type of resource to drop
             int selectedResourceIndex = GameUtils.askIntegerInput("Select a resource:",

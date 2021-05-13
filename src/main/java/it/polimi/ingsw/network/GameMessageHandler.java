@@ -126,6 +126,7 @@ public class GameMessageHandler {
         System.out.println("received get marbles response");
         Map<String, Map<Resource, Integer>> resources = gameController.getMarbles(message.getRowOrColumn(), message.getIndex());
         System.out.println("retrieved resources");
+        System.out.println(resources);
 
         if (gameController.isGameOver()) {
             room.sendAll(new StringMessage("GAME OVER"));
@@ -143,7 +144,11 @@ public class GameMessageHandler {
 //                    resources.get("conversionOptions").get(0), resources.get("conversionOptions").get(1)));
             return;
         }
-        askToDropResources();
+        if (resources.get("converted").keySet().size() == 0) {
+            room.getCurrentTurn().setAlreadyPerformedMove(true);
+            sendNextMoves();
+        } else
+            askToDropResources();
     }
 
     public void handle(DropLeaderCardResponseMessage message){
@@ -192,11 +197,13 @@ public class GameMessageHandler {
 
     public void handle(DropResourcesResponseMessage message){
         Map<Resource, Integer> resourcesConverted = room.getCurrentTurn().getConverted();
+        System.out.println(resourcesConverted);
         // check if the selected resources are valid
         try {
             gameController.dropPlayerResources(resourcesConverted, message.getResourcesToDrop(),
                     room.getPlayerFromConnection(clientConnection).getUsername());
         } catch (InvalidParameterException e) {
+            System.out.println(e.getMessage());
             clientConnection.sendMessage(new ErrorMessage("The selected resources are invalid"));
             return;
         }
