@@ -40,7 +40,7 @@ public class GameMessageHandler {
 
         if (playingIndex == 2 || playingIndex == 3) {
             // give 1 faith point if the player is the third or fourth to play
-            gameController.movePlayer(room.getPlayerFromConnection(clientConnection).getUsername(), 1);
+            gameController.movePlayer(room.getPlayerFromConnection(clientConnection), 1);
         }
 
         List<Resource> resourceOptions = new ArrayList<>(Arrays.asList(

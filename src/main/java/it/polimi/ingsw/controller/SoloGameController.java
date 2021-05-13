@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.player.FaithTrack;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.shared.CardType;
+import it.polimi.ingsw.model.shared.PopesFavorTileState;
 import it.polimi.ingsw.model.shared.Resource;
 import it.polimi.ingsw.model.shared.SoloActionType;
 import it.polimi.ingsw.server.Room;
@@ -37,6 +38,16 @@ public class SoloGameController extends ClassicGameController {
 
 
         return super.isGameOver();
+    }
+
+    @Override
+    public void movePlayer(Player playerToMove, int positions) {
+        super.movePlayer(playerToMove, positions);
+        if (playerToMove.getFaithTrack().inOnPopeSpace()!= 0){
+            if(game.getLorenzoIlMagnifico().getFaithTrack().isInPopeFavorByLevel(playerToMove.getFaithTrack().inOnPopeSpace())){
+                game.getLorenzoIlMagnifico().getFaithTrack().getPopesFavorTiles().get(playerToMove.getFaithTrack().inOnPopeSpace()-1).setState(PopesFavorTileState.ACTIVE);
+            } else game.getLorenzoIlMagnifico().getFaithTrack().getPopesFavorTiles().get(playerToMove.getFaithTrack().inOnPopeSpace()-1).setState(PopesFavorTileState.INACTIVE);
+        }
     }
 
     @Override

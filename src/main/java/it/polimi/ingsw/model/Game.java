@@ -92,6 +92,18 @@ public class Game implements Serializable {
     }
 
     /**
+     * Returns the list of inactive players in the game.
+     * @return The list of players in the game.
+     */
+    public ArrayList<Player> getInactivePlayers() {
+        ArrayList<Player> inactivePlayers = new ArrayList<>();
+        for (Player p : players) {
+            if (!p.isActive()) inactivePlayers.add(p);
+        }
+        return inactivePlayers;
+    }
+
+    /**
      * Reads the leader and development cards from the filesystem and builds the classes.
      * @throws FileNotFoundException If the files are not found.
      */
