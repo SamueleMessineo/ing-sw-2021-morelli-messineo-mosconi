@@ -181,6 +181,7 @@ public class Game implements Serializable {
         soloActionTypes.add(SoloActionType.YELLOW);
 
         Collections.shuffle(soloActionTypes);
+
     }
 
     public Stack<SoloActionType> getSoloActionTypes() {

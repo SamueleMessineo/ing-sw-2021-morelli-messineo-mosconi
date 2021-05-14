@@ -233,6 +233,7 @@ public class ClassicGameController {
         List<DevelopmentCard> developmentCards = new ArrayList<>();
 
         for (MarketCardStack cardsStack : game.getMarket().getCardsGrid()) {
+            if(cardsStack.isEmpty())break;
             DevelopmentCard topCard = cardsStack.peek();
             if (game.getCurrentPlayer().canBuyAndPlaceDevelopmentCard(topCard)) {
                 developmentCards.add(topCard);
@@ -302,6 +303,18 @@ public class ClassicGameController {
         }
     }
 
+    public void buyDevelopmentCard(Integer stackIndex, DevelopmentCard developmentCard){
+        game.getCurrentPlayer().getPlayerBoard().getCardStacks().get(stackIndex).add(developmentCard);
+        game.getCurrentPlayer().getPlayerBoard().payResourceCost(game.getCurrentPlayer().computeDiscountedCost(developmentCard));
+        for (MarketCardStack stack:
+             game.getMarket().getCardsGrid()) {
+            if(stack.peek().equals(developmentCard)){
+                stack.pop();
+                break;
+            }
+        }
+    }
+
     public void playLeader(int cardIndex) {
         LeaderCard leaderCard = getPlayableLeaderCards().get(cardIndex);
         game.getCurrentPlayer().playLeaderCard(leaderCard);
@@ -351,12 +364,16 @@ public class ClassicGameController {
     public List<Integer> getStacksToPlaceCard(Player player, DevelopmentCard developmentCard){
         List<Integer> stacks = new ArrayList<>();
         List<PlayerCardStack> allStacks = player.getPlayerBoard().getCardStacks();
-        for (PlayerCardStack cardStack:
-                allStacks){
+        System.out.println(allStacks);
+        for (int i = 0; i < allStacks.size(); i++) {
+            PlayerCardStack cardStack = allStacks.get(i);
             if(cardStack.size()== 0 || cardStack.canPlaceCard(developmentCard)){
-                stacks.add(allStacks.indexOf(cardStack));
+             //   stacks.add(allStacks.indexOf(cardStack));
+                stacks.add(i);
             }
         }
+
+        System.out.println("stack indexes: " + stacks);
         return stacks;
     }
 

@@ -322,7 +322,10 @@ public class CLI implements UI {
                             }
                         } else {
                             currentGameState.getCurrentPlayer().getPlayerBoard().payResourceCost(currentGameState.getCurrentPlayer().possibleProductionPowersToActive().get(selection - 1).getInput());
-                            if (gameState.getCurrentPlayer().getPlayerBoard().getExtraProductionPowers()!= null && gameState.getCurrentPlayer().getPlayerBoard().getExtraProductionPowers().contains(currentGameState.getCurrentPlayer().possibleProductionPowersToActive().get(selection - 1))){
+                            List<ProductionPower> possibleExtraPowers = gameState.getCurrentPlayer().getPlayerBoard().getExtraProductionPowers();
+                            System.out.println(possibleExtraPowers);
+                            if (possibleExtraPowers!= null && !possibleExtraPowers.isEmpty()
+                                    && possibleExtraPowers.contains(currentGameState.getCurrentPlayer().possibleProductionPowersToActive().get(selection - 1))){
                                 extraProductionPowers.add(selection - (gameState.getCurrentPlayer().possibleProductionPowersToActive().size()-1));
                             } else {
                                 selectedStacks.add(selection - 1);
@@ -382,6 +385,7 @@ public class CLI implements UI {
 
     @Override
     public void selectStackToPlaceCard(List<Integer> stackIndexes) {
+        System.out.println(stackIndexes);
         for (Integer index:
              stackIndexes) {
             System.out.println(stackIndexes.indexOf(index)+1);

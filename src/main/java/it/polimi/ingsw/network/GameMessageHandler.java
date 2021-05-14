@@ -218,11 +218,9 @@ public class GameMessageHandler {
 
     public void handle(SelectStackToPlaceCardResponseMessage message){
         if(room.getGame().getCurrentPlayer().getPlayerBoard().getCardStacks().get(message.getSelectedStackIndex()).canPlaceCard(room.getCurrentTurn().getBoughtDevelopmentCard())){
-            room.getGame().getCurrentPlayer().getPlayerBoard().getCardStacks().get(message.getSelectedStackIndex()).add(room.getCurrentTurn().getBoughtDevelopmentCard());
-            room.getGame().getCurrentPlayer().getPlayerBoard().payResourceCost(room.getGame().getCurrentPlayer().computeDiscountedCost(room.getCurrentTurn().getBoughtDevelopmentCard()));
+           gameController.buyDevelopmentCard(message.getSelectedStackIndex(), room.getCurrentTurn().getBoughtDevelopmentCard());
             room.getCurrentTurn().setAlreadyPerformedMove(true);
             sendNextMoves();
-            System.out.println("sent");
         }else {
             clientConnection.sendMessage(new StringMessage("Action Could not be completed"));
             sendNextMoves();

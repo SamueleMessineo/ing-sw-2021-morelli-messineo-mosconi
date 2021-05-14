@@ -49,6 +49,7 @@ public class SoloGameController extends ClassicGameController {
     @Override
     public void computeNextPlayer() {
         SoloActionType soloActionType = game.getSoloActionTypes().pop();
+        System.out.println(soloActionType);
         switch (soloActionType){
             case PLUS_ONE:
                 movePlayer("lorenzoilmagnifico", 1);

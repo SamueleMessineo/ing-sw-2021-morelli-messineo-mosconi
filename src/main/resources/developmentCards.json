@@ -773,7 +773,7 @@
     },
     "productionPower": {
       "input": {
-        "GOLD": 1,
+        "COIN": 1,
         "SERVANT": 1
       },
       "output": {

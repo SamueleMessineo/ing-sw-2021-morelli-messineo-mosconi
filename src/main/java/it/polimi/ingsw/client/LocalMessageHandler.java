@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.player.PlayerCardStack;
 import it.polimi.ingsw.model.shared.DevelopmentCard;
 import it.polimi.ingsw.model.shared.Resource;
 import it.polimi.ingsw.network.client.ErrorMessage;
+import it.polimi.ingsw.network.client.StringMessage;
 import it.polimi.ingsw.network.game.*;
 import it.polimi.ingsw.view.UI;
 
@@ -204,5 +205,18 @@ public class LocalMessageHandler {
         }
 
         nextMoves(true);
+    }
+
+    public void handle(ActivateProductionResponseMessage message){
+        if(message.getSelectedStacks()!=null || message.getBasicProduction() != null || message.getExtraProductionPowers() != null) {
+            gameController.activateProduction(message.getSelectedStacks(), message.getBasicProduction(), message.getExtraProductionPowers());
+            ui.displayString("Your update strongbox: " + gameController.getGame().getCurrentPlayer().getPlayerBoard().getStrongbox());
+            nextMoves(true);
+
+        }
+        else {
+            ui.displayString("Nothing could be done");
+            nextMoves(false);
+        }
     }
 }
