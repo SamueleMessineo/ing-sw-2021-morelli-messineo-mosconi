@@ -4,7 +4,6 @@ import it.polimi.ingsw.client.Client;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.market.MarbleStructure;
 import it.polimi.ingsw.model.player.Player;
-import it.polimi.ingsw.model.player.Shelf;
 import it.polimi.ingsw.model.player.Warehouse;
 import it.polimi.ingsw.model.shared.DevelopmentCard;
 import it.polimi.ingsw.model.shared.LeaderCard;
@@ -17,25 +16,19 @@ import it.polimi.ingsw.network.setup.JoinPublicRoomMessage;
 import it.polimi.ingsw.utils.GameUtils;
 
 import java.io.PrintStream;
-import java.security.InvalidParameterException;
 import java.util.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 public class CLI implements UI {
-
     private final Client client;
     private final Scanner input;
     private final PrintStream output;
     private String username;
     private Game gameState;
 
-
     public CLI(Client client) {
         this.client = client;
         input = new Scanner(System.in);
         output= new PrintStream(System.out);
-
     }
 
     public void setup(){
@@ -215,39 +208,34 @@ public class CLI implements UI {
 
     @Override
     public void dropResources(Map<Resource, Integer> resources) {
-        try {
-            output.println("Choose which resources to drop:");
-            Map<Resource, Integer> resourceMap = new LinkedHashMap<>(resources);
-            output.println(Display.displayResources(resourceMap));
-            List<Resource> uniqueResources = new ArrayList<>(resourceMap.keySet());
-            for (int i = 0; i < uniqueResources.size(); i++) {
-                output.print((i + 1) + ". " + uniqueResources.get(i).name() + " | ");
-            }
-            output.println((uniqueResources.size() + 1) + ". Confirm");
-
-            Map<Resource, Integer> droppedResources = new HashMap<>();
-            while (true) {
-                // ask the user to select the type of resource to drop
-                int selectedResourceIndex = GameUtils.askIntegerInput("Select a resource:",
-                        1, uniqueResources.size() + 1, output, input) - 1;
-                if (selectedResourceIndex == uniqueResources.size()) break;
-                Resource selectedResource = uniqueResources.get(selectedResourceIndex);
-                if (resourceMap.get(selectedResource) < 1) {
-                    output.println("Already dropped");
-                    continue;
-                }
-                // ask the user to tell how many units of the selected resource to drop
-                int selectedAmount = GameUtils.askIntegerInput("Select quantity:",
-                        1, resourceMap.get(selectedResource), output, input);
-
-                resourceMap = GameUtils.incrementValueInResourceMap(resourceMap, selectedResource, -selectedAmount);
-                droppedResources = GameUtils.incrementValueInResourceMap(droppedResources, selectedResource, selectedAmount);
-            }
-            client.sendMessage(new DropResourcesResponseMessage(droppedResources));
-        } catch (Exception e) {
-            e.printStackTrace();
-            System.out.println(e.getMessage());
+        output.println("Choose which resources to drop:");
+        Map<Resource, Integer> resourceMap = new LinkedHashMap<>(resources);
+        output.println(Display.displayResources(resourceMap));
+        List<Resource> uniqueResources = new ArrayList<>(resourceMap.keySet());
+        for (int i = 0; i < uniqueResources.size(); i++) {
+            output.print((i + 1) + ". " + uniqueResources.get(i).name() + " | ");
         }
+        output.println((uniqueResources.size() + 1) + ". Confirm");
+
+        Map<Resource, Integer> droppedResources = new HashMap<>();
+        while (true) {
+            // ask the user to select the type of resource to drop
+            int selectedResourceIndex = GameUtils.askIntegerInput("Select a resource:",
+                    1, uniqueResources.size() + 1, output, input) - 1;
+            if (selectedResourceIndex == uniqueResources.size()) break;
+            Resource selectedResource = uniqueResources.get(selectedResourceIndex);
+            if (resourceMap.get(selectedResource) < 1) {
+                output.println("Already dropped");
+                continue;
+            }
+            // ask the user to tell how many units of the selected resource to drop
+            int selectedAmount = GameUtils.askIntegerInput("Select quantity:",
+                    1, resourceMap.get(selectedResource), output, input);
+
+            resourceMap = GameUtils.incrementValueInResourceMap(resourceMap, selectedResource, -selectedAmount);
+            droppedResources = GameUtils.incrementValueInResourceMap(droppedResources, selectedResource, selectedAmount);
+        }
+        client.sendMessage(new DropResourcesResponseMessage(droppedResources));
     }
 
     @Override

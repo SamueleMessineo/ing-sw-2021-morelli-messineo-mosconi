@@ -3,12 +3,8 @@ package it.polimi.ingsw.client;
 import it.polimi.ingsw.controller.ClassicGameController;
 import it.polimi.ingsw.controller.Turn;
 import it.polimi.ingsw.model.player.Player;
-import it.polimi.ingsw.model.player.PlayerCardStack;
 import it.polimi.ingsw.model.shared.DevelopmentCard;
 import it.polimi.ingsw.model.shared.Resource;
-import it.polimi.ingsw.network.client.ErrorMessage;
-import it.polimi.ingsw.network.client.SelectStackToPlaceCardRequestMessage;
-import it.polimi.ingsw.network.client.StringMessage;
 import it.polimi.ingsw.network.game.*;
 import it.polimi.ingsw.view.UI;
 
@@ -90,7 +86,6 @@ public class LocalMessageHandler {
                     endTurn();
                     break;
             }
-
         } else {
             ui.displayString("Invalid Move\nRetry");
             ui.displayPossibleMoves(currentTurn.getMoves());
@@ -127,7 +122,6 @@ public class LocalMessageHandler {
         List<Integer> stacks = gameController.getStacksToPlaceCard(player, developmentCard);
        currentTurn.setBoughtDevelopmentCard(developmentCard);
         ui.selectStackToPlaceCard(stacks);
-
     }
 
     public void handle(SelectResourceForWhiteMarbleResponseMessage message) {
@@ -149,15 +143,12 @@ public class LocalMessageHandler {
     }
 
     public void handle(SelectMarblesResponseMessage message){
-        System.out.println("received get marbles response");
         Map<String, Map<Resource, Integer>> resources = gameController.getMarbles(message.getRowOrColumn(), message.getIndex());
-        System.out.println("retrieved resources");
         System.out.println(resources);
 
         currentTurn.setConverted(resources.get("converted"));
         currentTurn.setToConvert(resources.get("toConvert").get(Resource.ANY));
         currentTurn.setConversionOptions(new ArrayList<>(resources.get("conversionOptions").keySet()));
-        System.out.println("turn set");
 
         if (resources.get("toConvert").containsKey(Resource.ANY) &&
                 resources.get("toConvert").get(Resource.ANY) > 0) {
@@ -172,19 +163,16 @@ public class LocalMessageHandler {
             askToDropResources();
     }
 
-
     public void handle(SelectStackToPlaceCardResponseMessage message){
         if(player.getPlayerBoard().getCardStacks().get(message.getSelectedStackIndex()).canPlaceCard(currentTurn.getBoughtDevelopmentCard())){
             player.getPlayerBoard().getCardStacks().get(message.getSelectedStackIndex()).add(currentTurn.getBoughtDevelopmentCard());
             player.getPlayerBoard().payResourceCost(player.computeDiscountedCost(currentTurn.getBoughtDevelopmentCard()));
             currentTurn.setAlreadyPerformedMove(true);
             nextMoves(true);
-
         }else {
             ui.displayError("Action Could not be completed");
             nextMoves(false);
         }
-
     }
 
     public void handle(DropResourcesResponseMessage message){
@@ -200,7 +188,6 @@ public class LocalMessageHandler {
             ui.displayString("The selected resources are invalid");
             return;
         }
-
         nextMoves(true);
     }
 
@@ -209,7 +196,6 @@ public class LocalMessageHandler {
             gameController.activateProduction(message.getSelectedStacks(), message.getBasicProduction(), message.getExtraProductionPowers());
             ui.displayString("Your update strongbox: " + gameController.getGame().getCurrentPlayer().getPlayerBoard().getStrongbox());
             nextMoves(true);
-
         }
         else {
             ui.displayString("Nothing could be done");
