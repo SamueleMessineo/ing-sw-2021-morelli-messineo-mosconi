@@ -255,14 +255,18 @@ public class ClassicGameController {
 
     public void activateProduction(List<Integer> selectedStacks, ProductionPower basicProduction, List<Integer> extraProductionPowers){
         if (selectedStacks != null) {
-            /*for (Integer i:
+
+            for (Integer i:
                  selectedStacks) {
-                for (int j = 0; j < game.getCurrentPlayer().getPlayerBoard().getCardStacks().get(i).peek().getProductionPower().getOutput().get(Resource.FAITH); j++) {
-                    game.getCurrentPlayer().getFaithTrack().move();
+                PlayerCardStack checkedStack = game.getCurrentPlayer().getPlayerBoard().getCardStacks().get(i);
+                if (checkedStack.peek().getProductionPower().getOutput().containsKey(Resource.FAITH)){
+                    for (int j = 0; j < checkedStack.peek().getProductionPower().getOutput().get(Resource.FAITH); j++) {
+                        game.getCurrentPlayer().getFaithTrack().move();
+                    }
                 }
+
             }
 
-             */
 
             game.getCurrentPlayer().getPlayerBoard().activateProduction(selectedStacks);
         }
