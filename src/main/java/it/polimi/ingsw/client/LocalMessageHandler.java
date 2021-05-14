@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.player.PlayerCardStack;
 import it.polimi.ingsw.model.shared.DevelopmentCard;
 import it.polimi.ingsw.model.shared.Resource;
 import it.polimi.ingsw.network.client.ErrorMessage;
+import it.polimi.ingsw.network.client.SelectStackToPlaceCardRequestMessage;
 import it.polimi.ingsw.network.client.StringMessage;
 import it.polimi.ingsw.network.game.*;
 import it.polimi.ingsw.view.UI;
@@ -123,12 +124,8 @@ public class LocalMessageHandler {
 
     public void handle(BuyDevelopmentCardResponseMessage message){
         DevelopmentCard developmentCard = gameController.getBuyableDevelopementCards().get(message.getSelectedCardIndex());
-        List<Integer> stacks = new ArrayList<>();
-        for (PlayerCardStack cardStack:
-                player.getPlayerBoard().getCardStacks()){
-            if(cardStack.canPlaceCard(developmentCard))stacks.add(player.getPlayerBoard().getCardStacks().indexOf(cardStack));
-        }
-        currentTurn.setBoughtDevelopmentCard(developmentCard);
+        List<Integer> stacks = gameController.getStacksToPlaceCard(player, developmentCard);
+       currentTurn.setBoughtDevelopmentCard(developmentCard);
         ui.selectStackToPlaceCard(stacks);
 
     }

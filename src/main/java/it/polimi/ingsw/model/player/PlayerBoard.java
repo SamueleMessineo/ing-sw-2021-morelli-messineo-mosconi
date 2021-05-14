@@ -180,12 +180,9 @@ public class PlayerBoard implements Serializable {
         Map<Resource, Integer> warehouseResources = warehouse.getResources();
         Map<Resource, Integer> allResources = GameUtils.emptyResourceMap();
 
-        GameUtils.sumResourcesMaps(allResources, strongboxResources);
-        GameUtils.sumResourcesMaps(allResources, warehouseResources);
+        allResources = GameUtils.sumResourcesMaps(allResources, warehouseResources);
+        allResources = GameUtils.sumResourcesMaps(allResources, strongboxResources);
 
-        allResources.forEach(((resource, integer) -> {
-            allResources.put(resource, integer + warehouseResources.get(resource));
-        }));
 
         return allResources;
 
