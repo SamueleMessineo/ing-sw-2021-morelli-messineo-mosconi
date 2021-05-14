@@ -21,7 +21,7 @@ public class LocalClient extends Client {
     }
 
     @Override
-    public void run() throws IOException {
+    public void run() {
         ui.askUsername();
         localMessageHandler.startPlaying();
     }

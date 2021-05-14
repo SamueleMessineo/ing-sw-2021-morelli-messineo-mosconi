@@ -24,14 +24,17 @@ public class Client {
         }
     }
 
-    public void run() throws IOException {
-        socket = new Socket("localhost", 31415);
-
-        serverConnection = new ServerConnection(socket, this);
-        ExecutorService executor = Executors.newCachedThreadPool();
-        executor.submit(serverConnection);
-        //executor.submit(ui);
-        ui.setup();
+    public void run() {
+        try {
+            socket = new Socket("localhost", 31415);
+            serverConnection = new ServerConnection(socket, this);
+            ExecutorService executor = Executors.newCachedThreadPool();
+            executor.submit(serverConnection);
+            ui.setup();
+        } catch (IOException e) {
+            System.out.println("Server not available :(");
+            System.out.println("Exiting...");
+        }
     }
 
     public void sendMessage(Message m){

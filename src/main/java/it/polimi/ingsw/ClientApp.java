@@ -4,8 +4,6 @@ import it.polimi.ingsw.client.Client;
 import it.polimi.ingsw.client.LocalClient;
 import it.polimi.ingsw.view.SelectionCLI;
 
-import java.io.IOException;
-
 public class ClientApp {
     public static void main(String[] args) {
         Client client;
@@ -23,11 +21,6 @@ public class ClientApp {
             System.out.println("error");
             return;
         }
-
-        try {
-            client.run();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        client.run();
     }
 }
