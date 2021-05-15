@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.player.PlayerBoard;
 import it.polimi.ingsw.model.player.Strongbox;
 import it.polimi.ingsw.model.player.Warehouse;
 import it.polimi.ingsw.model.shared.CardType;
+import it.polimi.ingsw.model.shared.LeaderCard;
 import it.polimi.ingsw.model.shared.Resource;
 
 import java.io.OutputStream;
@@ -137,6 +138,20 @@ public class Display {
         for (int i = 0; i < warehouse.getShelf("bottom").getResourceNumber(); i++) output.print(warehouse.getShelf("bottom").getResourceType());
         for (int i = warehouse.getShelf("bottom").getResourceNumber(); i < 3; i++ ) output.print(Resource.ANY);
         output.println();
+        if(warehouse.getShelf("extra1")!=null){
+            output.print("   ");
+            for (int i = 0; i < warehouse.getShelf("extra1").getResourceNumber(); i++) output.print(warehouse.getShelf("middle").getResourceType());
+            for (int i = warehouse.getShelf("extra1").getResourceNumber(); i < 2; i++ ) output.print(Resource.ANY);
+            output.print("  ("+warehouse.getShelf("extra1").getResourceType()+")");
+            output.println();
+        }
+        if(warehouse.getShelf("extra2")!=null){
+            output.print("   ");
+            for (int i = 0; i < warehouse.getShelf("extra2").getResourceNumber(); i++) output.print(warehouse.getShelf("middle").getResourceType());
+            for (int i = warehouse.getShelf("extra2").getResourceNumber(); i < 2; i++ ) output.print(Resource.ANY);
+            output.print("  ("+warehouse.getShelf("extra2").getResourceType()+")");
+            output.println();
+        }
     }
 
     private static void displayStrongbox(Strongbox strongbox, PrintStream output) {
@@ -157,7 +172,7 @@ public class Display {
         output.println(paintCard(market.getCardsGrid().get(i).getType()) +  market.getCardsGrid().get(i).peek().getScore() +"\u001B[0m" + "               " + paintCard(market.getCardsGrid().get(i-3).getType()) +  market.getCardsGrid().get(i-3).peek().getScore() +"\u001B[0m" + "               " + paintCard(market.getCardsGrid().get(i-6).getType()) +  market.getCardsGrid().get(i).peek().getScore() +"\u001B[0m" + "               " + paintCard(market.getCardsGrid().get(i-9).getType()) +  market.getCardsGrid().get(i-9).peek().getScore() +"\u001B[0m" + "               ");
     }
 
-    private static String paintCard(CardType cardType){
+    public static String paintCard(CardType cardType){
         switch (cardType){
             case GREEN:
                 return "\u001B[32m";
@@ -179,4 +194,37 @@ public class Display {
         }
         return output;
     }
+
+    public static void displayPlayerLeaderCards(Player player, PrintStream output){
+        output.println("Not yet used leader cards:");
+        if(player.getLeaderCards().size()==0)output.println("\u001B[31m" + "none" + "\u001B[0m" );
+        for (LeaderCard leader:
+             player.getLeaderCards()) {
+            displayLeader(leader, output);
+        }
+        output.println("Played leader cards:");
+        if(player.getPlayedLeaderCards().size()==0)output.println("\u001B[31m" + "none" + "\u001B[0m" );
+        for (LeaderCard leader:
+                player.getPlayedLeaderCards()) {
+            displayLeader(leader, output);
+        }
+    }
+
+    public static void displayLeader(LeaderCard leaderCard, PrintStream output){
+        output.print("\u001B[31m");
+        output.print(leaderCard.printResourceRequirements());
+        output.print(leaderCard.printCardRequirements());
+        output.print("Score: " + leaderCard.getScore() + "\n" + "Effect: " +leaderCard.getEffectScope() + " " +leaderCard.getEffectObject() + "\n");
+        output.print("\u001B[0m");
+    }
+
+    public static void displayLeaderCards(List<LeaderCard> leaderCards, PrintStream output){
+        for (LeaderCard leader:
+                leaderCards) {
+            output.println("card number "+(leaderCards.indexOf(leader)+1));
+            Display.displayLeader(leader, output);
+            output.println();
+        }
+    }
+
 }

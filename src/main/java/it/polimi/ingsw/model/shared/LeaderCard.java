@@ -73,7 +73,7 @@ public class LeaderCard implements Serializable {
         return cardRequirementsLevel;
     }
 
-    private String printResourceRequirements(){
+    public String printResourceRequirements(){
         if(resourceRequirements!= null){
             return ("Resource requirements: " + resourceRequirements + "\n");
         }else {
@@ -81,7 +81,7 @@ public class LeaderCard implements Serializable {
         }
     }
 
-    private String printCardRequirements(){
+    public String printCardRequirements(){
         if(getCardRequirements()!= null){
             return ("Card requirements: " + cardRequirements + " Level: "+ cardRequirementsLevel + "\n");
         }else {
@@ -90,6 +90,6 @@ public class LeaderCard implements Serializable {
     }
     @Override
     public String toString() {
-        return ("\n\n" + printResourceRequirements() + printCardRequirements() +"Score: " + score + "\n" + "Effect: " +effectScope + " " +effectObject);
+        return ("\n" + printResourceRequirements() + printCardRequirements() +"Score: " + score + "\n" + "Effect: " +effectScope + " " +effectObject + "\n");
     }
 }

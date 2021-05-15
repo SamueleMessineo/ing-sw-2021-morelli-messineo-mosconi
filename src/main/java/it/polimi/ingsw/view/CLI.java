@@ -4,6 +4,7 @@ import it.polimi.ingsw.client.Client;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.market.MarbleStructure;
 import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.model.player.PlayerCardStack;
 import it.polimi.ingsw.model.player.Warehouse;
 import it.polimi.ingsw.model.shared.DevelopmentCard;
 import it.polimi.ingsw.model.shared.LeaderCard;
@@ -104,7 +105,7 @@ public class CLI implements UI {
 
     @Override
     public void selectLeaderCards(ArrayList<LeaderCard> leaderCards) {
-        displayLeaderCards(leaderCards);
+       Display.displayLeaderCards(leaderCards, output);
         int selection1;
         int selection2;
         do {
@@ -117,11 +118,7 @@ public class CLI implements UI {
 
     }
 
-    public void displayLeaderCards(List<LeaderCard> leaderCards){
-        for (int i = 0; i < leaderCards.size(); i++) {
-            output.println("Card number "+ (i+1) +":" + leaderCards.get(i));
-        }
-    }
+
 
     @Override
     public void displayGameState() {
@@ -161,6 +158,7 @@ public class CLI implements UI {
 
             try {
                 player = gameState.getPlayerByUsername(input.nextLine());
+                if(player.getUsername().equals(username))Display.displayPlayerLeaderCards(player, output);
                 Display.displayPlayerBoard(player, output);
             } catch (NoSuchElementException e) {
                 output.println("Username not found");
@@ -240,7 +238,7 @@ public class CLI implements UI {
 
     @Override
     public void discardLeaderCard(ArrayList<LeaderCard> cards) {
-        displayLeaderCards(cards);
+        Display.displayLeaderCards(cards, output);
         int selection = GameUtils.askIntegerInput("Select the card number", 1, cards.size(), output, input)-1;
         client.sendMessage(new DropLeaderCardResponseMessage(selection));
     }
@@ -324,8 +322,10 @@ public class CLI implements UI {
                         indexes.remove((Integer) selection);
                         productionNumber++;
                     } else output.println("Selection not valid");
-                    output.println("Are you done? [y/n]");
-                    done = input.nextLine().trim().toLowerCase().startsWith("y");
+                    if(indexes.size()>0){
+                        output.println("Are you done? [y/n]");
+                        done = input.nextLine().trim().toLowerCase().startsWith("y");
+                    } else done = true;
                 }
                 client.sendMessage(new ActivateProductionResponseMessage(selectedStacks, selectedBasicProductionPowers, extraProductionPowers));
 
@@ -366,7 +366,10 @@ public class CLI implements UI {
     @Override
     public void buyDevelopmentCard(List<DevelopmentCard> developmentCards) {
         int selection;
-        output.println(developmentCards);
+        for (DevelopmentCard developmentCard:
+             developmentCards) {
+            output.println(Display.paintCard(developmentCard.getCardType()) +  developmentCard + "\u001B[0m");
+        }
         selection = GameUtils.askIntegerInput("Select a card", 1, developmentCards.size(), output, input)-1;
         client.sendMessage(new BuyDevelopmentCardResponseMessage(selection));
 
@@ -374,11 +377,14 @@ public class CLI implements UI {
 
     @Override
     public void selectStackToPlaceCard(List<Integer> stackIndexes) {
-        System.out.println(stackIndexes);
+
         for (Integer index:
              stackIndexes) {
-            System.out.println(stackIndexes.indexOf(index)+1);
-            output.println(gameState.getCurrentPlayer().getPlayerBoard().getCardStacks().get(index));
+            System.out.println(stackIndexes.indexOf(index)+1 + ":");
+
+            PlayerCardStack playerCardStack = gameState.getCurrentPlayer().getPlayerBoard().getCardStacks().get(index);
+            if(playerCardStack.isEmpty())output.println("Empty");
+            else output.println(Display.paintCard(playerCardStack.peek().getCardType()) + playerCardStack + "\u001B[0m");
         }
         int selection = GameUtils.askIntegerInput("On which stack you want to put your new card?", 1, stackIndexes.size(), output, input)-1;
         client.sendMessage(new SelectStackToPlaceCardResponseMessage(stackIndexes.get(selection)));
@@ -386,7 +392,7 @@ public class CLI implements UI {
 
     @Override
     public void playLeader(List<LeaderCard> leaderCards) {
-        displayLeaderCards(leaderCards);
+        Display.displayLeaderCards(leaderCards, output);
         int selection = GameUtils.askIntegerInput("Select the card number", 1, leaderCards.size(), output, input)-1;
         client.sendMessage(new PlayLeaderResponseMessage(selection));
     }

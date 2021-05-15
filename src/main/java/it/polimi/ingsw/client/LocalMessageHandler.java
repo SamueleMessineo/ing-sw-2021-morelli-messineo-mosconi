@@ -73,7 +73,8 @@ public class LocalMessageHandler {
                     ui.discardLeaderCard(player.getLeaderCards());
                     break;
                 case ("PLAY_LEADER"):
-                    ui.playLeader(player.getLeaderCards());
+                    ui.playLeader(gameController.getPlayableLeaderCards());
+                    break;
                 case("SWITCH_SHELVES"):
                     ui.switchShelves(player.getPlayerBoard().getWarehouse().getShelfNames());
                     break;
@@ -82,6 +83,7 @@ public class LocalMessageHandler {
                     break;
                 case ("BUY_CARD"):
                     ui.buyDevelopmentCard(gameController.getBuyableDevelopementCards());
+                    break;
                 case("END_TURN"):
                     endTurn();
                     break;
@@ -165,8 +167,7 @@ public class LocalMessageHandler {
 
     public void handle(SelectStackToPlaceCardResponseMessage message){
         if(player.getPlayerBoard().getCardStacks().get(message.getSelectedStackIndex()).canPlaceCard(currentTurn.getBoughtDevelopmentCard())){
-            player.getPlayerBoard().getCardStacks().get(message.getSelectedStackIndex()).add(currentTurn.getBoughtDevelopmentCard());
-            player.getPlayerBoard().payResourceCost(player.computeDiscountedCost(currentTurn.getBoughtDevelopmentCard()));
+           gameController.buyDevelopmentCard(message.getSelectedStackIndex(), currentTurn.getBoughtDevelopmentCard());
             currentTurn.setAlreadyPerformedMove(true);
             nextMoves(true);
         }else {
@@ -176,19 +177,19 @@ public class LocalMessageHandler {
     }
 
     public void handle(DropResourcesResponseMessage message){
-        System.out.println("handling");
         Map<Resource, Integer> resourcesConverted =currentTurn.getConverted();
         System.out.println(resourcesConverted);
         // check if the selected resources are valid
         try {
             gameController.dropPlayerResources(resourcesConverted, message.getResourcesToDrop(),
                     player.getUsername());
+            nextMoves(true);
         } catch (InvalidParameterException e) {
             System.out.println(e.getMessage());
             ui.displayString("The selected resources are invalid");
-            return;
+            nextMoves(false);
         }
-        nextMoves(true);
+
     }
 
     public void handle(ActivateProductionResponseMessage message){

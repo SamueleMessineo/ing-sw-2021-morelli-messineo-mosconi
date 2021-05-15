@@ -62,7 +62,7 @@ public class ClassicGameController {
     public void computeNextPlayer(){
         int nextPlayer = (game.getPlayers().indexOf(game.getCurrentPlayer()) + 1) % game.getPlayers().size();
         game.setCurrentPlayer(nextPlayer);
-        System.out.println(nextPlayer);
+        System.out.println(game.getPlayers().get(nextPlayer));
         if (!game.getPlayers().get(nextPlayer).isActive()) computeNextPlayer();
     }
 
@@ -320,6 +320,7 @@ public class ClassicGameController {
     }
 
     public void playLeader(int cardIndex) {
+        System.out.println(getPlayableLeaderCards());
         LeaderCard leaderCard = getPlayableLeaderCards().get(cardIndex);
         game.getCurrentPlayer().playLeaderCard(leaderCard);
 
