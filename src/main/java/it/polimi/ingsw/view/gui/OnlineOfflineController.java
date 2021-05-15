@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.gui;
 
+import it.polimi.ingsw.client.LocalClient;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -24,13 +25,15 @@ public class OnlineOfflineController implements SceneController {
 
     @FXML
     void playOffline(ActionEvent event) {
-        System.out.println("offline");
+        System.out.println("play offline");
+        gui.initializeClient(false);
 //        gui.setScene("root2");
     }
 
     @FXML
     void playOnline(ActionEvent event) {
-        System.out.println("online");
+        System.out.println("play online");
+        gui.initializeClient(true);
         gui.setScene("connect");
     }
 }

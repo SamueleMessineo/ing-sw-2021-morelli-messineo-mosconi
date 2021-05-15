@@ -32,6 +32,7 @@ public class CLI implements UI {
         input = new Scanner(System.in);
         output= new PrintStream(System.out);
     }
+
     @Override
     public void run() {
         output.println("How do you want to play?");

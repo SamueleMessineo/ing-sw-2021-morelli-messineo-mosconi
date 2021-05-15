@@ -8,6 +8,11 @@ import javafx.scene.text.Text;
 public class ConnectController implements SceneController {
     private GUI gui;
 
+    @Override
+    public void setGUI(GUI gui) {
+        this.gui = gui;
+    }
+
     @FXML
     private TextField ipInput;
 
@@ -19,11 +24,14 @@ public class ConnectController implements SceneController {
 
     @FXML
     void connect(ActionEvent event) {
-        errorMessage.setText("trying to connect to " + ipInput.getText() + " on port " + portInput.getText());
-    }
-
-    @Override
-    public void setGUI(GUI gui) {
-        this.gui = gui;
+        System.out.println("try connection");
+        try {
+            gui.getClient().connect(ipInput.getText(), Integer.parseInt(portInput.getText()));
+            System.out.println("connection successful");
+            gui.setScene("select-game");
+        } catch (Exception e) {
+            System.out.println("CONNECTION FAILED");
+            errorMessage.setText("CONNECTION FAILED, try again");
+        }
     }
 }

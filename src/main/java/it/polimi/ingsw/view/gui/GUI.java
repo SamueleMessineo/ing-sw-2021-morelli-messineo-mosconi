@@ -1,5 +1,7 @@
 package it.polimi.ingsw.view.gui;
 
+import it.polimi.ingsw.client.Client;
+import it.polimi.ingsw.client.LocalClient;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.market.MarbleStructure;
 import it.polimi.ingsw.model.shared.DevelopmentCard;
@@ -18,6 +20,7 @@ import java.util.*;
 public class GUI extends Application implements UI {
     private Stage stage;
     private final Map<String, Scene> sceneMap = new HashMap<>();
+    private Client client;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -25,6 +28,18 @@ public class GUI extends Application implements UI {
         this.stage = stage;
         this.stage.setTitle("Masters of Renaissance");
         setScene("online-offline");
+    }
+
+    public void initializeClient(boolean online) {
+        if (online) {
+            this.client = new Client(this);
+        } else {
+            this.client = new LocalClient(this);
+        }
+    }
+
+    public Client getClient() {
+        return client;
     }
 
     @Override
@@ -48,7 +63,7 @@ public class GUI extends Application implements UI {
     }
 
     private void loadScenes() {
-        for (String sceneName : Arrays.asList("online-offline", "connect")) {
+        for (String sceneName : Arrays.asList("online-offline", "connect", "select-game")) {
             FXMLLoader loader = new FXMLLoader(
                     getClass().getClassLoader().getResource("scenes/" + sceneName +".fxml"));
             try {
