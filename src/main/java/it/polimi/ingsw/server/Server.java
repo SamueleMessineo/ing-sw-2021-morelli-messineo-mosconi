@@ -18,7 +18,7 @@ public class Server {
     private final ServerSocket serverSocket;
     List<ClientConnection> pendingConnections = new ArrayList<>();
     private final ServerController serverController=new ServerController(this);
-    private Map<Integer , Room> rooms = new HashMap<>();
+    private final Map<Integer , Room> rooms = new HashMap<>();
 
     public Server() throws IOException {
         this.serverSocket = new ServerSocket(PORT);

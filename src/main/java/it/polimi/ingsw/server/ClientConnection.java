@@ -20,7 +20,7 @@ public class ClientConnection implements Runnable{
     private ObjectOutputStream outputStream;
     private final SetupMessageHandler setupMessageHandler;
     private GameMessageHandler gameMessageHandler;
-    private Logger logger;
+    private final Logger logger;
     private boolean receivedPong = false;
     private boolean connected = true;
 

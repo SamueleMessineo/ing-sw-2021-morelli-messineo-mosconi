@@ -1,26 +1,20 @@
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.client.Client;
-import it.polimi.ingsw.client.LocalClient;
-import it.polimi.ingsw.view.SelectionCLI;
+import it.polimi.ingsw.view.CLI;
+import it.polimi.ingsw.view.UI;
+import it.polimi.ingsw.view.gui.GUI;
 
 public class ClientApp {
     public static void main(String[] args) {
-        Client client;
-        SelectionCLI cli = new SelectionCLI();
-
+        UI ui;
         if (args.length == 1 && args[0].equals("cli")) {
-            if(cli.playingOnLine()){
-                client = new Client(true);
-            } else {
-                client = new LocalClient(true);
-            }
-        } else if (args.length == 0) {
-            client = new Client(false);
+            // playing with CLI
+            ui = new CLI();
         } else {
-            System.out.println("error");
-            return;
+            // playing with GUI
+            ui = new GUI();
         }
-        client.run();
+        ui.run();
     }
 }

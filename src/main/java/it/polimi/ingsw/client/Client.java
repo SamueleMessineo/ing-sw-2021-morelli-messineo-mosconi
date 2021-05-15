@@ -1,8 +1,6 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.network.Message;
-import it.polimi.ingsw.view.CLI;
-import it.polimi.ingsw.view.gui.GUI;
 import it.polimi.ingsw.view.UI;
 
 import java.io.IOException;
@@ -11,16 +9,19 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Client {
-    private UI ui;
+    private final UI ui;
     private Socket socket;
     ServerConnection serverConnection;
 
-    public Client(boolean withCLI) {
-        if (withCLI) {
-            ui = new CLI(this);
-        } else {
-            ui = new GUI();
-        }
+    public Client(UI ui) {
+        this.ui = ui;
+    }
+
+    public void connect(String ip, int port) throws IOException {
+        socket = new Socket(ip, port);
+        serverConnection = new ServerConnection(socket, this);
+        ExecutorService executor = Executors.newCachedThreadPool();
+        executor.submit(serverConnection);
     }
 
     public void run() {
@@ -44,7 +45,7 @@ public class Client {
         return ui;
     }
 
-    public void closeConncetion(){
+    public void closeConnection(){
         serverConnection.close();
     }
 }

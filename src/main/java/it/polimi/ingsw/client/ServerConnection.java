@@ -15,7 +15,7 @@ public class ServerConnection implements Runnable {
     private final Client client;
     private ObjectInputStream inputStream;
     private ObjectOutputStream outputStream;
-    private ClientMessageHandler clientMessageHandler;
+    private final ClientMessageHandler clientMessageHandler;
 
     public ServerConnection(Socket socket, Client client) {
         this.socket = socket;

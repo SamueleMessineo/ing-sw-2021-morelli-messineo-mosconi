@@ -13,6 +13,8 @@ import java.util.Map;
 
 public interface UI {
 
+    void run();
+
     void displayRoomDetails(ArrayList<String> players, int playersNum, int RoomId);
 
     void setup();

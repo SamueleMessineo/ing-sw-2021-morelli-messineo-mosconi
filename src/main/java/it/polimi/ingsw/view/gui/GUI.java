@@ -17,18 +17,19 @@ import java.util.*;
 
 public class GUI extends Application implements UI {
     private Stage stage;
-    private Map<String, Scene> sceneMap = new HashMap<>();
+    private final Map<String, Scene> sceneMap = new HashMap<>();
 
     @Override
     public void start(Stage stage) throws Exception {
         loadScenes();
         this.stage = stage;
-        run();
+        this.stage.setTitle("Masters of Renaissance");
+        setScene("online-offline");
     }
 
-    private void run() {
-        stage.setTitle("Masters of Renaissance");
-        setScene("online-offline");
+    @Override
+    public void run() {
+        launch();
     }
 
     public void setScene(String sceneName) {

@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.client.Client;
+import it.polimi.ingsw.client.LocalClient;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.market.MarbleStructure;
 import it.polimi.ingsw.model.player.Player;
@@ -16,20 +17,42 @@ import it.polimi.ingsw.network.setup.JoinPrivateRoomMessage;
 import it.polimi.ingsw.network.setup.JoinPublicRoomMessage;
 import it.polimi.ingsw.utils.GameUtils;
 
+import java.io.IOException;
 import java.io.PrintStream;
 import java.util.*;
 
 public class CLI implements UI {
-    private final Client client;
+    private Client client;
     private final Scanner input;
     private final PrintStream output;
     private String username;
     private Game gameState;
 
-    public CLI(Client client) {
-        this.client = client;
+    public CLI() {
         input = new Scanner(System.in);
         output= new PrintStream(System.out);
+    }
+    @Override
+    public void run() {
+        output.println("How do you want to play?");
+        int selection = GameUtils.askIntegerInput("1. online | 2. offline", 1, 2, output, input);
+        switch (selection) {
+            case 1:
+                this.client = new Client(this);
+                try {
+                    this.client.connect("localhost", 31415);
+                    setup();
+                } catch (IOException e) {
+                    output.println("Server unavailable :(");
+                    output.println("exiting...");
+                    return;
+                }
+                break;
+            case 2:
+                this.client = new LocalClient(this);
+                this.client.run();
+                break;
+        }
     }
 
     public void setup(){
@@ -47,7 +70,7 @@ public class CLI implements UI {
                 output.println("Is this a private game? [Y/n]");
                 privateGame= input.nextLine().toLowerCase().startsWith("y");
             }
-            if(username.trim().toLowerCase().equals("lorenzoilmagnifico")&&playersNum==1){
+            if(username.trim().equalsIgnoreCase("lorenzoilmagnifico")&&playersNum==1){
                 displayError("There is only one 'Lorenzo Il Magnifico'");
                 setup();
             }
@@ -117,8 +140,6 @@ public class CLI implements UI {
         client.sendMessage(new DropInitialLeaderCardsResponseMessage(selection1, selection2));
 
     }
-
-
 
     @Override
     public void displayGameState() {
@@ -319,7 +340,7 @@ public class CLI implements UI {
                             }
 
                         }
-                        indexes.remove((Integer) selection);
+                        indexes.remove(selection);
                         productionNumber++;
                     } else output.println("Selection not valid");
                     if(indexes.size()>0){
@@ -403,7 +424,7 @@ public class CLI implements UI {
         if(selection==1)setup();
         else {
             output.println("Bye "+username);
-            client.closeConncetion();
+            client.closeConnection();
         }
     }
 

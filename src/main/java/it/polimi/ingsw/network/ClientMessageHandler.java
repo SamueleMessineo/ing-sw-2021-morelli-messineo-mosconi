@@ -16,7 +16,7 @@ import java.util.concurrent.Executors;
 public class ClientMessageHandler {
     private final ServerConnection serverConnection;
     private final UI ui;
-    private ExecutorService executor = Executors.newCachedThreadPool();
+    private final ExecutorService executor = Executors.newCachedThreadPool();
     private ClientMessage latestMessage = null;
 
     public ClientMessageHandler(Client client, ServerConnection serverConnection){
