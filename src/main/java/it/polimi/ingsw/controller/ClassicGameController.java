@@ -320,7 +320,6 @@ public class ClassicGameController {
     }
 
     public void playLeader(int cardIndex) {
-        System.out.println(getPlayableLeaderCards());
         LeaderCard leaderCard = getPlayableLeaderCards().get(cardIndex);
         game.getCurrentPlayer().playLeaderCard(leaderCard);
 

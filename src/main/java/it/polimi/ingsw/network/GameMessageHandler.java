@@ -266,16 +266,21 @@ public class GameMessageHandler {
             return;
         }
         room.sendAll(new StringMessage(disconnectedPlayer.getUsername() + " disconnected"));
-        room.sendAll(new UpdateGameStateMessage(room.getGame()));
+
         if(room.getCurrentTurn()!= null && disconnectedPlayer.equals(room.getGame().getPlayerByUsername(room.getCurrentTurn().getCurrentPlayer()))){
             endTurn();
-        }
+        } else  room.sendAll(new UpdateGameStateMessage(room.getGame()));
+
         disconnectedPlayer.setActive(false);
+        /*
         if(room.getGame().getPlayers().size() == 1){
             System.out.println("game over");
             room.sendAll(new StringMessage("Game ended for lack of players"));
             // room.sendAll(new GameOverMessage(gameController.computeWinner(), gameController.computeStanding()));
         }
+         */
+
+        System.out.println("players" + gameController.getGame().getPlayers() + "conncetions" + room.getConnections().size());
 
     }
 
