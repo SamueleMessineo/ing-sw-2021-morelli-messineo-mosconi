@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.player;
 
 import it.polimi.ingsw.model.shared.*;
+import it.polimi.ingsw.utils.GameUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -213,11 +214,13 @@ public class Player implements Serializable {
 
     public boolean canActivateProduction() {
         Map<Resource, Integer> allResources = new HashMap<>(playerBoard.getResources());
+        allResources = GameUtils.sumResourcesMaps(allResources, GameUtils.emptyResourceMap());
         for (PlayerCardStack cardStack : playerBoard.getCardStacks()) {
             if (!cardStack.empty()) {
                 DevelopmentCard topCard = cardStack.peek();
                 boolean canActivateCard = true;
                 for (Resource resource : topCard.getProductionPower().getInput().keySet()) {
+                    if (resource == Resource.FAITH)continue;
                     if (allResources.get(resource) < topCard.getProductionPower().getInput().get(resource)) {
                         canActivateCard = false;
                         break;

@@ -102,12 +102,12 @@ public class LocalMessageHandler {
     public void handle(DropLeaderCardResponseMessage message){
         gameController.dropLeader(message.getCard());
         ui.displayString("Your have " +player.getFaithTrack().getPosition() +" faith points");
-        nextMoves(false);
+        nextMoves(currentTurn.hasAlreadyPerformedMove());
     }
 
     public void handle(PlayLeaderResponseMessage message){
         gameController.playLeader(message.getCardIndex());
-        nextMoves(false);
+        nextMoves(currentTurn.hasAlreadyPerformedMove());
     }
 
     public void handle(SwitchShelvesResponseMessage message){
@@ -122,7 +122,7 @@ public class LocalMessageHandler {
     public void handle(BuyDevelopmentCardResponseMessage message){
         DevelopmentCard developmentCard = gameController.getBuyableDevelopementCards().get(message.getSelectedCardIndex());
         List<Integer> stacks = gameController.getStacksToPlaceCard(player, developmentCard);
-       currentTurn.setBoughtDevelopmentCard(developmentCard);
+        currentTurn.setBoughtDevelopmentCard(developmentCard);
         ui.selectStackToPlaceCard(stacks);
     }
 
@@ -181,6 +181,8 @@ public class LocalMessageHandler {
         System.out.println(resourcesConverted);
         // check if the selected resources are valid
         try {
+            System.out.println("get reources to drop" + message.getResourcesToDrop());
+            System.out.println("resources converted" + resourcesConverted);
             gameController.dropPlayerResources(resourcesConverted, message.getResourcesToDrop(),
                     player.getUsername());
             nextMoves(true);

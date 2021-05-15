@@ -390,6 +390,7 @@ public class CLI implements UI {
         int selection;
         for (DevelopmentCard developmentCard:
              developmentCards) {
+            output.println((developmentCards.indexOf(developmentCard)+1)+":");
             output.println(Display.paintCard(developmentCard.getCardType()) +  developmentCard + "\u001B[0m");
         }
         selection = GameUtils.askIntegerInput("Select a card", 1, developmentCards.size(), output, input)-1;
@@ -425,7 +426,8 @@ public class CLI implements UI {
         if(selection==1)setup();
         else {
             output.println("Bye "+username);
-            client.closeConnection();
+            client.closeConncetion();
+            System.exit(0);
         }
     }
 

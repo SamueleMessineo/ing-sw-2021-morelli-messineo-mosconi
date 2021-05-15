@@ -178,6 +178,7 @@ public class Warehouse implements Serializable {
     }
 
     public boolean canPlaceResources(Map<Resource,Integer> resourcesToPlace){
+        resourcesToPlace = GameUtils.sumResourcesMaps(resourcesToPlace, GameUtils.emptyResourceMap());
         Map<Resource,Integer> resourcesInWarehouse=new HashMap<>(getResources());
         int numOfResourcesToPlaceInWarehouse=0;
         int maxResourcesInWarehouse=0;
@@ -225,6 +226,7 @@ public class Warehouse implements Serializable {
         List<Resource> resTypeExtraShelf=new ArrayList<>();
         if (shelfNames.contains("extra1"))
             resTypeExtraShelf.add(getShelf("extra1").getResourceType());
+        System.out.println(resTypeExtraShelf);
 
         if (shelfNames.contains("extra2"))
             resTypeExtraShelf.add(getShelf("extra2").getResourceType());
