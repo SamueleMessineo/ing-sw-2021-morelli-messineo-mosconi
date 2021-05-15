@@ -2,20 +2,16 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.market.MarbleStructure;
-import it.polimi.ingsw.model.player.Player;
-import it.polimi.ingsw.model.player.Shelf;
 import it.polimi.ingsw.model.shared.DevelopmentCard;
 import it.polimi.ingsw.model.shared.LeaderCard;
 import it.polimi.ingsw.model.shared.ProductionPower;
 import it.polimi.ingsw.model.shared.Resource;
-import it.polimi.ingsw.network.client.StringMessage;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 
-public interface UI extends Runnable {
+public interface UI {
 
     void displayRoomDetails(ArrayList<String> players, int playersNum, int RoomId);
 
@@ -51,10 +47,9 @@ public interface UI extends Runnable {
 
     void playLeader(List<LeaderCard> leaderCards);
 
-    public void gameOver(String winner, Map<String, Integer> standing);
+    void gameOver(String winner, Map<String, Integer> standing);
 
-    public void askUsername();
+    void askUsername();
 
-    public String getUsername();
-
+    String getUsername();
 }

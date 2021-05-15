@@ -1,9 +1,8 @@
 package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.network.Message;
-import it.polimi.ingsw.network.setup.CreateRoomMessage;
 import it.polimi.ingsw.view.CLI;
-import it.polimi.ingsw.view.GUI;
+import it.polimi.ingsw.view.gui.GUI;
 import it.polimi.ingsw.view.UI;
 
 import java.io.IOException;

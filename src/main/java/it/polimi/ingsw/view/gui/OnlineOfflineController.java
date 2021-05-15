@@ -1,10 +1,20 @@
-package scenes;
+package it.polimi.ingsw.view.gui;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 
-public class SceneController {
+import java.util.concurrent.TimeUnit;
+
+public class OnlineOfflineController implements SceneController {
+
+    private GUI gui;
+
+    @Override
+    public void setGUI(GUI gui) {
+        this.gui = gui;
+    }
 
     @FXML
     private Button offlineButton;
@@ -15,11 +25,12 @@ public class SceneController {
     @FXML
     void playOffline(ActionEvent event) {
         System.out.println("offline");
+//        gui.setScene("root2");
     }
 
     @FXML
     void playOnline(ActionEvent event) {
         System.out.println("online");
+        gui.setScene("connect");
     }
-
 }

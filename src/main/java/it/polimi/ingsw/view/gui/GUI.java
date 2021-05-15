@@ -1,4 +1,4 @@
-package it.polimi.ingsw.view;
+package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.market.MarbleStructure;
@@ -6,56 +6,33 @@ import it.polimi.ingsw.model.shared.DevelopmentCard;
 import it.polimi.ingsw.model.shared.LeaderCard;
 import it.polimi.ingsw.model.shared.ProductionPower;
 import it.polimi.ingsw.model.shared.Resource;
+import it.polimi.ingsw.view.UI;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class GUI extends Application implements UI {
-    SceneController controller;
-    @FXML
-    private Button offlineButton;
-
-    @FXML
-    private Button onlineButton;
-
-    @FXML
-    void playOffline(ActionEvent event) {
-        System.out.println("offline");
-    }
-
-    @FXML
-    void playOnline(ActionEvent event) {
-        System.out.println("online");
-        try {
-            Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("scenes/connect.fxml"));
-            controller.setRoot(root);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
+    private Stage stage;
+    private Map<String, Scene> sceneMap = new HashMap<>();
 
     @Override
     public void start(Stage stage) throws Exception {
+        loadScenes();
+        this.stage = stage;
+        run();
+    }
 
-        Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("scenes/online-offline-selection.fxml"));
+    private void run() {
         stage.setTitle("Masters of Renaissance");
-        //Label label = new Label("Welcome to the game!");
-        Scene scene = new Scene(new Pane());
-        stage.setScene(scene);
-        SceneController controller = new SceneController(scene);
-        controller.setRoot(root);
+        setScene("online-offline");
+    }
+
+    public void setScene(String sceneName) {
+        stage.setScene(sceneMap.get(sceneName));
         stage.show();
     }
 
@@ -67,6 +44,20 @@ public class GUI extends Application implements UI {
     @Override
     public void setup() {
         launch();
+    }
+
+    private void loadScenes() {
+        for (String sceneName : Arrays.asList("online-offline", "connect")) {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getClassLoader().getResource("scenes/" + sceneName +".fxml"));
+            try {
+                sceneMap.put(sceneName, loader.load());
+                SceneController controller = loader.getController();
+                controller.setGUI(this);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
@@ -146,11 +137,6 @@ public class GUI extends Application implements UI {
 
     @Override
     public void gameOver(String winner, Map<String, Integer> standing){
-
-    }
-
-    @Override
-    public void run() {
 
     }
 

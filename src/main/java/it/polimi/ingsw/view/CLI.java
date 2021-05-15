@@ -407,11 +407,6 @@ public class CLI implements UI {
         }
     }
 
-    @Override
-    public void run() {
-        setup();
-    }
-
     public String getUsername() {
         return username;
     }
