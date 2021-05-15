@@ -3,11 +3,9 @@ package it.polimi.ingsw.view;
 import it.polimi.ingsw.model.market.Marble;
 import it.polimi.ingsw.model.market.MarbleStructure;
 import it.polimi.ingsw.model.market.Market;
-import it.polimi.ingsw.model.player.Player;
-import it.polimi.ingsw.model.player.PlayerBoard;
-import it.polimi.ingsw.model.player.Strongbox;
-import it.polimi.ingsw.model.player.Warehouse;
+import it.polimi.ingsw.model.player.*;
 import it.polimi.ingsw.model.shared.CardType;
+import it.polimi.ingsw.model.shared.DevelopmentCard;
 import it.polimi.ingsw.model.shared.LeaderCard;
 import it.polimi.ingsw.model.shared.Resource;
 
@@ -123,7 +121,8 @@ public class Display {
         displayStrongbox(player.getPlayerBoard().getStrongbox(), output);
         output.println("\n 🂡 Cards");
         for (int i = 0; i < 3 ; i++) {
-            output.println(player.getPlayerBoard().getCardStacks().get(i).toString());
+            PlayerCardStack developmentCard = player.getPlayerBoard().getCardStacks().get(i);
+            output.println(paintCard(developmentCard.peek().getCardType()) + developmentCard + "\u001B[0m");
         }
         output.println();
     }

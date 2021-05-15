@@ -395,12 +395,11 @@
     "level": 2,
     "cardType": "BLUE",
     "cost": {
-      "SERVANT": 2
+      "COIN": 5
     },
     "productionPower": {
       "input": {
-        "SHIELD": 2,
-        "FAITH": 2
+        "SERVANT": 2
       },
       "output": {
         "SHIELD": 2,

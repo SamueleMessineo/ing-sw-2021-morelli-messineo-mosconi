@@ -122,7 +122,7 @@ public class LocalMessageHandler {
     public void handle(BuyDevelopmentCardResponseMessage message){
         DevelopmentCard developmentCard = gameController.getBuyableDevelopementCards().get(message.getSelectedCardIndex());
         List<Integer> stacks = gameController.getStacksToPlaceCard(player, developmentCard);
-       currentTurn.setBoughtDevelopmentCard(developmentCard);
+        currentTurn.setBoughtDevelopmentCard(developmentCard);
         ui.selectStackToPlaceCard(stacks);
     }
 

@@ -368,10 +368,12 @@ public class ClassicGameController {
     public List<Integer> getStacksToPlaceCard(Player player, DevelopmentCard developmentCard){
         List<Integer> stacks = new ArrayList<>();
         List<PlayerCardStack> allStacks = player.getPlayerBoard().getCardStacks();
-        System.out.println(allStacks);
+        //System.out.println(allStacks);
         for (int i = 0; i < allStacks.size(); i++) {
             PlayerCardStack cardStack = allStacks.get(i);
-            if(cardStack.size()== 0 || cardStack.canPlaceCard(developmentCard)){
+            System.out.println("card stack size" + cardStack.size());
+            System.out.println("can place" + cardStack.canPlaceCard(developmentCard));
+            if((developmentCard.getLevel()==0 && cardStack.size()== 0) || cardStack.canPlaceCard(developmentCard)){
              //   stacks.add(allStacks.indexOf(cardStack));
                 stacks.add(i);
             }
