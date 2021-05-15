@@ -404,6 +404,7 @@ public class CLI implements UI {
         else {
             output.println("Bye "+username);
             client.closeConncetion();
+            System.exit(0);
         }
     }
 
