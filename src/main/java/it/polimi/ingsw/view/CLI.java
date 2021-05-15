@@ -426,7 +426,7 @@ public class CLI implements UI {
         if(selection==1)setup();
         else {
             output.println("Bye "+username);
-            client.closeConncetion();
+            client.closeConnection();
             System.exit(0);
         }
     }
