@@ -122,7 +122,8 @@ public class Display {
         output.println("\n 🂡 Cards");
         for (int i = 0; i < 3 ; i++) {
             PlayerCardStack developmentCard = player.getPlayerBoard().getCardStacks().get(i);
-            output.println(paintCard(developmentCard.peek().getCardType()) + developmentCard + "\u001B[0m");
+            if(developmentCard.isEmpty())output.println(developmentCard.toString());
+            else output.println(paintCard(developmentCard.peek().getCardType()) + developmentCard.toString() + "\u001B[0m");
         }
         output.println();
     }

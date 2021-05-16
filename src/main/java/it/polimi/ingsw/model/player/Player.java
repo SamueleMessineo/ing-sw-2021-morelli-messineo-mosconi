@@ -276,7 +276,7 @@ public class Player implements Serializable {
             for (ProductionPower productionPower:
                     getPlayerBoard().getExtraProductionPowers()) {
                 for (Resource resource : allResources.keySet()) {
-                    if (allResources.get(resource) < productionPower.getInput().get(resource)) {
+                    if (productionPower.getInput().get(resource)!= null && allResources.get(resource) < productionPower.getInput().get(resource)) {
                         extraProductionPowersToActive.add(productionPower);
                     }
                 }

@@ -188,7 +188,7 @@ public class ClassicGameController {
                 if(!cardsStack.isEmpty()) {
                     DevelopmentCard topCard = cardsStack.peek();
                     if (player.canBuyAndPlaceDevelopmentCard(topCard)) {
-                        System.out.println("add buy card;");
+                        GameUtils.debug(topCard.toString());
                         moves.add("BUY_CARD");
                         break;
                     }
