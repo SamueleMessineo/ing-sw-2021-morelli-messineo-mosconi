@@ -349,6 +349,7 @@ public class CLI implements UI {
                         done = input.nextLine().trim().toLowerCase().startsWith("y");
                     } else done = true;
                 }
+                GameUtils.debug(selectedStacks.toString());
                 client.sendMessage(new ActivateProductionResponseMessage(selectedStacks, selectedBasicProductionPowers, extraProductionPowers));
 
 
@@ -387,6 +388,7 @@ public class CLI implements UI {
 
     @Override
     public void buyDevelopmentCard(List<DevelopmentCard> developmentCards) {
+        System.out.println(developmentCards.size());
         int selection;
         for (DevelopmentCard developmentCard:
              developmentCards) {
@@ -422,11 +424,17 @@ public class CLI implements UI {
 
     public void gameOver(String winner, Map<String, Integer> standing){
         output.println("Game ended, "+winner+" won the game\n"+standing);
-        int selection = GameUtils.askIntegerInput("Do you want to start a new game?", 1,2, output, input);
-        if(selection==1)setup();
+        int selection = GameUtils.askIntegerInput("Do you want to start a new game?[1.yes 2.no]", 1,2, output, input);
+        if(selection==1){
+            client.run();
+        }
         else {
             output.println("Bye "+username);
-            client.closeConnection();
+            try {
+                client.closeConnection();
+            } catch (NullPointerException e){
+
+            }
             System.exit(0);
         }
     }

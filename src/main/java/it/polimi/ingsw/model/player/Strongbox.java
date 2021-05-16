@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.player;
 
 import it.polimi.ingsw.model.shared.Resource;
+import it.polimi.ingsw.utils.GameUtils;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -32,6 +33,7 @@ public class Strongbox implements Storage, Serializable {
      */
     @Override
     public void addResources(Map<Resource, Integer> res) {
+        GameUtils.debug("adding" + res.toString());
         this.resources.forEach((resource,integer)->
                 this.resources.put(resource,integer + res.get(resource)));
     }

@@ -233,7 +233,7 @@ public class ClassicGameController {
         List<DevelopmentCard> developmentCards = new ArrayList<>();
 
         for (MarketCardStack cardsStack : game.getMarket().getCardsGrid()) {
-            if(cardsStack.isEmpty())break;
+            if(cardsStack.isEmpty())continue;
             DevelopmentCard topCard = cardsStack.peek();
             if (game.getCurrentPlayer().canBuyAndPlaceDevelopmentCard(topCard)) {
                 developmentCards.add(topCard);
@@ -266,8 +266,6 @@ public class ClassicGameController {
                 }
 
             }
-
-
             game.getCurrentPlayer().getPlayerBoard().activateProduction(selectedStacks);
         }
         if (basicProduction != null) {
@@ -312,7 +310,7 @@ public class ClassicGameController {
         game.getCurrentPlayer().getPlayerBoard().payResourceCost(game.getCurrentPlayer().computeDiscountedCost(developmentCard));
         for (MarketCardStack stack:
              game.getMarket().getCardsGrid()) {
-            if(stack.peek().equals(developmentCard)){
+            if(!stack.isEmpty() && stack.peek().equals(developmentCard)){
                 stack.pop();
                 break;
             }

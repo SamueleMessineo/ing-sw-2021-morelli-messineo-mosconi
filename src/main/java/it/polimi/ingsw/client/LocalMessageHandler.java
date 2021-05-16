@@ -189,7 +189,8 @@ public class LocalMessageHandler {
         } catch (InvalidParameterException e) {
             System.out.println(e.getMessage());
             ui.displayString("The selected resources are invalid");
-            nextMoves(false);
+            ui.dropResources(currentTurn.getConverted());
+            //nextMoves(false);
         }
 
     }
