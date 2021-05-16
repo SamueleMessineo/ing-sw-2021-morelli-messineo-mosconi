@@ -1,18 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.Scene?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
 
-<Scene xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.SelectGameController">
-   <root>
-      <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" spacing="50.0">
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" spacing="50.0" styleClass="vbox" stylesheets="@../css/setup.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.SelectGameController">
+   <children>
+      <ImageView fitHeight="300.0" fitWidth="1000.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/logo.png" />
+         </image>
+      </ImageView>
+      <HBox alignment="CENTER" prefHeight="69.0" prefWidth="1280.0" spacing="50.0">
          <children>
             <Button fx:id="createGameButton" mnemonicParsing="false" onAction="#createGame" text="Create Game" />
             <Button fx:id="joinRandomButton" mnemonicParsing="false" onAction="#joinRandom" text="Join Random Game" />
-            <Button fx:id="joinIDButton" mnemonicParsing="false" onAction="#joinByID" text="Join Game By ID" />
+            <Button fx:id="joinIDButton" alignment="CENTER" mnemonicParsing="false" onAction="#joinByID" text="Join Game By ID" />
          </children>
-      </VBox>
-   </root>
-</Scene>
+      </HBox>
+   </children>
+</VBox>

@@ -1,0 +1,14 @@
+.vbox {
+    -fx-background-image: url("/images/blue-background.png");
+    -fx-background-size: stretch;
+}
+
+.button {
+    -fx-padding: 10 20;
+    -fx-font-weight: 700;
+    -fx-background-color: white;
+}
+
+.light-text {
+    -fx-text-fill: white;
+}

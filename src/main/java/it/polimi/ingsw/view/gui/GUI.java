@@ -67,7 +67,7 @@ public class GUI extends Application implements UI {
             FXMLLoader loader = new FXMLLoader(
                     getClass().getClassLoader().getResource("scenes/" + sceneName +".fxml"));
             try {
-                sceneMap.put(sceneName, loader.load());
+                sceneMap.put(sceneName, new Scene(loader.load()));
                 SceneController controller = loader.getController();
                 controller.setGUI(this);
             } catch (IOException e) {
