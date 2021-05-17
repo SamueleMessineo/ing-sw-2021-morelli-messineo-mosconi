@@ -131,8 +131,7 @@ public class GameUtils {
 
     public static void writeGama(Game game, Integer roomID){
         try {
-            FileOutputStream fileOut =
-                    new FileOutputStream("src/main/resources/games/" + roomID + ".ser");
+            FileOutputStream fileOut = new FileOutputStream("src/main/resources/games/" + roomID + ".ser");
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
             out.writeObject(game);
             out.close();
@@ -150,12 +149,8 @@ public class GameUtils {
             game = (Game) in.readObject();
             in.close();
             fileIn.close();
-        } catch (IOException i) {
+        } catch (IOException | ClassNotFoundException i) {
             i.printStackTrace();
-
-        } catch (ClassNotFoundException c) {
-            System.out.println("Employee class not found");
-            c.printStackTrace();
 
         }
         return game;

@@ -299,6 +299,7 @@ public class CLI implements UI {
         boolean done = false;
         List<Integer> indexes= new ArrayList<>();
         List<Integer> extraProductionPowers = new ArrayList<>();
+        List<Resource> extraOutputs = new ArrayList<>();
         int size = productionPowers.size();
 
                 if(currentGameState.getCurrentPlayer().canActivateBasicProduction()){
@@ -343,6 +344,7 @@ public class CLI implements UI {
                                 if (possibleExtraPowers!= null && !possibleExtraPowers.isEmpty()
                                         && possibleExtraPowers.contains(currentGameState.getCurrentPlayer().possibleProductionPowersToActive().get(selection - 1))){
                                     extraProductionPowers.add(selection - (gameState.getCurrentPlayer().possibleProductionPowersToActive().size()-1));
+                                    extraOutputs.add(askExtraOutput());
                                 } else {
                                     selectedStacks.add(selection - 1);
                                 }
@@ -358,9 +360,30 @@ public class CLI implements UI {
                     } else done = true;
                 }
                 GameUtils.debug(selectedStacks.toString());
-                client.sendMessage(new ActivateProductionResponseMessage(selectedStacks, selectedBasicProductionPowers, extraProductionPowers));
+                client.sendMessage(new ActivateProductionResponseMessage(selectedStacks, selectedBasicProductionPowers, extraProductionPowers, extraOutputs));
 
 
+    }
+
+    private Resource askExtraOutput(){
+        Resource resource = Resource.ANY;
+        int selection;
+        selection = GameUtils.askIntegerInput("Which resource do you want in output?\\n1.SHIELD, 2.SERVANT, 3.STONE, 4.COIN\"", 1, 4, output, input);
+        switch (selection){
+            case (1):
+                resource = Resource.SHIELD;
+                break;
+            case (2):
+                resource = Resource.SERVANT;
+                break;
+            case (3):
+                resource = Resource.STONE;
+                break;
+            case (4):
+                resource = Resource.COIN;
+                break;
+        }
+        return resource;
     }
 
     private ProductionPower askBasicProductionPowerIO(){

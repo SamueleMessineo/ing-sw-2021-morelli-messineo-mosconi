@@ -152,6 +152,17 @@ public class ClassicGameController {
                     obtainedResources.get(r) < resourcesToDrop.get(r)) {
                 throw new InvalidParameterException("resources not in original map");
             }
+            /*
+            for (Player player:
+                 game.getPlayers()) {
+               player.getFaithTrack().move();
+            }
+            for (Player player:
+                    game.getPlayers()) {
+                tryPopeReport(player);
+            }
+
+             */
         }
         Player player = game.getPlayerByUsername(playerUsername);
         Map<Resource, Integer> resourcesToAdd = new HashMap<>(obtainedResources);
@@ -253,7 +264,7 @@ public class ClassicGameController {
         return leaderCards;
     }
 
-    public void activateProduction(List<Integer> selectedStacks, ProductionPower basicProduction, List<Integer> extraProductionPowers){
+    public void activateProduction(List<Integer> selectedStacks, ProductionPower basicProduction, List<Integer> extraProductionPowers, List<Resource> extraOutput){
         if (selectedStacks != null) {
             List<ProductionPower> powers = game.getCurrentPlayer().possibleProductionPowersToActive();
             GameUtils.debug("powers: " + powers);
@@ -287,7 +298,10 @@ public class ClassicGameController {
         }
         if(extraProductionPowers != null){
             for (Integer extraProductionPower : extraProductionPowers) {
-                game.getCurrentPlayer().getPlayerBoard().activateProductionPower(game.getCurrentPlayer().getPlayerBoard().getExtraProductionPowers().get(extraProductionPower));
+                ProductionPower productionPower = game.getCurrentPlayer().getPlayerBoard().getExtraProductionPowers().get(extraProductionPower);
+                productionPower.getOutput().put(extraOutput.get(extraProductionPower), 1);
+                productionPower.getOutput().remove(Resource.ANY);
+                game.getCurrentPlayer().getPlayerBoard().activateProductionPower(productionPower);
             }
 
         }
