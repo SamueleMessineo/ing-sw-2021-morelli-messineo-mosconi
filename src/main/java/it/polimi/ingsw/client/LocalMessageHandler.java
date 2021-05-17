@@ -211,7 +211,7 @@ public class LocalMessageHandler {
 
     public void handle(ActivateProductionResponseMessage message){
         if(message.getSelectedStacks()!=null || message.getBasicProduction() != null || message.getExtraProductionPowers() != null) {
-            gameController.activateProduction(message.getSelectedStacks(), message.getBasicProduction(), message.getExtraProductionPowers());
+            gameController.activateProduction(message.getSelectedStacks(), message.getBasicProduction(), message.getExtraProductionPowers(), message.getExtraOutput());
             ui.displayString("Your update strongbox: " + gameController.getGame().getCurrentPlayer().getPlayerBoard().getStrongbox());
             nextMoves(true);
         }

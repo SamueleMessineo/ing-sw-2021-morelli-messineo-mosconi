@@ -190,7 +190,7 @@ public class GameMessageHandler {
 
     public void handle(ActivateProductionResponseMessage message){
         if(message.getSelectedStacks()!=null || message.getBasicProduction() != null || message.getExtraProductionPowers() != null) {
-            gameController.activateProduction(message.getSelectedStacks(), message.getBasicProduction(), message.getExtraProductionPowers());
+            gameController.activateProduction(message.getSelectedStacks(), message.getBasicProduction(), message.getExtraProductionPowers(), message.getExtraOutput());
             clientConnection.sendMessage(new StringMessage("Your update strongbox: " + room.getGame().getCurrentPlayer().getPlayerBoard().getStrongbox()));
             room.getCurrentTurn().setAlreadyPerformedMove(true);
             sendNextMoves();
