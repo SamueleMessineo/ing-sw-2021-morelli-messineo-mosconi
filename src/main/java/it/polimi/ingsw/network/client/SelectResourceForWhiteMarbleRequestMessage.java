@@ -3,28 +3,24 @@ package it.polimi.ingsw.network.client;
 import it.polimi.ingsw.model.shared.Resource;
 import it.polimi.ingsw.network.ClientMessageHandler;
 
+import java.util.List;
+
 public class SelectResourceForWhiteMarbleRequestMessage extends ClientMessage {
 
     private final int numberOfWhiteMarbles;
-    private final Resource firstResource;
-    private final Resource secondResource;
+    private final List<Resource> options;
 
-    public SelectResourceForWhiteMarbleRequestMessage(int numberOfWhiteMarbles, Resource firstResource, Resource secondResource) {
+    public SelectResourceForWhiteMarbleRequestMessage(int numberOfWhiteMarbles, List<Resource> options) {
         this.numberOfWhiteMarbles = numberOfWhiteMarbles;
-        this.firstResource = firstResource;
-        this.secondResource = secondResource;
+        this.options = options;
     }
 
     public int getNumberOfWhiteMarbles() {
         return numberOfWhiteMarbles;
     }
 
-    public Resource getFirstResource() {
-        return firstResource;
-    }
-
-    public Resource getSecondResource() {
-        return secondResource;
+    public List<Resource> getOptions() {
+        return options;
     }
 
     public void handle(ClientMessageHandler handler) {

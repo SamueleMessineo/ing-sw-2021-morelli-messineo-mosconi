@@ -37,6 +37,8 @@ public interface UI {
 
     void dropResources(Map<Resource, Integer> resources);
 
+    void selectResourceForWhiteMarbles(int amount, List<Resource> options);
+
     void discardLeaderCard(ArrayList<LeaderCard> cards);
 
     void switchShelves(ArrayList<String> shelves);

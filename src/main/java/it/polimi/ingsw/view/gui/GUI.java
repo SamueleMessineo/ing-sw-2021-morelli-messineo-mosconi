@@ -139,6 +139,11 @@ public class GUI extends Application implements UI {
     }
 
     @Override
+    public void selectResourceForWhiteMarbles(int amount, List<Resource> options) {
+
+    }
+
+    @Override
     public void discardLeaderCard(ArrayList<LeaderCard> cards) {
 
     }

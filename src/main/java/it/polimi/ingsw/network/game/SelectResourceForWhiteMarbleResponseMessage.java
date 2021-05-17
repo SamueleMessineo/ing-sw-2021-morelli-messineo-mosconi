@@ -4,17 +4,17 @@ import it.polimi.ingsw.client.LocalMessageHandler;
 import it.polimi.ingsw.model.shared.Resource;
 import it.polimi.ingsw.network.GameMessageHandler;
 
-import java.util.List;
+import java.util.Map;
 
 public class SelectResourceForWhiteMarbleResponseMessage extends GameMessage {
 
-    private final List<Resource> resources;
+    private final Map<Resource, Integer> resources;
 
-    public SelectResourceForWhiteMarbleResponseMessage(List<Resource> resources) {
+    public SelectResourceForWhiteMarbleResponseMessage(Map<Resource, Integer> resources) {
         this.resources = resources;
     }
 
-    public List<Resource> getResources() {
+    public Map<Resource, Integer> getResources() {
         return resources;
     }
 

@@ -137,8 +137,10 @@ public class GameMessageHandler {
         if (resources.get("toConvert").containsKey(Resource.ANY) &&
                 resources.get("toConvert").get(Resource.ANY) > 0) {
             System.out.println("ask for conversion help");
-//            clientConnection.sendMessage(new SelectResourceForWhiteMarbleRequestMessage(resources.get("toConvert").size(),
-//                    resources.get("conversionOptions").get(0), resources.get("conversionOptions").get(1)));
+            int amountToConvert = resources.get("toConvert").get(Resource.ANY);
+            List<Resource> options = new ArrayList<>(resources.get("conversionOptions").keySet());
+            clientConnection.sendMessage(
+                    new SelectResourceForWhiteMarbleRequestMessage(amountToConvert, options));
             return;
         }
         if (resources.get("converted").keySet().size() == 0) {
@@ -163,19 +165,26 @@ public class GameMessageHandler {
         if(gameController.switchShelves(message.getShelf1(), message.getShelf2())){
                     sendNextMoves();
         } else {
-            clientConnection.sendMessage(new ErrorMessage("You cannot switch these two shelves\n"));
+            clientConnection.sendMessage(new ErrorMessage("You cannot switch these two shelves"));
             clientConnection.sendMessage((new SelectMoveRequestMessage(room.getCurrentTurn().getMoves())));
         }
     }
 
     public void handle(SelectResourceForWhiteMarbleResponseMessage message) {
-        List<Resource> resourcesConverted=message.getResources();
-        List<Resource> conversionOptions= room.getCurrentTurn().getConversionOptions();
-        if(!conversionOptions.containsAll(resourcesConverted) && resourcesConverted.size()!= room.getCurrentTurn().getToConvert()){
-            clientConnection.sendMessage(new ErrorMessage("Invalid conversion, try again!\n"));
+        Map<Resource, Integer> resourcesConverted=message.getResources();
+        int amountConverted = 0;
+        for (Map.Entry<Resource, Integer> entry : resourcesConverted.entrySet()) {
+            amountConverted += entry.getValue();
+        }
+        Turn currentTurn = room.getCurrentTurn();
+        List<Resource> conversionOptions= currentTurn.getConversionOptions();
+        if(!resourcesConverted.keySet().containsAll(conversionOptions)
+                || amountConverted != currentTurn.getToConvert()){
+            clientConnection.sendMessage(new ErrorMessage("Invalid conversion, try again!"));
             return;
         }
-        //room.getCurrentTurn().getConverted().addAll(resourcesConverted);
+        resourcesConverted = GameUtils.sumResourcesMaps(currentTurn.getConverted(), resourcesConverted);
+        currentTurn.setConverted(resourcesConverted);
         askToDropResources();
     }
 

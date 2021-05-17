@@ -6,10 +6,6 @@ import it.polimi.ingsw.network.client.*;
 import it.polimi.ingsw.network.client.UpdateGameStateMessage;
 import it.polimi.ingsw.view.UI;
 
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -80,7 +76,7 @@ public class ClientMessageHandler {
 
     public void handle(SelectResourceForWhiteMarbleRequestMessage message) {
         latestMessage = message;
-
+        executor.submit(() -> ui.selectResourceForWhiteMarbles(message.getNumberOfWhiteMarbles(), message.getOptions()));
     }
 
     public void handle(ActivateProductionRequestMessage message){

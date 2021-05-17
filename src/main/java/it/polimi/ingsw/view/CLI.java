@@ -260,6 +260,19 @@ public class CLI implements UI {
     }
 
     @Override
+    public void selectResourceForWhiteMarbles(int amount, List<Resource> options) {
+        output.println("You have " + amount + " white marbles to convert.");
+        Map<Resource, Integer> converted = GameUtils.emptyResourceMap();
+        for (int i = 0; i < amount; i++) {
+            output.println("Convert marble number " + (i+1));
+            int selection = GameUtils.askIntegerInput(
+                    "1. " + options.get(0) + " | 2. "+ options.get(1), 1, 2, output, input);
+            GameUtils.incrementValueInResourceMap(converted, options.get(selection - 1), 1);
+        }
+        client.sendMessage(new SelectResourceForWhiteMarbleResponseMessage(converted));
+    }
+
+    @Override
     public void discardLeaderCard(ArrayList<LeaderCard> cards) {
         Display.displayLeaderCards(cards, output);
         int selection = GameUtils.askIntegerInput("Select the card number", 1, cards.size(), output, input)-1;

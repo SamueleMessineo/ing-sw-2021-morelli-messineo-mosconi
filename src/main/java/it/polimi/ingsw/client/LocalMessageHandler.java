@@ -135,13 +135,19 @@ public class LocalMessageHandler {
     }
 
     public void handle(SelectResourceForWhiteMarbleResponseMessage message) {
-        List<Resource> resourcesConverted=message.getResources();
+        Map<Resource, Integer> resourcesConverted = message.getResources();
+        int amountConverted = 0;
+        for (Map.Entry<Resource, Integer> entry : resourcesConverted.entrySet()) {
+            amountConverted += entry.getValue();
+        };
         List<Resource> conversionOptions= currentTurn.getConversionOptions();
-        if(!conversionOptions.containsAll(resourcesConverted) && resourcesConverted.size()!= currentTurn.getToConvert()){
+        if(!resourcesConverted.keySet().containsAll(conversionOptions)
+                || amountConverted != currentTurn.getToConvert()){
             ui.displayError("Invalid conversion, try again!\n");
             return;
         }
-//        currentTurn.getConverted().addAll(resourcesConverted);
+        resourcesConverted = GameUtils.sumResourcesMaps(currentTurn.getConverted(), resourcesConverted);
+        currentTurn.setConverted(resourcesConverted);
         askToDropResources();
     }
 
@@ -163,8 +169,8 @@ public class LocalMessageHandler {
         if (resources.get("toConvert").containsKey(Resource.ANY) &&
                 resources.get("toConvert").get(Resource.ANY) > 0) {
             System.out.println("ask for conversion help");
-//            clientConnection.sendMessage(new SelectResourceForWhiteMarbleRequestMessage(resources.get("toConvert").size(),
-//                    resources.get("conversionOptions").get(0), resources.get("conversionOptions").get(1)));
+            List<Resource> options = new ArrayList<>(resources.get("conversionOptions").keySet());
+            ui.selectResourceForWhiteMarbles(resources.get("toConvert").get(Resource.ANY), options);
             return;
         }
         if (resources.get("converted").keySet().size() == 0) {
