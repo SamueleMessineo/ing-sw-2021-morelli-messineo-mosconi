@@ -2,10 +2,12 @@ package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.controller.ClassicGameController;
 import it.polimi.ingsw.controller.Turn;
+import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.shared.DevelopmentCard;
 import it.polimi.ingsw.model.shared.Resource;
 import it.polimi.ingsw.network.game.*;
+import it.polimi.ingsw.utils.GameUtils;
 import it.polimi.ingsw.view.UI;
 
 import java.security.InvalidParameterException;
@@ -39,7 +41,13 @@ public class LocalMessageHandler {
 
     public void startTurn(){
         currentTurn = new Turn(player.getUsername(), gameController.computeNextPossibleMoves(false));
-        ui.setGameState(gameController.getGame());
+        Game gameState = null;
+        try {
+            gameState = (Game) gameController.getGame().clone();
+        } catch (CloneNotSupportedException e){
+            GameUtils.debug("not cloneable");
+        }
+        ui.setGameState(gameState);
         ui.displayGameState();
         ui.displayPossibleMoves(currentTurn.getMoves());
     }
@@ -48,7 +56,13 @@ public class LocalMessageHandler {
         if(!checkGameOver()){
             currentTurn.setAlreadyPerformedMove(alreadyPerformedMoves);
             currentTurn.setMoves(gameController.computeNextPossibleMoves(currentTurn.hasAlreadyPerformedMove()));
-            ui.setGameState(gameController.getGame());
+            Game gameState = null;
+            try {
+                gameState = (Game) gameController.getGame().clone();
+            } catch (CloneNotSupportedException e){
+                GameUtils.debug("not cloneable");
+            }
+            ui.setGameState(gameState);
             ui.displayGameState();
             ui.displayPossibleMoves(currentTurn.getMoves());
         }
