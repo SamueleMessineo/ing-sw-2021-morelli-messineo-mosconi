@@ -24,9 +24,18 @@ public class ConnectController implements SceneController {
 
     @FXML
     void connect(ActionEvent event) {
-        System.out.println("try connection");
         try {
-            gui.getClient().connect(ipInput.getText(), Integer.parseInt(portInput.getText()));
+            String ip;
+            int port;
+            if (ipInput.getText().equals("") && portInput.getText().equals("")) {
+                ip = "localhost";
+                port = 31415;
+            } else {
+                ip = ipInput.getText();
+                port = Integer.parseInt(portInput.getText());
+            }
+            System.out.println("try connection to " + ip + " on port " + port);
+            gui.getClient().connect(ip, port);
             System.out.println("connection successful");
             gui.setScene("select-game");
         } catch (Exception e) {
