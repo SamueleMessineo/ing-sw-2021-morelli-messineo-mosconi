@@ -188,7 +188,7 @@ public class ClassicGameController {
                 if(!cardsStack.isEmpty()) {
                     DevelopmentCard topCard = cardsStack.peek();
                     if (player.canBuyAndPlaceDevelopmentCard(topCard)) {
-                        System.out.println("add buy card;");
+                        GameUtils.debug(topCard.toString());
                         moves.add("BUY_CARD");
                         break;
                     }
@@ -233,7 +233,7 @@ public class ClassicGameController {
         List<DevelopmentCard> developmentCards = new ArrayList<>();
 
         for (MarketCardStack cardsStack : game.getMarket().getCardsGrid()) {
-            if(cardsStack.isEmpty())break;
+            if(cardsStack.isEmpty())continue;
             DevelopmentCard topCard = cardsStack.peek();
             if (game.getCurrentPlayer().canBuyAndPlaceDevelopmentCard(topCard)) {
                 developmentCards.add(topCard);
@@ -255,7 +255,9 @@ public class ClassicGameController {
 
     public void activateProduction(List<Integer> selectedStacks, ProductionPower basicProduction, List<Integer> extraProductionPowers){
         if (selectedStacks != null) {
-
+            List<ProductionPower> powers = game.getCurrentPlayer().possibleProductionPowersToActive();
+            GameUtils.debug("powers: " + powers);
+            /*
             for (Integer i:
                  selectedStacks) {
                 PlayerCardStack checkedStack = game.getCurrentPlayer().getPlayerBoard().getCardStacks().get(i);
@@ -267,8 +269,18 @@ public class ClassicGameController {
 
             }
 
+             */
 
-            game.getCurrentPlayer().getPlayerBoard().activateProduction(selectedStacks);
+            for (Integer index: selectedStacks){
+                ProductionPower productionPower = powers.get(index);
+                if(productionPower.getOutput().containsKey(Resource.FAITH)){
+                    for (int j = 0; j < productionPower.getOutput().get(Resource.FAITH); j++) {
+                        game.getCurrentPlayer().getFaithTrack().move();
+                    }
+                }
+                game.getCurrentPlayer().getPlayerBoard().activateProductionPower(productionPower);
+            }
+           // game.getCurrentPlayer().getPlayerBoard().activateProduction(selectedStacks);
         }
         if (basicProduction != null) {
            game.getCurrentPlayer().getPlayerBoard().activateProductionPower(basicProduction);
@@ -312,7 +324,7 @@ public class ClassicGameController {
         game.getCurrentPlayer().getPlayerBoard().payResourceCost(game.getCurrentPlayer().computeDiscountedCost(developmentCard));
         for (MarketCardStack stack:
              game.getMarket().getCardsGrid()) {
-            if(stack.peek().equals(developmentCard)){
+            if(!stack.isEmpty() && stack.peek().equals(developmentCard)){
                 stack.pop();
                 break;
             }

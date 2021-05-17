@@ -276,7 +276,7 @@ public class Player implements Serializable {
             for (ProductionPower productionPower:
                     getPlayerBoard().getExtraProductionPowers()) {
                 for (Resource resource : allResources.keySet()) {
-                    if (allResources.get(resource) < productionPower.getInput().get(resource)) {
+                    if (productionPower.getInput().get(resource)!= null && allResources.get(resource) < productionPower.getInput().get(resource)) {
                         extraProductionPowersToActive.add(productionPower);
                     }
                 }
@@ -298,11 +298,11 @@ public class Player implements Serializable {
     }
 
     public boolean canActivateBasicProduction(){
-        Map<Resource,Integer> warehouseRes=new HashMap<>(playerBoard.getWarehouse().getResources());
+        Map<Resource,Integer> resources=new HashMap<>(playerBoard.getResources());
         int res=0;
 
-        for(Resource resource : warehouseRes.keySet()){
-            res+=warehouseRes.get(resource);
+        for(Resource resource : resources.keySet()){
+            res+=resources.get(resource);
             if(res>=2)
                 return true;
         }

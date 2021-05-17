@@ -124,5 +124,8 @@ public class GameUtils {
         return null;
     }
 
+    public static void debug(String string){
+        System.out.println("\u001B[36m" + string + "\u001B[0m");
+    }
 
 }

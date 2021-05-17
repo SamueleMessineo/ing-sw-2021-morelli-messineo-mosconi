@@ -298,6 +298,7 @@ public class CLI implements UI {
         boolean done = false;
         List<Integer> indexes= new ArrayList<>();
         List<Integer> extraProductionPowers = new ArrayList<>();
+        int size = productionPowers.size();
 
                 if(currentGameState.getCurrentPlayer().canActivateBasicProduction()){
                     indexes.add(0);
@@ -307,6 +308,7 @@ public class CLI implements UI {
                 }
                 int productionNumber=1;
                 while (!done){
+                    System.out.println(gameState.getCurrentPlayer().getPlayerBoard().getResources());
                     output.println(gameState.getCurrentPlayer().possibleProductionPowersToActive());
                     String message;
                     message ="Select production power N° " +productionNumber+" to activate" ;
@@ -315,7 +317,10 @@ public class CLI implements UI {
                     }
                     message+="\n"+ indexes;
 
-                    selection = GameUtils.askIntegerInput(message,indexes.get(0),gameState.getCurrentPlayer().possibleProductionPowersToActive().size(), output, input);
+                    do{
+                        selection = GameUtils.askIntegerInput(message,indexes.get(0),size, output, input);
+                    } while (!indexes.contains(selection));
+
 
                     if(indexes.contains(selection)) {
 
@@ -328,27 +333,30 @@ public class CLI implements UI {
                                         break;
                                     } else output.println("You do not have the selected input. Retry");
                                 } while (true);
-                            }
+                            } else output.println("Production power no longer valid");
                         } else {
-                            currentGameState.getCurrentPlayer().getPlayerBoard().payResourceCost(currentGameState.getCurrentPlayer().possibleProductionPowersToActive().get(selection - 1).getInput());
-                            List<ProductionPower> possibleExtraPowers = gameState.getCurrentPlayer().getPlayerBoard().getExtraProductionPowers();
-                            System.out.println(possibleExtraPowers);
-                            if (possibleExtraPowers!= null && !possibleExtraPowers.isEmpty()
-                                    && possibleExtraPowers.contains(currentGameState.getCurrentPlayer().possibleProductionPowersToActive().get(selection - 1))){
-                                extraProductionPowers.add(selection - (gameState.getCurrentPlayer().possibleProductionPowersToActive().size()-1));
-                            } else {
-                                selectedStacks.add(selection - 1);
-                            }
-
+                            if(currentGameState.getCurrentPlayer().getPlayerBoard().canPayResources(productionPowers.get(selection-1).getInput())){
+                                currentGameState.getCurrentPlayer().getPlayerBoard().payResourceCost(productionPowers.get(selection - 1).getInput());
+                                List<ProductionPower> possibleExtraPowers = gameState.getCurrentPlayer().getPlayerBoard().getExtraProductionPowers();
+                                System.out.println(possibleExtraPowers);
+                                if (possibleExtraPowers!= null && !possibleExtraPowers.isEmpty()
+                                        && possibleExtraPowers.contains(currentGameState.getCurrentPlayer().possibleProductionPowersToActive().get(selection - 1))){
+                                    extraProductionPowers.add(selection - (gameState.getCurrentPlayer().possibleProductionPowersToActive().size()-1));
+                                } else {
+                                    selectedStacks.add(selection - 1);
+                                }
+                                productionNumber++;
+                            } else output.println("Production power no longer valid");
                         }
                         indexes.remove(selection);
-                        productionNumber++;
+
                     } else output.println("Selection not valid");
                     if(indexes.size()>0){
                         output.println("Are you done? [y/n]");
                         done = input.nextLine().trim().toLowerCase().startsWith("y");
                     } else done = true;
                 }
+                GameUtils.debug(selectedStacks.toString());
                 client.sendMessage(new ActivateProductionResponseMessage(selectedStacks, selectedBasicProductionPowers, extraProductionPowers));
 
 
@@ -387,6 +395,7 @@ public class CLI implements UI {
 
     @Override
     public void buyDevelopmentCard(List<DevelopmentCard> developmentCards) {
+        System.out.println(developmentCards.size());
         int selection;
         for (DevelopmentCard developmentCard:
              developmentCards) {
@@ -422,11 +431,17 @@ public class CLI implements UI {
 
     public void gameOver(String winner, Map<String, Integer> standing){
         output.println("Game ended, "+winner+" won the game\n"+standing);
-        int selection = GameUtils.askIntegerInput("Do you want to start a new game?", 1,2, output, input);
-        if(selection==1)setup();
+        int selection = GameUtils.askIntegerInput("Do you want to start a new game?[1.yes 2.no]", 1,2, output, input);
+        if(selection==1){
+            client.run();
+        }
         else {
             output.println("Bye "+username);
-            client.closeConnection();
+            try {
+                client.closeConnection();
+            } catch (NullPointerException e){
+
+            }
             System.exit(0);
         }
     }

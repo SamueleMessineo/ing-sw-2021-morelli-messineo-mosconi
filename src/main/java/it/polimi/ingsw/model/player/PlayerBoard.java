@@ -140,6 +140,7 @@ public class PlayerBoard implements Serializable {
     }
 
     public void payResourceCost(Map<Resource, Integer>cost){
+        GameUtils.debug("paying: " + cost);
         if (!canPayResources(cost)) return;
 
         for (Resource resource : cost.keySet()) {
