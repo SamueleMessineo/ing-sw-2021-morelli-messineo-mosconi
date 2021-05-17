@@ -41,13 +41,9 @@ public class LocalMessageHandler {
 
     public void startTurn(){
         currentTurn = new Turn(player.getUsername(), gameController.computeNextPossibleMoves(false));
-        Game gameState = null;
-        try {
-            gameState = (Game) gameController.getGame().clone();
-        } catch (CloneNotSupportedException e){
-            GameUtils.debug("not cloneable");
-        }
-        ui.setGameState(gameState);
+        GameUtils.writeGama(gameController.getGame(), 42);
+        ui.setGameState(GameUtils.readGame(42));
+        //ui.setGameState(gameController.getGame());
         ui.displayGameState();
         ui.displayPossibleMoves(currentTurn.getMoves());
     }
@@ -56,13 +52,11 @@ public class LocalMessageHandler {
         if(!checkGameOver()){
             currentTurn.setAlreadyPerformedMove(alreadyPerformedMoves);
             currentTurn.setMoves(gameController.computeNextPossibleMoves(currentTurn.hasAlreadyPerformedMove()));
-            Game gameState = null;
-            try {
-                gameState = (Game) gameController.getGame().clone();
-            } catch (CloneNotSupportedException e){
-                GameUtils.debug("not cloneable");
-            }
-            ui.setGameState(gameState);
+            //GameUtils.saveGameState(gameController.getGame(), 42);
+            //ui.setGameState(GameUtils.loadGameState(42));
+            GameUtils.writeGama(gameController.getGame(), 42);
+            ui.setGameState(GameUtils.readGame(42));
+            //ui.setGameState(gameController.getGame());
             ui.displayGameState();
             ui.displayPossibleMoves(currentTurn.getMoves());
         }

@@ -74,21 +74,21 @@ public class Display {
         return "";
     }
 
-    private static String displayResource(Resource resource){
+    public static String displayResourceType(Resource resource){
         switch (resource){
 
             case COIN:
                 return "🟡";
             case FAITH:
-                return "🔴";
+                return "✝";
             case SERVANT:
-                return "🟣";
+                return "🧞";
             case SHIELD:
-                return "🔵";
+                return "🛡";
             case STONE:
-                return "⚫️";
+                return "🪨️";
             case ANY:
-                return "⚪️";
+                return "🃏️";
         }
         return "";
     }
@@ -105,16 +105,10 @@ public class Display {
 
          */
 
-
-
         for (int i = 0; i < 12; i++) {
             if(market.getCardsGrid().get(i).isEmpty()) System.out.println("Empty Stack");
             else displayDevelopmentCard(market, i, output);
         }
-
-
-
-
 
     }
 
@@ -136,34 +130,34 @@ public class Display {
     }
 
     private static void displayWarehouse(Warehouse warehouse, PrintStream output){
-        output.println("    " + warehouse.getShelf("top").getResourceType());
+        output.println("    " + displayResourceType(warehouse.getShelf("top").getResourceType()));
         output.print("   ");
-        for (int i = 0; i < warehouse.getShelf("middle").getResourceNumber(); i++) output.print(warehouse.getShelf("middle").getResourceType());
-        for (int i = warehouse.getShelf("middle").getResourceNumber(); i < 2; i++ ) output.print(Resource.ANY);
+        for (int i = 0; i < warehouse.getShelf("middle").getResourceNumber(); i++) output.print(displayResourceType(warehouse.getShelf("middle").getResourceType()));
+        for (int i = warehouse.getShelf("middle").getResourceNumber(); i < 2; i++ ) output.print(displayResourceType(Resource.ANY));
         output.println();
         output.print("  ");
-        for (int i = 0; i < warehouse.getShelf("bottom").getResourceNumber(); i++) output.print(warehouse.getShelf("bottom").getResourceType());
-        for (int i = warehouse.getShelf("bottom").getResourceNumber(); i < 3; i++ ) output.print(Resource.ANY);
+        for (int i = 0; i < warehouse.getShelf("bottom").getResourceNumber(); i++) output.print(displayResourceType(warehouse.getShelf("bottom").getResourceType()));
+        for (int i = warehouse.getShelf("bottom").getResourceNumber(); i < 3; i++ ) output.print(displayResourceType(Resource.ANY));
         output.println();
         if(warehouse.getShelf("extra1")!=null){
             output.print("   ");
-            for (int i = 0; i < warehouse.getShelf("extra1").getResourceNumber(); i++) output.print(warehouse.getShelf("middle").getResourceType());
-            for (int i = warehouse.getShelf("extra1").getResourceNumber(); i < 2; i++ ) output.print(Resource.ANY);
-            output.print("  ("+warehouse.getShelf("extra1").getResourceType()+")");
+            for (int i = 0; i < warehouse.getShelf("extra1").getResourceNumber(); i++) output.print(displayResourceType(warehouse.getShelf("extra1").getResourceType()));
+            for (int i = warehouse.getShelf("extra1").getResourceNumber(); i < 2; i++ ) output.print(displayResourceType(Resource.ANY));
+            output.print("  ("+displayResourceType(warehouse.getShelf("extra1").getResourceType())+")");
             output.println();
         }
         if(warehouse.getShelf("extra2")!=null){
             output.print("   ");
-            for (int i = 0; i < warehouse.getShelf("extra2").getResourceNumber(); i++) output.print(warehouse.getShelf("middle").getResourceType());
-            for (int i = warehouse.getShelf("extra2").getResourceNumber(); i < 2; i++ ) output.print(Resource.ANY);
-            output.print("  ("+warehouse.getShelf("extra2").getResourceType()+")");
+            for (int i = 0; i < warehouse.getShelf("extra2").getResourceNumber(); i++) output.print(displayResourceType(warehouse.getShelf("extra2").getResourceType()));
+            for (int i = warehouse.getShelf("extra2").getResourceNumber(); i < 2; i++ ) output.print(displayResourceType(Resource.ANY));
+            output.print("  ("+displayResourceType(warehouse.getShelf("extra2").getResourceType())+")");
             output.println();
         }
     }
 
     private static void displayStrongbox(Strongbox strongbox, PrintStream output) {
         Map<Resource, Integer> resources = strongbox.getResources();
-        output.println(Resource.COIN.toString() +": " + resources.get(Resource.COIN) + " " + Resource.SERVANT.toString() +": " + resources.get(Resource.SERVANT) + " " + Resource.STONE.toString() +": " + resources.get(Resource.STONE)+ " " + Resource.SHIELD.toString() +": " + resources.get(Resource.SHIELD));
+        output.println(displayResourceType(Resource.COIN) +": " +resources.get(Resource.COIN) + " " + displayResourceType(Resource.SERVANT) +": " + resources.get(Resource.SERVANT) + " " + displayResourceType(Resource.STONE) +": " + resources.get(Resource.STONE)+ " " + displayResourceType(Resource.SHIELD)+": " + resources.get(Resource.SHIELD));
     }
 
     private static void displayDevelopmentCard(Market market, int i, PrintStream output){
@@ -171,6 +165,20 @@ public class Display {
         output.println(market.getCardsGrid().get(i));
         output.print("\u001B[0m");
         output.println("\n");
+    }
+
+    public static String displayCardType(CardType cardType){
+        switch (cardType){
+            case YELLOW:
+                return "🟨";
+            case PURPLE:
+                return "🟪";
+            case BLUE:
+                return "🟦";
+            case GREEN:
+                return "🟩";
+        }
+        return "";
     }
 
     private static void displayCardsLine(Market market, int i, PrintStream output){
@@ -211,7 +219,7 @@ public class Display {
         String output = "";
 
         for (Resource r : resourceMap.keySet()) {
-            output += resourceMap.get(r) + "x" + r + " ";
+            output += resourceMap.get(r) + "x" + displayResourceType(r) + " ";
         }
         return output;
     }

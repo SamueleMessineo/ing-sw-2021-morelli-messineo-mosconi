@@ -8,7 +8,6 @@ import java.io.Serializable;
 public enum Resource implements Serializable {
     STONE,SHIELD,COIN,SERVANT,FAITH,ANY;
 
-
     @Override
     public String toString() {
         switch (this){
@@ -27,4 +26,6 @@ public enum Resource implements Serializable {
         }
        return "";
     }
+
+
 }

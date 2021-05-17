@@ -7,6 +7,7 @@ import it.polimi.ingsw.model.market.Marble;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.shared.PopesFavorTileState;
 import it.polimi.ingsw.model.shared.Resource;
+import it.polimi.ingsw.server.Room;
 
 import java.io.*;
 import java.security.InvalidParameterException;
@@ -126,6 +127,38 @@ public class GameUtils {
 
     public static void debug(String string){
         System.out.println("\u001B[36m" + string + "\u001B[0m");
+    }
+
+    public static void writeGama(Game game, Integer roomID){
+        try {
+            FileOutputStream fileOut =
+                    new FileOutputStream("src/main/resources/games/" + roomID + ".ser");
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            out.writeObject(game);
+            out.close();
+            fileOut.close();
+        } catch (IOException i) {
+            i.printStackTrace();
+        }
+    }
+
+    public static Game readGame(Integer roomID){
+        Game game = null;
+        try {
+            FileInputStream fileIn = new FileInputStream("src/main/resources/games/" + roomID + ".ser");
+            ObjectInputStream in = new ObjectInputStream(fileIn);
+            game = (Game) in.readObject();
+            in.close();
+            fileIn.close();
+        } catch (IOException i) {
+            i.printStackTrace();
+
+        } catch (ClassNotFoundException c) {
+            System.out.println("Employee class not found");
+            c.printStackTrace();
+
+        }
+        return game;
     }
 
 }

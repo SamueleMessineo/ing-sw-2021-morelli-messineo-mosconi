@@ -22,7 +22,7 @@ import java.util.*;
  * Defines the main game class, it holds all the information of a game in progress
  */
 
-public class Game implements Serializable, Cloneable{
+public class Game implements Serializable{
     private ArrayList<Player> players;
     private int currentPlayer;
     private int inkwellPlayer;
@@ -202,10 +202,5 @@ public class Game implements Serializable, Cloneable{
                 }
             }
         }
-    }
-
-    @Override
-    public Object clone() throws CloneNotSupportedException {
-        return super.clone();
     }
 }

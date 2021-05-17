@@ -35,6 +35,7 @@ public class CLI implements UI {
 
     @Override
     public void run() {
+        Display.displayWelcomeMessage(output);
         output.println("How do you want to play?");
         int selection = GameUtils.askIntegerInput("1. online | 2. offline", 1, 2, output, input);
         switch (selection) {
@@ -233,7 +234,7 @@ public class CLI implements UI {
         output.println(Display.displayResources(resourceMap));
         List<Resource> uniqueResources = new ArrayList<>(resourceMap.keySet());
         for (int i = 0; i < uniqueResources.size(); i++) {
-            output.print((i + 1) + ". " + uniqueResources.get(i).name() + " | ");
+            output.print((i + 1) + ". " + Display.displayResourceType(uniqueResources.get(i)) + " | ");
         }
         output.println((uniqueResources.size() + 1) + ". Confirm");
 

@@ -8,6 +8,7 @@ import java.io.Serializable;
 public enum CardType implements Serializable {
     GREEN, YELLOW, PURPLE, BLUE;
 
+
     @Override
     public String toString() {
         switch (this){
