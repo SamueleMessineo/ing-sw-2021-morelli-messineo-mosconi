@@ -10,6 +10,7 @@ import it.polimi.ingsw.model.shared.ProductionPower;
 import it.polimi.ingsw.model.shared.Resource;
 import it.polimi.ingsw.view.UI;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -20,6 +21,7 @@ import java.util.*;
 public class GUI extends Application implements UI {
     private Stage stage;
     private final Map<String, Scene> sceneMap = new HashMap<>();
+    private final Map<String, SceneController> controllerMap = new HashMap<>();
     private Client client;
 
     @Override
@@ -48,13 +50,21 @@ public class GUI extends Application implements UI {
     }
 
     public void setScene(String sceneName) {
-        stage.setScene(sceneMap.get(sceneName));
-        stage.show();
-    }
-
-    @Override
-    public void displayRoomDetails(ArrayList<String> players, int playersNum, int RoomId) {
-
+        System.out.println("display " + sceneName);
+        try {
+            Platform.runLater(() -> {
+                if (stage.getScene() == null || !stage.getScene().equals(sceneMap.get(sceneMap))) {
+                    System.out.println("scene set");
+                } else {
+                    System.out.println("scene already set");
+                }
+                stage.setScene(sceneMap.get(sceneName));
+                stage.show();
+                System.out.println("stage shown");
+            });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -63,17 +73,24 @@ public class GUI extends Application implements UI {
     }
 
     private void loadScenes() {
-        for (String sceneName : Arrays.asList("online-offline", "connect", "select-game")) {
+        for (String sceneName : Arrays.asList("online-offline", "connect", "select-game", "room-details")) {
             FXMLLoader loader = new FXMLLoader(
                     getClass().getClassLoader().getResource("scenes/" + sceneName +".fxml"));
             try {
                 sceneMap.put(sceneName, new Scene(loader.load()));
                 SceneController controller = loader.getController();
+                controllerMap.put(sceneName, controller);
                 controller.setGUI(this);
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
+    }
+
+    @Override
+    public void displayRoomDetails(ArrayList<String> players, int playersNum, int RoomId) {
+        ((RoomDetailsController)controllerMap.get("room-details")).displayDetails(players, playersNum, RoomId);
+        setScene("room-details");
     }
 
     @Override

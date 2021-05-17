@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.gui;
 
+import it.polimi.ingsw.network.setup.CreateRoomMessage;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -18,7 +19,8 @@ public class SelectGameController implements SceneController {
 
     @FXML
     void createGame(ActionEvent event) {
-
+        System.out.println("create game");
+        gui.getClient().sendMessage(new CreateRoomMessage(true, 2, "alberto"));
     }
 
     @FXML

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" styleClass="vbox" stylesheets="@../css/setup.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.RoomDetailsController">
+   <children>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="50.0" stylesheets="@../css/setup.css">
+         <children>
+            <Text fx:id="roomID" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="light-text" text="Room ID:" />
+            <Text fx:id="playerNumber" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="light-text" text="Players:" />
+         </children>
+      </HBox>
+      <VBox fx:id="playerList" alignment="CENTER" prefHeight="200.0" prefWidth="100.0" stylesheets="@../css/setup.css" />
+   </children>
+</VBox>
