@@ -100,8 +100,8 @@ public class CLI implements UI {
 
     @Override
     public void displayError(String body) {
-        output.println("ERROR!");
-        output.println(body);
+        output.println(Display.paint("RED","ERROR!" ));
+        output.println(Display.paint("RED", body));
     }
 
     @Override
@@ -134,7 +134,7 @@ public class CLI implements UI {
         int selection1;
         int selection2;
         do {
-            selection1 = GameUtils.askIntegerInput("Select the first card to drop", 1,4, output, input)-1;
+            selection1 = GameUtils.askIntegerInput("Select the first card to " + Display.paint("RED","drop"), 1,4, output, input)-1;
             selection2 = GameUtils.askIntegerInput("Select the second card to drop", 1,4, output, input)-1;
             if(selection1==selection2)output.println("You must select two distinct cards");
         } while (selection1 == selection2);
@@ -350,7 +350,7 @@ public class CLI implements UI {
                                         break;
                                     } else output.println("You do not have the selected input. Retry");
                                 } while (true);
-                            } else output.println("Production power no longer valid");
+                            } else output.println(Display.paint("RED", "Production power no longer valid"));
                         } else {
                             if(currentGameState.getCurrentPlayer().getPlayerBoard().canPayResources(productionPowers.get(selection-1).getInput())){
                                 currentGameState.getCurrentPlayer().getPlayerBoard().payResourceCost(productionPowers.get(selection - 1).getInput());
@@ -364,7 +364,7 @@ public class CLI implements UI {
                                     selectedStacks.add(selection - 1);
                                 }
                                 productionNumber++;
-                            } else output.println("Production power no longer valid");
+                            } else output.println(Display.paint("RED", "Production power no longer valid"));
                         }
                         indexes.remove(selection);
 
