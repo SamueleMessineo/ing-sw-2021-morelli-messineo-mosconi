@@ -93,9 +93,7 @@ public class ClassicGameController {
                 game.getCurrentPlayer().getFaithTrack().move();
                 // check if it landed on a Pope space
 //                tryPopeReport(game.getCurrentPlayer());
-                GameUtils.debug("1");
                 activatePopeReport();
-                GameUtils.debug("2");
             } else {
                 String key = "converted";
                 Resource resource = null;
@@ -274,6 +272,7 @@ public class ClassicGameController {
                 if(productionPower.getOutput().containsKey(Resource.FAITH)){
                     for (int j = 0; j < productionPower.getOutput().get(Resource.FAITH); j++) {
                         game.getCurrentPlayer().getFaithTrack().move();
+                        activatePopeReport();
                     }
                 }
                 game.getCurrentPlayer().getPlayerBoard().activateProductionPower(productionPower);

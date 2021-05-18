@@ -119,6 +119,7 @@ public class Game implements Serializable{
         developmentCards = gson.fromJson(reader, listType);
 
         reader = new BufferedReader(new FileReader("src/main/resources/leaderCards.json"));
+        //reader = new BufferedReader(new FileReader("src/main/resources/riggedLeaderCards.json"));
         listType = new TypeToken<List<LeaderCard>>() {
         }.getType();
 
