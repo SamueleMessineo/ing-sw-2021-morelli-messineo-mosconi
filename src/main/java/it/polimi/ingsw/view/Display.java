@@ -75,15 +75,15 @@ public class Display {
         switch (resource){
 
             case COIN:
-                return "🟡";
+                return Display.paint("YELLOW", "⬤");
             case FAITH:
-                return "✝";
+                return Display.paint("RED","✝");
             case SERVANT:
-                return "🧞";
+                return Display.paint("PURPLE", "♟");
             case SHIELD:
-                return "🛡";
+                return Display.paint("BLUE", "♦");
             case STONE:
-                return "🪨️";
+                return Display.paint("GREY", "☗");
             case ANY:
                 return "🃏️";
         }
@@ -161,13 +161,13 @@ public class Display {
     private static void displayPopeTyle(PopesFavorTile popesFavorTile, PrintStream output){
         switch (popesFavorTile.getState()){
             case INACTIVE:
-                output.println(paint("YELLOW", popesFavorTile.getState().toString()));
+                output.println(paint("YELLOW", "☐"));
                 break;
             case ACTIVE:
-                output.println(paint("GREEN", popesFavorTile.getState().toString()));
+                output.println(paint("GREEN", "☑"));
                 break;
             case DISCARDED:
-                output.println(paint("RED", popesFavorTile.getState().toString()));
+                output.println(paint("RED", "☒"));
                 break;
 
         }
@@ -319,6 +319,10 @@ public class Display {
                 break;
             case "RED":
                 colorOut = "\u001B[31m";
+                break;
+            case "GREY":
+                colorOut = "\u001B[37m";
+                break;
         }
         String result = "";
         result += colorOut;
