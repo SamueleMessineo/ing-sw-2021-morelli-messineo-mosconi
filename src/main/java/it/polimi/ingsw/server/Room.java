@@ -78,4 +78,7 @@ public class Room {
         return id;
     }
 
+    public ClassicGameController getGameController() {
+        return gameController;
+    }
 }

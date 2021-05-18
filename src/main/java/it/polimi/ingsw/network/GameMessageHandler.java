@@ -2,6 +2,7 @@ package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.controller.ClassicGameController;
 import it.polimi.ingsw.controller.Turn;
+import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.PlayerCardStack;
 import it.polimi.ingsw.model.shared.DevelopmentCard;
@@ -92,7 +93,11 @@ public class GameMessageHandler {
     }
 
     public void handle(SelectMoveResponseMessage message){
+        System.out.println("received");
+        System.out.println(room.getCurrentTurn().getMoves());
+        System.out.println(room.getPlayerFromConnection(clientConnection).getUsername());
         if(room.getCurrentTurn().isValidMove(message.getMove(), room.getPlayerFromConnection(clientConnection).getUsername())){
+            System.out.println("sending");
             switch (message.getMove()){
                 case("GET_MARBLES"):
                     clientConnection.sendMessage(new SelectMarblesRequestMessage(room.getGame().getMarket().getMarbleStructure()));
@@ -241,6 +246,7 @@ public class GameMessageHandler {
 
         ClientConnection currentPlayer = room.getConnections().get(room.getGame().getPlayers().indexOf(
                 room.getGame().getCurrentPlayer()));
+        GameUtils.debug(room.getPlayerFromConnection(currentPlayer).getUsername());
         room.sendAll(new UpdateAndDisplayGameStateMessage(room.getGame()));
 
         if(!gameController.isGameOver() || (room.getGame().getPlayers().indexOf(room.getPlayerFromConnection(currentPlayer)) != room.getGame().getInkwellPlayer())){
@@ -264,6 +270,7 @@ public class GameMessageHandler {
     private void endTurn(){
         gameController.computeNextPlayer();
         sendStateAndMovesForNextTurn();
+        GameUtils.debug(gameController.getGame().getCurrentPlayer().getUsername());
     }
 
     public void deactivateConnection(ClientConnection connection) {
@@ -277,6 +284,7 @@ public class GameMessageHandler {
         room.sendAll(new StringMessage(disconnectedPlayer.getUsername() + " disconnected"));
 
         if(room.getCurrentTurn()!= null && disconnectedPlayer.equals(room.getGame().getPlayerByUsername(room.getCurrentTurn().getCurrentPlayer()))){
+            GameUtils.debug("ending turn");
             endTurn();
         } else  room.sendAll(new UpdateGameStateMessage(room.getGame()));
 

@@ -135,7 +135,7 @@ public class CLI implements UI {
         int selection2;
         do {
             selection1 = GameUtils.askIntegerInput("Select the first card to " + Display.paint("RED","drop"), 1,4, output, input)-1;
-            selection2 = GameUtils.askIntegerInput("Select the second card to drop", 1,4, output, input)-1;
+            selection2 = GameUtils.askIntegerInput("Select the second card to " + Display.paint("RED","drop"), 1,4, output, input)-1;
             if(selection1==selection2)output.println("You must select two distinct cards");
         } while (selection1 == selection2);
 

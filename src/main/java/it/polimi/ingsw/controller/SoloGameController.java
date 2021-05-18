@@ -73,7 +73,8 @@ public class SoloGameController extends ClassicGameController {
     @Override
     public void movePlayer(String playerName, int positions) {
         super.movePlayer(playerName, positions);
-        tryPopeReport(game.getLorenzoIlMagnifico());
+//        tryPopeReport(game.getLorenzoIlMagnifico());
+        activatePopeReport();
     }
 
     @Override
@@ -95,13 +96,13 @@ public class SoloGameController extends ClassicGameController {
     }
 
     @Override
-    public void tryPopeReport(Player playerToMove) {
-        super.tryPopeReport(playerToMove);
-        if(playerToMove.getFaithTrack().inOnPopeSpace()!= -1 && playerToMove.getFaithTrack().getPopesFavorTiles().get(playerToMove.getFaithTrack().inOnPopeSpace()).getState().equals(PopesFavorTileState.INACTIVE)){
-            if(game.getLorenzoIlMagnifico().getFaithTrack().isInPopeFavorByLevel(playerToMove.getFaithTrack().inOnPopeSpace())){
-                game.getLorenzoIlMagnifico().getFaithTrack().getPopesFavorTiles().get(playerToMove.getFaithTrack().inOnPopeSpace()-1).setState(PopesFavorTileState.ACTIVE);
-            } else  game.getLorenzoIlMagnifico().getFaithTrack().getPopesFavorTiles().get(playerToMove.getFaithTrack().inOnPopeSpace()-1).setState(PopesFavorTileState.INACTIVE);
+    public void activatePopeReport() {
+        super.activatePopeReport();
+        FaithTrack currentPlayerFaithTrack = game.getCurrentPlayer().getFaithTrack();
+        if(currentPlayerFaithTrack.inOnPopeSpace()!= -1 && currentPlayerFaithTrack.getPopesFavorTiles().get(currentPlayerFaithTrack.inOnPopeSpace()).getState().equals(PopesFavorTileState.INACTIVE)){
+            if(game.getLorenzoIlMagnifico().getFaithTrack().isInPopeFavorByLevel(currentPlayerFaithTrack.inOnPopeSpace())){
+                game.getLorenzoIlMagnifico().getFaithTrack().getPopesFavorTiles().get(currentPlayerFaithTrack.inOnPopeSpace()-1).setState(PopesFavorTileState.ACTIVE);
+            } else  game.getLorenzoIlMagnifico().getFaithTrack().getPopesFavorTiles().get(currentPlayerFaithTrack.inOnPopeSpace()-1).setState(PopesFavorTileState.INACTIVE);
         }
-
     }
 }
