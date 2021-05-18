@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.player;
 import it.polimi.ingsw.model.shared.*;
 import it.polimi.ingsw.utils.GameUtils;
+import it.polimi.ingsw.view.Display;
 
 import java.io.Serializable;
 import java.util.*;
@@ -226,8 +227,6 @@ public class Warehouse implements Serializable {
         List<Resource> resTypeExtraShelf=new ArrayList<>();
         if (shelfNames.contains("extra1"))
             resTypeExtraShelf.add(getShelf("extra1").getResourceType());
-        System.out.println(resTypeExtraShelf);
-
         if (shelfNames.contains("extra2"))
             resTypeExtraShelf.add(getShelf("extra2").getResourceType());
         else
@@ -244,7 +243,6 @@ public class Warehouse implements Serializable {
 
     public void placeResources(Map<Resource, Integer> resourcesToPlace) {
         if (!canPlaceResources(resourcesToPlace)) return;
-
         Map<Resource, Integer> allResources = GameUtils.sumResourcesMaps(getResources(), resourcesToPlace);
         // sort by biggest amount
         allResources = GameUtils.sortResourceMapByValues(allResources);
@@ -270,7 +268,8 @@ public class Warehouse implements Serializable {
                 notPlacedResources.remove(0);
             }
             int resourceAmount = allResources.get(shelfType);
-            if (resourceAmount < 1)
+
+            if (resourceAmount < 1 && shelfName!="extra1" && shelfName!="extra2")
                 return;
 
             int leftoverAmount = Math.max(resourceAmount - getShelf(shelfName).getMaxSize(), 0);
@@ -278,7 +277,6 @@ public class Warehouse implements Serializable {
             Map<Resource, Integer> shelfResources = new HashMap<>();
             shelfResources.put(shelfType, resourceAmount - leftoverAmount);
             getShelf(shelfName).addResources(shelfResources);
-
             allResources.put(shelfType, leftoverAmount);
         }
     }
