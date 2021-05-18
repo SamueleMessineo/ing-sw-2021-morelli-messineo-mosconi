@@ -412,7 +412,8 @@
     "level": 2,
     "cardType": "BLUE",
     "cost": {
-      "SERVANT": 1
+      "STONE": 3,
+      "COIN": 3
     },
     "productionPower": {
       "input": {

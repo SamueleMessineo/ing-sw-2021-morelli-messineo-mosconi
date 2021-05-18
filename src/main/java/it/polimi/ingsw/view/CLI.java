@@ -357,8 +357,11 @@ public class CLI implements UI {
                                 List<ProductionPower> possibleExtraPowers = gameState.getCurrentPlayer().getPlayerBoard().getExtraProductionPowers();
                                 System.out.println(possibleExtraPowers);
                                 if (possibleExtraPowers!= null && !possibleExtraPowers.isEmpty()
-                                        && possibleExtraPowers.contains(currentGameState.getCurrentPlayer().possibleProductionPowersToActive().get(selection - 1))){
-                                    extraProductionPowers.add(selection - (gameState.getCurrentPlayer().possibleProductionPowersToActive().size()-1));
+                                        && productionPowers.get(selection-1).getOutput().containsKey(Resource.ANY)
+                                       /* && selection>productionPowers.size()-possibleExtraPowers.size()*//* possibleExtraPowers.contains(productionPowers.get(selection - 1))*/){
+                                    if(possibleExtraPowers.size()!=1 && selection==productionPowers.size())extraProductionPowers.add(1);
+                                    else extraProductionPowers.add(0);
+                                    //extraProductionPowers.add(selection - (productionPowers.size()));
                                     extraOutputs.add(askExtraOutput());
                                 } else {
                                     selectedStacks.add(selection - 1);
@@ -383,7 +386,7 @@ public class CLI implements UI {
     private Resource askExtraOutput(){
         Resource resource = Resource.ANY;
         int selection;
-        selection = GameUtils.askIntegerInput("Which resource do you want in output?\\n1.SHIELD, 2.SERVANT, 3.STONE, 4.COIN\"", 1, 4, output, input);
+        selection = GameUtils.askIntegerInput("Which resource do you want in output?\n1.SHIELD, 2.SERVANT, 3.STONE, 4.COIN", 1, 4, output, input);
         switch (selection){
             case (1):
                 resource = Resource.SHIELD;
