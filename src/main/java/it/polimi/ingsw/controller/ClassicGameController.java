@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.PlayerCardStack;
 import it.polimi.ingsw.model.player.Warehouse;
 import it.polimi.ingsw.model.shared.*;
+import it.polimi.ingsw.network.game.GameMessage;
 import it.polimi.ingsw.server.Room;
 import it.polimi.ingsw.utils.GameUtils;
 
@@ -92,7 +93,9 @@ public class ClassicGameController {
                 game.getCurrentPlayer().getFaithTrack().move();
                 // check if it landed on a Pope space
 //                tryPopeReport(game.getCurrentPlayer());
+                GameUtils.debug("1");
                 activatePopeReport();
+                GameUtils.debug("2");
             } else {
                 String key = "converted";
                 Resource resource = null;
@@ -152,18 +155,27 @@ public class ClassicGameController {
 
         player.getPlayerBoard().getWarehouse().placeResources(resourcesToAdd);
 
-        for (int i = 0; i < totalDropped; i++) {
-            // for each dropped resource, move all the other players by one
-            for (Player otherPlayer : game.getPlayers()) {
-                if (!player.getUsername().equals(otherPlayer.getUsername())) {
+        List<Player> other = new ArrayList<>(game.getPlayers());
+        other.remove(player);
+        movePlayers(other, totalDropped);
+
+    }
+
+    public void movePlayers(List<Player> players, int positions){
+        if(!players.isEmpty()){
+            for (int i = 0; i <positions; i++) {
+                // for each dropped resource, move all the other players by one
+                for (Player otherPlayer : players) {
                     otherPlayer.getFaithTrack().move();
+
+                }
+                // and check if the pope favor gets activated
+                for (Player p : game.getPlayers()) {
+                    activatePopeReport();
                 }
             }
-            // and check if the pope favor gets activated
-            for (Player p : game.getPlayers()) {
-                activatePopeReport();
-            }
         }
+
     }
 
     public void dropLeader(int card) {
@@ -290,6 +302,7 @@ public class ClassicGameController {
 
     public void activatePopeReport() {
         for (Player player : game.getPlayers()) {
+            GameUtils.debug(String.valueOf(player.getFaithTrack().inOnPopeSpace()));
             int popeLevel = player.getFaithTrack().inOnPopeSpace();
             // for each player, if the player is on a pope space
             // check if the other players are in that space's area

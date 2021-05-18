@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.player;
 
+import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.shared.*;
 import it.polimi.ingsw.utils.GameUtils;
 
@@ -273,15 +274,17 @@ public class Player implements Serializable {
         Map<Resource, Integer> allResources = new HashMap<>(playerBoard.getResources());
         ArrayList<ProductionPower> extraProductionPowersToActive=new ArrayList<>();
         if(getPlayerBoard().getExtraProductionPowers() != null){
+            GameUtils.debug("here");
             for (ProductionPower productionPower:
                     getPlayerBoard().getExtraProductionPowers()) {
-                for (Resource resource : allResources.keySet()) {
-                    if (productionPower.getInput().get(resource)!= null && allResources.get(resource) < productionPower.getInput().get(resource)) {
+                for (Resource resource : productionPower.getInput().keySet()) {
+                    if (productionPower.getInput().get(resource)!= null && allResources.get(resource) > productionPower.getInput().get(resource)) {
                         extraProductionPowersToActive.add(productionPower);
                     }
                 }
             }
         }
+        GameUtils.debug(extraProductionPowersToActive.toString());
         return extraProductionPowersToActive;
     }
 

@@ -62,6 +62,7 @@ public class FaithTrack implements Serializable {
      * @return '-1' if the player is not on a PopeSpace, else returns the PopeSpace level
      */
     public int inOnPopeSpace(){
+        if(position==0)return -1;
         if(position%8==0) return position/8;
         else return -1;
 
