@@ -91,27 +91,8 @@ public class ClassicGameController {
                 // move the player forward on the track
                 game.getCurrentPlayer().getFaithTrack().move();
                 // check if it landed on a Pope space
-                tryPopeReport(game.getCurrentPlayer());
-                /*
-                int playerOnPope = game.getCurrentPlayer().getFaithTrack().inOnPopeSpace();
-                if (playerOnPope != -1) {
-                    // activate vatican report
-                    for (Player player : game.getPlayers()) {
-                        if (player.getFaithTrack().isInPopeFavorByLevel(playerOnPope)) {
-                            // if a player is in the popes favour area, activate the corresponding tile
-                            player.getFaithTrack().getPopesFavorTiles().get(playerOnPope)
-                                    .setState(PopesFavorTileState.ACTIVE);
-                        } else {
-                            // if a player is not in the popes favour area, discard the corresponding tile
-                            player.getFaithTrack().getPopesFavorTiles().get(playerOnPope)
-                                    .setState(PopesFavorTileState.DISCARDED);
-                        }
-
-                    }
-
-                 }
-
-                 */
+//                tryPopeReport(game.getCurrentPlayer());
+                activatePopeReport();
             } else {
                 String key = "converted";
                 Resource resource = null;
@@ -153,22 +134,13 @@ public class ClassicGameController {
         if (resourcesToDrop == null) throw new InvalidParameterException("array is null");
         System.out.println(obtainedResources);
         System.out.println(resourcesToDrop);
+        int totalDropped = 0;
         for (Resource r : resourcesToDrop.keySet()) {
             if (!obtainedResources.containsKey(r) ||
                     obtainedResources.get(r) < resourcesToDrop.get(r)) {
                 throw new InvalidParameterException("resources not in original map");
             }
-            /*
-            for (Player player:
-                 game.getPlayers()) {
-               player.getFaithTrack().move();
-            }
-            for (Player player:
-                    game.getPlayers()) {
-                tryPopeReport(player);
-            }
-
-             */
+            totalDropped += resourcesToDrop.get(r);
         }
         Player player = game.getPlayerByUsername(playerUsername);
         Map<Resource, Integer> resourcesToAdd = new HashMap<>(obtainedResources);
@@ -179,6 +151,19 @@ public class ClassicGameController {
             throw new InvalidParameterException("not enough");
 
         player.getPlayerBoard().getWarehouse().placeResources(resourcesToAdd);
+
+        for (int i = 0; i < totalDropped; i++) {
+            // for each dropped resource, move all the other players by one
+            for (Player otherPlayer : game.getPlayers()) {
+                if (!player.getUsername().equals(otherPlayer.getUsername())) {
+                    otherPlayer.getFaithTrack().move();
+                }
+            }
+            // and check if the pope favor gets activated
+            for (Player p : game.getPlayers()) {
+                activatePopeReport();
+            }
+        }
     }
 
     public void dropLeader(int card) {
@@ -214,9 +199,6 @@ public class ClassicGameController {
         } else {
             moves.add("END_TURN");
         }
-
-        //FOR DEBUG
-        //moves.add("END_TURN");
 
         if(player.getLeaderCards().size() > 0){
             moves.add("DROP_LEADER");
@@ -274,19 +256,6 @@ public class ClassicGameController {
         if (selectedStacks != null) {
             List<ProductionPower> powers = game.getCurrentPlayer().possibleProductionPowersToActive();
             GameUtils.debug("powers: " + powers);
-            /*
-            for (Integer i:
-                 selectedStacks) {
-                PlayerCardStack checkedStack = game.getCurrentPlayer().getPlayerBoard().getCardStacks().get(i);
-                if (checkedStack.peek().getProductionPower().getOutput().containsKey(Resource.FAITH)){
-                    for (int j = 0; j < checkedStack.peek().getProductionPower().getOutput().get(Resource.FAITH); j++) {
-                        game.getCurrentPlayer().getFaithTrack().move();
-                    }
-                }
-
-            }
-
-             */
 
             for (Integer index: selectedStacks){
                 ProductionPower productionPower = powers.get(index);
@@ -297,7 +266,6 @@ public class ClassicGameController {
                 }
                 game.getCurrentPlayer().getPlayerBoard().activateProductionPower(productionPower);
             }
-           // game.getCurrentPlayer().getPlayerBoard().activateProduction(selectedStacks);
         }
         if (basicProduction != null) {
            game.getCurrentPlayer().getPlayerBoard().activateProductionPower(basicProduction);
@@ -309,7 +277,6 @@ public class ClassicGameController {
                 productionPower.getOutput().remove(Resource.ANY);
                 game.getCurrentPlayer().getPlayerBoard().activateProductionPower(productionPower);
             }
-
         }
     }
 
@@ -317,24 +284,31 @@ public class ClassicGameController {
         Player playerToMove = game.getPlayerByUsername(playerName);
         for (int i = 0; i < positions; i++) {
             playerToMove.getFaithTrack().move();
-            tryPopeReport(playerToMove);
+            activatePopeReport();
         }
     }
 
-    public void tryPopeReport(Player playerToMove){
-        if(playerToMove.getFaithTrack().inOnPopeSpace()!= -1 && playerToMove.getFaithTrack().getPopesFavorTiles().get(playerToMove.getFaithTrack().inOnPopeSpace()).getState().equals(PopesFavorTileState.INACTIVE)){
-            for (Player player:
-                    game.getPlayers()) {
-                if(player.getFaithTrack().isInPopeFavorByLevel(playerToMove.getFaithTrack().inOnPopeSpace())){
-                    player.getFaithTrack().getPopesFavorTiles().get(playerToMove.getFaithTrack().inOnPopeSpace()-1).setState(PopesFavorTileState.ACTIVE);
-                } else        player.getFaithTrack().getPopesFavorTiles().get(playerToMove.getFaithTrack().inOnPopeSpace()-1).setState(PopesFavorTileState.INACTIVE);
-            }
-
-            for (Player player:
-                    game.getInactivePlayers()) {
-                if(player.getFaithTrack().isInPopeFavorByLevel(playerToMove.getFaithTrack().inOnPopeSpace())){
-                    player.getFaithTrack().getPopesFavorTiles().get(playerToMove.getFaithTrack().inOnPopeSpace()-1).setState(PopesFavorTileState.ACTIVE);
-                } else        player.getFaithTrack().getPopesFavorTiles().get(playerToMove.getFaithTrack().inOnPopeSpace()-1).setState(PopesFavorTileState.INACTIVE);
+    public void activatePopeReport() {
+        for (Player player : game.getPlayers()) {
+            int popeLevel = player.getFaithTrack().inOnPopeSpace();
+            // for each player, if the player is on a pope space
+            // check if the other players are in that space's area
+            if (popeLevel != -1) {
+                for (Player otherPlayer : game.getPlayers()) {
+                    // not current player
+                    if (!otherPlayer.getUsername().equals(player.getUsername())) {
+                        PopesFavorTile otherPlayersTile = otherPlayer.getFaithTrack().getPopesFavorTiles().get(popeLevel-1);
+                        // if the other player's tile is inactive
+                        if (otherPlayersTile.getState() == PopesFavorTileState.INACTIVE) {
+                            // if player is in pope favor
+                            if (otherPlayer.getFaithTrack().isInPopeFavorByLevel(popeLevel)) {
+                                otherPlayersTile.setState(PopesFavorTileState.ACTIVE);
+                            } else { // if player is not in pope favor
+                                otherPlayersTile.setState(PopesFavorTileState.DISCARDED);
+                            }
+                        }
+                    }
+                }
             }
         }
     }
@@ -414,7 +388,5 @@ public class ClassicGameController {
         System.out.println("stack indexes: " + stacks);
         return stacks;
     }
-
-
 }
 
