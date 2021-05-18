@@ -93,26 +93,6 @@ public class ClassicGameController {
                 // check if it landed on a Pope space
 //                tryPopeReport(game.getCurrentPlayer());
                 activatePopeReport();
-                /*
-                int playerOnPope = game.getCurrentPlayer().getFaithTrack().inOnPopeSpace();
-                if (playerOnPope != -1) {
-                    // activate vatican report
-                    for (Player player : game.getPlayers()) {
-                        if (player.getFaithTrack().isInPopeFavorByLevel(playerOnPope)) {
-                            // if a player is in the popes favour area, activate the corresponding tile
-                            player.getFaithTrack().getPopesFavorTiles().get(playerOnPope)
-                                    .setState(PopesFavorTileState.ACTIVE);
-                        } else {
-                            // if a player is not in the popes favour area, discard the corresponding tile
-                            player.getFaithTrack().getPopesFavorTiles().get(playerOnPope)
-                                    .setState(PopesFavorTileState.DISCARDED);
-                        }
-
-                    }
-
-                 }
-
-                 */
             } else {
                 String key = "converted";
                 Resource resource = null;
