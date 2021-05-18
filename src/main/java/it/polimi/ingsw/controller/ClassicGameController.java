@@ -91,6 +91,9 @@ public class ClassicGameController {
                 // move the player forward on the track
                 game.getCurrentPlayer().getFaithTrack().move();
                 // check if it landed on a Pope space
+//                tryPopeReport(game.getCurrentPlayer());
+                activatePopeReport();
+                /*
                 int playerOnPope = game.getCurrentPlayer().getFaithTrack().inOnPopeSpace();
                 if (playerOnPope != -1) {
                     // activate vatican report
@@ -104,8 +107,12 @@ public class ClassicGameController {
                             player.getFaithTrack().getPopesFavorTiles().get(playerOnPope)
                                     .setState(PopesFavorTileState.DISCARDED);
                         }
+
                     }
-                }
+
+                 }
+
+                 */
             } else {
                 String key = "converted";
                 Resource resource = null;
@@ -180,7 +187,7 @@ public class ClassicGameController {
     }
 
     public void dropLeader(int card) {
-        game.getCurrentPlayer().getFaithTrack().move();
+        movePlayer(game.getCurrentPlayer().getUsername(), 1);
         game.getCurrentPlayer().dropLeaderCard(card);
     }
 
