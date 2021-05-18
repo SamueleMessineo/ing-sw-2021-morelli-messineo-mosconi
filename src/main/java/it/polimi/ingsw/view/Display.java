@@ -161,13 +161,13 @@ public class Display {
     private static void displayPopeTyle(PopesFavorTile popesFavorTile, PrintStream output){
         switch (popesFavorTile.getState()){
             case INACTIVE:
-                output.println(paint("YELLOW", popesFavorTile.getState().toString()));
+                output.println(paint("YELLOW", "☐"));
                 break;
             case ACTIVE:
-                output.println(paint("GREEN", popesFavorTile.getState().toString()));
+                output.println(paint("GREEN", "☑"));
                 break;
             case DISCARDED:
-                output.println(paint("RED", popesFavorTile.getState().toString()));
+                output.println(paint("RED", "☒"));
                 break;
 
         }
