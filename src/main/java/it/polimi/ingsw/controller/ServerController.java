@@ -3,10 +3,7 @@ package it.polimi.ingsw.controller;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.network.GameMessageHandler;
-import it.polimi.ingsw.network.client.ErrorMessage;
-import it.polimi.ingsw.network.client.RoomDetailsMessage;
-import it.polimi.ingsw.network.client.StringMessage;
-import it.polimi.ingsw.network.client.UpdateGameStateMessage;
+import it.polimi.ingsw.network.client.*;
 import it.polimi.ingsw.server.Room;
 
 import it.polimi.ingsw.server.ClientConnection;
@@ -74,6 +71,10 @@ public class ServerController {
                else {
                    room.sendAll(new StringMessage(username + " is back in the game!"));
                    room.sendAll(new UpdateGameStateMessage(room.getGame()));
+                   if(room.getGame().getPlayers().size()==1){
+                       room.setCurrentTurn(new Turn(username, room.getGameController().computeNextPossibleMoves(false)));
+                       room.sendAll(new SelectMoveRequestMessage(room.getCurrentTurn().getMoves()));
+                   }
                }
 
                return;
@@ -168,4 +169,6 @@ public class ServerController {
         soloGameController.startGame();
         clientConnection.getGameMessageHandler().initialSelections();
     }
+
+
 }
