@@ -75,15 +75,15 @@ public class Display {
         switch (resource){
 
             case COIN:
-                return Display.paint("YELLOW", "⬤");
+                return "🟡";
             case FAITH:
-                return Display.paint("RED","✝");
+                return "✝";
             case SERVANT:
-                return Display.paint("PURPLE", "♟");
+                return "🧞";
             case SHIELD:
-                return Display.paint("BLUE", "♦");
+                return "🛡";
             case STONE:
-                return Display.paint("GREY", "☗");
+                return "🪨️";
             case ANY:
                 return "🃏️";
         }
@@ -319,10 +319,6 @@ public class Display {
                 break;
             case "RED":
                 colorOut = "\u001B[31m";
-                break;
-            case "GREY":
-                colorOut = "\u001B[37m";
-                break;
         }
         String result = "";
         result += colorOut;

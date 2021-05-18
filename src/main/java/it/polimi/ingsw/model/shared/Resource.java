@@ -1,7 +1,5 @@
 package it.polimi.ingsw.model.shared;
 
-import it.polimi.ingsw.view.Display;
-
 import java.io.Serializable;
 
 /**
@@ -14,15 +12,15 @@ public enum Resource implements Serializable {
     public String toString() {
         switch (this){
             case COIN:
-                return Display.paint("YELLOW", "⬤");
+                return "🟡";
             case FAITH:
-                return Display.paint("RED","✝");
+                return "✝";
             case SERVANT:
-                return Display.paint("PURPLE", "♟");
+                return "🧞";
             case SHIELD:
-                return Display.paint("BLUE", "♦");
+                return "🛡";
             case STONE:
-                return  Display.paint("GREY", "☗");
+                return "🪨️";
             case ANY:
                 return "🃏️";
         }
