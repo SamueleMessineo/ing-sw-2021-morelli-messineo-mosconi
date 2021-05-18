@@ -180,7 +180,9 @@ public class CLI implements UI {
 
 
             try {
-                player = gameState.getPlayerByUsername(input.nextLine());
+                do{
+                    player = gameState.getPlayerByUsername(input.nextLine());
+                } while (player==null);
                 if(player.getUsername().equals(username))Display.displayPlayerLeaderCards(player, output);
                 Display.displayPlayerBoard(player, output);
             } catch (NoSuchElementException e) {

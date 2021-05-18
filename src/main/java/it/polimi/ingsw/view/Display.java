@@ -4,10 +4,7 @@ import it.polimi.ingsw.model.market.Marble;
 import it.polimi.ingsw.model.market.MarbleStructure;
 import it.polimi.ingsw.model.market.Market;
 import it.polimi.ingsw.model.player.*;
-import it.polimi.ingsw.model.shared.CardType;
-import it.polimi.ingsw.model.shared.DevelopmentCard;
-import it.polimi.ingsw.model.shared.LeaderCard;
-import it.polimi.ingsw.model.shared.Resource;
+import it.polimi.ingsw.model.shared.*;
 
 import java.io.OutputStream;
 import java.io.PrintStream;
@@ -116,6 +113,12 @@ public class Display {
         output.println("🧑🏻‍💻" + player.getUsername() + " playerBoard: ");
         output.println("\n ✝ Faith track positions");
         output.println("position: " + player.getFaithTrack().getPosition());
+        for (int i = 0; i < 3; i++) {
+            PopesFavorTile popesFavorTile = player.getFaithTrack().getPopesFavorTiles().get(i);
+            output.print("Pope's favor tile level "+ (i+1) + ": ");
+            displayPopeTyle(popesFavorTile, output);
+
+        }
         output.println("\n 🏦 Storage");
         displayWarehouse(player.getPlayerBoard().getWarehouse(), output);
         output.print("strongbox: ");
@@ -152,6 +155,21 @@ public class Display {
             for (int i = warehouse.getShelf("extra2").getResourceNumber(); i < 2; i++ ) output.print(displayResourceType(Resource.ANY));
             output.print("  ("+displayResourceType(warehouse.getShelf("extra2").getResourceType())+")");
             output.println();
+        }
+    }
+
+    private static void displayPopeTyle(PopesFavorTile popesFavorTile, PrintStream output){
+        switch (popesFavorTile.getState()){
+            case INACTIVE:
+                output.println(paint("YELLOW", popesFavorTile.getState().toString()));
+                break;
+            case ACTIVE:
+                output.println(paint("GREEN", popesFavorTile.getState().toString()));
+                break;
+            case DISCARDED:
+                output.println(paint("RED", popesFavorTile.getState().toString()));
+                break;
+
         }
     }
 
@@ -256,6 +274,8 @@ public class Display {
         }
     }
 
+
+
     public static String normalizeCardField(String input){
         //System.out.println(input.length());
         String result = input;
@@ -282,4 +302,28 @@ public class Display {
         return result;
     }
 
+    public static String paint(String color, String input){
+        String colorOut = "";
+        switch (color){
+            case "GREEN":
+                colorOut = "\u001B[32m";
+                break;
+            case "BLUE":
+                colorOut = "\u001B[34m";
+                break;
+            case "PURPLE":
+                colorOut = "\u001B[35m";
+                break;
+            case "YELLOW":
+                colorOut = "\u001B[33m";
+                break;
+            case "RED":
+                colorOut = "\u001B[31m";
+        }
+        String result = "";
+        result += colorOut;
+        result += input;
+        result += "\u001B[0m";
+        return result;
+    }
 }

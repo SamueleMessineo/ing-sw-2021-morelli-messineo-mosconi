@@ -93,4 +93,15 @@ public class SoloGameController extends ClassicGameController {
                 break;
         }
     }
+
+    @Override
+    public void tryPopeReport(Player playerToMove) {
+        super.tryPopeReport(playerToMove);
+        if(playerToMove.getFaithTrack().inOnPopeSpace()!= -1 && playerToMove.getFaithTrack().getPopesFavorTiles().get(playerToMove.getFaithTrack().inOnPopeSpace()).getState().equals(PopesFavorTileState.INACTIVE)){
+            if(game.getLorenzoIlMagnifico().getFaithTrack().isInPopeFavorByLevel(playerToMove.getFaithTrack().inOnPopeSpace())){
+                game.getLorenzoIlMagnifico().getFaithTrack().getPopesFavorTiles().get(playerToMove.getFaithTrack().inOnPopeSpace()-1).setState(PopesFavorTileState.ACTIVE);
+            } else  game.getLorenzoIlMagnifico().getFaithTrack().getPopesFavorTiles().get(playerToMove.getFaithTrack().inOnPopeSpace()-1).setState(PopesFavorTileState.INACTIVE);
+        }
+
+    }
 }
