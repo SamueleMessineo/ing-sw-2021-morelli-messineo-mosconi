@@ -37,7 +37,7 @@ public class ConnectController implements SceneController {
             System.out.println("try connection to " + ip + " on port " + port);
             gui.getClient().connect(ip, port);
             System.out.println("connection successful");
-            gui.setScene("select-game");
+            gui.setScene("setup-game");
         } catch (Exception e) {
             System.out.println("CONNECTION FAILED");
             errorMessage.setText("CONNECTION FAILED, try again");
