@@ -29,6 +29,7 @@ public class ClientMessageHandler {
         executor.submit(() -> ui.displayError(message.getBody()));
         if (latestMessage != null)
             latestMessage.accept(this);
+        else executor.submit(ui::setup);
      }
 
     public void handle(StringMessage message) {
