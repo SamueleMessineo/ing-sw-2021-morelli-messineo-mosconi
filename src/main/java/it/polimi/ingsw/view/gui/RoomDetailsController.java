@@ -23,6 +23,7 @@ public class RoomDetailsController implements SceneController {
             playerList.getChildren().clear();
             for (String username : players) {
                 Text usernameText = new Text(username);
+                usernameText.getStyleClass().add("light-text");
                 playerList.getChildren().add(usernameText);
             }
         });
