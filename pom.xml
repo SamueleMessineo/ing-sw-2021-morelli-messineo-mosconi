@@ -154,6 +154,7 @@
                     <include>**/*.json</include>
                     <include>**/*.jpg</include>
                     <include>**/*.gif</include>
+                    <include>**/*.css</include>
                 </includes>
             </resource>
         </resources>
