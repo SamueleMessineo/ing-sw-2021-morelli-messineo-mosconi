@@ -20,7 +20,7 @@ public class SelectGameController implements SceneController {
     @FXML
     void createGame(ActionEvent event) {
         System.out.println("create game");
-        gui.getClient().sendMessage(new CreateRoomMessage(true, 2, "alberto"));
+        gui.setScene("create-game");
     }
 
     @FXML
