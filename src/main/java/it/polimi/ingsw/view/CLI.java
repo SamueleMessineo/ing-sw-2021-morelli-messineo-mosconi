@@ -235,7 +235,7 @@ public class CLI implements UI {
     public void dropResources(Map<Resource, Integer> resources) {
         output.println("Choose which resources to drop:");
         Map<Resource, Integer> resourceMap = new LinkedHashMap<>(resources);
-        output.println(Display.displayResources(resourceMap));
+        output.println(Display.displayResourceMap(resourceMap));
         List<Resource> uniqueResources = new ArrayList<>(resourceMap.keySet());
         for (int i = 0; i < uniqueResources.size(); i++) {
             output.print((i + 1) + ". " + Display.displayResourceType(uniqueResources.get(i)) + " | ");
@@ -388,21 +388,17 @@ public class CLI implements UI {
     private Resource askExtraOutput(){
         Resource resource = Resource.ANY;
         int selection;
-        selection = GameUtils.askIntegerInput("Which resource do you want in output?\n1.SHIELD, 2.SERVANT, 3.STONE, 4.COIN", 1, 4, output, input);
-        switch (selection){
-            case (1):
-                resource = Resource.SHIELD;
-                break;
-            case (2):
-                resource = Resource.SERVANT;
-                break;
-            case (3):
-                resource = Resource.STONE;
-                break;
-            case (4):
-                resource = Resource.COIN;
-                break;
-        }
+        List<Resource> allRes = new ArrayList<>();
+        allRes.add(Resource.SHIELD);
+        allRes.add(Resource.SERVANT);
+        allRes.add(Resource.STONE);
+        allRes.add(Resource.COIN);
+
+
+        selection = GameUtils.askIntegerInput("Which resource do you want in output?\n"+ Display.displayResourceList(allRes), 1, 4, output, input)-1;
+
+        resource = allRes.get(selection);
+
         return resource;
     }
 
@@ -410,30 +406,27 @@ public class CLI implements UI {
         Map<Resource, Integer> resInput = GameUtils.emptyResourceMap();
         Map<Resource, Integer> resOutput = GameUtils.emptyResourceMap();
         List<Integer> resources = new ArrayList<>();
-        resources.add(GameUtils.askIntegerInput("What is the first resource you want to put as input?\n1.SHIELD, 2.SERVANT, 3.STONE, 4.COIN",1,4, output, input));
-        resources.add(GameUtils.askIntegerInput("What is the second resource you want to put as input?\n1.SHIELD, 2.SERVANT, 3.STONE, 4.COIN",1,4, output, input));
-        resources.add(GameUtils.askIntegerInput("What is the resource you want as output?\n1.SHIELD, 2.SERVANT, 3.STONE, 4.COIN",1,4, output, input));
 
-        for (int i = 0; i < 3; i++) {
-            switch (resources.get(i)){
-                case (1):
-                    if(i<2)resInput.put(Resource.SHIELD, resInput.get(Resource.SHIELD) + 1);
-                    else resOutput.put(Resource.SHIELD,1);
-                    break;
-                case (2):
-                    if(i<2)resInput.put(Resource.SERVANT,resInput.get(Resource.SERVANT) + 1);
-                    else resOutput.put(Resource.SERVANT,1);
-                    break;
-                case (3):
-                    if(i<2)resInput.put(Resource.STONE,resInput.get(Resource.STONE) + 1);
-                    else resOutput.put(Resource.STONE,1);
-                    break;
-                case (4):
-                    if(i<2)resInput.put(Resource.COIN, resInput.get(Resource.COIN) + 1);
-                    else resOutput.put(Resource.COIN,1);
-                    break;
-            }
+        List<Resource> availableResources = new ArrayList<>();
+        for (Resource r:
+             gameState.getCurrentPlayer().getPlayerBoard().getResources().keySet()) {
+            if(gameState.getCurrentPlayer().getPlayerBoard().getResources().get(r)>0)availableResources.add(r);
         }
+        List<Resource> allRes = new ArrayList<>();
+        allRes.add(Resource.STONE);
+        allRes.add(Resource.COIN);
+        allRes.add(Resource.SERVANT);
+        allRes.add(Resource.SHIELD);
+
+        output.println("These are your available resources " + Display.displayResourceList(availableResources));
+        resources.add(GameUtils.askIntegerInput("What is the first resource you want to put as input?",1,availableResources.size(), output, input)-1);
+        resources.add(GameUtils.askIntegerInput("What is the second resource you want to put as input?",1,availableResources.size(), output, input)-1);
+        resources.add(GameUtils.askIntegerInput("What is the resource you want as output?"+"\n" +  Display.displayResourceList(allRes),1,allRes.size(), output, input)-1);
+
+        resInput.put(availableResources.get(resources.get(0)), 1);
+        resInput.put(availableResources.get(resources.get(1)), 1);
+        resOutput.put(allRes.get(resources.get(2)), 1);
+
         return new ProductionPower(resInput, resOutput);
     }
 
