@@ -85,7 +85,7 @@ public class GUI extends Application implements UI {
     }
 
     private void loadScenes() {
-        for (String sceneName : Arrays.asList("online-offline", "connect", "setup-game", "room-details", "initial-resources")) {
+        for (String sceneName : Arrays.asList("online-offline", "connect", "setup-game", "room-details", "initial-resources", "initial-leaders")) {
             FXMLLoader loader = new FXMLLoader(
                     getClass().getClassLoader().getResource("scenes/" + sceneName +".fxml"));
             try {
@@ -138,7 +138,13 @@ public class GUI extends Application implements UI {
 
     @Override
     public void selectLeaderCards(ArrayList<LeaderCard> leaderCards) {
-
+        System.out.println("received");
+        try {
+            ((InitialLeadersController)controllerMap.get("initial-leaders")).displayGrid(leaderCards);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        setScene("initial-leaders");
     }
 
     @Override
