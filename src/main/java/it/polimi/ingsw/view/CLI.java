@@ -386,21 +386,17 @@ public class CLI implements UI {
     private Resource askExtraOutput(){
         Resource resource = Resource.ANY;
         int selection;
-        selection = GameUtils.askIntegerInput("Which resource do you want in output?\n1.SHIELD, 2.SERVANT, 3.STONE, 4.COIN", 1, 4, output, input);
-        switch (selection){
-            case (1):
-                resource = Resource.SHIELD;
-                break;
-            case (2):
-                resource = Resource.SERVANT;
-                break;
-            case (3):
-                resource = Resource.STONE;
-                break;
-            case (4):
-                resource = Resource.COIN;
-                break;
-        }
+        List<Resource> allRes = new ArrayList<>();
+        allRes.add(Resource.SHIELD);
+        allRes.add(Resource.SERVANT);
+        allRes.add(Resource.STONE);
+        allRes.add(Resource.COIN);
+
+
+        selection = GameUtils.askIntegerInput("Which resource do you want in output?\n"+ Display.displayResourceList(allRes), 1, 4, output, input)-1;
+
+        resource = allRes.get(selection);
+
         return resource;
     }
 
