@@ -15,7 +15,6 @@ public class ServerController {
     private final Server server;
     private int roomId = 999;
 
-
     public ServerController(Server server) {
         this.server = server;
     }
@@ -40,18 +39,18 @@ public class ServerController {
 
     public void addPlayerByRoomId(String username,int roomId, ClientConnection clientConnection){
         if (server.getRooms().get(roomId) == null) {
-            clientConnection.sendMessage(new ErrorMessage("room not found."));
+            clientConnection.sendMessage(new ErrorMessage("room not found"));
             return;
         }
         Room room = server.getRooms().get(roomId);
         //server.getRooms().get(roomId).getGame().getPlayers().stream().anyMatch(player -> player.getUsername().equals(username))
         if (!room.isFull() && room.getGame().getPlayerByUsername(username)!=null) {
-            clientConnection.sendMessage(new ErrorMessage("username is taken."));
+            clientConnection.sendMessage(new ErrorMessage("username is taken"));
             return;
         }
 
         if (room.isFull() && room.getGame().getPlayerByUsername(username)==null) {
-            clientConnection.sendMessage(new ErrorMessage("room is full."));
+            clientConnection.sendMessage(new ErrorMessage("room is full"));
             return;
         }
         //to handle reconnection
@@ -80,7 +79,7 @@ public class ServerController {
                return;
            }
            else {
-               clientConnection.sendMessage(new ErrorMessage("room is full."));
+               clientConnection.sendMessage(new ErrorMessage("room is full"));
                return;
            }
         }
@@ -112,7 +111,7 @@ public class ServerController {
         }
 
         if(room.getGame().getPlayers().stream().anyMatch(player -> player.getUsername().equals(username))){
-            clientConnection.sendMessage(new ErrorMessage("username is taken."));
+            clientConnection.sendMessage(new ErrorMessage("username is taken"));
             return;
         }
 
@@ -169,6 +168,4 @@ public class ServerController {
         soloGameController.startGame();
         clientConnection.getGameMessageHandler().initialSelections();
     }
-
-
 }

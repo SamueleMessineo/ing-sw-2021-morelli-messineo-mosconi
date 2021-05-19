@@ -12,7 +12,14 @@ import it.polimi.ingsw.view.UI;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -69,11 +76,16 @@ public class GUI extends Application implements UI {
 
     @Override
     public void setup() {
-        launch();
+        System.out.println("setup");
+        try {
+            launch();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void loadScenes() {
-        for (String sceneName : Arrays.asList("online-offline", "connect", "setup-game", "room-details")) {
+        for (String sceneName : Arrays.asList("online-offline", "connect", "setup-game", "room-details", "initial-resources")) {
             FXMLLoader loader = new FXMLLoader(
                     getClass().getClassLoader().getResource("scenes/" + sceneName +".fxml"));
             try {
@@ -95,7 +107,22 @@ public class GUI extends Application implements UI {
 
     @Override
     public void displayError(String body) {
-
+        Platform.runLater(() -> {
+            System.out.println(body);
+            Stage dialog = new Stage();
+            VBox vBox = new VBox();
+            vBox.setAlignment(Pos.CENTER);
+            vBox.setSpacing(50);
+            Text text = new Text("An error occurred!");
+            text.setFont(Font.font("System", FontWeight.BLACK, 18));
+            vBox.getChildren().add(text);
+            vBox.getChildren().add(new Text(body));
+            Scene scene = new Scene(vBox, 400, 300);
+            dialog.setScene(scene);
+            dialog.initOwner(stage);
+            dialog.initModality(Modality.APPLICATION_MODAL);
+            dialog.showAndWait();
+        });
     }
 
     @Override
@@ -105,7 +132,8 @@ public class GUI extends Application implements UI {
 
     @Override
     public void selectInitialResources(List<Resource> resources, int amount) {
-
+        ((InitialResourcesController)controllerMap.get("initial-resources")).displayList(resources, amount);
+        setScene("initial-resources");
     }
 
     @Override

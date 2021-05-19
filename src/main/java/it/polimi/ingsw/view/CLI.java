@@ -20,6 +20,7 @@ import it.polimi.ingsw.utils.GameUtils;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.*;
+import java.util.function.Consumer;
 
 public class CLI implements UI {
     private Client client;
@@ -27,6 +28,7 @@ public class CLI implements UI {
     private final PrintStream output;
     private String username;
     private Game gameState;
+    private Consumer lastFunction;
 
     public CLI() {
         input = new Scanner(System.in);
