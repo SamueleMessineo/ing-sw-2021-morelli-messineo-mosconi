@@ -233,13 +233,22 @@ public class Display {
         return "\u001B[0m";
     }
 
-    public static String displayResources(Map<Resource, Integer> resourceMap) {
+    public static String displayResourceMap(Map<Resource, Integer> resourceMap) {
         String output = "";
 
         for (Resource r : resourceMap.keySet()) {
             output += resourceMap.get(r) + "x" + displayResourceType(r) + " ";
         }
         return output;
+    }
+
+    public static String displayResourceList(List<Resource> resources){
+        String result = "";
+        for (Resource r:
+             resources) {
+            result += (resources.indexOf(r)+1) + "." + displayResourceType(r) + " ";
+        }
+        return result;
     }
 
     public static void displayPlayerLeaderCards(Player player, PrintStream output){
