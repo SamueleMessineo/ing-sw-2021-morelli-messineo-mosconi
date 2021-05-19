@@ -4,6 +4,7 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
@@ -19,30 +20,58 @@
          <children>
               <HBox fx:id="topLine" alignment="CENTER" prefHeight="200.0" prefWidth="1280.0" spacing="200.0">
                <children>
-                  <ImageView fx:id="upLeftImg" fitHeight="250.0" fitWidth="170.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
+                  <Pane prefHeight="175.0" prefWidth="160.0">
+                     <children>
+                        <ImageView fx:id="upLeftCross" fitHeight="200.0" fitWidth="170.0" x="-18" y="18" onMouseClicked="#selectUpLeft" pickOnBounds="true" preserveRatio="true">
+
+                        </ImageView>
+                        <ImageView fx:id="upLeftImg" fitHeight="200.0" fitWidth="170.0" onMouseClicked="#selectUpLeft" pickOnBounds="true" preserveRatio="true">
+
+                        </ImageView>
+                     </children>
+                  </Pane>
+                  <Pane prefHeight="175.0" prefWidth="160.0">
+                     <children>
+                        <ImageView fx:id="upRightCross" fitHeight="200.0" fitWidth="170.0" x="-18" y="18"  onMouseClicked="#selectUpRight" pickOnBounds="true" preserveRatio="true">
+
+                     </ImageView>
+                        <ImageView fx:id="upRightImg" fitHeight="200.0" fitWidth="170.0" onMouseClicked="#selectUpRight" pickOnBounds="true" preserveRatio="true">
+                           <image>
 
                      </image>
-                  </ImageView>
-                  <ImageView fx:id="upRightImg" fitHeight="250.0" fitWidth="170.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-
-                     </image>
-                  </ImageView>
+                        </ImageView>
+                     </children>
+                  </Pane>
                </children>
             </HBox>
               <HBox fx:id="bottomLine" alignment="CENTER" prefHeight="200.0" prefWidth="1280.0" spacing="200.0">
                <children>
-                  <ImageView fx:id="bottomLeftImg" fitHeight="250.0" fitWidth="170.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
+                  <Pane prefHeight="175.0" prefWidth="160.0">
+                     <children>
 
-                     </image>
-                  </ImageView>
-                  <ImageView fx:id="bottomRightImg" fitHeight="250.0" fitWidth="170.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
+                        <ImageView fx:id="bottomLeftCross" fitHeight="200.0" fitWidth="170.0" x="-18" y="18" onMouseClicked="#selectBottomLeft" pickOnBounds="true" preserveRatio="true">
 
-                     </image>
-                  </ImageView>
+                        </ImageView>
+                         <ImageView fx:id="bottomLeftImg" fitHeight="200.0" fitWidth="170.0" onMouseClicked="#selectBottomLeft" pickOnBounds="true" preserveRatio="true">
+                         <image>
+
+                         </image>
+                     </ImageView>
+                     </children>
+                  </Pane>
+                  <Pane prefHeight="175.0" prefWidth="160.0">
+                     <children>
+
+                        <ImageView fx:id="bottomRightCross" fitHeight="200.0" fitWidth="170.0" x="-18" y="18"  onMouseClicked="#selectBottomRight" pickOnBounds="true" preserveRatio="true">
+
+                        </ImageView>
+                         <ImageView fx:id="bottomRightImg" fitHeight="200.0" fitWidth="170.0" onMouseClicked="#selectBottomRight" pickOnBounds="true" preserveRatio="true">
+                             <image>
+
+                             </image>
+                         </ImageView>
+                     </children>
+                  </Pane>
                </children>
             </HBox>
          </children>
