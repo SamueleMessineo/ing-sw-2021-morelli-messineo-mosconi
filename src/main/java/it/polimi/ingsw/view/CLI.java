@@ -424,7 +424,7 @@ public class CLI implements UI {
         resources.add(GameUtils.askIntegerInput("What is the resource you want as output?"+"\n" +  Display.displayResourceList(allRes),1,allRes.size(), output, input)-1);
 
         resInput.put(availableResources.get(resources.get(0)), 1);
-        resInput.put(availableResources.get(resources.get(1)), 1);
+        resInput.put(availableResources.get(resources.get(1)), resInput.get(availableResources.get(resources.get(1)))+1);
         resOutput.put(allRes.get(resources.get(2)), 1);
 
         return new ProductionPower(resInput, resOutput);

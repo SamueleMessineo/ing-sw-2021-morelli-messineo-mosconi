@@ -226,7 +226,13 @@ public class GameMessageHandler {
         DevelopmentCard developmentCard = gameController.getBuyableDevelopementCards().get(message.getSelectedCardIndex());
         List<Integer> stacks = gameController.getStacksToPlaceCard(room.getGame().getCurrentPlayer(), developmentCard);
         room.getCurrentTurn().setBoughtDevelopmentCard(developmentCard);
-        clientConnection.sendMessage(new SelectStackToPlaceCardRequestMessage(stacks));
+        if(stacks.size()==1 || gameController.getGame().getCurrentPlayer().getPlayerBoard().getCardStacks().get(stacks.get(0)).isEmpty()){
+            gameController.buyDevelopmentCard(stacks.get(0),developmentCard);
+            room.getCurrentTurn().setAlreadyPerformedMove(true);
+            sendNextMoves();
+        }else {
+            clientConnection.sendMessage(new SelectStackToPlaceCardRequestMessage(stacks));
+        }
 
     }
 

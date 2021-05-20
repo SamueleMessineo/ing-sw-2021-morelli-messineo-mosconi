@@ -131,7 +131,13 @@ public class LocalMessageHandler {
         DevelopmentCard developmentCard = gameController.getBuyableDevelopementCards().get(message.getSelectedCardIndex());
         List<Integer> stacks = gameController.getStacksToPlaceCard(player, developmentCard);
         currentTurn.setBoughtDevelopmentCard(developmentCard);
-        ui.selectStackToPlaceCard(stacks);
+        if(stacks.size()==1 || gameController.getGame().getCurrentPlayer().getPlayerBoard().getCardStacks().get(stacks.get(0)).isEmpty()){
+            gameController.buyDevelopmentCard(stacks.get(0),developmentCard);
+            currentTurn.setAlreadyPerformedMove(true);
+            nextMoves(true);
+        }else {
+            ui.selectStackToPlaceCard(stacks);
+        }
     }
 
     public void handle(SelectResourceForWhiteMarbleResponseMessage message) {
