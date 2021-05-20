@@ -44,6 +44,10 @@ public class PlayerTest {
 
         LeaderCard leaderCardTest=new LeaderCard(resourceRequirements, emptyMap2, 0, "Market",
                                                     Resource.COIN, 0);
+        assertEquals(0,leaderCardTest.getScore());
+        assertEquals("Market",leaderCardTest.getEffectScope());
+        assertEquals(Resource.COIN,leaderCardTest.getEffectObject());
+        assertEquals("Resource requirements: "+resourceRequirements+"\n",leaderCardTest.printResourceRequirements());
         testCards.add(leaderCardTest);
         player.setLeaderCards(testCards);
         assertTrue(player.canPlayLeader(0));
@@ -122,6 +126,11 @@ public class PlayerTest {
                 Resource.COIN, 0);
         testCards.add(leaderCardTest);
         player.setLeaderCards(testCards);
+        assertEquals("Card requirements: "+cardRequirements+" Level: "+ leaderCardTest.getCardRequirementsLevel()+"\n",
+                leaderCardTest.printCardRequirements());
+        assertEquals("\n"+leaderCardTest.printResourceRequirements()+leaderCardTest.printCardRequirements()+
+                "Score: "+leaderCardTest.getScore()+"\n"+"Effect: "+leaderCardTest.getEffectScope()+
+                " "+leaderCardTest.getEffectObject()+"\n",leaderCardTest.toString());
         assertTrue(player.canPlayLeader(4));
 
 
@@ -199,6 +208,7 @@ public class PlayerTest {
         ProductionPower productionPower=new ProductionPower(emptyMap1,emptyMap1);
         DevelopmentCard developmentCardTest=new DevelopmentCard(1,CardType.GREEN,cost,productionPower,0);
         assertTrue(player.canBuyAndPlaceDevelopmentCard(developmentCardTest));
+        assertEquals(0,developmentCardTest.getScore());
 
         cost.put(Resource.SERVANT, 13); //Strongbox has only 12 Servant...
         cost.put(Resource.COIN, 3);
