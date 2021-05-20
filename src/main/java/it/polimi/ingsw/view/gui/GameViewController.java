@@ -29,8 +29,8 @@ public class GameViewController implements SceneController {
             return;
         }
         // add cards grid
-        cardsGrid.setScaleX(0.5);
-        cardsGrid.setScaleY(0.5);
+        cardsGrid.setScaleX(0.6);
+        cardsGrid.setScaleY(0.6);
         leftContainer.getChildren().add(cardsGrid);
         // populate player tabs
         tabPane.getTabs().clear();
