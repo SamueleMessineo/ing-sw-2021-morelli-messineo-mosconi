@@ -75,6 +75,10 @@ public class GUI extends Application implements UI {
         }
     }
 
+    public SceneController getSceneController(String sceneName) {
+        return controllerMap.get(sceneName);
+    }
+
     @Override
     public void setup() {
         System.out.println("setup");
@@ -86,7 +90,7 @@ public class GUI extends Application implements UI {
     }
 
     private void loadScenes() {
-        for (String sceneName : Arrays.asList("online-offline", "connect", "setup-game", "room-details", "initial-resources", "initial-leaders", "game-view")) {
+        for (String sceneName : Arrays.asList("online-offline", "connect", "setup-game", "room-details", "initial-resources", "initial-leaders", "game-view", "cards-market")) {
             FXMLLoader loader = new FXMLLoader(
                     getClass().getClassLoader().getResource("scenes/" + sceneName +".fxml"));
             try {
