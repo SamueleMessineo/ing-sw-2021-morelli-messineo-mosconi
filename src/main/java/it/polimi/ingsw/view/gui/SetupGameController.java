@@ -10,6 +10,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 import java.util.Arrays;
@@ -18,6 +20,8 @@ public class SetupGameController implements SceneController{
     private GUI gui;
     @FXML
     private VBox form;
+    @FXML
+    private Button startButton;
     private final Text usernameLabel = new Text("Enter your username"){{getStyleClass().add("light-text");}};
     private final TextField usernameInput = new TextField();
     private final Text roomIDLabel = new Text("Enter the room ID"){{getStyleClass().add("light-text");}};
@@ -68,25 +72,37 @@ public class SetupGameController implements SceneController{
 
     @FXML
     void createGame(ActionEvent event) {
+        startButton.setVisible(true);
         view = "CREATE";
         form.getChildren().clear();
-        form.getChildren().addAll(Arrays.asList(
+        Text text = new Text("Create a room");
+        text.getStyleClass().add("light-text");
+        text.setFont(Font.font("System", FontWeight.BLACK, 18));
+        form.getChildren().addAll(Arrays.asList(text,
                 usernameLabel, usernameInput, playerNumberLabel, playerNumberInput, privateCheckbox));
     }
 
     @FXML
     void joinPrivate(ActionEvent event) {
+        startButton.setVisible(true);
         view = "PRIVATE";
         form.getChildren().clear();
+        Text text = new Text("Join a private room");
+        text.getStyleClass().add("light-text");
+        text.setFont(Font.font("System", FontWeight.BLACK, 18));
         form.getChildren().addAll(Arrays.asList(
-                usernameLabel, usernameInput, roomIDLabel, roomIDInput));
+                text, usernameLabel, usernameInput, roomIDLabel, roomIDInput));
     }
 
     @FXML
     void joinPublic(ActionEvent event) {
+        startButton.setVisible(true);
         view = "PUBLIC";
         form.getChildren().clear();
-        form.getChildren().addAll(Arrays.asList(
+        Text text = new Text("Join a public room");
+        text.getStyleClass().add("light-text");
+        text.setFont(Font.font("System", FontWeight.BLACK, 18));
+        form.getChildren().addAll(Arrays.asList(text,
                 usernameLabel, usernameInput, playerNumberLabel, playerNumberInput));
     }
     @Override

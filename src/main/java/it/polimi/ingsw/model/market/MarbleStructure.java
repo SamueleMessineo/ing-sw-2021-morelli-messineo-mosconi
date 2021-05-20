@@ -9,10 +9,10 @@ import java.util.List;
  * to acquire resources by shifting a row or column.
  */
 public class MarbleStructure implements Serializable {
-    private final ArrayList<Marble> marbles;
+    private final List<Marble> marbles;
     private Marble extraMarble;
 
-    public MarbleStructure(ArrayList<Marble> marbles, Marble extraMarble) {
+    public MarbleStructure(List<Marble> marbles, Marble extraMarble) {
         this.marbles = marbles;
         this.extraMarble = extraMarble;
     }

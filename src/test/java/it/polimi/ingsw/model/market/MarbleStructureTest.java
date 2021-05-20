@@ -99,4 +99,32 @@ public class MarbleStructureTest {
 
         }
     }
+
+    @Test
+    public void getMarbles(){
+        List<Marble> marbles=new ArrayList<>();
+        marbles.add(Marble.PURPLE);
+        marbles.add(Marble.BLUE);
+        marbles.add(Marble.YELLOW);
+        marbles.add(Marble.PURPLE);
+
+
+        MarbleStructure marbleStructure=new MarbleStructure(marbles,Marble.BLUE);
+
+        assertEquals(marbles,marbleStructure.getMarbles());
+    }
+
+    @Test
+    public void getExtraMarble(){
+        List<Marble> marbles=new ArrayList<>();
+        marbles.add(Marble.PURPLE);
+        marbles.add(Marble.BLUE);
+        marbles.add(Marble.YELLOW);
+        marbles.add(Marble.PURPLE);
+
+
+        MarbleStructure marbleStructure=new MarbleStructure(marbles,Marble.BLUE);
+
+        assertEquals(Marble.BLUE,marbleStructure.getExtraMarble());
+    }
 }

@@ -36,6 +36,7 @@ public class FaithTrackTest {
                 assertEquals(20,faithtrack.getVP());
             faithtrack.move();
         }
+        assertEquals(faithtrack.getMaxposition(),faithtrack.getPosition());
     }
 
     @Test
