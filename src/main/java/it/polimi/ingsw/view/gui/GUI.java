@@ -30,6 +30,7 @@ public class GUI extends Application implements UI {
     private final Map<String, Scene> sceneMap = new HashMap<>();
     private final Map<String, SceneController> controllerMap = new HashMap<>();
     private Client client;
+    private Game gameState;
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -85,7 +86,7 @@ public class GUI extends Application implements UI {
     }
 
     private void loadScenes() {
-        for (String sceneName : Arrays.asList("online-offline", "connect", "setup-game", "room-details", "initial-resources", "initial-leaders")) {
+        for (String sceneName : Arrays.asList("online-offline", "connect", "setup-game", "room-details", "initial-resources", "initial-leaders", "game-view")) {
             FXMLLoader loader = new FXMLLoader(
                     getClass().getClassLoader().getResource("scenes/" + sceneName +".fxml"));
             try {
@@ -149,7 +150,8 @@ public class GUI extends Application implements UI {
 
     @Override
     public void displayGameState() {
-
+        ((GameViewController)controllerMap.get("game-view")).load(gameState);
+        setScene("game-view");
     }
 
     @Override
@@ -159,7 +161,7 @@ public class GUI extends Application implements UI {
 
     @Override
     public void setGameState(Game game) {
-
+        gameState = game;
     }
 
     @Override
