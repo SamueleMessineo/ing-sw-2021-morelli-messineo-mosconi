@@ -306,12 +306,14 @@ public class ClassicGameController {
     }
 
     public void activatePopeReport() {
+        GameUtils.debug("reporting to the Pope");
         for (Player player : game.getPlayers()) {
             GameUtils.debug(String.valueOf(player.getFaithTrack().inOnPopeSpace()));
             int popeLevel = player.getFaithTrack().inOnPopeSpace();
             // for each player, if the player is on a pope space
             // check if the other players are in that space's area
             if (popeLevel != -1) {
+                player.getFaithTrack().getPopesFavorTiles().get(popeLevel-1).setState(PopesFavorTileState.ACTIVE);
                 for (Player otherPlayer : game.getPlayers()) {
                     // not current player
                     if (!otherPlayer.getUsername().equals(player.getUsername())) {

@@ -1,4 +1,5 @@
 package it.polimi.ingsw.model.player;
+import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.shared.*;
 import it.polimi.ingsw.utils.GameUtils;
 import it.polimi.ingsw.view.Display;
@@ -269,8 +270,11 @@ public class Warehouse implements Serializable {
             }
             int resourceAmount = allResources.get(shelfType);
 
-            if (resourceAmount < 1 && shelfName!="extra1" && shelfName!="extra2")
+            if (resourceAmount < 1 && !shelfName.equals("extra1") && !shelfName.equals("extra2")){
+                GameUtils.debug("return");
                 return;
+            }
+
 
             int leftoverAmount = Math.max(resourceAmount - getShelf(shelfName).getMaxSize(), 0);
 

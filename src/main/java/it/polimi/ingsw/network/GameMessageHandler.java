@@ -262,7 +262,7 @@ public class GameMessageHandler {
         } else {
             Map<String, Integer> standing = gameController.computeStanding();
             String winner = gameController.computeWinner();
-            clientConnection.sendMessage(new GameOverMessage(winner, standing));
+            room.sendAll(new GameOverMessage(winner, standing));
         }
     }
 
