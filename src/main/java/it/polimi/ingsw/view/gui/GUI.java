@@ -90,7 +90,7 @@ public class GUI extends Application implements UI {
     }
 
     private void loadScenes() {
-        for (String sceneName : Arrays.asList("online-offline", "connect", "setup-game", "room-details", "initial-resources", "initial-leaders", "game-view", "cards-market")) {
+        for (String sceneName : Arrays.asList("online-offline", "connect", "setup-game", "room-details", "initial-resources", "initial-leaders", "game-view", "cards-market","marbles-market")) {
             FXMLLoader loader = new FXMLLoader(
                     getClass().getClassLoader().getResource("scenes/" + sceneName +".fxml"));
             try {
