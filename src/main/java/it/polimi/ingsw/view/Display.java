@@ -95,17 +95,19 @@ public class Display {
         System.out.println("\nCards Market:\n");
 
 
-        /*
+
         for (int i = 0; i < 12; i+=4) {
             displayCardsLine(market, i, output);
         }
 
-         */
+         /*
 
         for (int i = 0; i < 12; i++) {
             if(market.getCardsGrid().get(i).isEmpty()) System.out.println("Empty Stack");
             else displayDevelopmentCard(market, i, output);
         }
+
+          */
 
     }
 
