@@ -359,14 +359,19 @@ public class ClassicGameController {
 
     public Map<String, Integer> computeStanding() {
         Map<String, Integer> standing = new HashMap<>();
-        List<Player> standingList = new ArrayList<>();
+        List<Player> standingList = new ArrayList<>(game.getPlayers());
 
+        /*
         standingList.add(game.getPlayers().get(0));
-
         for (Player player:
                 game.getPlayers()) {
             if(player.getVP() >= standingList.get(0).getVP())standingList.add(0,player);
+
         }
+
+         */
+
+        standingList.sort(Comparator.comparingInt(Player::getVP));
 
         int points;
         for (Player player:
