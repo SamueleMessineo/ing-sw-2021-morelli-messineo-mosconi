@@ -40,7 +40,7 @@ public class PlayerCardStack extends Stack<DevelopmentCard> implements Serializa
         if(size() == 0)return "empty";
         result+=(peek().toString());
         for (int i = size()-2; i >= 0; i--) {
-            result += "\nlevel card-"+i+": "+(get(i).getLevel());
+            result += "\nscore card-"+i+": "+(get(i).getScore());
         }
         return result;
     }
