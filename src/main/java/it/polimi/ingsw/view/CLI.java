@@ -49,6 +49,7 @@ public class CLI implements UI {
                 } catch (IOException e) {
                     output.println("Server unavailable :(");
                     output.println("exiting...");
+                    System.exit(404);
                     return;
                 }
                 break;
