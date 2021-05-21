@@ -85,6 +85,12 @@ public class GameViewController implements SceneController {
         gui.setScene("cards-market");
     }
 
+    @FXML
+    void viewMarbles(MouseEvent event) {
+        ((MarblesMarketController)gui.getSceneController("marbles-market")).load(gameState.getMarket().getMarbleStructure().getMarbles());
+        gui.setScene("marbles-market");
+    }
+
     @Override
     public void setGUI(GUI gui) {
         this.gui = gui;

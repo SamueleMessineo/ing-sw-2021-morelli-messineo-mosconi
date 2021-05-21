@@ -12,7 +12,7 @@
          <children>
             <VBox alignment="CENTER" layoutX="200.0" layoutY="121.0" prefHeight="718.0" prefWidth="484.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <AnchorPane fx:id="marblesContainer" prefHeight="200.0" prefWidth="200.0" />
+                  <AnchorPane fx:id="marblesContainer" onMouseClicked="#viewMarbles" prefHeight="200.0" prefWidth="200.0" />
                   <AnchorPane fx:id="cardsContainer" onMouseClicked="#viewCards" prefHeight="200.0" prefWidth="200.0" />
                </children></VBox>
          </children></AnchorPane>

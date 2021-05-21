@@ -27,8 +27,8 @@ public class MarblesMarketController implements SceneController{
                 e.printStackTrace();
                 return;
             }
-            marblesGrid.setScaleX(1.2);
-            marblesGrid.setScaleY(1.2);
+            marblesGrid.setScaleX(0.7);
+            marblesGrid.setScaleY(0.7);
             vbox.getChildren().add(0, marblesGrid);
         }
 
