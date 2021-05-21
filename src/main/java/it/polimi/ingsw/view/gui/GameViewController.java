@@ -35,7 +35,7 @@ public class GameViewController implements SceneController {
         FXMLLoader loader = new FXMLLoader(
                 getClass().getClassLoader().getResource("scenes/cards-grid.fxml"));
         GridPane cardsGrid;
-        GridPane cardsGrid2;
+        GridPane marblesGrid;
         try {
             cardsGrid = loader.load();
             ((CardsGridController) loader.getController()).setCards(game.getMarket().getCardsGrid());
@@ -57,6 +57,25 @@ public class GameViewController implements SceneController {
             Tab playerTab = new Tab();
             playerTab.setText(p.getUsername() + ": " + p.getVP() + " points");
             tabPane.getTabs().add(playerTab);
+        }
+
+        loader = new FXMLLoader(
+                getClass().getClassLoader().getResource("scenes/marbles-grid.fxml"));
+
+        try{
+            marblesGrid=loader.load();
+            ((MarblesGridController) loader.getController()).setMarbles(game.getMarket().getMarbleStructure().getMarbles());
+        }catch (IOException e){
+            e.printStackTrace();
+            return;
+        }
+
+        try {
+            marblesGrid.setScaleX(0.4);
+            marblesGrid.setScaleY(0.4);
+            marblesContainer.getChildren().add(marblesGrid);
+        }catch (Exception e) {
+            e.printStackTrace();
         }
     }
 

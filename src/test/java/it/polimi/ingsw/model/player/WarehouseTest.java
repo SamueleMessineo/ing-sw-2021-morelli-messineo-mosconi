@@ -497,6 +497,45 @@ public class WarehouseTest {
 
         warehouse=new Warehouse();
         warehouse.addNewShelf("extra1",new Shelf(2,Resource.STONE));
+        oldResInWarehouse= GameUtils.emptyResourceMap();
+        oldResInWarehouse.put(Resource.SERVANT,3);
+        oldResInWarehouse.put(Resource.COIN,0);
+        oldResInWarehouse.put(Resource.STONE,0);
+        oldResInWarehouse.put(Resource.SHIELD,2);
+        warehouse.placeResources(oldResInWarehouse);
+        assertEquals(oldResInWarehouse,warehouse.getResources());
+
+        resToAdd= GameUtils.emptyResourceMap();
+        resToAdd.put(Resource.SERVANT,0);
+        resToAdd.put(Resource.COIN,0);
+        resToAdd.put(Resource.STONE,3);
+        resToAdd.put(Resource.SHIELD,0);
+        warehouse.placeResources(resToAdd);
+
+        assertEquals(GameUtils.sumResourcesMaps(oldResInWarehouse,resToAdd),warehouse.getResources());
+
+        warehouse=new Warehouse();
+        warehouse.addNewShelf("extra1",new Shelf(2,Resource.STONE));
+        oldResInWarehouse= GameUtils.emptyResourceMap();
+        oldResInWarehouse.put(Resource.SERVANT,0);
+        oldResInWarehouse.put(Resource.COIN,0);
+        oldResInWarehouse.put(Resource.STONE,1);
+        oldResInWarehouse.put(Resource.SHIELD,2);
+        warehouse.placeResources(oldResInWarehouse);
+        assertEquals(oldResInWarehouse,warehouse.getResources());
+
+        resToAdd= GameUtils.emptyResourceMap();
+        resToAdd.put(Resource.SERVANT,1);
+        resToAdd.put(Resource.COIN,0);
+        resToAdd.put(Resource.STONE,4);
+        resToAdd.put(Resource.SHIELD,0);
+        warehouse.placeResources(resToAdd);
+
+        assertEquals(GameUtils.sumResourcesMaps(oldResInWarehouse,resToAdd),warehouse.getResources());
+
+
+        warehouse=new Warehouse();
+        warehouse.addNewShelf("extra1",new Shelf(2,Resource.STONE));
         warehouse.addNewShelf("extra2",new Shelf(2,Resource.COIN));
 
         oldResInWarehouse= GameUtils.emptyResourceMap();
