@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.GameViewController">
+   <children>
+      <ImageView pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/board/game-board.png" />
+         </image>
+      </ImageView>
+      <VBox alignment="CENTER" fillWidth="false" prefHeight="720.0" prefWidth="393.0" spacing="40.0">
+         <children>
+            <VBox fx:id="marblesContainer" alignment="CENTER" fillWidth="false" onMouseClicked="#viewMarbles" prefHeight="300.0" prefWidth="300.0" />
+            <VBox fx:id="cardsContainer" alignment="CENTER" fillWidth="false" layoutX="73.0" layoutY="220.0" onMouseClicked="#viewCards" prefHeight="300.0" prefWidth="300.0" />
+         </children>
+      </VBox>
+      <TabPane fx:id="tabPane" layoutX="437.0" prefHeight="720.0" prefWidth="843.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab text="Alberto - 10 points">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="720.0" prefWidth="854.0" />
+            </content>
+          </Tab>
+          <Tab text="Bruno - 5 points">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+            </content>
+          </Tab>
+        </tabs>
+      </TabPane>
+   </children>
+</AnchorPane>

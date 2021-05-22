@@ -16,26 +16,26 @@ public class MarblesMarketController implements SceneController{
         @FXML
         private VBox vbox;
 
-        public void load(List<Marble> marbles) {
+        public void load(List<Marble> marbles, Marble extra) {
             FXMLLoader loader = new FXMLLoader(
                     getClass().getClassLoader().getResource("scenes/marbles-grid.fxml"));
-            GridPane marblesGrid;
+            VBox marblesGrid;
             try {
                 marblesGrid = loader.load();
-                ((MarblesGridController) loader.getController()).setMarbles(marbles);
             } catch (IOException e) {
                 e.printStackTrace();
                 return;
             }
-            marblesGrid.setScaleX(0.7);
-            marblesGrid.setScaleY(0.7);
+            ((MarblesGridController) loader.getController()).setMarbles(marbles, extra);
+            marblesGrid.setScaleX(2);
+            marblesGrid.setScaleY(2);
             vbox.getChildren().add(0, marblesGrid);
         }
 
         @FXML
         void cancel(ActionEvent event) {
             vbox.getChildren().remove(0);
-            gui.setScene("game-view");
+            gui.setScene("game-board");
         }
 
         @Override

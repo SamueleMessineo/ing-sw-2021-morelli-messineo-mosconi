@@ -7,6 +7,7 @@ import javafx.geometry.VPos;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 
 import java.io.FileInputStream;
@@ -18,25 +19,33 @@ public class MarblesGridController implements SceneController{
 
     @FXML
     private GridPane grid;
+    @FXML
+    private HBox extraContainer;
 
-    public void setMarbles(List<Marble> marbles){
+    public void setMarbles(List<Marble> marbles, Marble extra){
         try{
             grid.getChildren().clear();
-            GridPane.setValignment(grid, VPos.CENTER);
-            GridPane.setHalignment(grid, HPos.CENTER);
+            Image extraImage = new Image(new FileInputStream(
+                    "src/main/resources/images/marbles/" + extra.name().toLowerCase() + ".png"));
+            ImageView extraImageView = new ImageView(extraImage);
+            extraImageView.setFitHeight(40);
+            extraImageView.setFitWidth(40);
+            extraContainer.getChildren().add(extraImageView);
             for(int i=0; i<marbles.size(); i++){
-                Text marbleText=new Text(marbles.get(i).name());
                 Image marbleImage=new Image(new FileInputStream(
                         "src/main/resources/images/marbles/" +
                                 marbles.get(i).name().toLowerCase()+".png"));
                 ImageView marbleImageView=new ImageView(marbleImage);
                 marbleImageView.setPreserveRatio(true);
-                marbleImageView.setFitWidth(0);
-                marbleImageView.setFitHeight(0);
+                marbleImageView.setFitWidth(40);
+                marbleImageView.setFitHeight(40);
+                GridPane.setValignment(marbleImageView, VPos.CENTER);
+                GridPane.setHalignment(marbleImageView, HPos.CENTER);
                 int marbleX = (i/4);
                 int marbleY = (i%4);
                 grid.add(marbleImageView, marbleY, marbleX);
             }
+
         }catch (Exception e){
             e.printStackTrace();
         }

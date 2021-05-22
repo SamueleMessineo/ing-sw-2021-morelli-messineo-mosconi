@@ -19,9 +19,9 @@ public class GameViewController implements SceneController {
     private GUI gui;
     private Game gameState;
     @FXML
-    private AnchorPane marblesContainer;
+    private VBox marblesContainer;
     @FXML
-    private AnchorPane cardsContainer;
+    private VBox cardsContainer;
     @FXML
     private TabPane tabPane;
 
@@ -32,25 +32,21 @@ public class GameViewController implements SceneController {
 
     public void load(Game game) {
         gameState = game;
-        FXMLLoader loader = new FXMLLoader(
+        FXMLLoader cardsLoader = new FXMLLoader(
                 getClass().getClassLoader().getResource("scenes/cards-grid.fxml"));
+        FXMLLoader marblesLoader = new FXMLLoader(
+                getClass().getClassLoader().getResource("scenes/marbles-grid.fxml"));
         GridPane cardsGrid;
-        GridPane marblesGrid;
+        VBox marblesGrid;
         try {
-            cardsGrid = loader.load();
-            ((CardsGridController) loader.getController()).setCards(game.getMarket().getCardsGrid());
+            cardsGrid = cardsLoader.load();
+            marblesGrid = marblesLoader.load();
         } catch (IOException e) {
             e.printStackTrace();
             return;
         }
-        try {
-            // add cards grid
-            cardsGrid.setScaleX(0.6);
-            cardsGrid.setScaleY(0.6);
-            cardsContainer.getChildren().add(cardsGrid);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        ((CardsGridController) cardsLoader.getController()).setCards(game.getMarket().getCardsGrid());
+        cardsContainer.getChildren().add(cardsGrid);
         // populate player tabs
         tabPane.getTabs().clear();
         for (Player p : game.getPlayers()) {
@@ -59,24 +55,10 @@ public class GameViewController implements SceneController {
             tabPane.getTabs().add(playerTab);
         }
 
-        loader = new FXMLLoader(
-                getClass().getClassLoader().getResource("scenes/marbles-grid.fxml"));
-
-        try{
-            marblesGrid=loader.load();
-            ((MarblesGridController) loader.getController()).setMarbles(game.getMarket().getMarbleStructure().getMarbles());
-        }catch (IOException e){
-            e.printStackTrace();
-            return;
-        }
-
-        try {
-            marblesGrid.setScaleX(0.4);
-            marblesGrid.setScaleY(0.4);
-            marblesContainer.getChildren().add(marblesGrid);
-        }catch (Exception e) {
-            e.printStackTrace();
-        }
+        ((MarblesGridController) marblesLoader.getController()).setMarbles(
+                game.getMarket().getMarbleStructure().getMarbles(),
+                game.getMarket().getMarbleStructure().getExtraMarble());
+        marblesContainer.getChildren().add(marblesGrid);
     }
 
     @FXML
@@ -87,7 +69,9 @@ public class GameViewController implements SceneController {
 
     @FXML
     void viewMarbles(MouseEvent event) {
-        ((MarblesMarketController)gui.getSceneController("marbles-market")).load(gameState.getMarket().getMarbleStructure().getMarbles());
+        ((MarblesMarketController)gui.getSceneController("marbles-market")).load(
+                gameState.getMarket().getMarbleStructure().getMarbles(),
+                gameState.getMarket().getMarbleStructure().getExtraMarble());
         gui.setScene("marbles-market");
     }
 
