@@ -36,6 +36,7 @@ public class SetupGameController implements SceneController{
     void start(ActionEvent event) {
         Client client = gui.getClient();
         String username = usernameInput.getText();
+        gui.setUsername(username);
         form.getChildren().remove(errorMessage);
         switch (view) {
             case "CREATE":

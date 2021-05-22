@@ -31,13 +31,24 @@ public class GUI extends Application implements UI {
     private final Map<String, SceneController> controllerMap = new HashMap<>();
     private Client client;
     private Game gameState;
+    private String username;
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
     @Override
     public void start(Stage stage) throws Exception {
         loadScenes();
         this.stage = stage;
         this.stage.setTitle("Masters of Renaissance");
+        this.stage.setResizable(false);
         setScene("online-offline");
+    }
+
+    @Override
+    public void stop() throws Exception {
+        System.exit(0);
     }
 
     public void initializeClient(boolean online) {
@@ -61,7 +72,7 @@ public class GUI extends Application implements UI {
         System.out.println("display " + sceneName);
         try {
             Platform.runLater(() -> {
-                if (stage.getScene() == null || !stage.getScene().equals(sceneMap.get(sceneMap))) {
+                if (stage.getScene() == null || !stage.getScene().equals(sceneMap.get(sceneName))) {
                     System.out.println("scene set");
                 } else {
                     System.out.println("scene already set");
@@ -90,7 +101,7 @@ public class GUI extends Application implements UI {
     }
 
     private void loadScenes() {
-        for (String sceneName : Arrays.asList("online-offline", "connect", "setup-game", "room-details", "initial-resources", "initial-leaders", "game-view", "cards-market","marbles-market")) {
+        for (String sceneName : Arrays.asList("online-offline", "connect", "setup-game", "room-details", "initial-resources", "initial-leaders", "game-board", "cards-market","marbles-market")) {
             FXMLLoader loader = new FXMLLoader(
                     getClass().getClassLoader().getResource("scenes/" + sceneName +".fxml"));
             try {
@@ -154,8 +165,8 @@ public class GUI extends Application implements UI {
 
     @Override
     public void displayGameState() {
-        ((GameViewController)controllerMap.get("game-view")).load(gameState);
-        setScene("game-view");
+        ((GameViewController)controllerMap.get("game-board")).load(gameState);
+        setScene("game-board");
     }
 
     @Override
@@ -225,6 +236,6 @@ public class GUI extends Application implements UI {
 
     @Override
     public String getUsername() {
-        return null;
+        return username;
     }
 }

@@ -26,15 +26,15 @@ public class CardsMarketController implements SceneController {
             e.printStackTrace();
             return;
         }
-        cardsGrid.setScaleX(1.2);
-        cardsGrid.setScaleY(1.2);
+        cardsGrid.setScaleX(2);
+        cardsGrid.setScaleY(2);
         vbox.getChildren().add(0, cardsGrid);
     }
 
     @FXML
     void cancel(ActionEvent event) {
         vbox.getChildren().remove(0);
-        gui.setScene("game-view");
+        gui.setScene("game-board");
     }
 
     @Override
