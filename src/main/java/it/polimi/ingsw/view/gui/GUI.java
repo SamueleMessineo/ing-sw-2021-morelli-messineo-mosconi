@@ -31,12 +31,18 @@ public class GUI extends Application implements UI {
     private final Map<String, SceneController> controllerMap = new HashMap<>();
     private Client client;
     private Game gameState;
+    private String username;
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
     @Override
     public void start(Stage stage) throws Exception {
         loadScenes();
         this.stage = stage;
         this.stage.setTitle("Masters of Renaissance");
+        this.stage.setResizable(false);
         setScene("online-offline");
     }
 
@@ -230,6 +236,6 @@ public class GUI extends Application implements UI {
 
     @Override
     public String getUsername() {
-        return null;
+        return username;
     }
 }
