@@ -14,7 +14,6 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -101,7 +100,9 @@ public class GUI extends Application implements UI {
     }
 
     private void loadScenes() {
-        for (String sceneName : Arrays.asList("online-offline", "connect", "setup-game", "room-details", "initial-resources", "initial-leaders", "game-board", "cards-market","marbles-market")) {
+        for (String sceneName : Arrays.asList(
+                "online-offline", "connect", "setup-game", "room-details", "initial-resources",
+                "initial-leaders", "game-board", "cards-market", "marbles-market")) {
             FXMLLoader loader = new FXMLLoader(
                     getClass().getClassLoader().getResource("scenes/" + sceneName +".fxml"));
             try {
@@ -165,7 +166,7 @@ public class GUI extends Application implements UI {
 
     @Override
     public void displayGameState() {
-        ((GameViewController)controllerMap.get("game-board")).load(gameState);
+        ((GameBoardController)controllerMap.get("game-board")).load(gameState);
         setScene("game-board");
     }
 

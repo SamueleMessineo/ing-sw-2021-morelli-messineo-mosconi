@@ -18,7 +18,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Locale;
 
-public class GameViewController implements SceneController {
+public class GameBoardController implements SceneController {
     private GUI gui;
     private Game gameState;
     @FXML
