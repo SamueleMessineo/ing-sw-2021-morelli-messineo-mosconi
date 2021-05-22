@@ -17,6 +17,7 @@ import it.polimi.ingsw.network.setup.JoinPrivateRoomMessage;
 import it.polimi.ingsw.network.setup.JoinPublicRoomMessage;
 import it.polimi.ingsw.utils.GameUtils;
 
+import java.awt.desktop.OpenURIEvent;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.*;
@@ -187,6 +188,7 @@ public class CLI implements UI {
                     player = gameState.getPlayerByUsername(input.nextLine());
                 } while (player==null);
                 if(player.getUsername().equals(username))Display.displayPlayerLeaderCards(player, output);
+                else if (player != gameState.getLorenzoIlMagnifico())Display.displayLeaderCards(player.getPlayedLeaderCards(), output);
                 Display.displayPlayerBoard(player, output);
             } catch (NoSuchElementException e) {
                 output.println("Username not found");
@@ -468,7 +470,8 @@ public class CLI implements UI {
     }
 
     public void gameOver(String winner, Map<String, Integer> standing){
-        output.println("Game ended, "+winner+" won the game\n"+standing);
+        output.println(Display.paint("YELLOW", "Game ended, "+winner+" won the game"));
+        output.println(standing);
         int selection = GameUtils.askIntegerInput("Do you want to start a new game?[1.yes 2.no]", 1,2, output, input);
         if(selection==1){
             client.run();
