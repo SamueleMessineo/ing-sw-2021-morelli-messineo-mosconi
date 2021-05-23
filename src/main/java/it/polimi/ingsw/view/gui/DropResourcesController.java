@@ -30,9 +30,9 @@ public class DropResourcesController implements SceneController{
 
     public void displayResources(Map<Resource, Integer> resources) {
         Platform.runLater(() -> {
-            System.out.println("display resources");
             resourcesToKeep = new HashMap<>(resources);
             originalResources = new HashMap<>(resources);
+            resourcesList.getChildren().clear();
             for (Resource resource : resources.keySet()) {
                 resourceButtonsMap.put(resource, new HashMap<>());
                 VBox resourceContainer = new VBox();
