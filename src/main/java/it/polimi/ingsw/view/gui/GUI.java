@@ -214,6 +214,7 @@ public class GUI extends Application implements UI {
 
     @Override
     public void buyDevelopmentCard(List<DevelopmentCard> developmentCards) {
+        ((CardsMarketController)controllerMap.get("cards-market")).allowBuy(developmentCards);
 
     }
 
@@ -240,5 +241,9 @@ public class GUI extends Application implements UI {
     @Override
     public String getUsername() {
         return username;
+    }
+
+    public Game getGame(){
+        return gameState;
     }
 }
