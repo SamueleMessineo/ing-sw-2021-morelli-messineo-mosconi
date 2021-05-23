@@ -3,10 +3,13 @@ package it.polimi.ingsw.view.gui;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.shared.LeaderCard;
+import it.polimi.ingsw.network.game.SelectMoveResponseMessage;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.effect.BlurType;
@@ -20,6 +23,7 @@ import javafx.scene.text.Text;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -34,6 +38,8 @@ public class GameBoardController implements SceneController {
     private TabPane tabPane;
     @FXML
     private Text playerInfo;
+    @FXML
+    private Button endTurnButton;
 
     @FXML
     void hide(MouseEvent event) {
@@ -115,11 +121,15 @@ public class GameBoardController implements SceneController {
                     "-fx-border-color: red;";
             marblesContainer.setStyle("");
             cardsContainer.setStyle("");
+            endTurnButton.setDisable(true);
             if (moves.contains("GET_MARBLES")) {
                 marblesContainer.setStyle(possibleMoveStyle);
             }
             if (moves.contains("BUY_CARD")) {
                 cardsContainer.setStyle(possibleMoveStyle);
+            }
+            if (moves.contains("END_TURN")) {
+                endTurnButton.setDisable(false);
             }
         });
     }
@@ -136,6 +146,12 @@ public class GameBoardController implements SceneController {
                 gameState.getMarket().getMarbleStructure().getMarbles(),
                 gameState.getMarket().getMarbleStructure().getExtraMarble());
         gui.setScene("marbles-market");
+    }
+
+    @FXML
+    void endTurn(ActionEvent event) {
+        gui.getClient().sendMessage(new SelectMoveResponseMessage("END_TURN"));
+        displayPossibleMoves(new ArrayList<>());
     }
 
     @Override
