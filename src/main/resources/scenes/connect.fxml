@@ -29,6 +29,6 @@
          </padding>
       </VBox>
       <Text fx:id="errorMessage" strokeType="OUTSIDE" strokeWidth="0.0" />
-      <Button mnemonicParsing="false" onAction="#connect" text="Connect" />
+      <Button mnemonicParsing="false" styleClass="flat-button" onAction="#connect" text="Connect" />
    </children>
 </VBox>

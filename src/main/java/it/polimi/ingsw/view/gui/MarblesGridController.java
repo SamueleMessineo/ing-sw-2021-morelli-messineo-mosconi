@@ -27,9 +27,10 @@ public class MarblesGridController implements SceneController{
             grid.getChildren().clear();
             Image extraImage = new Image(new FileInputStream(
                     "src/main/resources/images/marbles/" + extra.name().toLowerCase() + ".png"));
+            int marbleSize = 60;
             ImageView extraImageView = new ImageView(extraImage);
-            extraImageView.setFitHeight(40);
-            extraImageView.setFitWidth(40);
+            extraImageView.setFitHeight(marbleSize);
+            extraImageView.setFitWidth(marbleSize);
             extraContainer.getChildren().add(extraImageView);
             for(int i=0; i<marbles.size(); i++){
                 Image marbleImage=new Image(new FileInputStream(
@@ -37,19 +38,17 @@ public class MarblesGridController implements SceneController{
                                 marbles.get(i).name().toLowerCase()+".png"));
                 ImageView marbleImageView=new ImageView(marbleImage);
                 marbleImageView.setPreserveRatio(true);
-                marbleImageView.setFitWidth(40);
-                marbleImageView.setFitHeight(40);
+                marbleImageView.setFitWidth(marbleSize);
+                marbleImageView.setFitHeight(marbleSize);
                 GridPane.setValignment(marbleImageView, VPos.CENTER);
                 GridPane.setHalignment(marbleImageView, HPos.CENTER);
                 int marbleX = (i/4);
                 int marbleY = (i%4);
                 grid.add(marbleImageView, marbleY, marbleX);
             }
-
         }catch (Exception e){
             e.printStackTrace();
         }
-
     }
 
     @Override

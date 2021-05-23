@@ -102,7 +102,7 @@ public class GUI extends Application implements UI {
     private void loadScenes() {
         for (String sceneName : Arrays.asList(
                 "online-offline", "connect", "setup-game", "room-details", "initial-resources",
-                "initial-leaders", "game-board", "cards-market", "marbles-market")) {
+                "initial-leaders", "game-board", "cards-market", "marbles-market", "drop-resources")) {
             FXMLLoader loader = new FXMLLoader(
                     getClass().getClassLoader().getResource("scenes/" + sceneName +".fxml"));
             try {
@@ -172,7 +172,8 @@ public class GUI extends Application implements UI {
 
     @Override
     public void displayPossibleMoves(List<String> moves) {
-
+        ((GameBoardController)controllerMap.get("game-board")).displayPossibleMoves(moves);
+        setScene("game-board");
     }
 
     @Override
@@ -182,12 +183,13 @@ public class GUI extends Application implements UI {
 
     @Override
     public void selectMarbles(MarbleStructure marbleStructure) {
-
+        ((MarblesMarketController) controllerMap.get("marbles-market")).allowSelect();
     }
 
     @Override
     public void dropResources(Map<Resource, Integer> resources) {
-
+        ((DropResourcesController) controllerMap.get("drop-resources")).displayResources(resources);
+        setScene("drop-resources");
     }
 
     @Override

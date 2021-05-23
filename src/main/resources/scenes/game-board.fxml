@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.effect.DropShadow?>
@@ -28,7 +29,13 @@
                   <DropShadow />
                </effect>
             </Text>
-            <VBox fx:id="marblesContainer" alignment="CENTER" fillWidth="false" onMouseClicked="#viewMarbles" prefHeight="300.0" prefWidth="300.0" />
+            <VBox fx:id="marblesContainer" alignment="CENTER" fillWidth="false" onMouseClicked="#viewMarbles" prefHeight="300.0" prefWidth="300.0">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <effect>
+                  <DropShadow />
+               </effect></VBox>
             <VBox fx:id="cardsContainer" alignment="CENTER" fillWidth="false" layoutX="73.0" layoutY="220.0" onMouseClicked="#viewCards" prefHeight="300.0" prefWidth="300.0" />
          </children>
       </VBox>

@@ -3,7 +3,7 @@
     -fx-background-size: stretch;
 }
 
-.button {
+.flat-button {
     -fx-padding: 10 20;
     -fx-font-weight: 700;
     -fx-background-color: white;

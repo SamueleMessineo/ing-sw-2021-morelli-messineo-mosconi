@@ -14,9 +14,9 @@
          <children>
             <VBox alignment="CENTER" layoutX="171.0" layoutY="129.0" prefHeight="718.0" prefWidth="378.0" spacing="50.0" styleClass="vbox" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <Button mnemonicParsing="false" onAction="#createGame" text="Create Game" />
-                  <Button mnemonicParsing="false" onAction="#joinPublic" text="Join Public Game" />
-                  <Button mnemonicParsing="false" onAction="#joinPrivate" text="Join Private Game" />
+                  <Button mnemonicParsing="false" onAction="#createGame" styleClass="flat-button" text="Create Game" />
+                  <Button mnemonicParsing="false" onAction="#joinPublic" styleClass="flat-button" text="Join Public Game" />
+                  <Button mnemonicParsing="false" onAction="#joinPrivate" styleClass="flat-button" text="Join Private Game" />
                </children>
             </VBox>
          </children></AnchorPane>
@@ -33,7 +33,7 @@
                      </VBox.margin>
                   </ImageView>
                   <VBox fx:id="form" prefHeight="92.0" prefWidth="594.0" spacing="20.0" />
-                  <Button fx:id="startButton" mnemonicParsing="false" onAction="#start" text="Start Playing" visible="false" />
+                  <Button fx:id="startButton" mnemonicParsing="false" onAction="#start" styleClass="flat-button" text="Start Playing" visible="false" />
                </children>
                <padding>
                   <Insets left="150.0" right="150.0" />

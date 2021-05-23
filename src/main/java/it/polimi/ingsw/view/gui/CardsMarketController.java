@@ -28,8 +28,8 @@ public class CardsMarketController implements SceneController {
             return;
         }
         ((CardsGridController) loader.getController()).setCards(cardStacks);
-        cardsGrid.setScaleX(2);
-        cardsGrid.setScaleY(2);
+        cardsGrid.setScaleX(1.9);
+        cardsGrid.setScaleY(1.9);
         vbox.setAlignment(Pos.BOTTOM_CENTER);
         vbox.setSpacing(160);
         vbox.setPadding(new Insets(0, 0, 30, 0));

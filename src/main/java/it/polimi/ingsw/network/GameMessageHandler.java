@@ -268,10 +268,9 @@ public class GameMessageHandler {
 
     private void sendNextMoves(){
         room.getCurrentTurn().setMoves(gameController.computeNextPossibleMoves(room.getCurrentTurn().hasAlreadyPerformedMove()));
-        clientConnection.sendMessage(new UpdateGameStateMessage(room.getGame()));
+        clientConnection.sendMessage(new UpdateAndDisplayGameStateMessage(room.getGame()));
         clientConnection.sendMessage(new SelectMoveRequestMessage(room.getCurrentTurn().getMoves()));
     }
-
 
     private void endTurn(){
         gameController.computeNextPlayer();
