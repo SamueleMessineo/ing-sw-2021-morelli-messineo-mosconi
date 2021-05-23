@@ -2,12 +2,15 @@ package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.model.player.Shelf;
 import it.polimi.ingsw.model.shared.LeaderCard;
+import it.polimi.ingsw.model.shared.Resource;
 import it.polimi.ingsw.network.game.SelectMoveResponseMessage;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
@@ -23,9 +26,7 @@ import javafx.scene.text.Text;
 
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 public class GameBoardController implements SceneController {
     private GUI gui;
@@ -73,12 +74,12 @@ public class GameBoardController implements SceneController {
                 Tab playerTab = new Tab();
                 playerTab.setText(p.getUsername() + ": " + p.getVP() + " points");
                 AnchorPane tabContainer = new AnchorPane();
+                // display leader cards
                 HBox leadersContainer = new HBox();
                 leadersContainer.setSpacing(50);
                 leadersContainer.setPrefWidth(287);
                 leadersContainer.setPrefHeight(188);
                 leadersContainer.setAlignment(Pos.CENTER);
-
                 for (LeaderCard leaderCard : p.getLeaderCards()) {
                     Image leaderImage = null;
                     if (p.getUsername().equals(gui.getUsername())) {
@@ -97,14 +98,46 @@ public class GameBoardController implements SceneController {
                 leadersContainer.setLayoutX(17);
                 leadersContainer.setLayoutY(239);
                 tabContainer.getChildren().add(leadersContainer);
+
+                // display the warehouse
+                VBox warehouseContainer = new VBox();
+                for (String shelfName : p.getPlayerBoard().getWarehouse().getShelfNames()) {
+                    Shelf shelf = p.getPlayerBoard().getWarehouse().getShelf(shelfName);
+                    if (Arrays.asList("bottom", "middle", "top").contains(shelfName)) {
+                        HBox shelfResourcesContainer = new HBox();
+                        shelfResourcesContainer.setPrefSize(129, 46);
+                        shelfResourcesContainer.setAlignment(Pos.CENTER);
+                        shelfResourcesContainer.setPadding(new Insets(0, 10, 0, 10));
+                        shelfResourcesContainer.setSpacing(10);
+                        for (int i = 0; i < shelf.getResourceNumber(); i++) {
+                            Image resourceImage=new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(
+                                    "images/punchboard/" + shelf.getResourceType().name().toLowerCase() + ".png")));
+                            ImageView resourceImageView = new ImageView(resourceImage);
+                            resourceImageView.setPreserveRatio(true);
+                            resourceImageView.setFitWidth(40);
+                            resourceImageView.setFitHeight(40);
+                            shelfResourcesContainer.getChildren().add(resourceImageView);
+                        }
+                        warehouseContainer.getChildren().add(shelfResourcesContainer);
+                    }
+                }
+                warehouseContainer.setPrefSize(165, 185);
+                warehouseContainer.setLayoutX(9);
+                warehouseContainer.setLayoutY(501);
+                warehouseContainer.setPadding(new Insets(0,0,8,0));
+                warehouseContainer.setSpacing(10);
+                warehouseContainer.setAlignment(Pos.BOTTOM_CENTER);
+                warehouseContainer.setOnMouseClicked(this::viewWarehouse);
+                tabContainer.getChildren().add(warehouseContainer);
+
                 playerTab.setContent(tabContainer);
                 tabPane.getTabs().add(playerTab);
-
+                // select the tab corresponding to the player itself
                 if (p.getUsername().equals(gui.getUsername())) {
                     tabPane.getSelectionModel().select(playerTab);
                 }
             }
-            System.out.println(gameState.getMarket().getMarbleStructure().getExtraMarble());
+            // display the marbles
             ((MarblesGridController) marblesLoader.getController()).setMarbles(
                     gameState.getMarket().getMarbleStructure().getMarbles(),
                     gameState.getMarket().getMarbleStructure().getExtraMarble());
@@ -146,6 +179,11 @@ public class GameBoardController implements SceneController {
                 gameState.getMarket().getMarbleStructure().getMarbles(),
                 gameState.getMarket().getMarbleStructure().getExtraMarble());
         gui.setScene("marbles-market");
+    }
+
+    @FXML
+    void viewWarehouse(MouseEvent event) {
+        System.out.println("view warehouse");
     }
 
     @FXML
