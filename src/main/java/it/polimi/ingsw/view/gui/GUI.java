@@ -114,7 +114,7 @@ public class GUI extends Application implements UI {
     private void loadScenes() {
         for (String sceneName : Arrays.asList(
                 "online-offline", "connect", "setup-game", "room-details", "initial-resources",
-                "initial-leaders", "game-board", "cards-market", "marbles-market", "drop-resources", "select-stack")) {
+                "initial-leaders", "game-board", "cards-market", "marbles-market", "drop-resources", "select-stack", "offline-info")) {
             FXMLLoader loader = new FXMLLoader(
                     getClass().getClassLoader().getResource("scenes/" + sceneName +".fxml"));
             try {
@@ -262,6 +262,10 @@ public class GUI extends Application implements UI {
 
     @Override
     public void askUsername() {
+        if(username==null){
+            username = ((OfflineInfoController) controllerMap.get("offline-info")).askUsername();
+            setScene("offline-info");
+        }else GameUtils.debug(":(");
 
     }
 
@@ -269,6 +273,7 @@ public class GUI extends Application implements UI {
     public String getUsername() {
         return username;
     }
+
 
     public Game getGame(){
         return gameState;
