@@ -66,6 +66,7 @@ public class GUI extends Application implements UI {
             this.client = new Client(this);
         } else {
             this.client = new LocalClient(this);
+            username = ((OfflineInfoController) controllerMap.get("offline-info")).getUsername();
         }
     }
 
@@ -280,8 +281,10 @@ public class GUI extends Application implements UI {
     @Override
     public void askUsername() {
         if(username==null){
-            username = ((OfflineInfoController) controllerMap.get("offline-info")).askUsername();
+            GameUtils.debug("here");
+            ((OfflineInfoController) controllerMap.get("offline-info")).askUsername();
             setScene("offline-info");
+
         }
 
     }
