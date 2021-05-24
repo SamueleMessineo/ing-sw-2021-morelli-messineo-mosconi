@@ -225,14 +225,16 @@ public class GameBoardController implements SceneController {
 
     public void displayPossibleMoves(List<String> moves) {
         Platform.runLater(() -> {
+            String defaultStyle="-fx-cursor: hand;";
             String possibleMoveStyle =
                     "-fx-border-style: solid inside;" +
                     "-fx-border-width: 3;" +
                     "-fx-border-radius: 15;" +
-                    "-fx-border-color: red;";
-            marblesContainer.setStyle("");
-            cardsContainer.setStyle("");
-            leadersContainer.setStyle("");
+                    "-fx-border-color: red;" +
+                    "-fx-cursor: hand;";
+            marblesContainer.setStyle(defaultStyle);
+            cardsContainer.setStyle(defaultStyle);
+            leadersContainer.setStyle(defaultStyle);
             endTurnButton.setDisable(true);
             if (moves.contains("GET_MARBLES")) {
                 marblesContainer.setStyle(possibleMoveStyle);

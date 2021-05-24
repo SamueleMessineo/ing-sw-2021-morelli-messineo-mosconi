@@ -8,7 +8,6 @@ import it.polimi.ingsw.model.shared.DevelopmentCard;
 import it.polimi.ingsw.model.shared.LeaderCard;
 import it.polimi.ingsw.model.shared.ProductionPower;
 import it.polimi.ingsw.model.shared.Resource;
-import it.polimi.ingsw.utils.GameUtils;
 import it.polimi.ingsw.view.UI;
 import javafx.application.Application;
 import javafx.application.Platform;
