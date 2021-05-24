@@ -2,7 +2,9 @@ package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.model.player.PlayerCardStack;
 import it.polimi.ingsw.model.player.Shelf;
+import it.polimi.ingsw.model.shared.DevelopmentCard;
 import it.polimi.ingsw.model.shared.LeaderCard;
 import it.polimi.ingsw.model.shared.Resource;
 import it.polimi.ingsw.network.game.SelectMoveResponseMessage;
@@ -83,11 +85,11 @@ public class GameBoardController implements SceneController {
                 for (LeaderCard leaderCard : p.getLeaderCards()) {
                     Image leaderImage = null;
                     if (p.getUsername().equals(gui.getUsername())) {
-                        leaderImage = new Image(getClass().getClassLoader().getResourceAsStream(
-                                "images/leaders/leader_" + leaderCard.getEffectScope().toLowerCase() + "_" + leaderCard.getEffectObject().name().toLowerCase() + ".png"));
+                        leaderImage = new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(
+                                "images/leaders/leader_" + leaderCard.getEffectScope().toLowerCase() + "_" + leaderCard.getEffectObject().name().toLowerCase() + ".png")));
                     } else {
-                        leaderImage = new Image(getClass().getClassLoader().getResourceAsStream(
-                                "images/leaders/leader_back.png"));
+                        leaderImage = new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(
+                                "images/leaders/leader_back.png")));
                     }
                     ImageView leaderImageView = new ImageView(leaderImage);
                     leaderImageView.setPreserveRatio(true);
@@ -98,6 +100,35 @@ public class GameBoardController implements SceneController {
                 leadersContainer.setLayoutX(17);
                 leadersContainer.setLayoutY(239);
                 tabContainer.getChildren().add(leadersContainer);
+
+                // display development card stacks
+                HBox cardStacksContainer = new HBox();
+                cardStacksContainer.setPrefSize(450, 250);
+                cardStacksContainer.setAlignment(Pos.CENTER);
+                cardStacksContainer.setLayoutX(365);
+                cardStacksContainer.setLayoutY(226);
+                for (PlayerCardStack playerCardStack : p.getPlayerBoard().getCardStacks()) {
+                    AnchorPane singleCardStackContainer = new AnchorPane();
+                    singleCardStackContainer.setPrefSize(150, 210);
+                    for (int i = 0; i < playerCardStack.size(); i++) {
+                        DevelopmentCard card = playerCardStack.get(i);
+                        Image cardImage = new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(
+                            "images/development/development_" + card.getCardType().name().toLowerCase() +
+                                    "_" + card.getScore() + ".png"
+                        )));
+                        ImageView cardImageView = new ImageView(cardImage);
+                        cardImageView.setPreserveRatio(true);
+                        cardImageView.setFitHeight(160);
+                        cardImageView.setFitWidth(200);
+                        cardImageView.setLayoutX(
+                                75-(cardImageView.getLayoutBounds().getWidth()/2)
+                        );
+                        cardImageView.setLayoutY(200-160-(25*i));
+                        singleCardStackContainer.getChildren().add(cardImageView);
+                    }
+                    cardStacksContainer.getChildren().add(singleCardStackContainer);
+                }
+                tabContainer.getChildren().add(cardStacksContainer);
 
                 // display the warehouse
                 VBox warehouseContainer = new VBox();
