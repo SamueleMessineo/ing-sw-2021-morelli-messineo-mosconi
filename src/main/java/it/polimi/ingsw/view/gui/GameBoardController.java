@@ -14,6 +14,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -100,6 +101,9 @@ public class GameBoardController implements SceneController {
                 leadersContainer.setLayoutX(17);
                 leadersContainer.setLayoutY(239);
                 tabContainer.getChildren().add(leadersContainer);
+
+                leadersContainer.setCursor(Cursor.HAND);
+                leadersContainer.setOnMouseClicked(this::viewLeaders);
 
                 // display development card stacks
                 HBox cardStacksContainer = new HBox();
@@ -286,6 +290,17 @@ public class GameBoardController implements SceneController {
                 gameState.getMarket().getMarbleStructure().getMarbles(),
                 gameState.getMarket().getMarbleStructure().getExtraMarble());
         gui.setScene("marbles-market");
+    }
+
+    @FXML
+    void viewLeaders(MouseEvent event) {
+        System.out.println("view leaders");
+        ((LeaderCardsController)gui.getSceneController("leader-cards")).load(gameState.getPlayerByUsername(gui.getUsername()).getLeaderCards(), "SHOW");
+        try{
+            gui.setScene("leader-cards");
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     @FXML
