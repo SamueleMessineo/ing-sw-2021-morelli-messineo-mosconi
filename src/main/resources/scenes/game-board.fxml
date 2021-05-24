@@ -51,6 +51,25 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="720.0" prefWidth="854.0">
                      <children>
+                        <HBox layoutX="365.0" layoutY="216.0" prefHeight="250.0" prefWidth="450.0">
+                           <children>
+                              <VBox alignment="BOTTOM_CENTER" prefHeight="252.0" prefWidth="138.0" />
+                              <AnchorPane prefHeight="300.0" prefWidth="154.0">
+                                 <children>
+                                    <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="25.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/development/development_yellow_9.png" />
+                                       </image>
+                                    </ImageView>
+                                    <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="27.0" layoutY="60.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/development/development_purple_12.png" />
+                                       </image>
+                                    </ImageView>
+                                 </children>
+                              </AnchorPane>
+                           </children>
+                        </HBox>
                         <HBox fx:id="leadersContainer" alignment="CENTER" layoutX="17.0" layoutY="239.0" prefHeight="188.0" prefWidth="287.0" spacing="50.0">
                            <children>
                               <ImageView fitHeight="160.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
@@ -58,7 +77,7 @@
                                     <Image url="@../images/leaders/leader_storage_shield.png" />
                                  </image>
                               </ImageView>
-                              <ImageView fitHeight="160.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="160.0" fitWidth="107.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../images/leaders/leader_production_stone.png" />
                                  </image>

@@ -20,10 +20,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-import java.awt.*;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 public class CardsMarketController implements SceneController {
     private GUI gui;
@@ -83,10 +82,10 @@ public class CardsMarketController implements SceneController {
             vbox.getChildren().add(cardsGrid);
             try {
                 for (DevelopmentCard card : developmentCards) {
-                    javafx.scene.image.Image cardImage = new Image(new FileInputStream(
-                            "src/main/resources/images/development/development_" +
-                                    card.getCardType().name().toLowerCase() + "_" + card.getScore() + ".png"));
-                    javafx.scene.image.ImageView cardImageView = new ImageView(cardImage);
+                    String cardName = "development_" + card.getCardType().name().toLowerCase() + "_" + card.getScore();
+                    Image cardImage = new Image(Objects.requireNonNull(getClass().getClassLoader()
+                            .getResourceAsStream("images/development/"+ cardName + ".png")));
+                    ImageView cardImageView = new ImageView(cardImage);
                     cardImageView.setPreserveRatio(true);
                     cardImageView.setFitWidth(200);
                     cardImageView.setFitHeight(95);

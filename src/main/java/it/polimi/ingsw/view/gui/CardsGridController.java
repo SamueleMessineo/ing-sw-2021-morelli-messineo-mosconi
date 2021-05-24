@@ -8,10 +8,9 @@ import javafx.geometry.VPos;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
-import javafx.scene.text.Text;
 
-import java.io.FileInputStream;
 import java.util.List;
+import java.util.Objects;
 
 public class CardsGridController implements SceneController {
     private GUI gui;
@@ -23,9 +22,9 @@ public class CardsGridController implements SceneController {
             grid.getChildren().clear();
             for (MarketCardStack stack : cardStacks) { ;
                 DevelopmentCard topCard = stack.peek();
-                Image cardImage = new Image(new FileInputStream(
-                        "src/main/resources/images/development/development_" +
-                                topCard.getCardType().name().toLowerCase() + "_"+ topCard.getScore() +".png"));
+                String cardName = "development_" + topCard.getCardType().name().toLowerCase() + "_"+ topCard.getScore();
+                Image cardImage = new Image(Objects.requireNonNull(getClass().getClassLoader()
+                        .getResourceAsStream("images/development/" + cardName + ".png")));
                 ImageView cardImageView = new ImageView(cardImage);
                 cardImageView.setPreserveRatio(true);
                 cardImageView.setFitWidth(200);
