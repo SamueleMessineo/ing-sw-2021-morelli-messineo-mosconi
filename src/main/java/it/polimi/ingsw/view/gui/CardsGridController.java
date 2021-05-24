@@ -21,10 +21,13 @@ public class CardsGridController implements SceneController {
         try {
             grid.getChildren().clear();
             for (MarketCardStack stack : cardStacks) { ;
-                DevelopmentCard topCard = stack.peek();
-                String cardName = "development_" + topCard.getCardType().name().toLowerCase() + "_"+ topCard.getScore();
-                Image cardImage = new Image(Objects.requireNonNull(getClass().getClassLoader()
-                        .getResourceAsStream("images/development/" + cardName + ".png")));
+                Image cardImage = null;
+                if (!stack.isEmpty()) {
+                    DevelopmentCard topCard = stack.peek();
+                    String cardName = "development_" + topCard.getCardType().name().toLowerCase() + "_" + topCard.getScore();
+                    cardImage = new Image(Objects.requireNonNull(getClass().getClassLoader()
+                            .getResourceAsStream("images/development/" + cardName + ".png")));
+                }
                 ImageView cardImageView = new ImageView(cardImage);
                 cardImageView.setPreserveRatio(true);
                 cardImageView.setFitWidth(200);
