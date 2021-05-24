@@ -114,7 +114,7 @@ public class GUI extends Application implements UI {
     private void loadScenes() {
         for (String sceneName : Arrays.asList(
                 "online-offline", "connect", "setup-game", "room-details", "initial-resources",
-                "initial-leaders", "game-board", "cards-market", "marbles-market", "drop-resources")) {
+                "initial-leaders", "game-board", "cards-market", "marbles-market", "drop-resources", "offline-info", "leader-cards")) {
             FXMLLoader loader = new FXMLLoader(
                     getClass().getClassLoader().getResource("scenes/" + sceneName +".fxml"));
             try {
@@ -225,7 +225,8 @@ public class GUI extends Application implements UI {
 
     @Override
     public void discardLeaderCard(ArrayList<LeaderCard> cards) {
-
+        ((LeaderCardsController) controllerMap.get("leader-cards")).load(cards,"DROP");
+        setScene("leader-cards");
     }
 
     @Override
