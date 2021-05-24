@@ -48,6 +48,7 @@ public class GUI extends Application implements UI {
         this.stage.setResizable(false);
         setMusic();
         setScene("online-offline");
+
     }
 
     @Override

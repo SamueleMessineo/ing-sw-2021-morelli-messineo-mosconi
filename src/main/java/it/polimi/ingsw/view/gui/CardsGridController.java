@@ -21,11 +21,15 @@ public class CardsGridController implements SceneController {
     public void setCards(List<MarketCardStack> cardStacks) {
         try {
             grid.getChildren().clear();
-            for (MarketCardStack stack : cardStacks) { ;
-                DevelopmentCard topCard = stack.peek();
-                Image cardImage = new Image(new FileInputStream(
-                        "src/main/resources/images/development/development_" +
-                                topCard.getCardType().name().toLowerCase() + "_"+ topCard.getScore() +".png"));
+            for (MarketCardStack stack : cardStacks) {
+                Image cardImage;
+                if(!stack.isEmpty()){
+                    DevelopmentCard topCard = stack.peek();
+                     cardImage = new Image(new FileInputStream(
+                            "src/main/resources/images/development/development_" +
+                                    topCard.getCardType().name().toLowerCase() + "_"+ topCard.getScore() +".png"));
+                } else cardImage = null;
+
                 ImageView cardImageView = new ImageView(cardImage);
                 cardImageView.setPreserveRatio(true);
                 cardImageView.setFitWidth(200);
