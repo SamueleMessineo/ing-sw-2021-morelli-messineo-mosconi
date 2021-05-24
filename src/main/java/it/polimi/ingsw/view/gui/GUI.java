@@ -46,9 +46,8 @@ public class GUI extends Application implements UI {
         this.stage = stage;
         this.stage.setTitle("Masters of Renaissance");
         this.stage.setResizable(false);
-        setMusic();
+//        setMusic();
         setScene("online-offline");
-
     }
 
     @Override
