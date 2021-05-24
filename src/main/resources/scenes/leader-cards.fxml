@@ -20,7 +20,7 @@
                <children>
                   <Button mnemonicParsing="false" onAction="#cancel" styleClass="flat-button" text="Cancel" />
                   <Button mnemonicParsing="false" onAction="#dropLeader" styleClass="flat-button" text="Drop Leader" />
-                  <Button mnemonicParsing="false" onAction="#cancel" styleClass="flat-button" text="Play Leader" />
+                  <Button mnemonicParsing="false" onAction="#playLeader" styleClass="flat-button" text="Play Leader" />
                </children>
             </HBox>
          </children>

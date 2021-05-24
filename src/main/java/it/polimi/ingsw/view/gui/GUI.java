@@ -170,7 +170,22 @@ public class GUI extends Application implements UI {
 
     @Override
     public void displayString(String body) {
-
+        Platform.runLater(() -> {
+            System.out.println(body);
+            Stage dialog = new Stage();
+            VBox vBox = new VBox();
+            vBox.setAlignment(Pos.CENTER);
+            vBox.setSpacing(50);
+            Text text = new Text("");
+            text.setFont(Font.font("System", FontWeight.BLACK, 18));
+            vBox.getChildren().add(text);
+            vBox.getChildren().add(new Text(body));
+            Scene scene = new Scene(vBox, 400, 300);
+            dialog.setScene(scene);
+            dialog.initOwner(stage);
+            dialog.initModality(Modality.APPLICATION_MODAL);
+            dialog.showAndWait();
+        });
     }
 
     @Override
@@ -268,7 +283,7 @@ public class GUI extends Application implements UI {
         if(username==null){
             username = ((OfflineInfoController) controllerMap.get("offline-info")).askUsername();
             setScene("offline-info");
-        }else GameUtils.debug(":(");
+        }
 
     }
 
