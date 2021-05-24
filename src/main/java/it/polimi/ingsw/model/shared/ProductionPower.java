@@ -43,4 +43,10 @@ public class ProductionPower implements Serializable {
                  output +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        ProductionPower other = (ProductionPower)obj;
+        return input.equals(other.input)&&output.equals(other.output);
+    }
 }
