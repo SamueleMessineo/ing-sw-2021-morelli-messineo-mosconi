@@ -17,6 +17,7 @@ import javafx.geometry.VPos;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.awt.*;
@@ -28,6 +29,8 @@ public class CardsMarketController implements SceneController {
     private GUI gui;
     @FXML
     private VBox vbox;
+    @FXML
+    private HBox buttonsContainer;
 
     public void load(List<MarketCardStack> cardStacks) {
         FXMLLoader loader = new FXMLLoader(
@@ -101,6 +104,8 @@ public class CardsMarketController implements SceneController {
     }
 
     public void sendCardToBuy(int cardIndex) {
+        vbox.getChildren().remove(0);
+        vbox.getChildren().add(buttonsContainer);
         gui.getClient().sendMessage(new BuyDevelopmentCardResponseMessage(cardIndex));
     }
 
