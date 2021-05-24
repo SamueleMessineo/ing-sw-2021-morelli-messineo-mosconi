@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.utils.GameUtils;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
@@ -9,15 +10,16 @@ public class OfflineInfoController implements SceneController{
     private GUI gui;
 
     @FXML
-    public TextField username;
+    public TextField usernameInput;
+    public String username;
 
-    public String askUsername() {
-
-        GameUtils.debug("asking");
-        String username;
-        username = this.username.getText();
-        return username;
-
+    public void askUsername() {
+        Platform.runLater(() -> {
+            GameUtils.debug("asking");
+            username = usernameInput.getText();
+            gui.setUsername(username);
+            GameUtils.debug(username);
+        });
     }
 
 
@@ -29,7 +31,16 @@ public class OfflineInfoController implements SceneController{
 
 
     public void confirm(ActionEvent actionEvent) {
-        gui.initializeClient(false);
-        gui.getClient().run();
+        if(username!= null){
+            Platform.runLater(() -> {
+                gui.initializeClient(false);
+                gui.getClient().run();
+            });
+        }
+
+    }
+
+    public String getUsername() {
+        return username;
     }
 }

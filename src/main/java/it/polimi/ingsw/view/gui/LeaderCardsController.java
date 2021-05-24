@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.shared.LeaderCard;
 import it.polimi.ingsw.network.game.DropLeaderCardResponseMessage;
 import it.polimi.ingsw.network.game.PlayLeaderResponseMessage;
 import it.polimi.ingsw.network.game.SelectMoveResponseMessage;
+import it.polimi.ingsw.utils.GameUtils;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -29,6 +30,7 @@ public class LeaderCardsController implements SceneController{
         private HBox buttonContainer;
 
     public void load(List<LeaderCard> leaderCards, String type) {
+        GameUtils.debug(leaderCards.toString());
         Platform.runLater(() -> {
             System.out.println(type);
             vbox.getChildren().clear();

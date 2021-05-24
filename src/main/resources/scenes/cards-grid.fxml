@@ -21,62 +21,62 @@
    <children>
       <ImageView fitHeight="96.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
          <image>
-            <Image url="@../images/leaders/leader_storage_stone.png" />
+            <Image url="@../images/leaders/leader_back.png" />
          </image>
       </ImageView>
       <ImageView fitHeight="96.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
          <image>
-            <Image url="@../images/leaders/leader_storage_shield.png" />
+            <Image url="@../images/leaders/leader_back.png" />
          </image>
       </ImageView>
       <ImageView fitHeight="96.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
          <image>
-            <Image url="@../images/leaders/leader_production_stone.png" />
+            <Image url="@../images/leaders/leader_back.png" />
          </image>
       </ImageView>
       <ImageView fitHeight="96.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
          <image>
-            <Image url="@../images/leaders/leader_production_shield.png" />
+            <Image url="@../images/leaders/leader_back.png" />
          </image>
       </ImageView>
       <ImageView fitHeight="96.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
          <image>
-            <Image url="@../images/leaders/leader_market_stone.png" />
+            <Image url="@../images/leaders/leader_back.png" />
          </image>
       </ImageView>
       <ImageView fitHeight="96.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
          <image>
-            <Image url="@../images/leaders/leader_market_servant.png" />
+            <Image url="@../images/leaders/leader_back.png" />
          </image>
       </ImageView>
       <ImageView fitHeight="96.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
          <image>
-            <Image url="@../images/leaders/leader_storage_servant.png" />
+            <Image url="@../images/leaders/leader_back.png" />
          </image>
       </ImageView>
       <ImageView fitHeight="96.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
          <image>
-            <Image url="@../images/leaders/leader_production_coin.png" />
+            <Image url="@../images/leaders/leader_back.png" />
          </image>
       </ImageView>
       <ImageView fitHeight="96.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
          <image>
-            <Image url="@../images/leaders/leader_marbles_servant.png" />
+            <Image url="@../images/leaders/leader_back.png" />
          </image>
       </ImageView>
       <ImageView fitHeight="96.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
          <image>
-            <Image url="@../images/leaders/leader_storage_coin.png" />
+            <Image url="@../images/leaders/leader_back.png" />
          </image>
       </ImageView>
       <ImageView fitHeight="96.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
          <image>
-            <Image url="@../images/leaders/leader_production_servant.png" />
+            <Image url="@../images/leaders/leader_back.png" />
          </image>
       </ImageView>
       <ImageView fitHeight="96.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
          <image>
-            <Image url="@../images/leaders/leader_market_coin.png" />
+            <Image url="@../images/leaders/leader_back.png" />
          </image>
       </ImageView>
    </children>

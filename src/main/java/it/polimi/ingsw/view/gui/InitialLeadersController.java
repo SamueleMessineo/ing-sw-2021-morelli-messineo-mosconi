@@ -61,8 +61,9 @@ public class InitialLeadersController implements SceneController{
     }
 
     public void displayGrid(List<LeaderCard> cards){
-        this.cards = cards;
         Platform.runLater(()->{
+            GameUtils.debug(cards.toString());
+            this.cards = cards;
             for (LeaderCard card : cards) {
                 Image image  = null;
 //                    System.out.println(cards.indexOf(card));
