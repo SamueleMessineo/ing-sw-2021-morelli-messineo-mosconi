@@ -14,7 +14,6 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -47,9 +46,8 @@ public class GUI extends Application implements UI {
         this.stage = stage;
         this.stage.setTitle("Masters of Renaissance");
         this.stage.setResizable(false);
-        setMusic();
+//        setMusic();
         setScene("online-offline");
-
 
     }
 

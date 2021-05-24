@@ -11,10 +11,7 @@ import it.polimi.ingsw.model.shared.DevelopmentCard;
 import it.polimi.ingsw.model.shared.LeaderCard;
 import it.polimi.ingsw.model.shared.SoloActionType;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.Serializable;
+import java.io.*;
 import java.lang.reflect.Type;
 import java.util.*;
 
@@ -111,18 +108,15 @@ public class Game implements Serializable{
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();
 
-        BufferedReader reader = new BufferedReader(new FileReader("src/main/resources/developmentCards.json"));
-
-        Type listType = new TypeToken<List<DevelopmentCard>>() {
-        }.getType();
-
+        Reader reader = new InputStreamReader(Objects.requireNonNull(getClass().getClassLoader()
+                .getResourceAsStream("developmentCards.json")));
+        Type listType = new TypeToken<List<DevelopmentCard>>() {}.getType();
         developmentCards = gson.fromJson(reader, listType);
 
-        reader = new BufferedReader(new FileReader("src/main/resources/leaderCards.json"));
+        reader = new InputStreamReader(Objects.requireNonNull(getClass().getClassLoader()
+                .getResourceAsStream("leaderCards.json")));
         //reader = new BufferedReader(new FileReader("src/main/resources/riggedLeaderCards.json"));
-        listType = new TypeToken<List<LeaderCard>>() {
-        }.getType();
-
+        listType = new TypeToken<List<LeaderCard>>(){}.getType();
         leaderCards=gson.fromJson(reader,listType);
         Collections.shuffle(leaderCards);
     }
