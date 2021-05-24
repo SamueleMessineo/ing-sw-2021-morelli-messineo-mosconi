@@ -15,11 +15,14 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.util.*;
@@ -31,6 +34,7 @@ public class GUI extends Application implements UI {
     private Client client;
     private Game gameState;
     private String username;
+    private MediaPlayer mediaPlayer;
 
     public void setUsername(String username) {
         this.username = username;
@@ -42,6 +46,7 @@ public class GUI extends Application implements UI {
         this.stage = stage;
         this.stage.setTitle("Masters of Renaissance");
         this.stage.setResizable(false);
+        setMusic();
         setScene("online-offline");
     }
 
@@ -114,6 +119,20 @@ public class GUI extends Application implements UI {
                 e.printStackTrace();
             }
         }
+    }
+
+    private void setMusic() {
+        Media backgroundMusic = new Media(Objects.requireNonNull(getClass().getClassLoader().getResource(
+                "music/bg.mp3"
+        )).toExternalForm());
+        mediaPlayer = new MediaPlayer(backgroundMusic);
+        mediaPlayer.setAutoPlay(true);
+        mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+        mediaPlayer.setVolume(0.25);
+        mediaPlayer.setOnEndOfMedia(() -> {
+            mediaPlayer.seek(Duration.ZERO);
+            mediaPlayer.play();
+        });
     }
 
     @Override
