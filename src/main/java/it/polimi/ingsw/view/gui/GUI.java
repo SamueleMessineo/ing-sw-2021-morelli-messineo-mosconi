@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.shared.DevelopmentCard;
 import it.polimi.ingsw.model.shared.LeaderCard;
 import it.polimi.ingsw.model.shared.ProductionPower;
 import it.polimi.ingsw.model.shared.Resource;
+import it.polimi.ingsw.utils.GameUtils;
 import it.polimi.ingsw.view.UI;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -113,7 +114,7 @@ public class GUI extends Application implements UI {
     private void loadScenes() {
         for (String sceneName : Arrays.asList(
                 "online-offline", "connect", "setup-game", "room-details", "initial-resources",
-                "initial-leaders", "game-board", "cards-market", "marbles-market", "drop-resources")) {
+                "initial-leaders", "game-board", "cards-market", "marbles-market", "drop-resources", "select-stack")) {
             FXMLLoader loader = new FXMLLoader(
                     getClass().getClassLoader().getResource("scenes/" + sceneName +".fxml"));
             try {
@@ -245,7 +246,8 @@ public class GUI extends Application implements UI {
 
     @Override
     public void selectStackToPlaceCard(List<Integer> stacks) {
-
+        ((SelectStackToPlaceCardController) controllerMap.get("select-stack")).showStacks(stacks);
+        setScene("select-stack");
     }
 
     @Override
