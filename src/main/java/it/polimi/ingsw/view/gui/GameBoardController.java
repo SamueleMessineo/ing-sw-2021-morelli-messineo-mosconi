@@ -4,9 +4,7 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.PlayerCardStack;
 import it.polimi.ingsw.model.player.Shelf;
-import it.polimi.ingsw.model.shared.DevelopmentCard;
-import it.polimi.ingsw.model.shared.LeaderCard;
-import it.polimi.ingsw.model.shared.Resource;
+import it.polimi.ingsw.model.shared.*;
 import it.polimi.ingsw.network.game.SelectMoveResponseMessage;
 import it.polimi.ingsw.utils.GameUtils;
 import javafx.application.Platform;
@@ -162,24 +160,47 @@ public class GameBoardController implements SceneController {
                 warehouseContainer.setOnMouseClicked(this::viewWarehouse);
                 tabContainer.getChildren().add(warehouseContainer);
 
-                // display faith track
+                // display faith track position
                 VBox faithTrackPositionBox = new VBox();
                 faithTrackPositionBox.setPrefSize(40,40);
                 faithTrackPositionBox.setAlignment(Pos.CENTER);
-                List<Integer> coords = GameUtils.getFaithTrackPositionCoordinates(p.getFaithTrack().getPosition());
-                if (coords != null) {
-                    faithTrackPositionBox.setLayoutX(coords.get(0));
-                    faithTrackPositionBox.setLayoutY(coords.get(1));
+                List<Integer> positionCoordinates = GameUtils.getFaithTrackPositionCoordinates(p.getFaithTrack().getPosition());
+                if (positionCoordinates != null) {
+                    faithTrackPositionBox.setLayoutX(positionCoordinates.get(0));
+                    faithTrackPositionBox.setLayoutY(positionCoordinates.get(1));
                 }
                 Image posImage = new Image(Objects.requireNonNull(getClass().getClassLoader()
-                        .getResourceAsStream("images/board/cross.png")));
+                        .getResourceAsStream("images/faith/cross.png")));
                 ImageView posImageView = new ImageView(posImage);
                 posImageView.setPreserveRatio(true);
                 posImageView.setFitWidth(40);
                 posImageView.setFitHeight(40);
                 faithTrackPositionBox.getChildren().add(posImageView);
-
                 tabContainer.getChildren().add(faithTrackPositionBox);
+
+                // display pope's tiles
+                for (int i = 0; i < 3; i++) {
+                    PopesFavorTile tile = p.getFaithTrack().getPopesFavorTiles().get(i);
+                    VBox tileBox = new VBox();
+                    tileBox.setPrefSize(65,65);
+                    tileBox.setAlignment(Pos.CENTER);
+                    if (tile.getState() != PopesFavorTileState.DISCARDED) {
+                        Image tileImage = new Image(Objects.requireNonNull(getClass().getClassLoader()
+                                .getResourceAsStream("images/faith/tile_" + tile.getState().name() + "_" + i + ".png")));
+                        ImageView tileImageView = new ImageView(tileImage);
+                        tileImageView.setPreserveRatio(true);
+                        tileImageView.setFitWidth(65);
+                        tileImageView.setFitHeight(65);
+                        tileBox.getChildren().add(tileImageView);
+                    }
+                    List<Integer> tileCoordinates = GameUtils.getPopeTileCoordinates(i);
+                    if (tileCoordinates != null) {
+                        tileBox.setLayoutX(tileCoordinates.get(0));
+                        tileBox.setLayoutY(tileCoordinates.get(1));
+                    }
+                    tabContainer.getChildren().add(tileBox);
+                }
+
 
                 playerTab.setContent(tabContainer);
                 tabPane.getTabs().add(playerTab);

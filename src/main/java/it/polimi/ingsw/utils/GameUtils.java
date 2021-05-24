@@ -212,4 +212,17 @@ public class GameUtils {
                 return null;
         }
     }
+
+    public static List<Integer> getPopeTileCoordinates(int index) {
+        switch (index) {
+            case 0:
+                return Arrays.asList(190,69);
+            case 1:
+                return Arrays.asList(402,28);
+            case 2:
+                return Arrays.asList(655,69);
+            default:
+                return null;
+        }
+    }
 }
