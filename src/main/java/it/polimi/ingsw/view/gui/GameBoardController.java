@@ -4,10 +4,9 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.PlayerCardStack;
 import it.polimi.ingsw.model.player.Shelf;
-import it.polimi.ingsw.model.shared.DevelopmentCard;
-import it.polimi.ingsw.model.shared.LeaderCard;
-import it.polimi.ingsw.model.shared.Resource;
+import it.polimi.ingsw.model.shared.*;
 import it.polimi.ingsw.network.game.SelectMoveResponseMessage;
+import it.polimi.ingsw.utils.GameUtils;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -34,6 +33,7 @@ import java.util.*;
 public class GameBoardController implements SceneController {
     private GUI gui;
     private Game gameState;
+    private HBox leadersContainer;
     @FXML
     private VBox marblesContainer;
     @FXML
@@ -78,11 +78,12 @@ public class GameBoardController implements SceneController {
                 playerTab.setText(p.getUsername() + ": " + p.getVP() + " points");
                 AnchorPane tabContainer = new AnchorPane();
                 // display leader cards
-                HBox leadersContainer = new HBox();
+                leadersContainer = new HBox();
                 leadersContainer.setSpacing(50);
                 leadersContainer.setPrefWidth(287);
                 leadersContainer.setPrefHeight(188);
-                leadersContainer.setAlignment(Pos.CENTER);
+                leadersContainer.setAlignment(Pos.CENTER_LEFT);
+                leadersContainer.setPadding(new Insets(0,0,0,9));
                 for (LeaderCard leaderCard : p.getLeaderCards()) {
                     Image leaderImage = null;
                     if (p.getUsername().equals(gui.getUsername())) {
@@ -165,24 +166,47 @@ public class GameBoardController implements SceneController {
                 warehouseContainer.setOnMouseClicked(this::viewWarehouse);
                 tabContainer.getChildren().add(warehouseContainer);
 
-                // display faith track
+                // display faith track position
                 VBox faithTrackPositionBox = new VBox();
                 faithTrackPositionBox.setPrefSize(40,40);
                 faithTrackPositionBox.setAlignment(Pos.CENTER);
-                List<Integer> coords = getFaithTrackCoordinatesFromPosition(p.getFaithTrack().getPosition());
-                if (coords != null) {
-                    faithTrackPositionBox.setLayoutX(coords.get(0));
-                    faithTrackPositionBox.setLayoutY(coords.get(1));
+                List<Integer> positionCoordinates = GameUtils.getFaithTrackPositionCoordinates(p.getFaithTrack().getPosition());
+                if (positionCoordinates != null) {
+                    faithTrackPositionBox.setLayoutX(positionCoordinates.get(0));
+                    faithTrackPositionBox.setLayoutY(positionCoordinates.get(1));
                 }
                 Image posImage = new Image(Objects.requireNonNull(getClass().getClassLoader()
-                        .getResourceAsStream("images/board/cross.png")));
+                        .getResourceAsStream("images/faith/cross.png")));
                 ImageView posImageView = new ImageView(posImage);
                 posImageView.setPreserveRatio(true);
                 posImageView.setFitWidth(40);
                 posImageView.setFitHeight(40);
                 faithTrackPositionBox.getChildren().add(posImageView);
-
                 tabContainer.getChildren().add(faithTrackPositionBox);
+
+                // display pope's tiles
+                for (int i = 0; i < 3; i++) {
+                    PopesFavorTile tile = p.getFaithTrack().getPopesFavorTiles().get(i);
+                    VBox tileBox = new VBox();
+                    tileBox.setPrefSize(65,65);
+                    tileBox.setAlignment(Pos.CENTER);
+                    if (tile.getState() != PopesFavorTileState.DISCARDED) {
+                        Image tileImage = new Image(Objects.requireNonNull(getClass().getClassLoader()
+                                .getResourceAsStream("images/faith/tile_" + tile.getState().name() + "_" + i + ".png")));
+                        ImageView tileImageView = new ImageView(tileImage);
+                        tileImageView.setPreserveRatio(true);
+                        tileImageView.setFitWidth(65);
+                        tileImageView.setFitHeight(65);
+                        tileBox.getChildren().add(tileImageView);
+                    }
+                    List<Integer> tileCoordinates = GameUtils.getPopeTileCoordinates(i);
+                    if (tileCoordinates != null) {
+                        tileBox.setLayoutX(tileCoordinates.get(0));
+                        tileBox.setLayoutY(tileCoordinates.get(1));
+                    }
+                    tabContainer.getChildren().add(tileBox);
+                }
+
 
                 playerTab.setContent(tabContainer);
                 tabPane.getTabs().add(playerTab);
@@ -199,78 +223,27 @@ public class GameBoardController implements SceneController {
         });
     }
 
-    private List<Integer> getFaithTrackCoordinatesFromPosition(int pos) {
-        switch (pos) {
-            case 0:
-                return Arrays.asList(12, 103);
-            case 1:
-                return Arrays.asList(54, 103);
-            case 2:
-                return Arrays.asList(96, 103);
-            case 3:
-                return Arrays.asList(96, 61);
-            case 4:
-                return Arrays.asList(96, 19);
-            case 5:
-                return Arrays.asList(139, 19);
-            case 6:
-                return Arrays.asList(181, 19);
-            case 7:
-                return Arrays.asList(223, 19);
-            case 8:
-                return Arrays.asList(265, 19);
-            case 9:
-                return Arrays.asList(308, 19);
-            case 10:
-                return Arrays.asList(308, 61);
-            case 11:
-                return Arrays.asList(308, 103);
-            case 12:
-                return Arrays.asList(350, 103);
-            case 13:
-                return Arrays.asList(392, 103);
-            case 14:
-                return Arrays.asList(434, 103);
-            case 15:
-                return Arrays.asList(476, 103);
-            case 16:
-                return Arrays.asList(518, 103);
-            case 17:
-                return Arrays.asList(518, 61);
-            case 18:
-                return Arrays.asList(518, 19);
-            case 19:
-                return Arrays.asList(561, 19);
-            case 20:
-                return Arrays.asList(603, 19);
-            case 21:
-                return Arrays.asList(645, 19);
-            case 22:
-                return Arrays.asList(687, 19);
-            case 23:
-                return Arrays.asList(729, 19);
-            case 24:
-                return Arrays.asList(771, 19);
-            default:
-                return null;
-        }
-    }
-
     public void displayPossibleMoves(List<String> moves) {
         Platform.runLater(() -> {
+            String defaultStyle="-fx-cursor: hand;";
             String possibleMoveStyle =
                     "-fx-border-style: solid inside;" +
                     "-fx-border-width: 3;" +
                     "-fx-border-radius: 15;" +
-                    "-fx-border-color: red;";
-            marblesContainer.setStyle("");
-            cardsContainer.setStyle("");
+                    "-fx-border-color: red;" +
+                    "-fx-cursor: hand;";
+            marblesContainer.setStyle(defaultStyle);
+            cardsContainer.setStyle(defaultStyle);
+            leadersContainer.setStyle(defaultStyle);
             endTurnButton.setDisable(true);
             if (moves.contains("GET_MARBLES")) {
                 marblesContainer.setStyle(possibleMoveStyle);
             }
             if (moves.contains("BUY_CARD")) {
                 cardsContainer.setStyle(possibleMoveStyle);
+            }
+            if (moves.contains("DROP_LEADER") || moves.contains("PLAY_LEADER")) {
+                leadersContainer.setStyle(possibleMoveStyle);
             }
             if (moves.contains("END_TURN")) {
                 endTurnButton.setDisable(false);

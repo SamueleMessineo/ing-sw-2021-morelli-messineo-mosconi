@@ -6,6 +6,7 @@
 .flat-button {
     -fx-padding: 10 20;
     -fx-font-weight: 700;
+    -fx-cursor: hand;
     -fx-background-color: white;
 }
 
