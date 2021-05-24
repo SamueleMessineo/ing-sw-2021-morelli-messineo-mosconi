@@ -12,14 +12,14 @@ Final project for the Software Engineering course at Polytechnic of Milan, 2021.
 ## Development progress
 | Functionality | Status |
 |--- | --- | 
-|Basic rules|✖️|
-|Complete rules|✖️|
-|Server|✖️|
-|CLI|✖️|
+|Basic rules|✔|
+|Complete rules|✔️|
+|Server|✔️|
+|CLI|✔️|
 |GUI|✖️|
 |Persistence|✖️|
 |Parameter editor|✖️|
-|Offline games|✖️|
+|Offline games|✔️|
 |Multiple games|✔️|
 |Disconnection resilience|✔️|
 
