@@ -8,6 +8,7 @@ import it.polimi.ingsw.server.Room;
 
 import it.polimi.ingsw.server.ClientConnection;
 import it.polimi.ingsw.server.Server;
+import it.polimi.ingsw.utils.GameUtils;
 
 import java.util.*;
 
@@ -70,6 +71,7 @@ public class ServerController {
                else {
                    room.sendAll(new StringMessage(username + " is back in the game!"));
                    room.sendAll(new UpdateGameStateMessage(room.getGame()));
+                   clientConnection.sendMessage(new UpdateAndDisplayGameStateMessage(room.getGame()));
                    if(room.getGame().getPlayers().size()==1){
                        room.setCurrentTurn(new Turn(username, room.getGameController().computeNextPossibleMoves(false)));
                        room.sendAll(new SelectMoveRequestMessage(room.getCurrentTurn().getMoves()));
