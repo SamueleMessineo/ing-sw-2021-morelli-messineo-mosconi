@@ -36,13 +36,19 @@
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
-            <version>11.0.2</version>
+            <version>16</version>
         </dependency>
 
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-fxml</artifactId>
-            <version>11.0.2</version>
+            <version>16</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-media</artifactId>
+            <version>16</version>
         </dependency>
 
     </dependencies>
@@ -71,15 +77,6 @@
                 </configuration>
             </plugin>
 
-<!--            <plugin>-->
-<!--                <groupId>org.apache.maven.plugins</groupId>-->
-<!--                <artifactId>maven-jar-plugin</artifactId>-->
-<!--                <version>2.4</version>-->
-<!--                <configuration>-->
-<!--                    <outputDirectory>deliverables/JAR/</outputDirectory>-->
-<!--                </configuration>-->
-<!--            </plugin>-->
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
@@ -100,9 +97,6 @@
                                 </transformer>
                             </transformers>
                             <artifactSet>
-                                <includes>
-                                    <include></include>
-                                </includes>
                                 <excludes>
                                     <exclude>org.openjfx:*</exclude>
                                 </excludes>
@@ -155,6 +149,7 @@
                     <include>**/*.jpg</include>
                     <include>**/*.gif</include>
                     <include>**/*.css</include>
+                    <include>**/*.mp3</include>
                 </includes>
             </resource>
         </resources>
