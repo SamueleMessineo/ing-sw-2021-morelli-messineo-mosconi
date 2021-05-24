@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.shared.DevelopmentCard;
 import it.polimi.ingsw.model.shared.LeaderCard;
 import it.polimi.ingsw.model.shared.ProductionPower;
 import it.polimi.ingsw.model.shared.Resource;
+import it.polimi.ingsw.utils.GameUtils;
 import it.polimi.ingsw.view.UI;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -113,7 +114,7 @@ public class GUI extends Application implements UI {
     private void loadScenes() {
         for (String sceneName : Arrays.asList(
                 "online-offline", "connect", "setup-game", "room-details", "initial-resources",
-                "initial-leaders", "game-board", "cards-market", "marbles-market", "drop-resources")) {
+                "initial-leaders", "game-board", "cards-market", "marbles-market", "drop-resources", "offline-info", "leader-cards")) {
             FXMLLoader loader = new FXMLLoader(
                     getClass().getClassLoader().getResource("scenes/" + sceneName +".fxml"));
             try {
@@ -169,7 +170,22 @@ public class GUI extends Application implements UI {
 
     @Override
     public void displayString(String body) {
-
+        Platform.runLater(() -> {
+            System.out.println(body);
+            Stage dialog = new Stage();
+            VBox vBox = new VBox();
+            vBox.setAlignment(Pos.CENTER);
+            vBox.setSpacing(50);
+            Text text = new Text("");
+            text.setFont(Font.font("System", FontWeight.BLACK, 18));
+            vBox.getChildren().add(text);
+            vBox.getChildren().add(new Text(body));
+            Scene scene = new Scene(vBox, 400, 300);
+            dialog.setScene(scene);
+            dialog.initOwner(stage);
+            dialog.initModality(Modality.APPLICATION_MODAL);
+            dialog.showAndWait();
+        });
     }
 
     @Override
@@ -224,7 +240,8 @@ public class GUI extends Application implements UI {
 
     @Override
     public void discardLeaderCard(ArrayList<LeaderCard> cards) {
-
+        ((LeaderCardsController) controllerMap.get("leader-cards")).load(cards,"DROP");
+        setScene("leader-cards");
     }
 
     @Override
@@ -245,12 +262,15 @@ public class GUI extends Application implements UI {
 
     @Override
     public void selectStackToPlaceCard(List<Integer> stacks) {
-
+        ((SelectStackToPlaceCardController) controllerMap.get("select-stack")).showStacks(stacks);
+        setScene("select-stack");
     }
 
     @Override
     public void playLeader(List<LeaderCard> leaderCards) {
-
+        System.out.println("playLeader");
+        ((LeaderCardsController) controllerMap.get("leader-cards")).load(leaderCards,"PLAY");
+        setScene("leader-cards");
     }
 
     @Override
@@ -260,6 +280,10 @@ public class GUI extends Application implements UI {
 
     @Override
     public void askUsername() {
+        if(username==null){
+            username = ((OfflineInfoController) controllerMap.get("offline-info")).askUsername();
+            setScene("offline-info");
+        }
 
     }
 
@@ -267,6 +291,7 @@ public class GUI extends Application implements UI {
     public String getUsername() {
         return username;
     }
+
 
     public Game getGame(){
         return gameState;
