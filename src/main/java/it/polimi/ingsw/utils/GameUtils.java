@@ -156,4 +156,73 @@ public class GameUtils {
         return game;
     }
 
+    public static List<Integer> getFaithTrackPositionCoordinates(int pos) {
+        switch (pos) {
+            case 0:
+                return Arrays.asList(12, 103);
+            case 1:
+                return Arrays.asList(54, 103);
+            case 2:
+                return Arrays.asList(96, 103);
+            case 3:
+                return Arrays.asList(96, 61);
+            case 4:
+                return Arrays.asList(96, 19);
+            case 5:
+                return Arrays.asList(139, 19);
+            case 6:
+                return Arrays.asList(181, 19);
+            case 7:
+                return Arrays.asList(223, 19);
+            case 8:
+                return Arrays.asList(265, 19);
+            case 9:
+                return Arrays.asList(308, 19);
+            case 10:
+                return Arrays.asList(308, 61);
+            case 11:
+                return Arrays.asList(308, 103);
+            case 12:
+                return Arrays.asList(350, 103);
+            case 13:
+                return Arrays.asList(392, 103);
+            case 14:
+                return Arrays.asList(434, 103);
+            case 15:
+                return Arrays.asList(476, 103);
+            case 16:
+                return Arrays.asList(518, 103);
+            case 17:
+                return Arrays.asList(518, 61);
+            case 18:
+                return Arrays.asList(518, 19);
+            case 19:
+                return Arrays.asList(561, 19);
+            case 20:
+                return Arrays.asList(603, 19);
+            case 21:
+                return Arrays.asList(645, 19);
+            case 22:
+                return Arrays.asList(687, 19);
+            case 23:
+                return Arrays.asList(729, 19);
+            case 24:
+                return Arrays.asList(771, 19);
+            default:
+                return null;
+        }
+    }
+
+    public static List<Integer> getPopeTileCoordinates(int index) {
+        switch (index) {
+            case 0:
+                return Arrays.asList(190,69);
+            case 1:
+                return Arrays.asList(402,28);
+            case 2:
+                return Arrays.asList(655,69);
+            default:
+                return null;
+        }
+    }
 }

@@ -72,6 +72,7 @@ public class LocalMessageHandler {
     }
 
     public void handle(SelectMoveResponseMessage message){
+        System.out.println(message.getMove());
         if(currentTurn.isValidMove(message.getMove(), player.getUsername())){
             switch (message.getMove()){
                 case("GET_MARBLES"):
