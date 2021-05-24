@@ -73,7 +73,7 @@ public class CardsMarketController implements SceneController {
                 e.printStackTrace();
                 return;
             }
-            cardsGrid.getChildren().clear();
+            //cardsGrid.getChildren().clear();
             cardsGrid.setScaleX(1.9);
             cardsGrid.setScaleY(1.9);
             vbox.setAlignment(Pos.BOTTOM_CENTER);
@@ -92,25 +92,26 @@ public class CardsMarketController implements SceneController {
                     cardImageView.setOnMouseClicked(MouseEvent -> sendCardToBuy(developmentCards.indexOf(card)));
                     GridPane.setValignment(cardImageView, VPos.CENTER);
                     GridPane.setHalignment(cardImageView, HPos.CENTER);
-                    int cardY = 3 - card.getLevel();
-                    int cardX;
+                    int cardX = 3 - card.getLevel();
+                    int cardY;
                     switch (card.getCardType()){
                         case GREEN:
-                            cardX = 0;
+                            cardY = 0;
                             break;
                         case BLUE:
-                            cardX = 1;
+                            cardY = 1;
                             break;
                         case YELLOW:
-                            cardX = 2;
+                            cardY = 2;
                             break;
                         case PURPLE:
-                            cardX = 3;
+                            cardY = 3;
                             break;
                         default:
-                            cardX = 0;
+                            cardY = 0;
                             break;
                     }
+                    System.out.println("coordinates" + cardY + " " + cardX);
                     cardsGrid.add(cardImageView, cardY, cardX);
                     vbox.getChildren().add(new HBox());
                 }
@@ -128,6 +129,9 @@ public class CardsMarketController implements SceneController {
     }
 
     public void buyCard(ActionEvent actionEvent) {
+        vbox.getChildren().remove(1);
+        vbox.getChildren().remove(0);
+        vbox.getChildren().add(buttonsContainer);
         gui.getClient().sendMessage(new SelectMoveResponseMessage("BUY_CARD"));
     }
 }
