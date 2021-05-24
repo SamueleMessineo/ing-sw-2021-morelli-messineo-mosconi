@@ -26,7 +26,7 @@ public class OnlineOfflineController implements SceneController {
     @FXML
     void playOffline(ActionEvent event) {
         System.out.println("play offline");
-        gui.initializeClient(false);
+        gui.askUsername();
 //        gui.setScene("root2");
     }
 
