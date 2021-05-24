@@ -8,8 +8,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" stylesheets="@../css/setup.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.CardsProductionController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" stylesheets="@../css/setup.css" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.view.gui.ActivateProductionController">
    <children>
       <ImageView fitHeight="720.0" fitWidth="1296.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -18,10 +17,10 @@
       </ImageView>
       <VBox fx:id="vbox" alignment="BOTTOM_CENTER" prefHeight="720.0" prefWidth="1280.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
+            <HBox fx:id="productionsContainer" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" />
             <HBox fx:id="buttonsContainer" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="50.0">
                <children>
-                  <Button mnemonicParsing="false" onAction="#cancel" styleClass="flat-button" text="Cancel" />
-                  <Button mnemonicParsing="false" onAction="#sendActivateRequest" styleClass="flat-button" text="Activate Productions" />
+                  <Button mnemonicParsing="false" onAction="#confirm" styleClass="flat-button" text="Confirm" />
                </children>
             </HBox>
          </children>

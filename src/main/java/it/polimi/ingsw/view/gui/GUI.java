@@ -8,11 +8,14 @@ import it.polimi.ingsw.model.shared.DevelopmentCard;
 import it.polimi.ingsw.model.shared.LeaderCard;
 import it.polimi.ingsw.model.shared.ProductionPower;
 import it.polimi.ingsw.model.shared.Resource;
+import it.polimi.ingsw.utils.GameUtils;
 import it.polimi.ingsw.view.UI;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
@@ -36,6 +39,7 @@ public class GUI extends Application implements UI {
     private Game gameState;
     private String username;
     private MediaPlayer mediaPlayer;
+    private Stage popupStage;
 
     public void setUsername(String username) {
         this.username = username;
@@ -47,6 +51,9 @@ public class GUI extends Application implements UI {
         this.stage = stage;
         this.stage.setTitle("Masters of Renaissance");
         this.stage.setResizable(false);
+        popupStage = new Stage();
+        popupStage.initOwner(stage);
+        popupStage.initModality(Modality.APPLICATION_MODAL);
 //        setMusic();
         setScene("online-offline");
 
@@ -115,7 +122,7 @@ public class GUI extends Application implements UI {
         for (String sceneName : Arrays.asList(
                 "online-offline", "connect", "setup-game", "room-details", "initial-resources",
                 "initial-leaders", "game-board", "cards-market", "marbles-market", "drop-resources",
-                "offline-info", "leader-cards", "cards-production")) {
+                "offline-info", "leader-cards", "cards-production", "activate-production")) {
             FXMLLoader loader = new FXMLLoader(
                     getClass().getClassLoader().getResource("scenes/" + sceneName +".fxml"));
             try {
@@ -149,44 +156,40 @@ public class GUI extends Application implements UI {
         setScene("room-details");
     }
 
+    public void displayPopup(Parent parent) {
+        Platform.runLater(() -> {
+            Scene scene = new Scene(parent, 300, 200);
+            popupStage.setScene(scene);
+            popupStage.showAndWait();
+        });
+    }
+
+    public Stage getPopupStage() {
+        return popupStage;
+    }
+
     @Override
     public void displayError(String body) {
-        Platform.runLater(() -> {
-            System.out.println(body);
-            Stage dialog = new Stage();
-            VBox vBox = new VBox();
-            vBox.setAlignment(Pos.CENTER);
-            vBox.setSpacing(50);
-            Text text = new Text("An error occurred!");
-            text.setFont(Font.font("System", FontWeight.BLACK, 18));
-            vBox.getChildren().add(text);
-            vBox.getChildren().add(new Text(body));
-            Scene scene = new Scene(vBox, 400, 300);
-            dialog.setScene(scene);
-            dialog.initOwner(stage);
-            dialog.initModality(Modality.APPLICATION_MODAL);
-            dialog.showAndWait();
-        });
+        VBox vBox = new VBox();
+        vBox.setAlignment(Pos.CENTER);
+        vBox.setSpacing(50);
+        Text text = new Text("An error occurred!");
+        text.setFont(Font.font("System", FontWeight.BLACK, 18));
+        vBox.getChildren().add(text);
+        vBox.getChildren().add(new Text(body));
+        displayPopup(vBox);
     }
 
     @Override
     public void displayString(String body) {
-        Platform.runLater(() -> {
-            System.out.println(body);
-            Stage dialog = new Stage();
-            VBox vBox = new VBox();
-            vBox.setAlignment(Pos.CENTER);
-            vBox.setSpacing(50);
-            Text text = new Text("");
-            text.setFont(Font.font("System", FontWeight.BLACK, 18));
-            vBox.getChildren().add(text);
-            vBox.getChildren().add(new Text(body));
-            Scene scene = new Scene(vBox, 400, 300);
-            dialog.setScene(scene);
-            dialog.initOwner(stage);
-            dialog.initModality(Modality.APPLICATION_MODAL);
-            dialog.showAndWait();
-        });
+        VBox vBox = new VBox();
+        vBox.setAlignment(Pos.CENTER);
+        vBox.setSpacing(50);
+        Text text = new Text("");
+        text.setFont(Font.font("System", FontWeight.BLACK, 18));
+        vBox.getChildren().add(text);
+        vBox.getChildren().add(new Text(body));
+        displayPopup(vBox);
     }
 
     @Override
@@ -252,7 +255,8 @@ public class GUI extends Application implements UI {
 
     @Override
     public void activateProduction(List<ProductionPower> productionPowers) {
-
+        ((ActivateProductionController)controllerMap.get("activate-production")).load(productionPowers);
+        setScene("activate-production");
     }
 
     @Override
