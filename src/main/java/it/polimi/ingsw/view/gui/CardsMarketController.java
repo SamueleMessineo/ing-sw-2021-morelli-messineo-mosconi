@@ -121,6 +121,7 @@ public class CardsMarketController implements SceneController {
     }
 
     public void sendCardToBuy(int cardIndex) {
+        vbox.getChildren().remove(1);
         vbox.getChildren().remove(0);
         vbox.getChildren().add(buttonsContainer);
         gui.getClient().sendMessage(new BuyDevelopmentCardResponseMessage(cardIndex));

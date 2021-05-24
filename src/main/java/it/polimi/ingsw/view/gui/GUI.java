@@ -14,6 +14,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -48,6 +49,11 @@ public class GUI extends Application implements UI {
         this.stage.setResizable(false);
 //        setMusic();
         setScene("online-offline");
+
+        Image logo = new Image(Objects.requireNonNull(getClass().getClassLoader()
+                .getResourceAsStream("images/punchboard/calamaio.png")));
+        this.stage.getIcons().add(logo);
+
     }
 
     @Override
