@@ -34,6 +34,7 @@ public class GameBoardController implements SceneController {
     private GUI gui;
     private Game gameState;
     private HBox leadersContainer;
+    private AnchorPane cardStacksContainer;
     @FXML
     private VBox marblesContainer;
     @FXML
@@ -107,32 +108,18 @@ public class GameBoardController implements SceneController {
                 leadersContainer.setOnMouseClicked(this::viewLeaders);
 
                 // display development card stacks
-                HBox cardStacksContainer = new HBox();
-                cardStacksContainer.setPrefSize(450, 250);
-                cardStacksContainer.setAlignment(Pos.CENTER);
+                cardStacksContainer = new AnchorPane();
                 cardStacksContainer.setLayoutX(365);
                 cardStacksContainer.setLayoutY(226);
-                for (PlayerCardStack playerCardStack : p.getPlayerBoard().getCardStacks()) {
-                    AnchorPane singleCardStackContainer = new AnchorPane();
-                    singleCardStackContainer.setPrefSize(150, 210);
-                    for (int i = 0; i < playerCardStack.size(); i++) {
-                        DevelopmentCard card = playerCardStack.get(i);
-                        Image cardImage = new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(
-                            "images/development/development_" + card.getCardType().name().toLowerCase() +
-                                    "_" + card.getScore() + ".png"
-                        )));
-                        ImageView cardImageView = new ImageView(cardImage);
-                        cardImageView.setPreserveRatio(true);
-                        cardImageView.setFitHeight(160);
-                        cardImageView.setFitWidth(200);
-                        cardImageView.setLayoutX(
-                                75-(cardImageView.getLayoutBounds().getWidth()/2)
-                        );
-                        cardImageView.setLayoutY(200-160-(25*i));
-                        singleCardStackContainer.getChildren().add(cardImageView);
-                    }
-                    cardStacksContainer.getChildren().add(singleCardStackContainer);
+                cardStacksContainer.setOnMouseClicked(this::viewCardsAndProductions);
+                FXMLLoader playerCardStacksLoader = new FXMLLoader(
+                        getClass().getClassLoader().getResource("scenes/player-card-stacks.fxml"));
+                try {
+                    cardStacksContainer.getChildren().add(playerCardStacksLoader.load());
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
+                ((PlayerCardStacksController)playerCardStacksLoader.getController()).load(p.getPlayerBoard().getCardStacks());
                 tabContainer.getChildren().add(cardStacksContainer);
 
                 // display the warehouse
@@ -233,6 +220,7 @@ public class GameBoardController implements SceneController {
             marblesContainer.setStyle("");
             cardsContainer.setStyle("");
             leadersContainer.setStyle("");
+            cardStacksContainer.setStyle("");
             endTurnButton.setDisable(true);
             if (moves.contains("GET_MARBLES")) {
                 marblesContainer.setStyle(possibleMoveStyle);
@@ -243,6 +231,9 @@ public class GameBoardController implements SceneController {
             if (moves.contains("DROP_LEADER") || moves.contains("PLAY_LEADER")) {
                 leadersContainer.setStyle(possibleMoveStyle);
             }
+            if (moves.contains("ACTIVATE_PRODUCTION")) {
+                cardStacksContainer.setStyle(possibleMoveStyle);
+            }
             if (moves.contains("END_TURN")) {
                 endTurnButton.setDisable(false);
             }
@@ -250,7 +241,7 @@ public class GameBoardController implements SceneController {
     }
 
     @FXML
-    void viewCards(MouseEvent event) {
+    void viewCardMarket(MouseEvent event) {
         ((CardsMarketController)gui.getSceneController("cards-market")).load(gameState.getMarket().getCardsGrid());
         gui.setScene("cards-market");
     }
@@ -277,6 +268,14 @@ public class GameBoardController implements SceneController {
     @FXML
     void viewWarehouse(MouseEvent event) {
         System.out.println("view warehouse");
+    }
+
+    @FXML
+    void viewCardsAndProductions(MouseEvent event) {
+        ((CardsProductionController)gui.getSceneController("cards-production")).display(
+                gameState.getPlayerByUsername(gui.getUsername()).getPlayerBoard().getCardStacks()
+        );
+        gui.setScene("cards-production");
     }
 
     @FXML
