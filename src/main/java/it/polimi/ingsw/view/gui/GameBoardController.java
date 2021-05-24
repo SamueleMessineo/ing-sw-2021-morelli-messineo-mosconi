@@ -33,6 +33,7 @@ import java.util.*;
 public class GameBoardController implements SceneController {
     private GUI gui;
     private Game gameState;
+    private HBox leadersContainer;
     @FXML
     private VBox marblesContainer;
     @FXML
@@ -77,11 +78,12 @@ public class GameBoardController implements SceneController {
                 playerTab.setText(p.getUsername() + ": " + p.getVP() + " points");
                 AnchorPane tabContainer = new AnchorPane();
                 // display leader cards
-                HBox leadersContainer = new HBox();
+                leadersContainer = new HBox();
                 leadersContainer.setSpacing(50);
                 leadersContainer.setPrefWidth(287);
                 leadersContainer.setPrefHeight(188);
-                leadersContainer.setAlignment(Pos.CENTER);
+                leadersContainer.setAlignment(Pos.CENTER_LEFT);
+                leadersContainer.setPadding(new Insets(0,0,0,9));
                 for (LeaderCard leaderCard : p.getLeaderCards()) {
                     Image leaderImage = null;
                     if (p.getUsername().equals(gui.getUsername())) {
@@ -230,12 +232,16 @@ public class GameBoardController implements SceneController {
                     "-fx-border-color: red;";
             marblesContainer.setStyle("");
             cardsContainer.setStyle("");
+            leadersContainer.setStyle("");
             endTurnButton.setDisable(true);
             if (moves.contains("GET_MARBLES")) {
                 marblesContainer.setStyle(possibleMoveStyle);
             }
             if (moves.contains("BUY_CARD")) {
                 cardsContainer.setStyle(possibleMoveStyle);
+            }
+            if (moves.contains("DROP_LEADER") || moves.contains("PLAY_LEADER")) {
+                leadersContainer.setStyle(possibleMoveStyle);
             }
             if (moves.contains("END_TURN")) {
                 endTurnButton.setDisable(false);
