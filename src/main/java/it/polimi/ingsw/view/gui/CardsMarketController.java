@@ -3,6 +3,7 @@ package it.polimi.ingsw.view.gui;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.market.MarketCardStack;
 import it.polimi.ingsw.model.shared.DevelopmentCard;
+import it.polimi.ingsw.network.game.BuyDevelopmentCardResponseMessage;
 import it.polimi.ingsw.network.game.SelectMoveResponseMessage;
 import it.polimi.ingsw.utils.GameUtils;
 import javafx.application.Platform;
@@ -78,9 +79,7 @@ public class CardsMarketController implements SceneController {
             vbox.setPadding(new Insets(0, 0, 30, 0));
             vbox.getChildren().add(cardsGrid);
             try {
-
                 for (DevelopmentCard card : developmentCards) {
-                    ;
                     javafx.scene.image.Image cardImage = new Image(new FileInputStream(
                             "src/main/resources/images/development/development_" +
                                     card.getCardType().name().toLowerCase() + "_" + card.getScore() + ".png"));
@@ -88,6 +87,7 @@ public class CardsMarketController implements SceneController {
                     cardImageView.setPreserveRatio(true);
                     cardImageView.setFitWidth(200);
                     cardImageView.setFitHeight(95);
+                    cardImageView.setOnMouseClicked(MouseEvent -> sendCardToBuy(developmentCards.indexOf(card)));
                     GridPane.setValignment(cardImageView, VPos.CENTER);
                     GridPane.setHalignment(cardImageView, HPos.CENTER);
                     int cardX = (developmentCards.indexOf(card)) / 4;
@@ -97,10 +97,12 @@ public class CardsMarketController implements SceneController {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-
         });
     }
 
+    public void sendCardToBuy(int cardIndex) {
+        gui.getClient().sendMessage(new BuyDevelopmentCardResponseMessage(cardIndex));
+    }
 
     public void buyCard(ActionEvent actionEvent) {
         gui.getClient().sendMessage(new SelectMoveResponseMessage("BUY_CARD"));
