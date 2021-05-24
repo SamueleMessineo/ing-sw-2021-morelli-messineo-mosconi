@@ -93,9 +93,27 @@ public class CardsMarketController implements SceneController {
                     cardImageView.setOnMouseClicked(MouseEvent -> sendCardToBuy(developmentCards.indexOf(card)));
                     GridPane.setValignment(cardImageView, VPos.CENTER);
                     GridPane.setHalignment(cardImageView, HPos.CENTER);
-                    int cardX = (developmentCards.indexOf(card)) / 4;
-                    int cardY = (developmentCards.indexOf(card) % 4);
+                    int cardY = 3 - card.getLevel();
+                    int cardX;
+                    switch (card.getCardType()){
+                        case GREEN:
+                            cardX = 0;
+                            break;
+                        case BLUE:
+                            cardX = 1;
+                            break;
+                        case YELLOW:
+                            cardX = 2;
+                            break;
+                        case PURPLE:
+                            cardX = 3;
+                            break;
+                        default:
+                            cardX = 0;
+                            break;
+                    }
                     cardsGrid.add(cardImageView, cardY, cardX);
+                    vbox.getChildren().add(new HBox());
                 }
             } catch (Exception e) {
                 e.printStackTrace();
