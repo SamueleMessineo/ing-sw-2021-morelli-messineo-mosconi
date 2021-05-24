@@ -183,6 +183,22 @@ public class PlayerTest {
         testCards.add(leaderCardTest);
         player.setLeaderCards(testCards);
         assertFalse(player.canPlayLeader(7));
+
+        player=new Player("prova");
+        cardRequirements=new HashMap<>();
+        cardRequirements.put(CardType.PURPLE,1);
+        leaderCardTest=new LeaderCard(emptyMap1,cardRequirements,0,"Production",Resource.STONE,2);
+
+        developmentCard1=new DevelopmentCard(1,CardType.PURPLE, emptyMap1,
+                productionPower,3);
+        developmentCard2=new DevelopmentCard(2,CardType.PURPLE, emptyMap1,
+                productionPower,2);
+
+        player.getPlayerBoard().getCardStacks().get(0).push(developmentCard1);
+        player.getPlayerBoard().getCardStacks().get(0).push(developmentCard2);
+        testCards.add(leaderCardTest);
+        player.setLeaderCards(testCards);
+        assertTrue(player.canPlayLeader(8));
     }
 
     @Test
