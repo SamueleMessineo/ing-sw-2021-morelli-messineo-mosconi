@@ -73,6 +73,7 @@ public class InitialLeadersController implements SceneController{
                         break;
                     case 3:
                         bottomRightImg.setImage(imageView.getImage());
+                        break;
                 }
             }
         });

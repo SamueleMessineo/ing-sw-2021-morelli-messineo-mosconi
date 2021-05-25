@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
@@ -22,17 +22,20 @@
                <children>
                   <Pane prefHeight="175.0" prefWidth="160.0">
                      <children>
-                        <ImageView fx:id="upLeftCross" fitHeight="200.0" fitWidth="170.0" x="-18" y="18" onMouseClicked="#selectUpLeft" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="upLeftCross" fitHeight="200.0" fitWidth="170.0" onMouseClicked="#selectUpLeft" pickOnBounds="true" preserveRatio="true" x="-18" y="18">
 
                         </ImageView>
                         <ImageView fx:id="upLeftImg" fitHeight="200.0" fitWidth="170.0" onMouseClicked="#selectUpLeft" pickOnBounds="true" preserveRatio="true">
 
                         </ImageView>
                      </children>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
                   </Pane>
                   <Pane prefHeight="175.0" prefWidth="160.0">
                      <children>
-                        <ImageView fx:id="upRightCross" fitHeight="200.0" fitWidth="170.0" x="-18" y="18"  onMouseClicked="#selectUpRight" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="upRightCross" fitHeight="200.0" fitWidth="170.0" onMouseClicked="#selectUpRight" pickOnBounds="true" preserveRatio="true" x="-18" y="18">
 
                      </ImageView>
                         <ImageView fx:id="upRightImg" fitHeight="200.0" fitWidth="170.0" onMouseClicked="#selectUpRight" pickOnBounds="true" preserveRatio="true">
@@ -41,6 +44,9 @@
                      </image>
                         </ImageView>
                      </children>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
                   </Pane>
                </children>
             </HBox>
@@ -49,7 +55,7 @@
                   <Pane prefHeight="175.0" prefWidth="160.0">
                      <children>
 
-                        <ImageView fx:id="bottomLeftCross" fitHeight="200.0" fitWidth="170.0" x="-18" y="18" onMouseClicked="#selectBottomLeft" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="bottomLeftCross" fitHeight="200.0" fitWidth="170.0" onMouseClicked="#selectBottomLeft" pickOnBounds="true" preserveRatio="true" x="-18" y="18">
 
                         </ImageView>
                          <ImageView fx:id="bottomLeftImg" fitHeight="200.0" fitWidth="170.0" onMouseClicked="#selectBottomLeft" pickOnBounds="true" preserveRatio="true">
@@ -58,11 +64,14 @@
                          </image>
                      </ImageView>
                      </children>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
                   </Pane>
                   <Pane prefHeight="175.0" prefWidth="160.0">
                      <children>
 
-                        <ImageView fx:id="bottomRightCross" fitHeight="200.0" fitWidth="170.0" x="-18" y="18"  onMouseClicked="#selectBottomRight" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="bottomRightCross" fitHeight="200.0" fitWidth="170.0" onMouseClicked="#selectBottomRight" pickOnBounds="true" preserveRatio="true" x="-18" y="18">
 
                         </ImageView>
                          <ImageView fx:id="bottomRightImg" fitHeight="200.0" fitWidth="170.0" onMouseClicked="#selectBottomRight" pickOnBounds="true" preserveRatio="true">
@@ -71,6 +80,9 @@
                              </image>
                          </ImageView>
                      </children>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
                   </Pane>
                </children>
             </HBox>

@@ -19,19 +19,18 @@ public class CardsGridController implements SceneController {
     public void setCards(List<MarketCardStack> cardStacks) {
         try {
             grid.getChildren().clear();
-            for (MarketCardStack stack : cardStacks) { ;
-                ImageView cardImageView = null;
+            for (MarketCardStack stack : cardStacks) {
                 if (!stack.isEmpty()) {
                     DevelopmentCard topCard = stack.peek();
-                    cardImageView = GameUtils.getImageView(topCard);
+                    ImageView cardImageView = GameUtils.getImageView(topCard);
+                    cardImageView.setFitWidth(200);
+                    cardImageView.setFitHeight(95);
+                    GridPane.setValignment(cardImageView, VPos.CENTER);
+                    GridPane.setHalignment(cardImageView, HPos.CENTER);
+                    int cardX = (cardStacks.indexOf(stack))/4;
+                    int cardY = (cardStacks.indexOf(stack) % 4);
+                    grid.add(cardImageView, cardY, cardX);
                 }
-                cardImageView.setFitWidth(200);
-                cardImageView.setFitHeight(95);
-                GridPane.setValignment(cardImageView, VPos.CENTER);
-                GridPane.setHalignment(cardImageView, HPos.CENTER);
-                int cardX = (cardStacks.indexOf(stack))/4;
-                int cardY = (cardStacks.indexOf(stack) % 4);
-                grid.add(cardImageView, cardY, cardX);
             }
         } catch (Exception e) {
             e.printStackTrace();

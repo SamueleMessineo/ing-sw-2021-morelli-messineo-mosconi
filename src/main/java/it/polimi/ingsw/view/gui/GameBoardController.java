@@ -121,7 +121,7 @@ public class GameBoardController implements SceneController {
                 // display development card stacks
                 AnchorPane cardStacksContainer = new AnchorPane();
                 cardStacksContainer.setLayoutX(365);
-                cardStacksContainer.setLayoutY(226);
+                cardStacksContainer.setLayoutY(210);
                 FXMLLoader playerCardStacksLoader = new FXMLLoader(
                         getClass().getClassLoader().getResource("scenes/player-card-stacks.fxml"));
                 try {
@@ -228,7 +228,9 @@ public class GameBoardController implements SceneController {
 
                 playerTab.setContent(tabContainer);
                 tabPane.getTabs().add(playerTab);
-                // select the tab corresponding to the player itself
+                this.cardsContainer.setCursor(Cursor.HAND);
+                this.marblesContainer.setCursor(Cursor.HAND);
+                // select the tab corresponding to the player itself and apply things
                 if (p.getUsername().equals(gui.getUsername())) {
                     tabPane.getSelectionModel().select(playerTab);
                     this.leadersContainer = leadersContainer;
