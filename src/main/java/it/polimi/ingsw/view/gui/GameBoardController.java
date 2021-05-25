@@ -10,16 +10,13 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.geometry.VPos;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.effect.DropShadow;
-import javafx.scene.effect.Shadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -268,11 +265,10 @@ public class GameBoardController implements SceneController {
                 Image lorenzoPaint = new Image(Objects.requireNonNull(getClass().getClassLoader()
                         .getResourceAsStream("images/lorenzoIlMagnificoPaint.png")));
                 ImageView lorenzoView = new ImageView(lorenzoPaint);
-                tabContainer.getChildren().add(lorenzoView);
                 lorenzoView.setFitHeight(552);
                 lorenzoView.setFitWidth(854);
-                lorenzoView.toBack();
-                lorenzoView.setY(720-lorenzoView.getFitHeight());
+                lorenzoView.setY(168);
+                tabContainer.getChildren().add(lorenzoView);
 
 
                 // display faith track position

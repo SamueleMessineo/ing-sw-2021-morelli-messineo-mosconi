@@ -121,7 +121,7 @@ public class GUI extends Application implements UI {
         for (String sceneName : Arrays.asList(
                 "online-offline", "connect", "setup-game", "room-details", "initial-resources",
                 "initial-leaders", "game-board", "cards-market", "marbles-market", "drop-resources",
-                "offline-info", "leader-cards", "cards-production", "activate-production")) {
+                "offline-info", "leader-cards", "cards-production", "activate-production", "convert-marbles")) {
             FXMLLoader loader = new FXMLLoader(
                     getClass().getClassLoader().getResource("scenes/" + sceneName +".fxml"));
             try {
@@ -239,7 +239,8 @@ public class GUI extends Application implements UI {
 
     @Override
     public void selectResourceForWhiteMarbles(int amount, List<Resource> options) {
-
+        ((ConvertMarblesController) controllerMap.get("convert-marbles")).load(amount, options);
+        setScene("convert-marbles");
     }
 
     @Override
