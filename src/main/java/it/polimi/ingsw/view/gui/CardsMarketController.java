@@ -32,6 +32,7 @@ public class CardsMarketController implements SceneController {
     private HBox buttonsContainer;
 
     public void load(List<MarketCardStack> cardStacks) {
+        vbox.getChildren().clear();
         FXMLLoader loader = new FXMLLoader(
                 getClass().getClassLoader().getResource("scenes/cards-grid.fxml"));
         GridPane cardsGrid;
@@ -47,7 +48,8 @@ public class CardsMarketController implements SceneController {
         vbox.setAlignment(Pos.BOTTOM_CENTER);
         vbox.setSpacing(160);
         vbox.setPadding(new Insets(0, 0, 30, 0));
-        vbox.getChildren().add(0, cardsGrid);
+        vbox.getChildren().addAll(cardsGrid, buttonsContainer);
+        //vbox.getChildren().add(0, cardsGrid);
     }
 
     @FXML
@@ -113,6 +115,7 @@ public class CardsMarketController implements SceneController {
                     }
                     System.out.println("coordinates" + cardY + " " + cardX);
                     cardsGrid.add(cardImageView, cardY, cardX);
+                    //vbox.getChildren().addAll(cardsGrid, buttonsContainer);
                     vbox.getChildren().add(new HBox());
                 }
             } catch (Exception e) {
