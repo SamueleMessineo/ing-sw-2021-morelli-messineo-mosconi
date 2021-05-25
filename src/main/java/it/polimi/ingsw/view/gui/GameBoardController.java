@@ -41,6 +41,9 @@ public class GameBoardController implements SceneController {
     private Text playerInfo;
     @FXML
     private Button endTurnButton;
+    @FXML
+    private AnchorPane leader1;
+
 
     @FXML
     void hide(MouseEvent event) {
@@ -81,18 +84,28 @@ public class GameBoardController implements SceneController {
                 leadersContainer.setPrefHeight(188);
                 leadersContainer.setAlignment(Pos.CENTER_LEFT);
                 leadersContainer.setPadding(new Insets(0,0,0,9));
-                for (LeaderCard leaderCard : p.getLeaderCards()) {
+                List<LeaderCard> allLeaders = new ArrayList<>();
+                allLeaders.addAll(p.getLeaderCards());
+                allLeaders.addAll(p.getPlayedLeaderCards());
+                for (LeaderCard leaderCard : allLeaders) {
                     ImageView leaderImageView = null;
                     if (p.getUsername().equals(gui.getUsername())) {
                         leaderImageView = GameUtils.getImageView(leaderCard);
                         leadersContainer.setCursor(Cursor.HAND);
                         leadersContainer.setOnMouseClicked(this::viewLeaders);
                     } else {
-                        Image leaderImage = new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(
-                                "images/leaders/leader_back.png")));
-                        leaderImageView = new ImageView(leaderImage);
-                        leaderImageView.setPreserveRatio(true);
+                        if (p.getPlayedLeaderCards().contains(leaderCard)) {
+                            leaderImageView = GameUtils.getImageView(leaderCard);
+                        } else {
+                            Image leaderImage = new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(
+                                    "images/leaders/leader_back.png")));
+                            leaderImageView = new ImageView(leaderImage);
+                            leaderImageView.setPreserveRatio(true);
+                        }
+
                     }
+//                    ImageView leaderImageView = new ImageView(leaderImage);
+//                    leaderImageView.setPreserveRatio(true);
                     leaderImageView.setFitWidth(200);
                     leaderImageView.setFitHeight(160);
                     leadersContainer.getChildren().add(leaderImageView);
