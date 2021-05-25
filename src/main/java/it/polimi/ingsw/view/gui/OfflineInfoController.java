@@ -13,15 +13,6 @@ public class OfflineInfoController implements SceneController{
     public TextField usernameInput;
     public String username;
 
-    public void askUsername() {
-        Platform.runLater(() -> {
-            GameUtils.debug("asking");
-            username = usernameInput.getText();
-            gui.setUsername(username);
-            GameUtils.debug(username);
-        });
-    }
-
 
     @Override
     public void setGUI(GUI gui)  {
@@ -31,13 +22,14 @@ public class OfflineInfoController implements SceneController{
 
 
     public void confirm(ActionEvent actionEvent) {
-        if(username!= null){
-            Platform.runLater(() -> {
-                gui.initializeClient(false);
-                gui.getClient().run();
-            });
-        }
+        Platform.runLater(() -> {
+        username = usernameInput.getText();
+        gui.setUsername(username);
+        GameUtils.debug(username);
+        if(username!= null)
+            gui.initializeClient(false);
 
+        });
     }
 
     public String getUsername() {
