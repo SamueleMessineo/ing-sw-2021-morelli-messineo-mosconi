@@ -266,7 +266,7 @@ public class GameBoardController implements SceneController {
                 AnchorPane tabContainer = new AnchorPane();
 
                 Image lorenzoPaint = new Image(Objects.requireNonNull(getClass().getClassLoader()
-                        .getResourceAsStream("images/lorenzoILMagnificoPaint.png")));
+                        .getResourceAsStream("images/lorenzoIlMagnificoPaint.png")));
                 ImageView lorenzoView = new ImageView(lorenzoPaint);
                 tabContainer.getChildren().add(lorenzoView);
                 lorenzoView.setFitHeight(552);
