@@ -8,12 +8,14 @@ import it.polimi.ingsw.utils.GameUtils;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -24,6 +26,7 @@ public class ActivateProductionController implements SceneController {
     private GUI gui;
     private Player player;
     private ProductionPower basicProduction;
+    private List<Integer> selectedCardPowers;
     @FXML
     private VBox vbox;
     @FXML
@@ -35,6 +38,7 @@ public class ActivateProductionController implements SceneController {
         player = gui.getGame().getPlayerByUsername(gui.getUsername());
         Platform.runLater(() -> {
             vbox.getChildren().clear();
+            productionsContainer.getChildren().clear();
             // check default production
             if (player.canActivateBasicProduction()) {
                 Image basicProductionImage = new Image(Objects.requireNonNull(getClass().getClassLoader()
@@ -44,6 +48,48 @@ public class ActivateProductionController implements SceneController {
                 basicProductionImageView.setFitWidth(150);
                 basicProductionImageView.setOnMouseClicked(this::handleBasicProduction);
                 productionsContainer.getChildren().add(basicProductionImageView);
+            }
+            // display cards' powers
+            selectedCardPowers = new ArrayList<>();
+            for (ProductionPower cardPower : powers) {
+                AnchorPane powerPane = new AnchorPane();
+                powerPane.setPrefSize(212,150);
+                Image bookImage = new Image(Objects.requireNonNull(getClass().getClassLoader()
+                        .getResourceAsStream("images/board/production_book.png")));
+                ImageView bookImageView = new ImageView(bookImage);
+                bookImageView.setPreserveRatio(true);
+                bookImageView.setFitHeight(150);
+                bookImageView.setFitWidth(212);
+                bookImageView.setLayoutX(0);
+                bookImageView.setLayoutY(0);
+                powerPane.getChildren().add(bookImageView);
+                HBox singleCardPowerContainer = new HBox();
+                singleCardPowerContainer.setPrefSize(212,150);
+                singleCardPowerContainer.setAlignment(Pos.CENTER);
+                singleCardPowerContainer.setSpacing(60);
+                VBox inputContainer = new VBox();
+                inputContainer.setAlignment(Pos.CENTER);
+                for (Resource inputResource : cardPower.getInput().keySet()) {
+                    ImageView resourceImageView = GameUtils.getImageView(inputResource);
+                    resourceImageView.setFitWidth(35);
+                    resourceImageView.setFitHeight(35);
+                    inputContainer.getChildren().add(resourceImageView);
+                }
+                singleCardPowerContainer.getChildren().add(inputContainer);
+                VBox outputContainer = new VBox();
+                outputContainer.setAlignment(Pos.CENTER);
+                for (Resource outputResource : cardPower.getOutput().keySet()) {
+                    ImageView resourceImageView = GameUtils.getImageView(outputResource);
+                    resourceImageView.setFitWidth(35);
+                    resourceImageView.setFitHeight(35);
+                    outputContainer.getChildren().add(resourceImageView);
+                }
+                singleCardPowerContainer.getChildren().add(outputContainer);
+                singleCardPowerContainer.setOnMouseClicked(event -> selectCardPower(powers.indexOf(cardPower)));
+                singleCardPowerContainer.setLayoutX(0);
+                singleCardPowerContainer.setLayoutY(0);
+                powerPane.getChildren().add(singleCardPowerContainer);
+                productionsContainer.getChildren().add(powerPane);
             }
 
             vbox.getChildren().addAll(productionsContainer, buttonsContainer);
@@ -62,10 +108,7 @@ public class ActivateProductionController implements SceneController {
             for (int i = 0; i < 2; i++) {
                 HBox resourcePickerContainer = new HBox();
                 for (Map.Entry<Resource, Integer> entry : playerResources.entrySet()) {
-                    Image resourceImage = new Image(Objects.requireNonNull(getClass().getClassLoader()
-                            .getResourceAsStream("images/punchboard/" + entry.getKey().name().toLowerCase() + ".png")));
-                    ImageView resourceImageView = new ImageView(resourceImage);
-                    resourceImageView.setPreserveRatio(true);
+                    ImageView resourceImageView = GameUtils.getImageView(entry.getKey());
                     resourceImageView.setFitWidth(40);
                     resourceImageView.setFitHeight(40);
                     resourceImageView.setCursor(Cursor.HAND);
@@ -76,10 +119,7 @@ public class ActivateProductionController implements SceneController {
             }
             HBox outputPickerContainer = new HBox();
             for (Resource resource : Arrays.asList(Resource.COIN, Resource.SERVANT, Resource.SHIELD, Resource.STONE)) {
-                Image resourceImage = new Image(Objects.requireNonNull(getClass().getClassLoader()
-                        .getResourceAsStream("images/punchboard/" + resource.name().toLowerCase() + ".png")));
-                ImageView resourceImageView = new ImageView(resourceImage);
-                resourceImageView.setPreserveRatio(true);
+                ImageView resourceImageView = GameUtils.getImageView(resource);
                 resourceImageView.setFitWidth(40);
                 resourceImageView.setFitHeight(40);
                 resourceImageView.setCursor(Cursor.HAND);
@@ -115,8 +155,14 @@ public class ActivateProductionController implements SceneController {
     }
 
     @FXML
+    void selectCardPower(int index) {
+        selectedCardPowers.add(index);
+    }
+
+    @FXML
     void confirm(ActionEvent event) {
-        gui.getClient().sendMessage(new ActivateProductionResponseMessage(null, basicProduction, null, null));
+        gui.getClient().sendMessage(new ActivateProductionResponseMessage(
+                selectedCardPowers, basicProduction, null, null));
     }
 
     @Override

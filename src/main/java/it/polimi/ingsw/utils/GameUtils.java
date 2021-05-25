@@ -8,6 +8,8 @@ import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.shared.PopesFavorTileState;
 import it.polimi.ingsw.model.shared.Resource;
 import it.polimi.ingsw.server.Room;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 import java.io.*;
 import java.security.InvalidParameterException;
@@ -224,5 +226,13 @@ public class GameUtils {
             default:
                 return null;
         }
+    }
+
+    public static ImageView getImageView(Resource resource) {
+        Image resourceImage = new Image(Objects.requireNonNull(GameUtils.class.getClassLoader()
+                .getResourceAsStream("images/resources/" + resource.name().toLowerCase() + ".png")));
+        ImageView resourceImageView = new ImageView(resourceImage);
+        resourceImageView.setPreserveRatio(true);
+        return resourceImageView;
     }
 }
