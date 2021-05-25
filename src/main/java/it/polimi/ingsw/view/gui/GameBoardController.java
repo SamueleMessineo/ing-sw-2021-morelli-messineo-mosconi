@@ -49,8 +49,6 @@ public class GameBoardController implements SceneController {
     private Text playerInfo;
     @FXML
     private Button endTurnButton;
-    @FXML
-    private AnchorPane leader1;
 
 
     @FXML
@@ -262,6 +260,43 @@ public class GameBoardController implements SceneController {
                     this.warehouseContainer.setCursor(Cursor.HAND);
                 }
             }
+            if(gameState.getLorenzoIlMagnifico()!=null){
+                Tab playerTab = new Tab();
+                playerTab.setText("Lorenzo il Magnifico" + ": " + game.getLorenzoIlMagnifico().getVP() + " points");
+                AnchorPane tabContainer = new AnchorPane();
+
+                Image lorenzoPaint = new Image(Objects.requireNonNull(getClass().getClassLoader()
+                        .getResourceAsStream("images/lorenzoILMagnificoPaint.png")));
+                ImageView lorenzoView = new ImageView(lorenzoPaint);
+                tabContainer.getChildren().add(lorenzoView);
+                lorenzoView.setFitHeight(552);
+                lorenzoView.setFitWidth(854);
+                lorenzoView.toBack();
+                lorenzoView.setY(720-lorenzoView.getFitHeight());
+
+
+                // display faith track position
+                VBox faithTrackPositionBox = new VBox();
+                faithTrackPositionBox.setPrefSize(40,40);
+                faithTrackPositionBox.setAlignment(Pos.CENTER);
+                List<Integer> positionCoordinates = GameUtils.getFaithTrackPositionCoordinates(game.getLorenzoIlMagnifico().getFaithTrack().getPosition());
+                if (positionCoordinates != null) {
+                    faithTrackPositionBox.setLayoutX(positionCoordinates.get(0));
+                    faithTrackPositionBox.setLayoutY(positionCoordinates.get(1));
+                }
+                Image posImage = new Image(Objects.requireNonNull(getClass().getClassLoader()
+                        .getResourceAsStream("images/faith/cross.png")));
+                ImageView posImageView = new ImageView(posImage);
+                posImageView.setPreserveRatio(true);
+                posImageView.setFitWidth(40);
+                posImageView.setFitHeight(40);
+                faithTrackPositionBox.getChildren().add(posImageView);
+                tabContainer.getChildren().add(faithTrackPositionBox);
+
+
+                playerTab.setContent(tabContainer);
+                tabPane.getTabs().add(playerTab);
+            }
             // display the marbles
             ((MarblesGridController) marblesLoader.getController()).setMarbles(
                     gameState.getMarket().getMarbleStructure().getMarbles(),
@@ -271,6 +306,7 @@ public class GameBoardController implements SceneController {
     }
 
     public void displayPossibleMoves(List<String> moves) {
+        GameUtils.debug("displaying" + moves.toString());
         Platform.runLater(() -> {
             String possibleMoveStyle =
                     "-fx-border-style: solid inside;" +
@@ -303,6 +339,7 @@ public class GameBoardController implements SceneController {
                 endTurnButton.setDisable(false);
             }
         });
+        GameUtils.debug("ended");
     }
 
     @FXML
@@ -344,7 +381,7 @@ public class GameBoardController implements SceneController {
     @FXML
     void endTurn(ActionEvent event) {
         gui.getClient().sendMessage(new SelectMoveResponseMessage("END_TURN"));
-        displayPossibleMoves(new ArrayList<>());
+        if(gameState.getPlayers().size()!=1)displayPossibleMoves(new ArrayList<>());
     }
 
     @Override

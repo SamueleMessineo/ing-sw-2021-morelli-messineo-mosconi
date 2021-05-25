@@ -53,7 +53,7 @@ public class GUI extends Application implements UI {
         popupStage = new Stage();
         popupStage.initOwner(stage);
         popupStage.initModality(Modality.APPLICATION_MODAL);
-        setMusic();
+//        setMusic();
         setScene("online-offline");
 
         Image logo = new Image(Objects.requireNonNull(getClass().getClassLoader()
@@ -216,6 +216,7 @@ public class GUI extends Application implements UI {
 
     @Override
     public void displayPossibleMoves(List<String> moves) {
+        GameUtils.debug("ready to display");
         ((GameBoardController)controllerMap.get("game-board")).displayPossibleMoves(moves);
         setScene("game-board");
     }
