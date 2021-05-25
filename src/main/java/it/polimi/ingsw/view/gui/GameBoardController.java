@@ -10,16 +10,23 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.Shadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
 import java.io.IOException;
@@ -151,6 +158,32 @@ public class GameBoardController implements SceneController {
                 warehouseContainer.setSpacing(10);
                 warehouseContainer.setAlignment(Pos.BOTTOM_CENTER);
                 tabContainer.getChildren().add(warehouseContainer);
+
+                // display the strongbox
+                GridPane strongboxContainer = new GridPane();
+                strongboxContainer.setPrefSize(225, 188);
+                strongboxContainer.setLayoutX(389);
+                strongboxContainer.setLayoutY(498);
+                Map<Resource, Integer> strongboxResources = p.getPlayerBoard().getStrongbox().getResources();
+                for (Map.Entry<Resource, Integer> entry : strongboxResources.entrySet()) {
+                    int i = Arrays.asList(Resource.COIN, Resource.SHIELD, Resource.SERVANT, Resource.STONE)
+                            .indexOf(entry.getKey());
+                    ImageView resourceImage = GameUtils.getImageView(entry.getKey());
+                    HBox resourceContainer = new HBox();
+                    resourceContainer.setAlignment(Pos.CENTER);
+                    resourceContainer.setPrefSize(112.5, 94);
+                    resourceImage.setFitWidth(40);
+                    resourceImage.setFitHeight(40);
+                    Text amountText = new Text(entry.getValue() + "x");
+                    amountText.setFont(Font.font("System", FontWeight.BLACK, 18));
+                    amountText.setStrokeWidth(1);
+                    amountText.setStroke(Color.BLACK);
+                    amountText.setFill(Color.WHITE);
+                    amountText.setEffect(new DropShadow());
+                    resourceContainer.getChildren().addAll(amountText, resourceImage);
+                    strongboxContainer.add(resourceContainer, i/2, i%2);
+                }
+                tabContainer.getChildren().add(strongboxContainer);
 
                 // display faith track position
                 VBox faithTrackPositionBox = new VBox();
