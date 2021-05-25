@@ -61,18 +61,18 @@ public class InitialLeadersController implements SceneController{
                 ImageView imageView = GameUtils.getImageView(card);
                 imageView.setScaleX(0.5);
                 imageView.setScaleY(0.5);
-                switch (cards.indexOf(card)){
+                switch (cards.indexOf(card)) {
                     case 0:
-                        upLeftImg = imageView;
+                        upLeftImg.setImage(imageView.getImage());
                         break;
                     case 1:
-                        upRightImg = imageView;
+                        upRightImg.setImage(imageView.getImage());
                         break;
                     case 2:
-                        bottomLeftImg = imageView;
+                        bottomLeftImg.setImage(imageView.getImage());
                         break;
                     case 3:
-                        bottomRightImg = imageView;
+                        bottomRightImg.setImage(imageView.getImage());
                 }
             }
         });
