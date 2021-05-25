@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.client.LocalClient;
+import it.polimi.ingsw.utils.GameUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
@@ -27,7 +28,6 @@ public class OnlineOfflineController implements SceneController {
     void playOffline(ActionEvent event) {
         System.out.println("play offline");
         gui.askUsername();
-//        gui.setScene("root2");
     }
 
     @FXML

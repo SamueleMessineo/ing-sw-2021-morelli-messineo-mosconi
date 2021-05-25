@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.shared.DevelopmentCard;
 import it.polimi.ingsw.model.shared.LeaderCard;
 import it.polimi.ingsw.model.shared.ProductionPower;
 import it.polimi.ingsw.model.shared.Resource;
+import it.polimi.ingsw.utils.GameUtils;
 import it.polimi.ingsw.view.UI;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -66,7 +67,7 @@ public class GUI extends Application implements UI {
             this.client = new Client(this);
         } else {
             this.client = new LocalClient(this);
-            username = ((OfflineInfoController) controllerMap.get("offline-info")).getUsername();
+            this.client.run();
         }
     }
 
@@ -281,10 +282,7 @@ public class GUI extends Application implements UI {
     @Override
     public void askUsername() {
         if(username==null){
-            GameUtils.debug("here");
-            ((OfflineInfoController) controllerMap.get("offline-info")).askUsername();
             setScene("offline-info");
-
         }
 
     }
