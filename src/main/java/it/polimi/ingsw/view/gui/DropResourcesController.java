@@ -8,7 +8,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -17,7 +16,6 @@ import javafx.scene.text.Text;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 public class DropResourcesController implements SceneController{
     private GUI gui;
@@ -38,18 +36,10 @@ public class DropResourcesController implements SceneController{
                 VBox resourceContainer = new VBox();
                 resourceContainer.setAlignment(Pos.BOTTOM_CENTER);
                 resourceContainer.setSpacing(5);
-                try {
-                    Image image = new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(
-                            "images/punchboard/" + resource.name().toLowerCase() + ".png")));
-                    System.out.println("loaded image");
-                    ImageView imageView = new ImageView(image);
-                    imageView.setScaleX(0.5);
-                    imageView.setScaleY(0.5);
-                    resourceContainer.getChildren().add(imageView);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    return;
-                }
+                ImageView imageView = GameUtils.getImageView(resource);
+                imageView.setScaleX(0.5);
+                imageView.setScaleY(0.5);
+                resourceContainer.getChildren().add(imageView);
                 HBox buttonContainer = new HBox();
                 buttonContainer.setAlignment(Pos.CENTER);
                 buttonContainer.setSpacing(10);
@@ -92,7 +82,6 @@ public class DropResourcesController implements SceneController{
         }
         gui.getClient().sendMessage(new DropResourcesResponseMessage(resourcesToDrop));
     }
-
 
     @Override
     public void setGUI(GUI gui) {

@@ -2,7 +2,6 @@ package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.player.Player;
-import it.polimi.ingsw.model.player.PlayerCardStack;
 import it.polimi.ingsw.model.player.Shelf;
 import it.polimi.ingsw.model.shared.*;
 import it.polimi.ingsw.network.game.SelectMoveResponseMessage;
@@ -17,16 +16,12 @@ import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.effect.BlurType;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.*;
 
@@ -86,16 +81,15 @@ public class GameBoardController implements SceneController {
                 leadersContainer.setAlignment(Pos.CENTER_LEFT);
                 leadersContainer.setPadding(new Insets(0,0,0,9));
                 for (LeaderCard leaderCard : p.getLeaderCards()) {
-                    Image leaderImage = null;
+                    ImageView leaderImageView = null;
                     if (p.getUsername().equals(gui.getUsername())) {
-                        leaderImage = new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(
-                                "images/leaders/leader_" + leaderCard.getEffectScope().toLowerCase() + "_" + leaderCard.getEffectObject().name().toLowerCase() + ".png")));
+                        leaderImageView = GameUtils.getImageView(leaderCard);
                     } else {
-                        leaderImage = new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(
+                        Image leaderImage = new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(
                                 "images/leaders/leader_back.png")));
+                        leaderImageView = new ImageView(leaderImage);
+                        leaderImageView.setPreserveRatio(true);
                     }
-                    ImageView leaderImageView = new ImageView(leaderImage);
-                    leaderImageView.setPreserveRatio(true);
                     leaderImageView.setFitWidth(200);
                     leaderImageView.setFitHeight(160);
                     leadersContainer.getChildren().add(leaderImageView);
@@ -133,10 +127,7 @@ public class GameBoardController implements SceneController {
                         shelfResourcesContainer.setPadding(new Insets(0, 10, 0, 10));
                         shelfResourcesContainer.setSpacing(10);
                         for (int i = 0; i < shelf.getResourceNumber(); i++) {
-                            Image resourceImage=new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(
-                                    "images/punchboard/" + shelf.getResourceType().name().toLowerCase() + ".png")));
-                            ImageView resourceImageView = new ImageView(resourceImage);
-                            resourceImageView.setPreserveRatio(true);
+                            ImageView resourceImageView = GameUtils.getImageView(shelf.getResourceType());
                             resourceImageView.setFitWidth(40);
                             resourceImageView.setFitHeight(40);
                             shelfResourcesContainer.getChildren().add(resourceImageView);

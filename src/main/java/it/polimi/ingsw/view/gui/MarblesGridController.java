@@ -8,11 +8,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.text.Text;
 
-import java.io.FileInputStream;
 import java.util.List;
-import java.util.Locale;
 import java.util.Objects;
 
 public class MarblesGridController implements SceneController{

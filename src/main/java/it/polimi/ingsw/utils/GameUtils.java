@@ -5,6 +5,8 @@ import com.google.gson.GsonBuilder;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.market.Marble;
 import it.polimi.ingsw.model.player.Player;
+import it.polimi.ingsw.model.shared.DevelopmentCard;
+import it.polimi.ingsw.model.shared.LeaderCard;
 import it.polimi.ingsw.model.shared.PopesFavorTileState;
 import it.polimi.ingsw.model.shared.Resource;
 import it.polimi.ingsw.server.Room;
@@ -234,5 +236,23 @@ public class GameUtils {
         ImageView resourceImageView = new ImageView(resourceImage);
         resourceImageView.setPreserveRatio(true);
         return resourceImageView;
+    }
+
+    public static ImageView getImageView(DevelopmentCard card) {
+        Image cardImage = new Image(Objects.requireNonNull(GameUtils.class.getClassLoader()
+                .getResourceAsStream("images/development/development_" + card.getCardType().name().toLowerCase()
+                        + "_" + card.getScore() + ".png")));
+        ImageView cardImageView = new ImageView(cardImage);
+        cardImageView.setPreserveRatio(true);
+        return cardImageView;
+    }
+
+    public static ImageView getImageView(LeaderCard card) {
+        Image cardImage = new Image(Objects.requireNonNull(GameUtils.class.getClassLoader()
+                .getResourceAsStream("images/leaders/leader_" + card.getEffectScope().toLowerCase()
+                        + "_" + card.getEffectObject().name().toLowerCase() + ".png")));
+        ImageView cardImageView = new ImageView(cardImage);
+        cardImageView.setPreserveRatio(true);
+        return cardImageView;
     }
 }

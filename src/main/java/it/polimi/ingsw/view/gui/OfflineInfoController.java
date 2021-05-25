@@ -19,8 +19,6 @@ public class OfflineInfoController implements SceneController{
         this.gui = gui;
     }
 
-
-
     public void confirm(ActionEvent actionEvent) {
         Platform.runLater(() -> {
         username = usernameInput.getText();

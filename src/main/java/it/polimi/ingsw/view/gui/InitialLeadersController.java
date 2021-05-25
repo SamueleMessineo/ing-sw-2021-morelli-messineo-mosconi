@@ -1,17 +1,11 @@
 package it.polimi.ingsw.view.gui;
 
-
 import it.polimi.ingsw.model.shared.LeaderCard;
-import it.polimi.ingsw.model.shared.Resource;
 import it.polimi.ingsw.network.game.DropInitialLeaderCardsResponseMessage;
-import it.polimi.ingsw.network.game.SelectInitialResourceResponseMessage;
 import it.polimi.ingsw.utils.GameUtils;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
-import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -23,7 +17,6 @@ import java.util.Objects;
 
 public class InitialLeadersController implements SceneController{
     private GUI gui;
-
     @FXML
     private VBox cardGrid;
     @FXML
@@ -65,28 +58,21 @@ public class InitialLeadersController implements SceneController{
             GameUtils.debug(cards.toString());
             this.cards = cards;
             for (LeaderCard card : cards) {
-                Image image  = null;
-//                    System.out.println(cards.indexOf(card));
-//                    System.out.println("src/main/resources/images/leaders/leader_"+card.getEffectScope().toLowerCase()+"_"+card.getEffectObject().name().toLowerCase()+".png");
-                image = new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(
-                    "images/leaders/leader_"+card.getEffectScope().toLowerCase() +
-                           "_" + card.getEffectObject().name().toLowerCase() + ".png"
-                )));
-                ImageView imageView = new ImageView(image);
+                ImageView imageView = GameUtils.getImageView(card);
                 imageView.setScaleX(0.5);
                 imageView.setScaleY(0.5);
                 switch (cards.indexOf(card)){
                     case 0:
-                        upLeftImg.setImage(image);
+                        upLeftImg = imageView;
                         break;
                     case 1:
-                        upRightImg.setImage(image);
+                        upRightImg = imageView;
                         break;
                     case 2:
-                        bottomLeftImg.setImage(image);
+                        bottomLeftImg = imageView;
                         break;
                     case 3:
-                        bottomRightImg.setImage(image);
+                        bottomRightImg = imageView;
                 }
             }
         });

@@ -5,17 +5,14 @@ import it.polimi.ingsw.network.game.SelectInitialResourceResponseMessage;
 import it.polimi.ingsw.utils.GameUtils;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
-import java.io.FileInputStream;
 import java.util.*;
 
 public class InitialResourcesController implements SceneController {
@@ -81,17 +78,10 @@ public class InitialResourcesController implements SceneController {
                 resourceContainer.setAlignment(Pos.CENTER);
                 resourceContainer.setSpacing(5);
                 System.out.println("create resource vbox");
-                try {
-                    Image image = new Image(new FileInputStream("src/main/resources/images/punchboard/" + resource.name().toLowerCase() + ".png"));
-                    System.out.println("loaded image");
-                    ImageView imageView = new ImageView(image);
-                    imageView.setScaleX(0.5);
-                    imageView.setScaleY(0.5);
-                    resourceContainer.getChildren().add(imageView);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    return;
-                }
+                ImageView imageView = GameUtils.getImageView(resource);
+                imageView.setScaleX(0.5);
+                imageView.setScaleY(0.5);
+                resourceContainer.getChildren().add(imageView);
                 HBox buttonContainer = new HBox();
                 buttonContainer.setAlignment(Pos.CENTER);
                 buttonContainer.setSpacing(10);

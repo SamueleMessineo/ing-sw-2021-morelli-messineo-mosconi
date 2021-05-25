@@ -15,10 +15,10 @@ public class Strongbox implements Storage, Serializable {
 
     public Strongbox(){
         this.resources=new HashMap<Resource, Integer>();
-        resources.put(Resource.COIN, 0);
-        resources.put(Resource.SERVANT, 0);
-        resources.put(Resource.STONE, 0);
-        resources.put(Resource.SHIELD, 0);
+        resources.put(Resource.COIN, 100);
+        resources.put(Resource.SERVANT, 100);
+        resources.put(Resource.STONE, 100);
+        resources.put(Resource.SHIELD, 100);
     }
 
     /**

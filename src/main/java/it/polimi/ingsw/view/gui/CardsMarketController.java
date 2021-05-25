@@ -1,6 +1,5 @@
 package it.polimi.ingsw.view.gui;
 
-import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.market.MarketCardStack;
 import it.polimi.ingsw.model.shared.DevelopmentCard;
 import it.polimi.ingsw.network.game.BuyDevelopmentCardResponseMessage;
@@ -14,7 +13,6 @@ import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -22,7 +20,6 @@ import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Objects;
 
 public class CardsMarketController implements SceneController {
     private GUI gui;
@@ -49,7 +46,6 @@ public class CardsMarketController implements SceneController {
         vbox.setSpacing(160);
         vbox.setPadding(new Insets(0, 0, 30, 0));
         vbox.getChildren().addAll(cardsGrid, buttonsContainer);
-        //vbox.getChildren().add(0, cardsGrid);
     }
 
     @FXML
@@ -75,7 +71,6 @@ public class CardsMarketController implements SceneController {
                 e.printStackTrace();
                 return;
             }
-            //cardsGrid.getChildren().clear();
             cardsGrid.setScaleX(1.9);
             cardsGrid.setScaleY(1.9);
             vbox.setAlignment(Pos.BOTTOM_CENTER);
@@ -84,11 +79,7 @@ public class CardsMarketController implements SceneController {
             vbox.getChildren().add(cardsGrid);
             try {
                 for (DevelopmentCard card : developmentCards) {
-                    String cardName = "development_" + card.getCardType().name().toLowerCase() + "_" + card.getScore();
-                    Image cardImage = new Image(Objects.requireNonNull(getClass().getClassLoader()
-                            .getResourceAsStream("images/development/"+ cardName + ".png")));
-                    ImageView cardImageView = new ImageView(cardImage);
-                    cardImageView.setPreserveRatio(true);
+                    ImageView cardImageView = GameUtils.getImageView(card);
                     cardImageView.setFitWidth(200);
                     cardImageView.setFitHeight(95);
                     cardImageView.setOnMouseClicked(MouseEvent -> sendCardToBuy(developmentCards.indexOf(card)));
@@ -115,7 +106,6 @@ public class CardsMarketController implements SceneController {
                     }
                     System.out.println("coordinates" + cardY + " " + cardX);
                     cardsGrid.add(cardImageView, cardY, cardX);
-                    //vbox.getChildren().addAll(cardsGrid, buttonsContainer);
                     vbox.getChildren().add(new HBox());
                 }
             } catch (Exception e) {
