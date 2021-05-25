@@ -306,7 +306,7 @@ public class GameBoardController implements SceneController {
     }
 
     public void displayPossibleMoves(List<String> moves) {
-        GameUtils.debug(moves.toString());
+        GameUtils.debug("displaying" + moves.toString());
         Platform.runLater(() -> {
             String possibleMoveStyle =
                     "-fx-border-style: solid inside;" +
@@ -339,6 +339,7 @@ public class GameBoardController implements SceneController {
                 endTurnButton.setDisable(false);
             }
         });
+        GameUtils.debug("ended");
     }
 
     @FXML
@@ -380,7 +381,7 @@ public class GameBoardController implements SceneController {
     @FXML
     void endTurn(ActionEvent event) {
         gui.getClient().sendMessage(new SelectMoveResponseMessage("END_TURN"));
-        displayPossibleMoves(new ArrayList<>());
+        if(gameState.getPlayers().size()!=1)displayPossibleMoves(new ArrayList<>());
     }
 
     @Override

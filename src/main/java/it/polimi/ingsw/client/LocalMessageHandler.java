@@ -45,20 +45,20 @@ public class LocalMessageHandler {
         ui.setGameState(GameUtils.readGame(42));
         //ui.setGameState(gameController.getGame());
         ui.displayGameState();
+        GameUtils.debug("sending " + currentTurn.getMoves());
         ui.displayPossibleMoves(currentTurn.getMoves());
+
     }
 
     private void nextMoves(boolean alreadyPerformedMoves){
         if(!checkGameOver()){
             currentTurn.setAlreadyPerformedMove(alreadyPerformedMoves);
             currentTurn.setMoves(gameController.computeNextPossibleMoves(currentTurn.hasAlreadyPerformedMove()));
-            //GameUtils.saveGameState(gameController.getGame(), 42);
-            //ui.setGameState(GameUtils.loadGameState(42));
             GameUtils.writeGama(gameController.getGame(), 42);
             ui.setGameState(GameUtils.readGame(42));
-            //ui.setGameState(gameController.getGame());
             ui.displayGameState();
             ui.displayPossibleMoves(currentTurn.getMoves());
+            GameUtils.debug("nextmoves " + currentTurn.getMoves());
         }
     }
 
