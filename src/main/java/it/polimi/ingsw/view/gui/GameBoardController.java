@@ -38,7 +38,7 @@ public class GameBoardController implements SceneController {
     @FXML
     private HBox leadersContainer;
     private AnchorPane cardStacksContainer;
-    private VBox warehouseContainer;
+    private HBox warehouseContainer;
     @FXML
     private VBox marblesContainer;
     @FXML
@@ -133,7 +133,8 @@ public class GameBoardController implements SceneController {
                 tabContainer.getChildren().add(cardStacksContainer);
 
                 // display the warehouse
-                VBox warehouseContainer = new VBox();
+                HBox warehouseContainer = new HBox();
+                VBox normalShelvesContainer = new VBox();
                 for (String shelfName : p.getPlayerBoard().getWarehouse().getShelfNames()) {
                     Shelf shelf = p.getPlayerBoard().getWarehouse().getShelf(shelfName);
                     if (Arrays.asList("bottom", "middle", "top").contains(shelfName)) {
@@ -148,15 +149,32 @@ public class GameBoardController implements SceneController {
                             resourceImageView.setFitHeight(40);
                             shelfResourcesContainer.getChildren().add(resourceImageView);
                         }
-                        warehouseContainer.getChildren().add(shelfResourcesContainer);
+                        normalShelvesContainer.getChildren().add(shelfResourcesContainer);
                     }
                 }
-                warehouseContainer.setPrefSize(165, 185);
+                normalShelvesContainer.setPrefSize(165, 177);
+                normalShelvesContainer.setSpacing(10);
+                normalShelvesContainer.setAlignment(Pos.BOTTOM_CENTER);
+                warehouseContainer.getChildren().add(normalShelvesContainer);
+                VBox extraShelvesContainer = new VBox();
+                for (LeaderCard playedLeaderCard : p.getPlayedLeaderCards()) {
+                    if (playedLeaderCard.getEffectScope().equals("Storage")) {
+                        Image extraShelfImage = new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(
+                                "images/board/extra_" + playedLeaderCard.getEffectObject().name().toLowerCase() + ".png")));
+                        ImageView extraShelfImageView = new ImageView(extraShelfImage);
+                        extraShelfImageView.setPreserveRatio(true);
+                        extraShelfImageView.setFitWidth(135);
+                        extraShelvesContainer.getChildren().add(extraShelfImageView);
+                    }
+                }
+                extraShelvesContainer.setPrefSize(147, 177);
+                extraShelvesContainer.setSpacing(25);
+                extraShelvesContainer.setAlignment(Pos.CENTER);
+                warehouseContainer.getChildren().add(extraShelvesContainer);
                 warehouseContainer.setLayoutX(9);
                 warehouseContainer.setLayoutY(501);
-                warehouseContainer.setPadding(new Insets(0,0,8,0));
-                warehouseContainer.setSpacing(10);
-                warehouseContainer.setAlignment(Pos.BOTTOM_CENTER);
+                warehouseContainer.setSpacing(36);
+                warehouseContainer.setAlignment(Pos.CENTER);
                 tabContainer.getChildren().add(warehouseContainer);
 
                 // display the strongbox
@@ -303,13 +321,11 @@ public class GameBoardController implements SceneController {
 
     @FXML
     void viewLeaders(MouseEvent event) {
-        System.out.println("view leaders");
-        ((LeaderCardsController)gui.getSceneController("leader-cards")).load(gameState.getPlayerByUsername(gui.getUsername()).getLeaderCards(), "SHOW");
-        try{
-            gui.setScene("leader-cards");
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+        List<LeaderCard> allLeaders = new ArrayList<>();
+        allLeaders.addAll(gameState.getPlayerByUsername(gui.getUsername()).getLeaderCards());
+        allLeaders.addAll(gameState.getPlayerByUsername(gui.getUsername()).getPlayedLeaderCards());
+        ((LeaderCardsController)gui.getSceneController("leader-cards")).load(allLeaders, "SHOW");
+        gui.setScene("leader-cards");
     }
 
     @FXML
