@@ -33,6 +33,7 @@ import java.util.*;
 public class GameBoardController implements SceneController {
     private GUI gui;
     private Game gameState;
+    @FXML
     private HBox leadersContainer;
     private AnchorPane cardStacksContainer;
     @FXML
@@ -90,6 +91,8 @@ public class GameBoardController implements SceneController {
                     if (p.getUsername().equals(gui.getUsername())) {
                         leaderImage = new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(
                                 "images/leaders/leader_" + leaderCard.getEffectScope().toLowerCase() + "_" + leaderCard.getEffectObject().name().toLowerCase() + ".png")));
+                                 leadersContainer.setCursor(Cursor.HAND);
+                                 leadersContainer.setOnMouseClicked(this::viewLeaders);
                     } else {
                         leaderImage = new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(
                                 "images/leaders/leader_back.png")));
@@ -104,8 +107,7 @@ public class GameBoardController implements SceneController {
                 leadersContainer.setLayoutY(239);
                 tabContainer.getChildren().add(leadersContainer);
 
-                leadersContainer.setCursor(Cursor.HAND);
-                leadersContainer.setOnMouseClicked(this::viewLeaders);
+
 
                 // display development card stacks
                 cardStacksContainer = new AnchorPane();

@@ -63,7 +63,11 @@ public class GameMessageHandler {
 
     private void startPlayingIfReady() {
         for (Player p : room.getGame().getPlayers()) {
-            if (p.getLeaderCards().size() != 2) return;
+            if (p.getLeaderCards().size() != 2) {
+                clientConnection.sendMessage(new StringMessage("Waiting for other players to select their cards"));
+                return;
+            }
+
         }
 
         sendStateAndMovesForNextTurn();
@@ -87,7 +91,6 @@ public class GameMessageHandler {
     public void handle(DropInitialLeaderCardsResponseMessage message){
         gameController.dropInitialLeaderCards(message.getCard1(), message.getCard2(), room.getPlayerFromConnection(clientConnection).getUsername());
         GameUtils.saveGameState(room.getGame(), room.getId());
-        clientConnection.sendMessage(new StringMessage("Waiting for other players to select their cards"));
         ready = true;
         startPlayingIfReady();
     }
