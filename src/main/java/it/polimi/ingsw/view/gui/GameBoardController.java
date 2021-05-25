@@ -46,6 +46,9 @@ public class GameBoardController implements SceneController {
     private Text playerInfo;
     @FXML
     private Button endTurnButton;
+    @FXML
+    private AnchorPane leader1;
+
 
     @FXML
     void hide(MouseEvent event) {
@@ -86,7 +89,10 @@ public class GameBoardController implements SceneController {
                 leadersContainer.setPrefHeight(188);
                 leadersContainer.setAlignment(Pos.CENTER_LEFT);
                 leadersContainer.setPadding(new Insets(0,0,0,9));
-                for (LeaderCard leaderCard : p.getLeaderCards()) {
+                List<LeaderCard> allLeaders = new ArrayList<>();
+                allLeaders.addAll(p.getLeaderCards());
+                allLeaders.addAll(p.getPlayedLeaderCards());
+                for (LeaderCard leaderCard : allLeaders) {
                     Image leaderImage = null;
                     if (p.getUsername().equals(gui.getUsername())) {
                         leaderImage = new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(
@@ -94,8 +100,14 @@ public class GameBoardController implements SceneController {
                                  leadersContainer.setCursor(Cursor.HAND);
                                  leadersContainer.setOnMouseClicked(this::viewLeaders);
                     } else {
-                        leaderImage = new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(
-                                "images/leaders/leader_back.png")));
+                        if(p.getPlayedLeaderCards().contains(leaderCard)){
+                            leaderImage = new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(
+                                    "images/leaders/leader_" + leaderCard.getEffectScope().toLowerCase() + "_" + leaderCard.getEffectObject().name().toLowerCase() + ".png")));
+                        } else {
+                            leaderImage = new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(
+                                    "images/leaders/leader_back.png")));
+                        }
+
                     }
                     ImageView leaderImageView = new ImageView(leaderImage);
                     leaderImageView.setPreserveRatio(true);
