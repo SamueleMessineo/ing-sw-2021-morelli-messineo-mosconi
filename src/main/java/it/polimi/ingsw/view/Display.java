@@ -104,6 +104,7 @@ public class Display {
 
 
 
+
         for (int i = 0; i < 12; i++) {
             if(market.getCardsGrid().get(i).isEmpty()) System.out.println("Empty Stack");
             else displayDevelopmentCard(market, i, output);
@@ -204,12 +205,30 @@ public class Display {
     }
 
     private static void displayCardsLine(Market market, int i, PrintStream output){
+        /*
         displayCardBorder(output);
         output.println("|" + paintCard(market.getCardsGrid().get(i).getType()) +  normalizeCardField("level: " + market.getCardsGrid().get(i).peek().getLevel()) +"\u001B[0m" + "|" +"           " +"|" + paintCard(market.getCardsGrid().get(i+1).getType()) +  normalizeCardField("level: " + market.getCardsGrid().get(i+1).peek().getLevel()) +"\u001B[0m" + "|" +"           " + "|" +paintCard(market.getCardsGrid().get(i+2).getType()) +  normalizeCardField("level: " + market.getCardsGrid().get(i+2).peek().getLevel()) +"\u001B[0m" +"|" + "           " + "|" +paintCard(market.getCardsGrid().get(i+3).getType()) + normalizeCardField("level: " + market.getCardsGrid().get(i+3).peek().getLevel()) +"\u001B[0m" +"|" + "           ");
         output.println("|" + paintCard(market.getCardsGrid().get(i).getType()) + normalizeCardField(displayCost(market.getCardsGrid().get(i).peek().getCost()))+"\u001B[0m" +"|" +"           " + "|" + paintCard(market.getCardsGrid().get(i+1).getType()) + normalizeCardField(displayCost(market.getCardsGrid().get(i+1).peek().getCost()))+"\u001B[0m" + "|" +"           " + "|" + paintCard(market.getCardsGrid().get(i+2).getType()) +  normalizeCardField(displayCost(market.getCardsGrid().get(i+2).peek().getCost())) +"\u001B[0m" + "|" +"           " + "|" + paintCard(market.getCardsGrid().get(i+3).getType()) + normalizeCardField(displayCost(market.getCardsGrid().get(i+3).peek().getCost())) +"\u001B[0m" + "|" +"           ");
         output.println("|" + paintCard(market.getCardsGrid().get(i).getType()) +  normalizeCardField(market.getCardsGrid().get(i).peek().getProductionPower().toString()) +"\u001B[0m" + "|" + "           " +"|" + paintCard(market.getCardsGrid().get(i+1).getType()) +  normalizeCardField(market.getCardsGrid().get(i+1).peek().getProductionPower().toString()) +"\u001B[0m" + "|" + "           " +"|" + paintCard(market.getCardsGrid().get(i+2).getType()) +  normalizeCardField(market.getCardsGrid().get(i+2).peek().getProductionPower().toString()) +"\u001B[0m" +"|" + "           "+"|" +paintCard(market.getCardsGrid().get(i+3).getType()) +  normalizeCardField(market.getCardsGrid().get(i+3).peek().getProductionPower().toString()) + "\u001B[0m" + "|" + "           ");
         output.println("|" + paintCard(market.getCardsGrid().get(i).getType()) +  normalizeCardField(String.valueOf(market.getCardsGrid().get(i).peek().getScore())) +"\u001B[0m" + "|" +"           " +"|" + paintCard(market.getCardsGrid().get(i+1).getType()) +  normalizeCardField(String.valueOf(market.getCardsGrid().get(i+1).peek().getScore())) +"\u001B[0m" + "|" +"           " + "|" +paintCard(market.getCardsGrid().get(i+2).getType()) +  normalizeCardField(String.valueOf(market.getCardsGrid().get(i+2).peek().getScore())) +"\u001B[0m" +"|" + "           " + "|" +paintCard(market.getCardsGrid().get(i+3).getType()) + normalizeCardField(String.valueOf(market.getCardsGrid().get(i+3).peek().getScore())) +"\u001B[0m" +"|" + "           ");
         displayCardBorder(output);
+        */
+        output.print("|" + paintCard(market.getCardsGrid().get(i).getType()) +  normalizeCardField("level: " + market.getCardsGrid().get(i).peek().getLevel()+"\u001B[0m" + "|" ) );
+        output.print("|" + paintCard(market.getCardsGrid().get(i+1).getType())+ normalizeCardField("level: " + market.getCardsGrid().get(i+1).peek().getLevel()+"\u001B[0m" + "|" ) );
+        output.print("|" + paintCard(market.getCardsGrid().get(i+2).getType()) +normalizeCardField(  "level: " + market.getCardsGrid().get(i+2).peek().getLevel()+"\u001B[0m" + "|" ) );
+        output.println("|" + paintCard(market.getCardsGrid().get(i+3).getType()) +normalizeCardField(  "level: " + market.getCardsGrid().get(i+3).peek().getLevel()+"\u001B[0m" + "|" ) );
+        output.print("|" + paintCard(market.getCardsGrid().get(i).getType()) + normalizeCardField( displayCost(market.getCardsGrid().get(i).peek().getCost())+"\u001B[0m" + "|")  );
+        output.print("|" + paintCard(market.getCardsGrid().get(i+1).getType()) + normalizeCardField( displayCost(market.getCardsGrid().get(i).peek().getCost())+"\u001B[0m" + "|" ) );
+        output.print("|" + paintCard(market.getCardsGrid().get(i+2).getType()) +  normalizeCardField(displayCost(market.getCardsGrid().get(i+1).peek().getCost())+"\u001B[0m" + "|")   );
+        output.println("|" + paintCard(market.getCardsGrid().get(i+3).getType()) + normalizeCardField( displayCost(market.getCardsGrid().get(i+2).peek().getCost()) +"\u001B[0m" + "|" ) );
+        output.print("|" + paintCard(market.getCardsGrid().get(i).getType()) +  normalizeCardField(market.getCardsGrid().get(i+3).peek().getProductionPower().toString()+"\u001B[0m" + "|")  );
+        output.print("|" + paintCard(market.getCardsGrid().get(i+1).getType()) + normalizeCardField(  market.getCardsGrid().get(i+1).peek().getProductionPower().toString() +"\u001B[0m" + "|" ));
+        output.print("|" + paintCard(market.getCardsGrid().get(i+2).getType()) +  normalizeCardField( market.getCardsGrid().get(i+2).peek().getProductionPower().toString()+"\u001B[0m" + "|" ) );
+        output.println("|" + paintCard(market.getCardsGrid().get(i+3).getType()) +  normalizeCardField(market.getCardsGrid().get(i+3).peek().getProductionPower().toString() +"\u001B[0m" + "|" ));
+        output.print("|" + paintCard(market.getCardsGrid().get(i).getType()) +  normalizeCardField(String.valueOf(market.getCardsGrid().get(i).peek().getScore())+"\u001B[0m" + "|") );
+        output.print("|" + paintCard(market.getCardsGrid().get(i+1).getType()) +  normalizeCardField(String.valueOf(market.getCardsGrid().get(i+1).peek().getScore())+"\u001B[0m" + "|" ) );
+        output.print("|" + paintCard(market.getCardsGrid().get(i+2).getType()) +  normalizeCardField(String.valueOf(market.getCardsGrid().get(i+2).peek().getScore())+"\u001B[0m" + "|" ));
+        output.println("|" + paintCard(market.getCardsGrid().get(i+3).getType()) + normalizeCardField( String.valueOf(market.getCardsGrid().get(i+3).peek().getScore())+"\u001B[0m" + "|" ));
     }
 
 
