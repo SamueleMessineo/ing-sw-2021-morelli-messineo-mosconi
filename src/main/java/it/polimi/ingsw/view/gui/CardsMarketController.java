@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.model.market.MarketCardStack;
+import it.polimi.ingsw.model.shared.CardType;
 import it.polimi.ingsw.model.shared.DevelopmentCard;
 import it.polimi.ingsw.network.game.BuyDevelopmentCardResponseMessage;
 import it.polimi.ingsw.network.game.SelectMoveResponseMessage;
@@ -13,12 +14,14 @@ import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
+import javafx.scene.Cursor;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 public class CardsMarketController implements SceneController {
@@ -73,58 +76,31 @@ public class CardsMarketController implements SceneController {
             }
             cardsGrid.setScaleX(1.9);
             cardsGrid.setScaleY(1.9);
-            vbox.setAlignment(Pos.BOTTOM_CENTER);
+            vbox.setAlignment(Pos.CENTER);
             vbox.setSpacing(160);
             vbox.setPadding(new Insets(0, 0, 30, 0));
             vbox.getChildren().add(cardsGrid);
-            try {
-                for (DevelopmentCard card : developmentCards) {
-                    ImageView cardImageView = GameUtils.getImageView(card);
-                    cardImageView.setFitWidth(200);
-                    cardImageView.setFitHeight(95);
-                    cardImageView.setOnMouseClicked(MouseEvent -> sendCardToBuy(developmentCards.indexOf(card)));
-                    GridPane.setValignment(cardImageView, VPos.CENTER);
-                    GridPane.setHalignment(cardImageView, HPos.CENTER);
-                    int cardX = 3 - card.getLevel();
-                    int cardY;
-                    switch (card.getCardType()){
-                        case GREEN:
-                            cardY = 0;
-                            break;
-                        case BLUE:
-                            cardY = 1;
-                            break;
-                        case YELLOW:
-                            cardY = 2;
-                            break;
-                        case PURPLE:
-                            cardY = 3;
-                            break;
-                        default:
-                            cardY = 0;
-                            break;
-                    }
-                    System.out.println("coordinates" + cardY + " " + cardX);
-                    cardsGrid.add(cardImageView, cardY, cardX);
-                    vbox.getChildren().add(new HBox());
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
+            for (DevelopmentCard card : developmentCards) {
+                ImageView cardImageView = GameUtils.getImageView(card);
+                cardImageView.setFitWidth(200);
+                cardImageView.setFitHeight(95);
+                cardImageView.setCursor(Cursor.HAND);
+                cardImageView.setOnMouseClicked(MouseEvent -> sendCardToBuy(developmentCards.indexOf(card)));
+                GridPane.setValignment(cardImageView, VPos.CENTER);
+                GridPane.setHalignment(cardImageView, HPos.CENTER);
+                int cardX = 3 - card.getLevel();
+                int cardY = Arrays.asList(CardType.GREEN, CardType.BLUE, CardType.YELLOW, CardType.PURPLE)
+                        .indexOf(card.getCardType());
+                cardsGrid.add(cardImageView, cardY, cardX);
             }
         });
     }
 
     public void sendCardToBuy(int cardIndex) {
-        vbox.getChildren().remove(1);
-        vbox.getChildren().remove(0);
-        vbox.getChildren().add(buttonsContainer);
         gui.getClient().sendMessage(new BuyDevelopmentCardResponseMessage(cardIndex));
     }
 
     public void buyCard(ActionEvent actionEvent) {
-        vbox.getChildren().remove(1);
-        vbox.getChildren().remove(0);
-        vbox.getChildren().add(buttonsContainer);
         gui.getClient().sendMessage(new SelectMoveResponseMessage("BUY_CARD"));
     }
 }
