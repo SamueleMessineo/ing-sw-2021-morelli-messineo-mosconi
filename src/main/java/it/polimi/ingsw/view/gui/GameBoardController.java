@@ -31,6 +31,7 @@ public class GameBoardController implements SceneController {
     @FXML
     private HBox leadersContainer;
     private AnchorPane cardStacksContainer;
+    private VBox warehouseContainer;
     @FXML
     private VBox marblesContainer;
     @FXML
@@ -53,7 +54,7 @@ public class GameBoardController implements SceneController {
     public void load(Game game) {
         Platform.runLater(() -> {
             gameState = game;
-            playerInfo.setText(gui.getUsername() + " - " + gameState.getPlayerByUsername(gui.getUsername()).getVP() + " points");
+            playerInfo.setText(gui.getUsername() + ": " + gameState.getPlayerByUsername(gui.getUsername()).getVP() + " points");
             FXMLLoader cardsLoader = new FXMLLoader(
                     getClass().getClassLoader().getResource("scenes/cards-grid.fxml"));
             FXMLLoader marblesLoader = new FXMLLoader(
@@ -78,7 +79,7 @@ public class GameBoardController implements SceneController {
                 playerTab.setText(p.getUsername() + ": " + p.getVP() + " points");
                 AnchorPane tabContainer = new AnchorPane();
                 // display leader cards
-                leadersContainer = new HBox();
+                HBox leadersContainer = new HBox();
                 leadersContainer.setSpacing(50);
                 leadersContainer.setPrefWidth(287);
                 leadersContainer.setPrefHeight(188);
@@ -91,8 +92,6 @@ public class GameBoardController implements SceneController {
                     ImageView leaderImageView = null;
                     if (p.getUsername().equals(gui.getUsername())) {
                         leaderImageView = GameUtils.getImageView(leaderCard);
-                        leadersContainer.setCursor(Cursor.HAND);
-                        leadersContainer.setOnMouseClicked(this::viewLeaders);
                     } else {
                         if (p.getPlayedLeaderCards().contains(leaderCard)) {
                             leaderImageView = GameUtils.getImageView(leaderCard);
@@ -104,8 +103,6 @@ public class GameBoardController implements SceneController {
                         }
 
                     }
-//                    ImageView leaderImageView = new ImageView(leaderImage);
-//                    leaderImageView.setPreserveRatio(true);
                     leaderImageView.setFitWidth(200);
                     leaderImageView.setFitHeight(160);
                     leadersContainer.getChildren().add(leaderImageView);
@@ -115,10 +112,9 @@ public class GameBoardController implements SceneController {
                 tabContainer.getChildren().add(leadersContainer);
 
                 // display development card stacks
-                cardStacksContainer = new AnchorPane();
+                AnchorPane cardStacksContainer = new AnchorPane();
                 cardStacksContainer.setLayoutX(365);
                 cardStacksContainer.setLayoutY(226);
-                cardStacksContainer.setOnMouseClicked(this::viewCardsAndProductions);
                 FXMLLoader playerCardStacksLoader = new FXMLLoader(
                         getClass().getClassLoader().getResource("scenes/player-card-stacks.fxml"));
                 try {
@@ -154,7 +150,6 @@ public class GameBoardController implements SceneController {
                 warehouseContainer.setPadding(new Insets(0,0,8,0));
                 warehouseContainer.setSpacing(10);
                 warehouseContainer.setAlignment(Pos.BOTTOM_CENTER);
-                warehouseContainer.setOnMouseClicked(this::viewWarehouse);
                 tabContainer.getChildren().add(warehouseContainer);
 
                 // display faith track position
@@ -198,12 +193,20 @@ public class GameBoardController implements SceneController {
                     tabContainer.getChildren().add(tileBox);
                 }
 
-
                 playerTab.setContent(tabContainer);
                 tabPane.getTabs().add(playerTab);
                 // select the tab corresponding to the player itself
                 if (p.getUsername().equals(gui.getUsername())) {
                     tabPane.getSelectionModel().select(playerTab);
+                    this.leadersContainer = leadersContainer;
+                    this.leadersContainer.setCursor(Cursor.HAND);
+                    this.leadersContainer.setOnMouseClicked(this::viewLeaders);
+                    this.cardStacksContainer = cardStacksContainer;
+                    this.cardStacksContainer.setOnMouseClicked(this::viewCardsAndProductions);
+                    this.cardStacksContainer.setCursor(Cursor.HAND);
+                    this.warehouseContainer = warehouseContainer;
+                    this.warehouseContainer.setOnMouseClicked(this::viewWarehouse);
+                    this.warehouseContainer.setCursor(Cursor.HAND);
                 }
             }
             // display the marbles
@@ -216,17 +219,17 @@ public class GameBoardController implements SceneController {
 
     public void displayPossibleMoves(List<String> moves) {
         Platform.runLater(() -> {
-            String defaultStyle="-fx-cursor: hand;";
             String possibleMoveStyle =
                     "-fx-border-style: solid inside;" +
                     "-fx-border-width: 3;" +
                     "-fx-border-radius: 15;" +
                     "-fx-border-color: red;" +
                     "-fx-cursor: hand;";
-            marblesContainer.setStyle(defaultStyle);
-            cardsContainer.setStyle(defaultStyle);
-            leadersContainer.setStyle(defaultStyle);
-            cardStacksContainer.setStyle(defaultStyle);
+            marblesContainer.setStyle("");
+            cardsContainer.setStyle("");
+            leadersContainer.setStyle("");
+            cardStacksContainer.setStyle("");
+            warehouseContainer.setStyle("");
             endTurnButton.setDisable(true);
             if (moves.contains("GET_MARBLES")) {
                 marblesContainer.setStyle(possibleMoveStyle);
@@ -239,6 +242,9 @@ public class GameBoardController implements SceneController {
             }
             if (moves.contains("ACTIVATE_PRODUCTION")) {
                 cardStacksContainer.setStyle(possibleMoveStyle);
+            }
+            if (moves.contains("SWITCH_SHELVES")) {
+                warehouseContainer.setStyle(possibleMoveStyle);
             }
             if (moves.contains("END_TURN")) {
                 endTurnButton.setDisable(false);
