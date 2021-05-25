@@ -82,7 +82,8 @@
 
   {
     "cardRequirements": {
-    "YELLOW": 2
+      "YELLOW": 2,
+      "BLUE": 1
     },
     "cardRequirementsLevel": 0,
     "score": 5,

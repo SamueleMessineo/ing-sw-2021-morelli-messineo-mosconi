@@ -170,7 +170,7 @@ public class Player implements Serializable {
                         }
                     }
                 }
-                if(i==0)
+                if(i<1)
                     found = true;
                 if(!found)
                     return false;

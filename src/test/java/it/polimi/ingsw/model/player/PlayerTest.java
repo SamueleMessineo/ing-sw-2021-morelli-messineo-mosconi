@@ -159,7 +159,7 @@ public class PlayerTest {
                 Resource.COIN, 0);
         testCards.add(leaderCardTest);
         player.setLeaderCards(testCards);
-        assertFalse(player.canPlayLeader(5));
+        assertTrue(player.canPlayLeader(5));
 
         //test for cardRequirementsLevel
         cardRequirements=new HashMap<>();
