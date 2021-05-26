@@ -124,15 +124,6 @@
     "effectObject":"COIN"
   },
 
-  {
-    "cardRequirements": {
-     "GREEN": 2
-    },
-    "cardRequirementsLevel": 0,
-    "score": 1,
-    "effectScope": "Market",
-    "effectObject":"COIN"
-  },
 
   {
     "cardRequirements": {
