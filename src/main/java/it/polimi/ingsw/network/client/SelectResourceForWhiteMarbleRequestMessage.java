@@ -23,7 +23,7 @@ public class SelectResourceForWhiteMarbleRequestMessage extends ClientMessage {
         return options;
     }
 
-    public void handle(ClientMessageHandler handler) {
+    public void accept(ClientMessageHandler handler) {
         handler.handle(this);
     }
 }
