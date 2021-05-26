@@ -111,11 +111,7 @@ public class GameBoardController implements SceneController {
                     leaderImageView.setFitWidth(200);
                     leaderImageView.setFitHeight(160);
                     if(!p.getPlayedLeaderCards().contains(leaderCard)){
-                        ColorAdjust blackout = new ColorAdjust();
-                        blackout.setBrightness(-0.5);
-                        leaderImageView.setEffect(blackout);
-                        leaderImageView.setCache(true);
-                        leaderImageView.setCacheHint(CacheHint.SPEED);
+                        GameUtils.setDarkImageView(leaderImageView, 0.5);
                     }
 
                     leadersContainer.getChildren().add(leaderImageView);
@@ -249,6 +245,15 @@ public class GameBoardController implements SceneController {
                     }
                     tabContainer.getChildren().add(tileBox);
                 }
+                // display basic production container
+                basicProductionContainer = new AnchorPane();
+                basicProductionContainer.setPrefSize(200, 185);
+                basicProductionContainer.setLayoutX(627);
+                basicProductionContainer.setLayoutY(500);
+                tabContainer.getChildren().add(basicProductionContainer);
+
+                playerTab.setContent(tabContainer);
+                tabPane.getTabs().add(playerTab);
 
                 this.cardsContainer.setCursor(Cursor.HAND);
                 this.marblesContainer.setCursor(Cursor.HAND);
@@ -264,19 +269,9 @@ public class GameBoardController implements SceneController {
                     this.warehouseContainer = warehouseContainer;
                     this.warehouseContainer.setOnMouseClicked(this::viewWarehouse);
                     this.warehouseContainer.setCursor(Cursor.HAND);
-
-                    // display basic production container
-                    basicProductionContainer = new AnchorPane();
-                    basicProductionContainer.setPrefSize(200, 185);
-                    basicProductionContainer.setLayoutX(627);
-                    basicProductionContainer.setLayoutY(500);
-                    basicProductionContainer.setCursor(Cursor.HAND);
-                    basicProductionContainer.setOnMouseClicked(this::viewCardsAndProductions);
-                    tabContainer.getChildren().add(basicProductionContainer);
+                    this.basicProductionContainer.setCursor(Cursor.HAND);
+                    this.basicProductionContainer.setOnMouseClicked(this::viewCardsAndProductions);
                 }
-
-                playerTab.setContent(tabContainer);
-                tabPane.getTabs().add(playerTab);
             }
             if(gameState.getLorenzoIlMagnifico()!=null){
                 Tab playerTab = new Tab();
