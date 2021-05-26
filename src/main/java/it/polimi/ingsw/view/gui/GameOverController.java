@@ -1,24 +1,32 @@
 package it.polimi.ingsw.view.gui;
 
 import javafx.application.Platform;
-import javafx.scene.control.TextField;
+import javafx.fxml.FXML;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 
 import java.util.Map;
 
 public class GameOverController implements SceneController{
-    public TextField winner;
-    public TextField standing;
     private GUI gui;
-
-
+    @FXML
+    private Text winner;
+    @FXML
+    private VBox standingContainer;
 
     public void showWinnerAndStanding(String winner, Map<String, Integer> standing){
         Platform.runLater(()->{
-            this.winner.setText("The winner is: " + winner);
-
-           this.standing.setText(standing.toString());
+            this.winner.setText("The winner is:\n" + winner);
+            this.standingContainer.getChildren().clear();
+            for (Map.Entry<String, Integer> entry : standing.entrySet()) {
+                Text t = new Text(entry.getKey() + ": " + entry.getValue() + " points");
+                t.setFill(Color.BLACK);
+                standingContainer.getChildren().add(t);
+            }
         });
-
     }
 
     @Override
