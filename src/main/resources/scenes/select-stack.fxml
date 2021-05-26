@@ -27,7 +27,7 @@
                         <DropShadow />
                     </effect>
                 </Text>
-                <HBox fx:id="stackList" alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="20.0" />
+                <HBox fx:id="stackList" alignment="CENTER" prefHeight="400.0" prefWidth="500" spacing="20.0" />
             </children></VBox>
     </children>
 </AnchorPane>

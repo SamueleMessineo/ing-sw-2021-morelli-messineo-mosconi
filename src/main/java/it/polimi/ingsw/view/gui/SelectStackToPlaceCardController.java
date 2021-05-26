@@ -6,6 +6,7 @@ import it.polimi.ingsw.network.game.SelectStackToPlaceCardResponseMessage;
 import it.polimi.ingsw.utils.GameUtils;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.Cursor;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 
@@ -26,10 +27,13 @@ public class SelectStackToPlaceCardController implements SceneController{
                 if (!playerCardStack.isEmpty()) {
                     DevelopmentCard topCard = playerCardStack.peek();
                     cardImageView = GameUtils.getImageView(topCard);
+                    cardImageView.setPreserveRatio(true);
+                    cardImageView.setCursor(Cursor.HAND);
+                    cardImageView.setFitWidth(400);
+                    cardImageView.setFitHeight(195);
+                    cardImageView.setOnMouseClicked(MouseEvent -> sendSelectedStack(stackIndexes.indexOf(index)));
                 }
-                cardImageView.setFitWidth(200);
-                cardImageView.setFitHeight(95);
-                cardImageView.setOnMouseClicked(MouseEvent -> sendSelectedStack(stackIndexes.indexOf(index)));
+
                 stackList.getChildren().add(cardImageView);
             }
         });
