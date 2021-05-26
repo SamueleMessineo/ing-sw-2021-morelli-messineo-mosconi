@@ -12,10 +12,12 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.CacheHint;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -107,6 +109,14 @@ public class GameBoardController implements SceneController {
                     }
                     leaderImageView.setFitWidth(200);
                     leaderImageView.setFitHeight(160);
+                    if(!p.getPlayedLeaderCards().contains(leaderCard)){
+                        ColorAdjust blackout = new ColorAdjust();
+                        blackout.setBrightness(-0.5);
+                        leaderImageView.setEffect(blackout);
+                        leaderImageView.setCache(true);
+                        leaderImageView.setCacheHint(CacheHint.SPEED);
+                    }
+
                     leadersContainer.getChildren().add(leaderImageView);
                 }
                 leadersContainer.setLayoutX(17);

@@ -34,8 +34,7 @@ public class MarblesMarketController implements SceneController{
             FXMLLoader loader = new FXMLLoader(
                     getClass().getClassLoader().getResource("scenes/marbles-grid.fxml"));
             VBox marblesGrid;
-            if (vbox.getChildren().size() == 2)
-                vbox.getChildren().remove(0);
+            vbox.getChildren().clear();
             try {
                 marblesGrid = loader.load();
             } catch (IOException e) {
@@ -48,7 +47,7 @@ public class MarblesMarketController implements SceneController{
             vbox.setAlignment(Pos.BOTTOM_CENTER);
             vbox.setSpacing(140);
             vbox.setPadding(new Insets(0, 0, 30, 0));
-            vbox.getChildren().add(0, marblesGrid);
+            vbox.getChildren().addAll(marblesGrid, buttonContainer);
         });
     }
 
@@ -95,8 +94,6 @@ public class MarblesMarketController implements SceneController{
     private void selectRowOrColumn(String rowOrColumn, int index) {
         System.out.println("selected " + rowOrColumn + " number " + index);
         gui.getClient().sendMessage(new SelectMarblesResponseMessage(rowOrColumn, index-1));
-        vbox.getChildren().remove(0);
-        vbox.getChildren().add(buttonContainer);
     }
 
     @FXML

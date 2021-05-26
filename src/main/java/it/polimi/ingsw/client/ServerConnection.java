@@ -57,7 +57,7 @@ public class ServerConnection implements Runnable {
 
     public void sendMessage(Message m) {
         try {
-            //outputStream.reset();
+            outputStream.reset();
             outputStream.writeObject(m);
             outputStream.flush();
         } catch (IOException e) {
@@ -77,7 +77,6 @@ public class ServerConnection implements Runnable {
     public void run() {
         while (true) {
             Message m = receiveMessage();
-            //System.out.println(m + " " + m.getType());
             if (m.getType().equals("CONNECTION")) {
                 sendMessage(new PongMessage());
             } else {

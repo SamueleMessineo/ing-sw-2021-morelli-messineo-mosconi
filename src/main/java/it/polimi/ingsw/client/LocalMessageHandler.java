@@ -154,7 +154,12 @@ public class LocalMessageHandler {
             return;
         }
         resourcesConverted = GameUtils.sumResourcesMaps(currentTurn.getConverted(), resourcesConverted);
-        currentTurn.setConverted(resourcesConverted);
+        Map<Resource, Integer> converted = new HashMap<>(resourcesConverted);
+        // remove empty keys
+        for (Map.Entry<Resource, Integer> entry : resourcesConverted.entrySet()) {
+            if (entry.getValue()==0) converted.remove(entry.getKey());
+        }
+        currentTurn.setConverted(converted);
         askToDropResources();
     }
 
