@@ -1,9 +1,15 @@
 package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.model.shared.Resource;
+import it.polimi.ingsw.network.game.SelectResourceForWhiteMarbleResponseMessage;
+import it.polimi.ingsw.utils.GameUtils;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
+import javafx.scene.effect.ColorAdjust;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -11,10 +17,15 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ConvertMarblesController implements SceneController {
     private GUI gui;
+    private List<Resource> selectedConversions;
+    private List<Map<Resource, ImageView>> imageViewMaps;
     @FXML
     private HBox buttonsContainer;
     @FXML
@@ -26,16 +37,70 @@ public class ConvertMarblesController implements SceneController {
             Text infoText = new Text("You have obtained " + amount + " white marbles");
             infoText.setFont(Font.font("System", FontWeight.BLACK, 18));
             infoText.setFill(Color.WHITE);
+            infoText.setEffect(new DropShadow());
             Text subtitle = new Text("choose how to convert them into resources");
             subtitle.setFill(Color.WHITE);
+            subtitle.setEffect(new DropShadow());
+            container.getChildren().addAll(infoText, subtitle);
+            selectedConversions = new ArrayList<>();
+            imageViewMaps = new ArrayList<>();
+            for (int i = 0; i < amount; i++) {
+                selectedConversions.add(null);
+                Map<Resource, ImageView> singleConversionMap = new HashMap<>();
+                HBox row = new HBox();
+                row.setAlignment(Pos.CENTER);
+                row.setSpacing(20);
+                Text resourceNumberText = new Text("Marble " + (i+1));
+                resourceNumberText.setFill(Color.WHITE);
+                resourceNumberText.setEffect(new DropShadow());
+                row.getChildren().add(resourceNumberText);
+                for (Resource resourceOption : options) {
+                    ImageView resourceImage = GameUtils.getImageView(resourceOption);
+                    resourceImage.setFitHeight(50);
+                    resourceImage.setFitWidth(50);
+                    ColorAdjust bw = new ColorAdjust();
+                    bw.setSaturation(0);
+                    resourceImage.setEffect(bw);
+                    singleConversionMap.put(resourceOption, resourceImage);
+                    int finalI = i;
+                    resourceImage.setOnMouseClicked(event -> selectResource(finalI, resourceOption));
+                    row.getChildren().add(resourceImage);
+                }
+                imageViewMaps.add(singleConversionMap);
+                container.getChildren().add(row);
+            }
+            buttonsContainer.getChildren().get(0).setDisable(true);
+            container.getChildren().add(buttonsContainer);
+        });
+    }
 
-            container.getChildren().addAll(infoText, subtitle, buttonsContainer);
+    void selectResource(int number, Resource option) {
+        Platform.runLater(() -> {
+            Resource lastSelected = selectedConversions.get(number);
+            if (lastSelected != null) {
+                ColorAdjust bw = new ColorAdjust();
+                bw.setSaturation(0);
+                imageViewMaps.get(number).get(lastSelected).setEffect(bw);
+            }
+            selectedConversions.remove(number);
+            selectedConversions.add(number, option);
+            ColorAdjust color = new ColorAdjust();
+            color.setSaturation(1);
+            imageViewMaps.get(number).get(option).setEffect(color);
+
+            for (Resource selectedResource : selectedConversions)
+                if (selectedResource == null) return;
+            buttonsContainer.getChildren().get(0).setDisable(false);
         });
     }
 
     @FXML
     void convert(ActionEvent event) {
-
+        Map<Resource, Integer> conversion = new HashMap<>();
+        for (Resource resource : selectedConversions) {
+            GameUtils.incrementValueInResourceMap(conversion, resource, 1);
+        }
+        gui.getClient().sendMessage(new SelectResourceForWhiteMarbleResponseMessage(conversion));
     }
 
     @Override
