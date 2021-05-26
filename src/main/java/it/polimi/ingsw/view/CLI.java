@@ -474,7 +474,7 @@ public class CLI implements UI {
         output.println(standing);
         int selection = GameUtils.askIntegerInput("Do you want to start a new game?[1.yes 2.no]", 1,2, output, input);
         if(selection==1){
-            client.run();
+            run();
         }
         else {
             output.println("Bye "+username);

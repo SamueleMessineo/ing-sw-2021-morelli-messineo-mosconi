@@ -40,7 +40,7 @@ public class SoloGameController extends ClassicGameController {
             if(game.getMarket().getCardsGrid().stream().filter(developmentCards -> (cardType.name().equals(developmentCards.getType().name()))&&(!developmentCards.isEmpty())).count() == 0)return true;
         }
 
-        if(game.getLorenzoIlMagnifico().getFaithTrack().getPosition() == FaithTrack.getMaxposition())return true;
+        if(game.getLorenzoIlMagnifico().getFaithTrack().getPosition() >= FaithTrack.getMaxposition())return true;
 
 
         return super.isGameOver();

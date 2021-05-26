@@ -54,8 +54,8 @@ public class ClassicGameController {
     public boolean isGameOver() {
         for (Player player:
                 game.getPlayers()) {
-            if ((player.getFaithTrack().getPosition() == FaithTrack.getMaxposition())||
-                        player.getPlayerBoard().getCardStacks().get(0).size()+player.getPlayerBoard().getCardStacks().get(1).size()+player.getPlayerBoard().getCardStacks().get(2).size() == 7)return true;
+            if ((player.getFaithTrack().getPosition() >= FaithTrack.getMaxposition())||
+                        player.getPlayerBoard().getCardStacks().get(0).size()+player.getPlayerBoard().getCardStacks().get(1).size()+player.getPlayerBoard().getCardStacks().get(2).size() >= 7)return true;
         }
         return false;
     }
