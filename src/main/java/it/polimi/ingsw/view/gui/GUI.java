@@ -121,7 +121,7 @@ public class GUI extends Application implements UI {
         for (String sceneName : Arrays.asList(
                 "online-offline", "connect", "setup-game", "room-details", "initial-resources",
                 "initial-leaders", "game-board", "cards-market","select-stack", "marbles-market", "drop-resources",
-                "offline-info", "leader-cards", "cards-production", "activate-production", "convert-marbles")) {
+                "offline-info", "leader-cards", "cards-production", "activate-production","game-over", "convert-marbles")) {
             FXMLLoader loader = new FXMLLoader(
                     getClass().getClassLoader().getResource("scenes/" + sceneName +".fxml"));
             try {
@@ -281,7 +281,8 @@ public class GUI extends Application implements UI {
 
     @Override
     public void gameOver(String winner, Map<String, Integer> standing){
-
+        ((GameOverController) controllerMap.get("game-over")).showWinnerAndStanding(winner, standing);
+        setScene("game-over");
     }
 
     @Override
