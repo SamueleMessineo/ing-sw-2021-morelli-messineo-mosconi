@@ -9,9 +9,11 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
+import javafx.scene.CacheHint;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -112,7 +114,7 @@ public class ActivateProductionController implements SceneController {
                     resourceImageView.setFitWidth(40);
                     resourceImageView.setFitHeight(40);
                     resourceImageView.setCursor(Cursor.HAND);
-                    resourceImageView.setOnMouseClicked(event1 -> resourceClick(entry.getKey(), basicProduction.getInput(), resourcePickerContainer));
+                    resourceImageView.setOnMouseClicked(event1 -> resourceClick(entry.getKey(), basicProduction.getInput(), resourcePickerContainer, resourceImageView));
                     resourcePickerContainer.getChildren().add(resourceImageView);
                 }
                 popupContainer.getChildren().addAll(new Text("select input"),resourcePickerContainer);
@@ -123,7 +125,7 @@ public class ActivateProductionController implements SceneController {
                 resourceImageView.setFitWidth(40);
                 resourceImageView.setFitHeight(40);
                 resourceImageView.setCursor(Cursor.HAND);
-                resourceImageView.setOnMouseClicked(event1 -> resourceClick(resource, basicProduction.getOutput(), outputPickerContainer));
+                resourceImageView.setOnMouseClicked(event1 -> resourceClick(resource, basicProduction.getOutput(), outputPickerContainer, resourceImageView));
                 outputPickerContainer.getChildren().add(resourceImageView);
             }
             popupContainer.getChildren().addAll(new Text("select output"), outputPickerContainer);
@@ -135,10 +137,13 @@ public class ActivateProductionController implements SceneController {
         });
     }
 
-    void resourceClick(Resource resource, Map<Resource, Integer> map, HBox pickerContainer) {
+    void resourceClick(Resource resource, Map<Resource, Integer> map, HBox pickerContainer, ImageView imageViewClicked) {
         Platform.runLater(() -> {
             GameUtils.incrementValueInResourceMap(map, resource, 1);
             for (Node imageView : pickerContainer.getChildren()) {
+                if(!imageView.equals(imageViewClicked)) {
+                    GameUtils.setDarkImageView((ImageView) imageView, 1);
+                }
                 imageView.setDisable(true);
             }
         });

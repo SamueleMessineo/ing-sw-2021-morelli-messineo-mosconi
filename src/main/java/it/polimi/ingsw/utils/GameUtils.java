@@ -10,6 +10,9 @@ import it.polimi.ingsw.model.shared.LeaderCard;
 import it.polimi.ingsw.model.shared.PopesFavorTileState;
 import it.polimi.ingsw.model.shared.Resource;
 import it.polimi.ingsw.server.Room;
+import javafx.scene.CacheHint;
+import javafx.scene.Node;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -254,5 +257,13 @@ public class GameUtils {
         ImageView cardImageView = new ImageView(cardImage);
         cardImageView.setPreserveRatio(true);
         return cardImageView;
+    }
+
+    public static void setDarkImageView(ImageView imageView, double value){
+        ColorAdjust blackout = new ColorAdjust();
+        blackout.setBrightness(-value);
+        imageView.setEffect(blackout);
+        imageView.setCache(true);
+        imageView.setCacheHint(CacheHint.SPEED);
     }
 }

@@ -111,11 +111,7 @@ public class GameBoardController implements SceneController {
                     leaderImageView.setFitWidth(200);
                     leaderImageView.setFitHeight(160);
                     if(!p.getPlayedLeaderCards().contains(leaderCard)){
-                        ColorAdjust blackout = new ColorAdjust();
-                        blackout.setBrightness(-0.5);
-                        leaderImageView.setEffect(blackout);
-                        leaderImageView.setCache(true);
-                        leaderImageView.setCacheHint(CacheHint.SPEED);
+                        GameUtils.setDarkImageView(leaderImageView, 0.5);
                     }
 
                     leadersContainer.getChildren().add(leaderImageView);
