@@ -121,7 +121,8 @@ public class GUI extends Application implements UI {
         for (String sceneName : Arrays.asList(
                 "online-offline", "connect", "setup-game", "room-details", "initial-resources",
                 "initial-leaders", "game-board", "cards-market","select-stack", "marbles-market", "drop-resources",
-                "offline-info", "leader-cards", "cards-production", "activate-production","game-over", "convert-marbles")) {
+                "offline-info", "leader-cards", "cards-production", "activate-production","game-over", "convert-marbles",
+                "warehouse")) {
             FXMLLoader loader = new FXMLLoader(
                     getClass().getClassLoader().getResource("scenes/" + sceneName +".fxml"));
             try {

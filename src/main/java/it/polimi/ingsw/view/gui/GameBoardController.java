@@ -137,6 +137,7 @@ public class GameBoardController implements SceneController {
                 // display the warehouse
                 HBox warehouseContainer = new HBox();
                 VBox normalShelvesContainer = new VBox();
+                VBox extraShelvesContainer = new VBox();
                 for (String shelfName : p.getPlayerBoard().getWarehouse().getShelfNames()) {
                     Shelf shelf = p.getPlayerBoard().getWarehouse().getShelf(shelfName);
                     if (Arrays.asList("bottom", "middle", "top").contains(shelfName)) {
@@ -152,23 +153,21 @@ public class GameBoardController implements SceneController {
                             shelfResourcesContainer.getChildren().add(resourceImageView);
                         }
                         normalShelvesContainer.getChildren().add(shelfResourcesContainer);
-                    }
-                }
-                normalShelvesContainer.setPrefSize(165, 177);
-                normalShelvesContainer.setSpacing(10);
-                normalShelvesContainer.setAlignment(Pos.BOTTOM_CENTER);
-                warehouseContainer.getChildren().add(normalShelvesContainer);
-                VBox extraShelvesContainer = new VBox();
-                for (LeaderCard playedLeaderCard : p.getPlayedLeaderCards()) {
-                    if (playedLeaderCard.getEffectScope().equals("Storage")) {
+                    }else {
                         Image extraShelfImage = new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(
-                                "images/board/extra_" + playedLeaderCard.getEffectObject().name().toLowerCase() + ".png")));
+                                "images/board/extra_" + shelf.getResourceType().name().toLowerCase() + ".png")));
                         ImageView extraShelfImageView = new ImageView(extraShelfImage);
                         extraShelfImageView.setPreserveRatio(true);
                         extraShelfImageView.setFitWidth(135);
                         extraShelvesContainer.getChildren().add(extraShelfImageView);
                     }
                 }
+
+                normalShelvesContainer.setPrefSize(165, 177);
+                normalShelvesContainer.setSpacing(10);
+                normalShelvesContainer.setAlignment(Pos.BOTTOM_CENTER);
+                warehouseContainer.getChildren().add(normalShelvesContainer);
+
                 extraShelvesContainer.setPrefSize(147, 177);
                 extraShelvesContainer.setSpacing(25);
                 extraShelvesContainer.setAlignment(Pos.CENTER);
@@ -385,7 +384,8 @@ public class GameBoardController implements SceneController {
 
     @FXML
     void viewWarehouse(MouseEvent event) {
-        System.out.println("view warehouse");
+        ((WarehouseController) gui.getSceneController("warehouse")).load(gameState.getPlayerByUsername(gui.getUsername()).getPlayerBoard().getWarehouse());
+        gui.setScene("warehouse");
     }
 
     @FXML
