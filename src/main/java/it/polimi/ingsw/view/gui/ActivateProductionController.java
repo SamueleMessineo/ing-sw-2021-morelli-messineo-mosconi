@@ -42,7 +42,7 @@ public class ActivateProductionController implements SceneController {
             // check default production
             if (player.canActivateBasicProduction()) {
                 Image basicProductionImage = new Image(Objects.requireNonNull(getClass().getClassLoader()
-                        .getResourceAsStream("images/board/basic_production.png")));
+                        .getResourceAsStream("images/board/basic_production_scroll.png")));
                 ImageView basicProductionImageView = new ImageView(basicProductionImage);
                 basicProductionImageView.setPreserveRatio(true);
                 basicProductionImageView.setFitWidth(150);

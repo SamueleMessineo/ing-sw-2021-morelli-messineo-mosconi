@@ -37,6 +37,7 @@ public class GameBoardController implements SceneController {
     @FXML
     private HBox leadersContainer;
     private AnchorPane cardStacksContainer;
+    private AnchorPane basicProductionContainer;
     private HBox warehouseContainer;
     @FXML
     private VBox marblesContainer;
@@ -230,7 +231,7 @@ public class GameBoardController implements SceneController {
                 for (int i = 0; i < 3; i++) {
                     PopesFavorTile tile = p.getFaithTrack().getPopesFavorTiles().get(i);
                     VBox tileBox = new VBox();
-                    tileBox.setPrefSize(65,65);
+                    tileBox.setPrefSize(65, 65);
                     tileBox.setAlignment(Pos.CENTER);
                     if (tile.getState() != PopesFavorTileState.DISCARDED) {
                         Image tileImage = new Image(Objects.requireNonNull(getClass().getClassLoader()
@@ -249,8 +250,6 @@ public class GameBoardController implements SceneController {
                     tabContainer.getChildren().add(tileBox);
                 }
 
-                playerTab.setContent(tabContainer);
-                tabPane.getTabs().add(playerTab);
                 this.cardsContainer.setCursor(Cursor.HAND);
                 this.marblesContainer.setCursor(Cursor.HAND);
                 // select the tab corresponding to the player itself and apply things
@@ -265,7 +264,19 @@ public class GameBoardController implements SceneController {
                     this.warehouseContainer = warehouseContainer;
                     this.warehouseContainer.setOnMouseClicked(this::viewWarehouse);
                     this.warehouseContainer.setCursor(Cursor.HAND);
+
+                    // display basic production container
+                    basicProductionContainer = new AnchorPane();
+                    basicProductionContainer.setPrefSize(200, 185);
+                    basicProductionContainer.setLayoutX(627);
+                    basicProductionContainer.setLayoutY(500);
+                    basicProductionContainer.setCursor(Cursor.HAND);
+                    basicProductionContainer.setOnMouseClicked(this::viewCardsAndProductions);
+                    tabContainer.getChildren().add(basicProductionContainer);
                 }
+
+                playerTab.setContent(tabContainer);
+                tabPane.getTabs().add(playerTab);
             }
             if(gameState.getLorenzoIlMagnifico()!=null){
                 Tab playerTab = new Tab();
@@ -325,6 +336,7 @@ public class GameBoardController implements SceneController {
             leadersContainer.setStyle("");
             cardStacksContainer.setStyle("");
             warehouseContainer.setStyle("");
+            basicProductionContainer.setStyle("");
             endTurnButton.setDisable(true);
             if (moves.contains("GET_MARBLES")) {
                 marblesContainer.setStyle(possibleMoveStyle);
@@ -336,7 +348,12 @@ public class GameBoardController implements SceneController {
                 leadersContainer.setStyle(possibleMoveStyle);
             }
             if (moves.contains("ACTIVATE_PRODUCTION")) {
-                cardStacksContainer.setStyle(possibleMoveStyle);
+                if (gameState.getPlayerByUsername(gui.getUsername()).canActivateBasicProduction()) {
+                    basicProductionContainer.setStyle(possibleMoveStyle);
+                }
+                if (gameState.getPlayerByUsername(gui.getUsername()).canActivateProduction()) {
+                    cardStacksContainer.setStyle(possibleMoveStyle);
+                }
             }
             if (moves.contains("SWITCH_SHELVES")) {
                 warehouseContainer.setStyle(possibleMoveStyle);
