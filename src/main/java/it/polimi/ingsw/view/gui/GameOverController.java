@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.gui;
 
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -25,6 +26,21 @@ public class GameOverController implements SceneController{
                 standingContainer.getChildren().add(t);
             }
         });
+    }
+
+    @FXML
+    void playAgain(ActionEvent event) {
+//        gui.setScene("online-offline");
+        try {
+            gui.start(gui.getStage());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    void quit(ActionEvent event) {
+        System.exit(0);
     }
 
     @Override

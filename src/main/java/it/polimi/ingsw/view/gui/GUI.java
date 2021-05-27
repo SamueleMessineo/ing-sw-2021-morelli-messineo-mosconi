@@ -33,8 +33,8 @@ import java.util.*;
 
 public class GUI extends Application implements UI {
     private Stage stage;
-    private final Map<String, Scene> sceneMap = new HashMap<>();
-    private final Map<String, SceneController> controllerMap = new HashMap<>();
+    private Map<String, Scene> sceneMap;
+    private Map<String, SceneController> controllerMap;
     private Client client;
     private Game gameState;
     private String username;
@@ -45,8 +45,18 @@ public class GUI extends Application implements UI {
         this.username = username;
     }
 
+    public Stage getStage() {
+        return stage;
+    }
+
     @Override
     public void start(Stage stage) throws Exception {
+        username = null;
+        mediaPlayer = null;
+        gameState = null;
+        client = null;
+        sceneMap = new HashMap<>();
+        controllerMap = new HashMap<>();
         loadScenes();
         this.stage = stage;
         this.stage.setTitle("Masters of Renaissance");
