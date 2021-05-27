@@ -32,6 +32,9 @@ public class ActivateProductionController implements SceneController {
     private List<AnchorPane> selectedCardPowersContainers;
     private List<ProductionPower> cardPowers;
     private AnchorPane basicProductionContainer;
+    private List<Resource> extraOutputs;
+    private List<Integer> selectedExtras;
+    private int numberOfExtraProductions;
     @FXML
     private VBox vbox;
     @FXML
@@ -61,7 +64,10 @@ public class ActivateProductionController implements SceneController {
             cardPowers = powers;
             selectedCardPowers = new ArrayList<>();
             selectedCardPowersContainers = new ArrayList<>();
+            extraOutputs = new ArrayList<>();
+            selectedExtras = new ArrayList<>();
             for (ProductionPower cardPower : powers) {
+                if (cardPower.getOutput().containsKey(Resource.ANY)) numberOfExtraProductions++;
                 AnchorPane powerPane = GameUtils.buildProductionPowerBook(cardPower);
                 powerPane.setOnMouseClicked(event -> selectCardPower(powers.indexOf(cardPower)));
                 selectedCardPowersContainers.add(powerPane);
@@ -152,21 +158,58 @@ public class ActivateProductionController implements SceneController {
     void selectCardPower(int index) {
         if (!selectedCardPowers.contains(index)
                 && player.getPlayerBoard().canPayResources(cardPowers.get(index).getInput())) {
-            selectedCardPowers.add(index);
-            player.getPlayerBoard().payResourceCost(cardPowers.get(index).getInput());
-            selectedCardPowersContainers.get(index)
-                    .setStyle("-fx-border-color: transparent transparent red transparent;" +
-                            "-fx-border-width: 2; -fx-border-style: solid inside;");
-            selectedCardPowersContainers.get(index).setDisable(true);
+
+            if (!cardPowers.get(index).getOutput().containsKey(Resource.ANY))
+                confirmSingleProduction(index);
+            else {
+                VBox popupContainer = new VBox();
+                popupContainer.setPadding(new Insets(20));
+                popupContainer.setSpacing(10);
+                popupContainer.setAlignment(Pos.CENTER_LEFT);
+                HBox resourcePickerContainer = new HBox();
+                resourcePickerContainer.setSpacing(5);
+                for (Resource resource : Arrays.asList(Resource.COIN, Resource.STONE, Resource.SHIELD, Resource.SERVANT)) {
+                    ImageView resourceImageView = GameUtils.getImageView(resource);
+                    resourceImageView.setFitWidth(40);
+                    resourceImageView.setFitHeight(40);
+                    resourceImageView.setCursor(Cursor.HAND);
+                    resourceImageView.setOnMouseClicked(event1 -> selectExtraOutput(index, resource));
+                    resourcePickerContainer.getChildren().add(resourceImageView);
+                }
+                popupContainer.getChildren().addAll(new Text("Select the output resource"), resourcePickerContainer);
+                gui.displayPopup(popupContainer);
+            }
         } else {
             gui.displayError("You can't activate this production power.");
         }
     }
 
+    private void selectExtraOutput(int index, Resource resource) {
+        if (numberOfExtraProductions == 2) selectedExtras.add(index - (cardPowers.size()-1));
+        else selectedExtras.add(0);
+        extraOutputs.add(resource);
+        gui.getPopupStage().close();
+        confirmSingleProduction(index);
+    }
+
+    private void confirmSingleProduction(int index) {
+        if (index < cardPowers.size() - numberOfExtraProductions)
+            selectedCardPowers.add(index);
+        player.getPlayerBoard().payResourceCost(cardPowers.get(index).getInput());
+        selectedCardPowersContainers.get(index)
+                .setStyle("-fx-border-color: transparent transparent red transparent;" +
+                        "-fx-border-width: 2; -fx-border-style: solid inside;");
+        selectedCardPowersContainers.get(index).setDisable(true);
+    }
+
     @FXML
     void confirm(ActionEvent event) {
+        System.out.println(selectedCardPowers);
+        System.out.println(basicProduction);
+        System.out.println(selectedExtras);
+        System.out.println(extraOutputs);
         gui.getClient().sendMessage(new ActivateProductionResponseMessage(
-                selectedCardPowers, basicProduction, null, null));
+                selectedCardPowers, basicProduction, selectedExtras, extraOutputs));
     }
 
     @Override
