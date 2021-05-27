@@ -85,7 +85,7 @@ public class InitialLeadersController implements SceneController{
     }
 
     public void selectUpLeft(MouseEvent mouseEvent) {
-        if(card1==-1||card2==-1){
+        if((card1==-1 && card2!=0)||(card2==-1 && card1 != 0)){
             if(card1==-1)card1 = 0;
             else card2 = 0;
             upLeftImg.toBack();
@@ -96,12 +96,13 @@ public class InitialLeadersController implements SceneController{
             if(card1==0)card1=-1;
             if(card2==0)card2=-1;
             upLeftCross.setImage(null);
+            upLeftCross.toBack();
             upLeftImg.toFront();
         }
     }
 
     public void selectUpRight(MouseEvent mouseEvent) {
-        if(card1==-1||card2==-1){
+        if((card1==-1 && card2!=1)||(card2==-1 && card1 != 1)){
             if(card1==-1)card1 = 1;
             else card2 = 1;
             upRightImg.toBack();
@@ -117,7 +118,7 @@ public class InitialLeadersController implements SceneController{
     }
 
     public void selectBottomLeft(MouseEvent mouseEvent) {
-        if(card1==-1||card2==-1){
+        if((card1==-1 && card2!=2)||(card2==-1 && card1 != 2)){
             if(card1==-1)card1 = 2;
             else card2 = 2;
             bottomLeftImg.toBack();
@@ -133,7 +134,7 @@ public class InitialLeadersController implements SceneController{
     }
 
     public void selectBottomRight(MouseEvent mouseEvent) {
-        if(card1==-1||card2==-1){
+        if((card1==-1 && card2!=3)||(card2==-1 && card1 != 3)){
             if(card1==-1)card1 = 3;
             else card2 = 3;
             bottomRightImg.toBack();
