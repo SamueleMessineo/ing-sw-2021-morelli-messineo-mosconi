@@ -121,7 +121,7 @@ public class LocalMessageHandler {
     public void handle(SwitchShelvesResponseMessage message){
         try {
             gameController.switchShelves(message.getShelf1(), message.getShelf2());
-            nextMoves(false);
+            nextMoves(currentTurn.hasAlreadyPerformedMove());
         } catch (InvalidParameterException e) {
             ui.displayError("You cannot switch these two shelves");
             ui.displayPossibleMoves(currentTurn.getMoves());
