@@ -169,10 +169,11 @@ public class GameMessageHandler {
         sendNextMoves();
     }
 
-    public void handle(SwitchShelvesResponseMessage message){
-        if(gameController.switchShelves(message.getShelf1(), message.getShelf2())){
-                    sendNextMoves();
-        } else {
+    public void handle(SwitchShelvesResponseMessage message) {
+        try {
+            gameController.switchShelves(message.getShelf1(), message.getShelf2());
+            sendNextMoves();
+        } catch (InvalidParameterException e) {
             clientConnection.sendMessage(new ErrorMessage("You cannot switch these two shelves"));
             clientConnection.sendMessage((new SelectMoveRequestMessage(room.getCurrentTurn().getMoves())));
         }

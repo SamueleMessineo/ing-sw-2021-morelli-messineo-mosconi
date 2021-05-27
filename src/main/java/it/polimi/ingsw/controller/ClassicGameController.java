@@ -181,8 +181,12 @@ public class ClassicGameController {
         game.getCurrentPlayer().dropLeaderCard(card);
     }
 
-    public boolean switchShelves(String shelf1, String shelf2) {
-        return game.getCurrentPlayer().getPlayerBoard().getWarehouse().switchShelves(shelf1, shelf2);
+    public void switchShelves(String shelf1, String shelf2) throws InvalidParameterException {
+        if (game.getCurrentPlayer().getPlayerBoard().getWarehouse().canSwitchShelves(shelf1, shelf2)) {
+            game.getCurrentPlayer().getPlayerBoard().getWarehouse().switchShelves(shelf1, shelf2);
+        } else {
+            throw new InvalidParameterException();
+        }
     }
 
     public List<String> computeNextPossibleMoves(boolean alreadyPerformedMove) {
@@ -222,16 +226,15 @@ public class ClassicGameController {
         }
 
         Warehouse warehouse = player.getPlayerBoard().getWarehouse();
-        if(warehouse.canSwitchShelves(warehouse.getShelf("top"), warehouse.getShelf("middle"))||
-                warehouse.canSwitchShelves(warehouse.getShelf("top"), warehouse.getShelf("bottom"))||
-                warehouse.canSwitchShelves(warehouse.getShelf("top"), warehouse.getShelf("extra1"))||
-                warehouse.canSwitchShelves(warehouse.getShelf("top"), warehouse.getShelf("extra2"))||
-                warehouse.canSwitchShelves(warehouse.getShelf("middle"), warehouse.getShelf("bottom"))||
-                warehouse.canSwitchShelves(warehouse.getShelf("middle"), warehouse.getShelf("extra1"))||
-                warehouse.canSwitchShelves(warehouse.getShelf("middle"), warehouse.getShelf("extra2"))||
-                warehouse.canSwitchShelves(warehouse.getShelf("bottom"), warehouse.getShelf("extra1"))||
-                warehouse.canSwitchShelves(warehouse.getShelf("bottom"), warehouse.getShelf("extra2"))
-
+        if( warehouse.canSwitchShelves("top",    "middle") ||
+            warehouse.canSwitchShelves("top",    "bottom") ||
+            warehouse.canSwitchShelves("top",    "extra1") ||
+            warehouse.canSwitchShelves("top",    "extra2") ||
+            warehouse.canSwitchShelves("middle", "bottom") ||
+            warehouse.canSwitchShelves("middle", "extra1") ||
+            warehouse.canSwitchShelves("middle", "extra2") ||
+            warehouse.canSwitchShelves("bottom", "extra1") ||
+            warehouse.canSwitchShelves("bottom", "extra2")
         ) moves.add("SWITCH_SHELVES");
 
         System.out.println("computed");

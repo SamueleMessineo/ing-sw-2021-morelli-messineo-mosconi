@@ -160,22 +160,24 @@ public class Warehouse implements Serializable {
 
     /**
      * Check the contents of two shelves can be swapped
-     * @param shelf1 first shelf
-     * @param shelf2 second shelf
-     * @return true if contents of shelf1 and shelf2 can be swapped
+     * @param shelf1Name name of the first shelf
+     * @param shelf2Name name of the second shelf
+     * @return true if contents of shelf1 and shelf2 can be swapped, false otherwise
      */
-    public boolean canSwitchShelves(Shelf shelf1, Shelf shelf2) {
+    public boolean canSwitchShelves(String shelf1Name, String shelf2Name) {
+        Shelf shelf1 = getShelf(shelf1Name);
+        Shelf shelf2 = getShelf(shelf2Name);
         if (shelf1 == null || shelf2 == null) return false;
         if (shelf1.getResourceNumber() == 0 && shelf2.getResourceNumber() == 0) return false;
         if (shelves.indexOf(shelf1) <= 2 && shelves.indexOf(shelf2) <= 2) {
             return shelf1.getResourceNumber() <= shelf2.getMaxSize() &&
                     shelf2.getResourceNumber() <= shelf1.getMaxSize();
         } else {
-            if (shelves.indexOf(shelf1) > 2 && shelves.indexOf(shelf2) > 2) return false;
-            else {
-                return shelf1.getResourceType().equals(shelf2.getResourceType()) && shelf1.getResourceNumber() <= shelf2.getMaxSize() &&
-                        shelf2.getResourceNumber() <= shelf1.getMaxSize();
-            }
+            return (shelf1.getResourceType().equals(shelf2.getResourceType())
+                    || shelf1.getResourceType().equals(Resource.ANY)
+                    || shelf2.getResourceType().equals(Resource.ANY))
+                    && shelf1.getResourceNumber() <= shelf2.getMaxSize()
+                    && shelf2.getResourceNumber() <= shelf1.getMaxSize();
         }
     }
 

@@ -2,7 +2,6 @@ package it.polimi.ingsw.client;
 
 import it.polimi.ingsw.controller.ClassicGameController;
 import it.polimi.ingsw.controller.Turn;
-import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.shared.DevelopmentCard;
 import it.polimi.ingsw.model.shared.Resource;
@@ -120,10 +119,11 @@ public class LocalMessageHandler {
     }
 
     public void handle(SwitchShelvesResponseMessage message){
-        if(gameController.switchShelves(message.getShelf1(), message.getShelf2())){
+        try {
+            gameController.switchShelves(message.getShelf1(), message.getShelf2());
             nextMoves(false);
-        } else {
-            ui.displayError("You cannot switch these two shelves\n");
+        } catch (InvalidParameterException e) {
+            ui.displayError("You cannot switch these two shelves");
             ui.displayPossibleMoves(currentTurn.getMoves());
         }
     }
