@@ -13,6 +13,7 @@ import it.polimi.ingsw.view.UI;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -158,7 +159,7 @@ public class GUI extends Application implements UI {
 
     public void displayPopup(Parent parent) {
         Platform.runLater(() -> {
-            Scene scene = new Scene(parent, 300, 200);
+            Scene scene = new Scene(parent);
             popupStage.setScene(scene);
             popupStage.showAndWait();
         });
@@ -171,8 +172,9 @@ public class GUI extends Application implements UI {
     @Override
     public void displayError(String body) {
         VBox vBox = new VBox();
+        vBox.setPadding(new Insets(20));
         vBox.setAlignment(Pos.CENTER);
-        vBox.setSpacing(50);
+        vBox.setSpacing(30);
         Text text = new Text("An error occurred!");
         text.setFont(Font.font("System", FontWeight.BLACK, 18));
         vBox.getChildren().add(text);
@@ -182,14 +184,14 @@ public class GUI extends Application implements UI {
 
     @Override
     public void displayString(String body) {
-        VBox vBox = new VBox();
-        vBox.setAlignment(Pos.CENTER);
-        vBox.setSpacing(50);
-        Text text = new Text("");
-        text.setFont(Font.font("System", FontWeight.BLACK, 18));
-        vBox.getChildren().add(text);
-        vBox.getChildren().add(new Text(body));
-        displayPopup(vBox);
+//        VBox vBox = new VBox();
+//        vBox.setAlignment(Pos.CENTER);
+//        vBox.setSpacing(50);
+//        Text text = new Text("");
+//        text.setFont(Font.font("System", FontWeight.BLACK, 18));
+//        vBox.getChildren().add(text);
+//        vBox.getChildren().add(new Text(body));
+//        displayPopup(vBox);
     }
 
     @Override

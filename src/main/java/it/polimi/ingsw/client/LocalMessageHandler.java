@@ -97,7 +97,7 @@ public class LocalMessageHandler {
                     break;
             }
         } else {
-            ui.displayString("Invalid Move\nRetry");
+            ui.displayError("Invalid Move.");
             ui.displayPossibleMoves(currentTurn.getMoves());
         }
     }
@@ -214,7 +214,7 @@ public class LocalMessageHandler {
             nextMoves(true);
         } catch (InvalidParameterException e) {
             System.out.println(e.getMessage());
-            ui.displayString("The selected resources are invalid");
+            ui.displayError("The selected resources are invalid");
             ui.dropResources(currentTurn.getConverted());
             //nextMoves(false);
         }
@@ -228,7 +228,7 @@ public class LocalMessageHandler {
             nextMoves(true);
         }
         else {
-            ui.displayString("Nothing could be done");
+            ui.displayError("Nothing could be done");
             nextMoves(false);
         }
     }
