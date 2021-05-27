@@ -287,14 +287,17 @@ public class ClassicGameController {
         if(extraProductionPowers != null){
             int outRes = 0;
             for (Integer extraProductionPower : extraProductionPowers) {
+                movePlayer(game.getCurrentPlayer().getUsername(), 1);
                 System.out.println(extraProductionPowers);
                 ProductionPower productionPower = game.getCurrentPlayer().getPlayerBoard().getExtraProductionPowers().get((Integer) extraProductionPower);
                 GameUtils.debug("extra " + productionPower.toString());
                 productionPower.getOutput().put(extraOutput.get(outRes), 1);
                 productionPower.getOutput().remove(Resource.ANY);
+                productionPower.getOutput().remove(Resource.FAITH);
                 game.getCurrentPlayer().getPlayerBoard().activateProductionPower(productionPower);
                 productionPower.getOutput().remove(extraOutput.get(outRes),1);
                 productionPower.getOutput().put(Resource.ANY, 1);
+                productionPower.getOutput().put(Resource.FAITH, 1);
                 outRes++;
             }
         }

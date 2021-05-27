@@ -54,7 +54,7 @@ public class GUI extends Application implements UI {
         popupStage = new Stage();
         popupStage.initOwner(stage);
         popupStage.initModality(Modality.APPLICATION_MODAL);
-//        setMusic();
+        //ìsetMusic();
         setScene("online-offline");
 
         Image logo = new Image(Objects.requireNonNull(getClass().getClassLoader()
