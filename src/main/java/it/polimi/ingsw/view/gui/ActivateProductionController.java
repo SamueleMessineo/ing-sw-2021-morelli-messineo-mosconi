@@ -8,12 +8,11 @@ import it.polimi.ingsw.utils.GameUtils;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.CacheHint;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -29,6 +28,10 @@ public class ActivateProductionController implements SceneController {
     private Player player;
     private ProductionPower basicProduction;
     private List<Integer> selectedCardPowers;
+    private Button confirmBasicProductionButton;
+    private List<AnchorPane> selectedCardPowersContainers;
+    private List<ProductionPower> cardPowers;
+    private AnchorPane basicProductionContainer;
     @FXML
     private VBox vbox;
     @FXML
@@ -37,60 +40,31 @@ public class ActivateProductionController implements SceneController {
     private HBox buttonsContainer;
 
     public void load(List<ProductionPower> powers) {
-        player = gui.getGame().getPlayerByUsername(gui.getUsername());
         Platform.runLater(() -> {
+            player = gui.getGame().getPlayerByUsername(gui.getUsername());
             vbox.getChildren().clear();
             productionsContainer.getChildren().clear();
             // check default production
             if (player.canActivateBasicProduction()) {
+                basicProductionContainer = new AnchorPane();
                 Image basicProductionImage = new Image(Objects.requireNonNull(getClass().getClassLoader()
                         .getResourceAsStream("images/board/basic_production_scroll.png")));
                 ImageView basicProductionImageView = new ImageView(basicProductionImage);
                 basicProductionImageView.setPreserveRatio(true);
                 basicProductionImageView.setFitWidth(150);
-                basicProductionImageView.setOnMouseClicked(this::handleBasicProduction);
-                productionsContainer.getChildren().add(basicProductionImageView);
+                basicProductionContainer.getChildren().add(basicProductionImageView);
+                basicProductionContainer.setOnMouseClicked(this::handleBasicProduction);
+                basicProductionContainer.setCursor(Cursor.HAND);
+                productionsContainer.getChildren().add(basicProductionContainer);
             }
             // display cards' powers
+            cardPowers = powers;
             selectedCardPowers = new ArrayList<>();
+            selectedCardPowersContainers = new ArrayList<>();
             for (ProductionPower cardPower : powers) {
-                AnchorPane powerPane = new AnchorPane();
-                powerPane.setPrefSize(212,150);
-                Image bookImage = new Image(Objects.requireNonNull(getClass().getClassLoader()
-                        .getResourceAsStream("images/board/production_book.png")));
-                ImageView bookImageView = new ImageView(bookImage);
-                bookImageView.setPreserveRatio(true);
-                bookImageView.setFitHeight(150);
-                bookImageView.setFitWidth(212);
-                bookImageView.setLayoutX(0);
-                bookImageView.setLayoutY(0);
-                powerPane.getChildren().add(bookImageView);
-                HBox singleCardPowerContainer = new HBox();
-                singleCardPowerContainer.setPrefSize(212,150);
-                singleCardPowerContainer.setAlignment(Pos.CENTER);
-                singleCardPowerContainer.setSpacing(60);
-                VBox inputContainer = new VBox();
-                inputContainer.setAlignment(Pos.CENTER);
-                for (Resource inputResource : cardPower.getInput().keySet()) {
-                    ImageView resourceImageView = GameUtils.getImageView(inputResource);
-                    resourceImageView.setFitWidth(35);
-                    resourceImageView.setFitHeight(35);
-                    inputContainer.getChildren().add(resourceImageView);
-                }
-                singleCardPowerContainer.getChildren().add(inputContainer);
-                VBox outputContainer = new VBox();
-                outputContainer.setAlignment(Pos.CENTER);
-                for (Resource outputResource : cardPower.getOutput().keySet()) {
-                    ImageView resourceImageView = GameUtils.getImageView(outputResource);
-                    resourceImageView.setFitWidth(35);
-                    resourceImageView.setFitHeight(35);
-                    outputContainer.getChildren().add(resourceImageView);
-                }
-                singleCardPowerContainer.getChildren().add(outputContainer);
-                singleCardPowerContainer.setOnMouseClicked(event -> selectCardPower(powers.indexOf(cardPower)));
-                singleCardPowerContainer.setLayoutX(0);
-                singleCardPowerContainer.setLayoutY(0);
-                powerPane.getChildren().add(singleCardPowerContainer);
+                AnchorPane powerPane = GameUtils.buildProductionPowerBook(cardPower);
+                powerPane.setOnMouseClicked(event -> selectCardPower(powers.indexOf(cardPower)));
+                selectedCardPowersContainers.add(powerPane);
                 productionsContainer.getChildren().add(powerPane);
             }
 
@@ -101,6 +75,9 @@ public class ActivateProductionController implements SceneController {
     void handleBasicProduction(MouseEvent event) {
         Platform.runLater(() -> {
             VBox popupContainer = new VBox();
+            popupContainer.setPadding(new Insets(20));
+            popupContainer.setSpacing(10);
+            popupContainer.setAlignment(Pos.CENTER_LEFT);
             basicProduction = new ProductionPower(GameUtils.emptyResourceMap(), GameUtils.emptyResourceMap());
             Map<Resource, Integer> playerResources = player.getPlayerBoard().getResources();
 
@@ -109,6 +86,7 @@ public class ActivateProductionController implements SceneController {
             }
             for (int i = 0; i < 2; i++) {
                 HBox resourcePickerContainer = new HBox();
+                resourcePickerContainer.setSpacing(5);
                 for (Map.Entry<Resource, Integer> entry : playerResources.entrySet()) {
                     ImageView resourceImageView = GameUtils.getImageView(entry.getKey());
                     resourceImageView.setFitWidth(40);
@@ -117,7 +95,7 @@ public class ActivateProductionController implements SceneController {
                     resourceImageView.setOnMouseClicked(event1 -> resourceClick(entry.getKey(), basicProduction.getInput(), resourcePickerContainer, resourceImageView));
                     resourcePickerContainer.getChildren().add(resourceImageView);
                 }
-                popupContainer.getChildren().addAll(new Text("select input"),resourcePickerContainer);
+                popupContainer.getChildren().addAll(new Text("Select the " + (i == 0 ? "first" : "second") + " input resource"), resourcePickerContainer);
             }
             HBox outputPickerContainer = new HBox();
             for (Resource resource : Arrays.asList(Resource.COIN, Resource.SERVANT, Resource.SHIELD, Resource.STONE)) {
@@ -128,11 +106,11 @@ public class ActivateProductionController implements SceneController {
                 resourceImageView.setOnMouseClicked(event1 -> resourceClick(resource, basicProduction.getOutput(), outputPickerContainer, resourceImageView));
                 outputPickerContainer.getChildren().add(resourceImageView);
             }
-            popupContainer.getChildren().addAll(new Text("select output"), outputPickerContainer);
-            Button button = new Button("Confirm");
-            button.getStyleClass().add("flat-button");
-            button.setOnAction(this::confirmBasic);
-            popupContainer.getChildren().add(button);
+            popupContainer.getChildren().addAll(new Text("Select the output resource"), outputPickerContainer);
+            confirmBasicProductionButton = new Button("Confirm");
+            confirmBasicProductionButton.setOnAction(this::confirmBasic);
+            confirmBasicProductionButton.setDisable(true);
+            popupContainer.getChildren().add(confirmBasicProductionButton);
             gui.displayPopup(popupContainer);
         });
     }
@@ -146,6 +124,13 @@ public class ActivateProductionController implements SceneController {
                 }
                 imageView.setDisable(true);
             }
+            int count = 0;
+            for (int amount : basicProduction.getInput().values()) count += amount;
+            if (count != 2) return;
+            count = 0;
+            for (int amount : basicProduction.getOutput().values()) count += amount;
+            if (count != 1) return;
+            confirmBasicProductionButton.setDisable(false);
         });
     }
 
@@ -153,6 +138,10 @@ public class ActivateProductionController implements SceneController {
     void confirmBasic(ActionEvent event) {
         if (player.getPlayerBoard().canPayResources(basicProduction.getInput())) {
             player.getPlayerBoard().payResourceCost(basicProduction.getInput());
+            basicProductionContainer.setStyle("-fx-border-color: transparent transparent red transparent;" +
+                    "-fx-border-width: 2; -fx-border-style: solid inside;");
+            basicProductionContainer.setDisable(true);
+            basicProductionContainer.setCursor(Cursor.DEFAULT);
         } else {
             gui.displayError("You don't own the selected resources.");
         }
@@ -161,7 +150,17 @@ public class ActivateProductionController implements SceneController {
 
     @FXML
     void selectCardPower(int index) {
-        selectedCardPowers.add(index);
+        if (!selectedCardPowers.contains(index)
+                && player.getPlayerBoard().canPayResources(cardPowers.get(index).getInput())) {
+            selectedCardPowers.add(index);
+            player.getPlayerBoard().payResourceCost(cardPowers.get(index).getInput());
+            selectedCardPowersContainers.get(index)
+                    .setStyle("-fx-border-color: transparent transparent red transparent;" +
+                            "-fx-border-width: 2; -fx-border-style: solid inside;");
+            selectedCardPowersContainers.get(index).setDisable(true);
+        } else {
+            gui.displayError("You can't activate this production power.");
+        }
     }
 
     @FXML

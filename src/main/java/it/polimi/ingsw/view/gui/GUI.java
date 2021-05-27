@@ -160,6 +160,7 @@ public class GUI extends Application implements UI {
     public void displayPopup(Parent parent) {
         Platform.runLater(() -> {
             Scene scene = new Scene(parent);
+            popupStage.setAlwaysOnTop(true);
             popupStage.setScene(scene);
             popupStage.showAndWait();
         });

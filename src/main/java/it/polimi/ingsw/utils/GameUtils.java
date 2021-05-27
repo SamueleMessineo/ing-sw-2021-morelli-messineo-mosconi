@@ -4,17 +4,16 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.market.Marble;
-import it.polimi.ingsw.model.player.Player;
-import it.polimi.ingsw.model.shared.DevelopmentCard;
-import it.polimi.ingsw.model.shared.LeaderCard;
-import it.polimi.ingsw.model.shared.PopesFavorTileState;
-import it.polimi.ingsw.model.shared.Resource;
-import it.polimi.ingsw.server.Room;
+import it.polimi.ingsw.model.shared.*;
+import javafx.geometry.Pos;
 import javafx.scene.CacheHint;
-import javafx.scene.Node;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 
 import java.io.*;
 import java.security.InvalidParameterException;
@@ -265,5 +264,55 @@ public class GameUtils {
         imageView.setEffect(blackout);
         imageView.setCache(true);
         imageView.setCacheHint(CacheHint.SPEED);
+    }
+
+    public static AnchorPane buildProductionPowerBook(ProductionPower power) {
+        AnchorPane powerPane = new AnchorPane();
+        powerPane.setPrefSize(212,150);
+        Image bookImage = new Image(Objects.requireNonNull(GameUtils.class.getClassLoader()
+                .getResourceAsStream("images/board/production_book.png")));
+        ImageView bookImageView = new ImageView(bookImage);
+        bookImageView.setPreserveRatio(true);
+        bookImageView.setFitHeight(150);
+        bookImageView.setFitWidth(212);
+        bookImageView.setLayoutX(0);
+        bookImageView.setLayoutY(0);
+        powerPane.getChildren().add(bookImageView);
+        HBox singleCardPowerContainer = new HBox();
+        singleCardPowerContainer.setPrefSize(212,150);
+        singleCardPowerContainer.setAlignment(Pos.CENTER);
+        singleCardPowerContainer.setSpacing(60);
+        VBox inputContainer = new VBox();
+        inputContainer.setAlignment(Pos.CENTER);
+        for (Resource inputResource : power.getInput().keySet()) {
+            HBox singleResourceContainer = new HBox();
+            singleResourceContainer.setAlignment(Pos.CENTER);
+            singleResourceContainer.setSpacing(3);
+            ImageView resourceImageView = GameUtils.getImageView(inputResource);
+            resourceImageView.setFitWidth(35);
+            resourceImageView.setFitHeight(35);
+            singleResourceContainer.getChildren().addAll(
+                    new Text(power.getInput().get(inputResource).toString()), resourceImageView);
+            inputContainer.getChildren().add(singleResourceContainer);
+        }
+        singleCardPowerContainer.getChildren().add(inputContainer);
+        VBox outputContainer = new VBox();
+        outputContainer.setAlignment(Pos.CENTER);
+        for (Resource outputResource : power.getOutput().keySet()) {
+            HBox singleResourceContainer = new HBox();
+            singleResourceContainer.setAlignment(Pos.CENTER);
+            singleResourceContainer.setSpacing(3);
+            ImageView resourceImageView = GameUtils.getImageView(outputResource);
+            resourceImageView.setFitWidth(35);
+            resourceImageView.setFitHeight(35);
+            singleResourceContainer.getChildren().addAll(
+                    new Text(power.getOutput().get(outputResource).toString()), resourceImageView);
+            outputContainer.getChildren().add(singleResourceContainer);
+        }
+        singleCardPowerContainer.getChildren().add(outputContainer);
+        singleCardPowerContainer.setLayoutX(0);
+        singleCardPowerContainer.setLayoutY(0);
+        powerPane.getChildren().add(singleCardPowerContainer);
+        return powerPane;
     }
 }
