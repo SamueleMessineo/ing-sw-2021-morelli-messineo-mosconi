@@ -31,7 +31,7 @@ public class SelectStackToPlaceCardController implements SceneController{
                     cardImageView.setCursor(Cursor.HAND);
                     cardImageView.setFitWidth(400);
                     cardImageView.setFitHeight(195);
-                    cardImageView.setOnMouseClicked(MouseEvent -> sendSelectedStack(stackIndexes.indexOf(index)));
+                    cardImageView.setOnMouseClicked(MouseEvent -> sendSelectedStack(index));
                 }
 
                 stackList.getChildren().add(cardImageView);

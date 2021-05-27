@@ -251,7 +251,7 @@ public class GameMessageHandler {
             room.getCurrentTurn().setAlreadyPerformedMove(true);
             sendNextMoves();
         }else {
-            clientConnection.sendMessage(new StringMessage("Action Could not be completed"));
+            clientConnection.sendMessage(new ErrorMessage("Action Could not be completed"));
             sendNextMoves();
         }
 
