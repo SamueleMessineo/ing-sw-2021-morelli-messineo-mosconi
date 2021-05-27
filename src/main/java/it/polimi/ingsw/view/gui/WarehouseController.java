@@ -2,14 +2,15 @@ package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.model.player.Shelf;
 import it.polimi.ingsw.model.player.Warehouse;
-import it.polimi.ingsw.model.shared.LeaderCard;
 import it.polimi.ingsw.network.game.SelectMoveResponseMessage;
+import it.polimi.ingsw.network.game.SwitchShelvesResponseMessage;
 import it.polimi.ingsw.utils.GameUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Cursor;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -22,6 +23,7 @@ public class WarehouseController implements SceneController{
     private GUI gui;
     private Map<String, HBox> shelfContainerMap;
     private List<String> selected;
+    private Button confirmButton;
     @FXML
     private VBox container;
 
@@ -106,12 +108,22 @@ public class WarehouseController implements SceneController{
             shelfContainerMap.get(shelfName).setOnMouseClicked(event -> select(shelfName));
             shelfContainerMap.get(shelfName).setCursor(Cursor.HAND);
         }
+        container.getChildren().remove(buttonsContainer);
+        confirmButton = new Button("Confirm");
+        confirmButton.getStyleClass().add("flat-button");
+        confirmButton.setOnAction(event -> confirm());
+        confirmButton.setDisable(true);
+        HBox newButtonContainer = new HBox();
+        newButtonContainer.setAlignment(Pos.CENTER);
+        newButtonContainer.getChildren().add(confirmButton);
+        container.getChildren().add(newButtonContainer);
     }
 
     void select(String shelfName) {
         if (selected.contains(shelfName)) {
             selected.remove(shelfName);
             shelfContainerMap.get(shelfName).setStyle("");
+            confirmButton.setDisable(true);
         } else {
             if (selected.size() > 1) {
                 shelfContainerMap.get(selected.get(0)).setStyle("");
@@ -120,7 +132,14 @@ public class WarehouseController implements SceneController{
             selected.add(shelfName);
             shelfContainerMap.get(shelfName).setStyle("-fx-border-color: red;" +
                     "-fx-border-width: 2; -fx-border-style: solid inside;");
+            if (selected.size() == 2) confirmButton.setDisable(false);
         }
+    }
+
+    @FXML
+    void confirm() {
+        if (selected.size() == 2)
+            gui.getClient().sendMessage(new SwitchShelvesResponseMessage(selected.get(0), selected.get(1)));
     }
 
     @Override
