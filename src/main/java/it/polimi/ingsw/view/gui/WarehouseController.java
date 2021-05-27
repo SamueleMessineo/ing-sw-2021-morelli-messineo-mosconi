@@ -3,11 +3,13 @@ package it.polimi.ingsw.view.gui;
 import it.polimi.ingsw.model.player.Shelf;
 import it.polimi.ingsw.model.player.Warehouse;
 import it.polimi.ingsw.model.shared.LeaderCard;
+import it.polimi.ingsw.network.game.SelectMoveResponseMessage;
 import it.polimi.ingsw.utils.GameUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -19,6 +21,7 @@ import java.util.*;
 public class WarehouseController implements SceneController{
     private GUI gui;
     private Map<String, HBox> shelfContainerMap;
+    private List<String> selected;
     @FXML
     private VBox container;
 
@@ -71,6 +74,7 @@ public class WarehouseController implements SceneController{
                     resourceImageView.setFitHeight(40);
                     extraShelfResourcesContainer.getChildren().add(resourceImageView);
                 }
+                shelfContainerMap.put(shelfName, extraShelfResourcesContainer);
                 extraShelfOuterContainer.getChildren().add(extraShelfResourcesContainer);
                 extraShelvesContainer.getChildren().add(extraShelfOuterContainer);
             }
@@ -89,6 +93,34 @@ public class WarehouseController implements SceneController{
         warehouseContainer.setSpacing(36);
         warehouseContainer.setAlignment(Pos.CENTER);
         container.getChildren().addAll(warehouseContainer, buttonsContainer);
+    }
+
+    @FXML
+    void requestSwitch(ActionEvent event) {
+        gui.getClient().sendMessage(new SelectMoveResponseMessage("SWITCH_SHELVES"));
+    }
+
+    void allowSwitch(List<String> shelves) {
+        selected = new ArrayList<>();
+        for (String shelfName : shelves) {
+            shelfContainerMap.get(shelfName).setOnMouseClicked(event -> select(shelfName));
+            shelfContainerMap.get(shelfName).setCursor(Cursor.HAND);
+        }
+    }
+
+    void select(String shelfName) {
+        if (selected.contains(shelfName)) {
+            selected.remove(shelfName);
+            shelfContainerMap.get(shelfName).setStyle("");
+        } else {
+            if (selected.size() > 1) {
+                shelfContainerMap.get(selected.get(0)).setStyle("");
+                selected.remove(0);
+            }
+            selected.add(shelfName);
+            shelfContainerMap.get(shelfName).setStyle("-fx-border-color: red;" +
+                    "-fx-border-width: 2; -fx-border-style: solid inside;");
+        }
     }
 
     @Override

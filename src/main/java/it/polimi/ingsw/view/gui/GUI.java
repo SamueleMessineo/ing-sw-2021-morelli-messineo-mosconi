@@ -252,7 +252,8 @@ public class GUI extends Application implements UI {
 
     @Override
     public void switchShelves(ArrayList<String> shelves) {
-
+        ((WarehouseController) controllerMap.get("warehouse")).allowSwitch(shelves);
+        setScene("warehouse");
     }
 
     @Override
