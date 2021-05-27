@@ -358,20 +358,9 @@ public class ClassicGameController {
     }
 
     public Map<String, Integer> computeStanding() {
-        Map<String, Integer> standing = new HashMap<>();
+        Map<String, Integer> standing = new LinkedHashMap<>();
         List<Player> standingList = new ArrayList<>(game.getPlayers());
-
-        /*
-        standingList.add(game.getPlayers().get(0));
-        for (Player player:
-                game.getPlayers()) {
-            if(player.getVP() >= standingList.get(0).getVP())standingList.add(0,player);
-
-        }
-
-         */
-
-        standingList.sort(Comparator.comparingInt(Player::getVP));
+        standingList.sort((o1, o2) -> o2.getVP() - o1.getVP());
 
         int points;
         for (Player player:
@@ -379,7 +368,6 @@ public class ClassicGameController {
              points = player.getVP();
              standing.put(player.getUsername(), points);
         }
-
         return standing;
     }
 
@@ -391,6 +379,7 @@ public class ClassicGameController {
                 game.getPlayers()) {
             if(player.getVP() >= points){
                 winner=player.getUsername();
+                points = player.getVP();
             }
         }
         return winner;
