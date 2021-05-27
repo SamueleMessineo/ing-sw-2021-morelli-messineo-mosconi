@@ -154,12 +154,30 @@ public class GameBoardController implements SceneController {
                         }
                         normalShelvesContainer.getChildren().add(shelfResourcesContainer);
                     }else {
+                        AnchorPane extraShelfOuterContainer = new AnchorPane();
                         Image extraShelfImage = new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(
                                 "images/board/extra_" + shelf.getResourceType().name().toLowerCase() + ".png")));
                         ImageView extraShelfImageView = new ImageView(extraShelfImage);
                         extraShelfImageView.setPreserveRatio(true);
                         extraShelfImageView.setFitWidth(135);
-                        extraShelvesContainer.getChildren().add(extraShelfImageView);
+                        extraShelfOuterContainer.setPrefSize(135, 60);
+                        extraShelfOuterContainer.getChildren().add(extraShelfImageView);
+                        HBox extraShelfResourcesContainer = new HBox();
+                        extraShelfResourcesContainer.setPrefSize(
+                                extraShelfOuterContainer.getPrefWidth(), extraShelfOuterContainer.getPrefHeight());
+                        extraShelfResourcesContainer.setLayoutX(0);
+                        extraShelfResourcesContainer.setLayoutY(0);
+                        extraShelfResourcesContainer.setPadding(new Insets(0, 0, 0, 15));
+                        extraShelfResourcesContainer.setSpacing(25);
+                        extraShelfResourcesContainer.setAlignment(Pos.CENTER_LEFT);
+                        for (int i = 0; i < shelf.getResourceNumber(); i++) {
+                            ImageView resourceImageView = GameUtils.getImageView(shelf.getResourceType());
+                            resourceImageView.setFitWidth(40);
+                            resourceImageView.setFitHeight(40);
+                            extraShelfResourcesContainer.getChildren().add(resourceImageView);
+                        }
+                        extraShelfOuterContainer.getChildren().add(extraShelfResourcesContainer);
+                        extraShelvesContainer.getChildren().add(extraShelfOuterContainer);
                     }
                 }
 
