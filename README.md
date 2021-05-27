@@ -16,7 +16,7 @@ Final project for the Software Engineering course at Polytechnic of Milan, 2021.
 |Complete rules|✔️|
 |Server|✔️|
 |CLI|✔️|
-|GUI|✖️|
+|GUI|✔️|
 |Persistence|✖️|
 |Parameter editor|✖️|
 |Offline games|✔️|
