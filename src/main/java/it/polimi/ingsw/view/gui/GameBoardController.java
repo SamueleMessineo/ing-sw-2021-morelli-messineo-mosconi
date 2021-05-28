@@ -16,12 +16,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.CacheHint;
 import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.effect.ColorAdjust;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -39,11 +37,11 @@ import java.util.*;
 public class GameBoardController implements SceneController {
     private GUI gui;
     private Game gameState;
-    @FXML
-    private HBox leadersContainer;
     private AnchorPane cardStacksContainer;
     private AnchorPane basicProductionContainer;
     private HBox warehouseContainer;
+    @FXML
+    private HBox leadersContainer;
     @FXML
     private VBox marblesContainer;
     @FXML
@@ -54,7 +52,8 @@ public class GameBoardController implements SceneController {
     private Text playerInfo;
     @FXML
     private Button endTurnButton;
-
+    @FXML
+    private Tab settingsTab;
 
     @FXML
     void hide(MouseEvent event) {
@@ -80,8 +79,14 @@ public class GameBoardController implements SceneController {
                 e.printStackTrace();
                 return;
             }
+            // display the cards grid
             ((CardsGridController) cardsLoader.getController()).setCards(gameState.getMarket().getCardsGrid());
             cardsContainer.getChildren().add(cardsGrid);
+            // display the marbles
+            ((MarblesGridController) marblesLoader.getController()).setMarbles(
+                    gameState.getMarket().getMarbleStructure().getMarbles(),
+                    gameState.getMarket().getMarbleStructure().getExtraMarble());
+            marblesContainer.getChildren().add(marblesGrid);
             // populate player tabs
             tabPane.getTabs().clear();
             for (Player p : gameState.getPlayers()) {
@@ -331,30 +336,12 @@ public class GameBoardController implements SceneController {
                 playerTab.setContent(tabContainer);
                 tabPane.getTabs().add(playerTab);
             }
-            // display the marbles
-            ((MarblesGridController) marblesLoader.getController()).setMarbles(
-                    gameState.getMarket().getMarbleStructure().getMarbles(),
-                    gameState.getMarket().getMarbleStructure().getExtraMarble());
-            marblesContainer.getChildren().add(marblesGrid);
+            tabPane.getTabs().add(settingsTab);
         });
     }
 
     public void displayPossibleMoves(List<String> moves) {
-        GameUtils.debug("displaying" + moves.toString());
         Platform.runLater(() -> {
-            String possibleMoveStyle =
-                    "-fx-border-style: solid inside;" +
-                    "-fx-border-width: 3;" +
-                    "-fx-border-radius: 15;" +
-                    "-fx-border-color: red;" +
-                    "-fx-cursor: hand;";
-            marblesContainer.setStyle("");
-            cardsContainer.setStyle("");
-            leadersContainer.setStyle("");
-            cardStacksContainer.setStyle("");
-            warehouseContainer.setStyle("");
-            basicProductionContainer.setStyle("");
-
             DropShadow borderGlow = new DropShadow();
             borderGlow.setColor(Color.rgb(255, 255, 0, 0.7));
             borderGlow.setOffsetX(0f);
@@ -379,45 +366,38 @@ public class GameBoardController implements SceneController {
             timeline.setAutoReverse(true);
             timeline.setCycleCount(Timeline.INDEFINITE);
             timeline.play();
+            endTurnButton.setDisable(true);
             marblesContainer.setEffect(null);
             cardsContainer.setEffect(null);
-            endTurnButton.setDisable(true);
             leadersContainer.setEffect(null);
             cardStacksContainer.setEffect(null);
             warehouseContainer.setEffect(null);
             basicProductionContainer.setEffect(null);
 
             if (moves.contains("GET_MARBLES")) {
-//                marblesContainer.setStyle(possibleMoveStyle);
                 marblesContainer.setEffect(borderGlow);
             }
             if (moves.contains("BUY_CARD")) {
-//                cardsContainer.setStyle(possibleMoveStyle);
                 cardsContainer.setEffect(borderGlow);
             }
             if (moves.contains("DROP_LEADER") || moves.contains("PLAY_LEADER")) {
-//                leadersContainer.setStyle(possibleMoveStyle);
                 leadersContainer.setEffect(borderGlow);
             }
             if (moves.contains("ACTIVATE_PRODUCTION")) {
                 if (gameState.getPlayerByUsername(gui.getUsername()).canActivateBasicProduction()) {
-//                    basicProductionContainer.setStyle(possibleMoveStyle);
                     basicProductionContainer.setEffect(borderGlow);
                 }
                 if (gameState.getPlayerByUsername(gui.getUsername()).canActivateProduction()) {
-//                    cardStacksContainer.setStyle(possibleMoveStyle);
                     cardStacksContainer.setEffect(borderGlow);
                 }
             }
             if (moves.contains("SWITCH_SHELVES")) {
-//                warehouseContainer.setStyle(possibleMoveStyle);
                 warehouseContainer.setEffect(borderGlow);
             }
             if (moves.contains("END_TURN")) {
                 endTurnButton.setDisable(false);
             }
         });
-        GameUtils.debug("ended");
     }
 
     @FXML
@@ -467,6 +447,11 @@ public class GameBoardController implements SceneController {
         ResourceManager.playClickSound();
         gui.getClient().sendMessage(new SelectMoveResponseMessage("END_TURN"));
         if(gameState.getPlayers().size()!=1)displayPossibleMoves(new ArrayList<>());
+    }
+
+    @FXML
+    void toggleSound(ActionEvent event) {
+        ResourceManager.toggleSound();
     }
 
     @Override

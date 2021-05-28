@@ -25,6 +25,11 @@ public class ResourceManager {
         });
     }
 
+    public static void toggleSound() {
+        mediaPlayer.setMute(!mediaPlayer.isMute());
+        buttonClickSound.setVolume(buttonClickSound.getVolume() == 0 ? 0.05 : 0);
+    }
+
     public static void playClickSound() {
         if (buttonClickSound == null) {
             buttonClickSound = new AudioClip(Objects.requireNonNull(ResourceManager.class.getClassLoader()

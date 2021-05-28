@@ -138,9 +138,21 @@
                   </AnchorPane>
             </content>
           </Tab>
-          <Tab text="Bruno - 5 points">
+          <Tab fx:id="settingsTab" text="Settings">
             <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <ImageView fitHeight="707.0" fitWidth="1231.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/blue-background.png" />
+                           </image>
+                        </ImageView>
+                        <VBox alignment="CENTER" prefHeight="690.0" prefWidth="843.0" spacing="20.0">
+                           <children>
+                              <Button mnemonicParsing="false" onAction="#toggleSound" styleClass="flat-button" text="Toggle sound" />
+                           </children>
+                        </VBox>
+                     </children></AnchorPane>
             </content>
           </Tab>
         </tabs>
