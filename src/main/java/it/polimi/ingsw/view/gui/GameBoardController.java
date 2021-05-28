@@ -6,6 +6,9 @@ import it.polimi.ingsw.model.player.Shelf;
 import it.polimi.ingsw.model.shared.*;
 import it.polimi.ingsw.network.game.SelectMoveResponseMessage;
 import it.polimi.ingsw.utils.GameUtils;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -27,6 +30,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.util.Duration;
 
 import java.io.IOException;
 import java.util.*;
@@ -349,26 +353,64 @@ public class GameBoardController implements SceneController {
             cardStacksContainer.setStyle("");
             warehouseContainer.setStyle("");
             basicProductionContainer.setStyle("");
+
+            DropShadow borderGlow = new DropShadow();
+            borderGlow.setColor(Color.rgb(255, 255, 0, 0.7));
+            borderGlow.setOffsetX(0f);
+            borderGlow.setOffsetY(0f);
+            borderGlow.setHeight(90);
+            borderGlow.setWidth(90);
+            Timeline timeline = new Timeline();
+            timeline.getKeyFrames().setAll(
+                    new KeyFrame(Duration.ZERO,
+                            new KeyValue(borderGlow.heightProperty(), 0),
+                            new KeyValue(borderGlow.widthProperty(), 0)
+                    ),
+                    new KeyFrame(Duration.millis(1000),
+                            new KeyValue(borderGlow.heightProperty(), 40),
+                            new KeyValue(borderGlow.widthProperty(), 40)
+                    ),
+                    new KeyFrame(Duration.millis(1500),
+                            new KeyValue(borderGlow.heightProperty(), 50),
+                            new KeyValue(borderGlow.widthProperty(), 50)
+                    )
+            );
+            timeline.setAutoReverse(true);
+            timeline.setCycleCount(Timeline.INDEFINITE);
+            timeline.play();
+            marblesContainer.setEffect(null);
+            cardsContainer.setEffect(null);
             endTurnButton.setDisable(true);
+            leadersContainer.setEffect(null);
+            cardStacksContainer.setEffect(null);
+            warehouseContainer.setEffect(null);
+            basicProductionContainer.setEffect(null);
+
             if (moves.contains("GET_MARBLES")) {
-                marblesContainer.setStyle(possibleMoveStyle);
+//                marblesContainer.setStyle(possibleMoveStyle);
+                marblesContainer.setEffect(borderGlow);
             }
             if (moves.contains("BUY_CARD")) {
-                cardsContainer.setStyle(possibleMoveStyle);
+//                cardsContainer.setStyle(possibleMoveStyle);
+                cardsContainer.setEffect(borderGlow);
             }
             if (moves.contains("DROP_LEADER") || moves.contains("PLAY_LEADER")) {
-                leadersContainer.setStyle(possibleMoveStyle);
+//                leadersContainer.setStyle(possibleMoveStyle);
+                leadersContainer.setEffect(borderGlow);
             }
             if (moves.contains("ACTIVATE_PRODUCTION")) {
                 if (gameState.getPlayerByUsername(gui.getUsername()).canActivateBasicProduction()) {
-                    basicProductionContainer.setStyle(possibleMoveStyle);
+//                    basicProductionContainer.setStyle(possibleMoveStyle);
+                    basicProductionContainer.setEffect(borderGlow);
                 }
                 if (gameState.getPlayerByUsername(gui.getUsername()).canActivateProduction()) {
-                    cardStacksContainer.setStyle(possibleMoveStyle);
+//                    cardStacksContainer.setStyle(possibleMoveStyle);
+                    cardStacksContainer.setEffect(borderGlow);
                 }
             }
             if (moves.contains("SWITCH_SHELVES")) {
-                warehouseContainer.setStyle(possibleMoveStyle);
+//                warehouseContainer.setStyle(possibleMoveStyle);
+                warehouseContainer.setEffect(borderGlow);
             }
             if (moves.contains("END_TURN")) {
                 endTurnButton.setDisable(false);

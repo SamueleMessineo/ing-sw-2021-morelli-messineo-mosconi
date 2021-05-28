@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.utils.GameUtils;
+import it.polimi.ingsw.utils.ResourceManager;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -20,13 +21,13 @@ public class OfflineInfoController implements SceneController{
     }
 
     public void confirm(ActionEvent actionEvent) {
+        ResourceManager.playClickSound();
         Platform.runLater(() -> {
-        username = usernameInput.getText();
-        gui.setUsername(username);
-        GameUtils.debug(username);
-        if(username!= null)
-            gui.initializeClient(false);
-
+            username = usernameInput.getText();
+            gui.setUsername(username);
+            GameUtils.debug(username);
+            if(username!= null)
+                gui.initializeClient(false);
         });
     }
 

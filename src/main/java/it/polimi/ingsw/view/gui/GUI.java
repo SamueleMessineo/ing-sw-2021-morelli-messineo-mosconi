@@ -9,6 +9,7 @@ import it.polimi.ingsw.model.shared.LeaderCard;
 import it.polimi.ingsw.model.shared.ProductionPower;
 import it.polimi.ingsw.model.shared.Resource;
 import it.polimi.ingsw.utils.GameUtils;
+import it.polimi.ingsw.utils.ResourceManager;
 import it.polimi.ingsw.view.UI;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -33,8 +34,8 @@ import java.util.*;
 
 public class GUI extends Application implements UI {
     private Stage stage;
-    private final Map<String, Scene> sceneMap = new HashMap<>();
-    private final Map<String, SceneController> controllerMap = new HashMap<>();
+    private Map<String, Scene> sceneMap;
+    private Map<String, SceneController> controllerMap;
     private Client client;
     private Game gameState;
     private String username;
@@ -45,8 +46,17 @@ public class GUI extends Application implements UI {
         this.username = username;
     }
 
+    public Stage getStage() {
+        return stage;
+    }
+
     @Override
     public void start(Stage stage) throws Exception {
+        username = null;
+        gameState = null;
+        client = null;
+        sceneMap = new HashMap<>();
+        controllerMap = new HashMap<>();
         loadScenes();
         this.stage = stage;
         this.stage.setTitle("Masters of Renaissance");
@@ -54,7 +64,7 @@ public class GUI extends Application implements UI {
         popupStage = new Stage();
         popupStage.initOwner(stage);
         popupStage.initModality(Modality.APPLICATION_MODAL);
-        //setMusic();
+        ResourceManager.playBackgroundMusic();
         setScene("online-offline");
 
         Image logo = new Image(Objects.requireNonNull(getClass().getClassLoader()
@@ -137,19 +147,6 @@ public class GUI extends Application implements UI {
         }
     }
 
-    private void setMusic() {
-        Media backgroundMusic = new Media(Objects.requireNonNull(getClass().getClassLoader().getResource(
-                "music/bg.mp3"
-        )).toExternalForm());
-        mediaPlayer = new MediaPlayer(backgroundMusic);
-        mediaPlayer.setAutoPlay(true);
-        mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
-        mediaPlayer.setVolume(1);
-        mediaPlayer.setOnEndOfMedia(() -> {
-            mediaPlayer.seek(Duration.ZERO);
-            mediaPlayer.play();
-        });
-    }
 
     @Override
     public void displayRoomDetails(ArrayList<String> players, int playersNum, int RoomId) {
