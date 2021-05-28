@@ -3,6 +3,7 @@ package it.polimi.ingsw.view.gui;
 import it.polimi.ingsw.model.market.MarketCardStack;
 import it.polimi.ingsw.model.shared.DevelopmentCard;
 import it.polimi.ingsw.utils.GameUtils;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
@@ -17,7 +18,7 @@ public class CardsGridController implements SceneController {
     private GridPane grid;
 
     public void setCards(List<MarketCardStack> cardStacks) {
-        try {
+        Platform.runLater(() -> {
             grid.getChildren().clear();
             for (MarketCardStack stack : cardStacks) {
                 if (!stack.isEmpty()) {
@@ -27,14 +28,12 @@ public class CardsGridController implements SceneController {
                     cardImageView.setFitHeight(95);
                     GridPane.setValignment(cardImageView, VPos.CENTER);
                     GridPane.setHalignment(cardImageView, HPos.CENTER);
-                    int cardX = (cardStacks.indexOf(stack))/4;
+                    int cardX = (cardStacks.indexOf(stack)) / 4;
                     int cardY = (cardStacks.indexOf(stack) % 4);
                     grid.add(cardImageView, cardY, cardX);
                 }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        });
     }
 
     @Override

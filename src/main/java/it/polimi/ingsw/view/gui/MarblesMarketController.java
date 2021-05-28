@@ -3,6 +3,7 @@ package it.polimi.ingsw.view.gui;
 import it.polimi.ingsw.model.market.Marble;
 import it.polimi.ingsw.network.game.SelectMarblesResponseMessage;
 import it.polimi.ingsw.network.game.SelectMoveResponseMessage;
+import it.polimi.ingsw.utils.ResourceManager;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -92,17 +93,20 @@ public class MarblesMarketController implements SceneController{
     }
 
     private void selectRowOrColumn(String rowOrColumn, int index) {
+        ResourceManager.playClickSound();
         System.out.println("selected " + rowOrColumn + " number " + index);
         gui.getClient().sendMessage(new SelectMarblesResponseMessage(rowOrColumn, index-1));
     }
 
     @FXML
     void cancel(ActionEvent event) {
+        ResourceManager.playClickSound();
         gui.setScene("game-board");
     }
 
     @FXML
     void getMarbles(ActionEvent event) {
+        ResourceManager.playClickSound();
         gui.getClient().sendMessage(new SelectMoveResponseMessage("GET_MARBLES"));
     }
 

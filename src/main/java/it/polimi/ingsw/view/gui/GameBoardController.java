@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.player.Shelf;
 import it.polimi.ingsw.model.shared.*;
 import it.polimi.ingsw.network.game.SelectMoveResponseMessage;
 import it.polimi.ingsw.utils.GameUtils;
+import it.polimi.ingsw.utils.ResourceManager;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
@@ -421,12 +422,14 @@ public class GameBoardController implements SceneController {
 
     @FXML
     void viewCardMarket(MouseEvent event) {
+        ResourceManager.playClickSound();
         ((CardsMarketController)gui.getSceneController("cards-market")).load(gameState.getMarket().getCardsGrid());
         gui.setScene("cards-market");
     }
 
     @FXML
     void viewMarbles(MouseEvent event) {
+        ResourceManager.playClickSound();
         ((MarblesMarketController)gui.getSceneController("marbles-market")).load(
                 gameState.getMarket().getMarbleStructure().getMarbles(),
                 gameState.getMarket().getMarbleStructure().getExtraMarble());
@@ -435,6 +438,7 @@ public class GameBoardController implements SceneController {
 
     @FXML
     void viewLeaders(MouseEvent event) {
+        ResourceManager.playClickSound();
         List<LeaderCard> allLeaders = new ArrayList<>();
         allLeaders.addAll(gameState.getPlayerByUsername(gui.getUsername()).getLeaderCards());
         allLeaders.addAll(gameState.getPlayerByUsername(gui.getUsername()).getPlayedLeaderCards());
@@ -444,12 +448,14 @@ public class GameBoardController implements SceneController {
 
     @FXML
     void viewWarehouse(MouseEvent event) {
+        ResourceManager.playClickSound();
         ((WarehouseController) gui.getSceneController("warehouse")).load(gameState.getPlayerByUsername(gui.getUsername()).getPlayerBoard().getWarehouse());
         gui.setScene("warehouse");
     }
 
     @FXML
     void viewCardsAndProductions(MouseEvent event) {
+        ResourceManager.playClickSound();
         ((CardsProductionController)gui.getSceneController("cards-production")).display(
                 gameState.getPlayerByUsername(gui.getUsername()).getPlayerBoard().getCardStacks()
         );
@@ -458,6 +464,7 @@ public class GameBoardController implements SceneController {
 
     @FXML
     void endTurn(ActionEvent event) {
+        ResourceManager.playClickSound();
         gui.getClient().sendMessage(new SelectMoveResponseMessage("END_TURN"));
         if(gameState.getPlayers().size()!=1)displayPossibleMoves(new ArrayList<>());
     }

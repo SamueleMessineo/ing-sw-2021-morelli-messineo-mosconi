@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.gui;
 
+import it.polimi.ingsw.utils.ResourceManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
@@ -24,6 +25,7 @@ public class ConnectController implements SceneController {
 
     @FXML
     void connect(ActionEvent event) {
+        ResourceManager.playClickSound();
         try {
             String ip;
             int port;

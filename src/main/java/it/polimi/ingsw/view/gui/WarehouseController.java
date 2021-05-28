@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.player.Warehouse;
 import it.polimi.ingsw.network.game.SelectMoveResponseMessage;
 import it.polimi.ingsw.network.game.SwitchShelvesResponseMessage;
 import it.polimi.ingsw.utils.GameUtils;
+import it.polimi.ingsw.utils.ResourceManager;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -102,6 +103,7 @@ public class WarehouseController implements SceneController{
 
     @FXML
     void requestSwitch(ActionEvent event) {
+        ResourceManager.playClickSound();
         gui.getClient().sendMessage(new SelectMoveResponseMessage("SWITCH_SHELVES"));
     }
 
@@ -126,6 +128,7 @@ public class WarehouseController implements SceneController{
 
     void select(String shelfName) {
         Platform.runLater(() -> {
+            ResourceManager.playClickSound();
             if (selected.contains(shelfName)) {
                 selected.remove(shelfName);
                 shelfContainerMap.get(shelfName).setStyle("");
@@ -145,6 +148,7 @@ public class WarehouseController implements SceneController{
 
     @FXML
     void confirm() {
+        ResourceManager.playClickSound();
         if (selected.size() == 2)
             gui.getClient().sendMessage(new SwitchShelvesResponseMessage(selected.get(0), selected.get(1)));
     }
@@ -155,6 +159,7 @@ public class WarehouseController implements SceneController{
     }
 
     public void cancel(ActionEvent actionEvent) {
+        ResourceManager.playClickSound();
         gui.setScene("game-board");
     }
 }

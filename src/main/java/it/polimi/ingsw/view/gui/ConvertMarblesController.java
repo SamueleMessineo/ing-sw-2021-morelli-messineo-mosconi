@@ -3,6 +3,7 @@ package it.polimi.ingsw.view.gui;
 import it.polimi.ingsw.model.shared.Resource;
 import it.polimi.ingsw.network.game.SelectResourceForWhiteMarbleResponseMessage;
 import it.polimi.ingsw.utils.GameUtils;
+import it.polimi.ingsw.utils.ResourceManager;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -76,6 +77,7 @@ public class ConvertMarblesController implements SceneController {
 
     void selectResource(int number, Resource option) {
         Platform.runLater(() -> {
+            ResourceManager.playClickSound();
             Resource lastSelected = selectedConversions.get(number);
             if (lastSelected != null) {
                 ColorAdjust bw = new ColorAdjust();
@@ -96,6 +98,7 @@ public class ConvertMarblesController implements SceneController {
 
     @FXML
     void convert(ActionEvent event) {
+        ResourceManager.playClickSound();
         Map<Resource, Integer> conversion = new HashMap<>();
         for (Resource resource : selectedConversions) {
             GameUtils.incrementValueInResourceMap(conversion, resource, 1);

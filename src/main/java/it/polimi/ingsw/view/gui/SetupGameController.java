@@ -4,6 +4,8 @@ import it.polimi.ingsw.client.Client;
 import it.polimi.ingsw.network.setup.CreateRoomMessage;
 import it.polimi.ingsw.network.setup.JoinPrivateRoomMessage;
 import it.polimi.ingsw.network.setup.JoinPublicRoomMessage;
+import it.polimi.ingsw.utils.ResourceManager;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -34,77 +36,89 @@ public class SetupGameController implements SceneController{
 
     @FXML
     void start(ActionEvent event) {
-        Client client = gui.getClient();
-        String username = usernameInput.getText();
-        gui.setUsername(username);
-        form.getChildren().remove(errorMessage);
-        switch (view) {
-            case "CREATE":
-                try {
-                    int playerNumber = Integer.parseInt(playerNumberInput.getText());
-                    boolean privateGame = privateCheckbox.isSelected();
-                    client.sendMessage(new CreateRoomMessage(privateGame, playerNumber, username));
-                } catch (NumberFormatException e) {
-                    errorMessage.setText("The number of players is invalid.");
-                    form.getChildren().add(errorMessage);
-                }
-                break;
-            case "PUBLIC":
-                try {
-                    int playerNumber = Integer.parseInt(playerNumberInput.getText());
-                    client.sendMessage(new JoinPublicRoomMessage(playerNumber, username));
-                } catch (NumberFormatException e) {
-                    errorMessage.setText("The number of players is invalid");
-                    form.getChildren().add(errorMessage);
-                }
-                break;
-            case "PRIVATE":
-                try {
-                    int roomID = Integer.parseInt(roomIDInput.getText());
-                    if (roomID < 1000 || roomID > 9999) throw new NumberFormatException();
-                    client.sendMessage(new JoinPrivateRoomMessage(roomID, username));
-                } catch (NumberFormatException e) {
-                    errorMessage.setText("The room ID is invalid, enter a number between 1000 and 9999");
-                    form.getChildren().add(errorMessage);
-                }
-                break;
-        }
+        Platform.runLater(() -> {
+            ResourceManager.playClickSound();
+            Client client = gui.getClient();
+            String username = usernameInput.getText();
+            gui.setUsername(username);
+            form.getChildren().remove(errorMessage);
+            switch (view) {
+                case "CREATE":
+                    try {
+                        int playerNumber = Integer.parseInt(playerNumberInput.getText());
+                        boolean privateGame = privateCheckbox.isSelected();
+                        client.sendMessage(new CreateRoomMessage(privateGame, playerNumber, username));
+                    } catch (NumberFormatException e) {
+                        errorMessage.setText("The number of players is invalid.");
+                        form.getChildren().add(errorMessage);
+                    }
+                    break;
+                case "PUBLIC":
+                    try {
+                        int playerNumber = Integer.parseInt(playerNumberInput.getText());
+                        client.sendMessage(new JoinPublicRoomMessage(playerNumber, username));
+                    } catch (NumberFormatException e) {
+                        errorMessage.setText("The number of players is invalid");
+                        form.getChildren().add(errorMessage);
+                    }
+                    break;
+                case "PRIVATE":
+                    try {
+                        int roomID = Integer.parseInt(roomIDInput.getText());
+                        if (roomID < 1000 || roomID > 9999) throw new NumberFormatException();
+                        client.sendMessage(new JoinPrivateRoomMessage(roomID, username));
+                    } catch (NumberFormatException e) {
+                        errorMessage.setText("The room ID is invalid, enter a number between 1000 and 9999");
+                        form.getChildren().add(errorMessage);
+                    }
+                    break;
+            }
+        });
     }
 
     @FXML
     void createGame(ActionEvent event) {
-        startButton.setVisible(true);
-        view = "CREATE";
-        form.getChildren().clear();
-        Text text = new Text("Create a room");
-        text.getStyleClass().add("light-text");
-        text.setFont(Font.font("System", FontWeight.BLACK, 18));
-        form.getChildren().addAll(Arrays.asList(text,
-                usernameLabel, usernameInput, playerNumberLabel, playerNumberInput, privateCheckbox));
+        Platform.runLater(() -> {
+            ResourceManager.playClickSound();
+            startButton.setVisible(true);
+            view = "CREATE";
+            form.getChildren().clear();
+            Text text = new Text("Create a room");
+            text.getStyleClass().add("light-text");
+            text.setFont(Font.font("System", FontWeight.BLACK, 18));
+            form.getChildren().addAll(Arrays.asList(text,
+                    usernameLabel, usernameInput, playerNumberLabel, playerNumberInput, privateCheckbox));
+        });
     }
 
     @FXML
     void joinPrivate(ActionEvent event) {
-        startButton.setVisible(true);
-        view = "PRIVATE";
-        form.getChildren().clear();
-        Text text = new Text("Join a private room");
-        text.getStyleClass().add("light-text");
-        text.setFont(Font.font("System", FontWeight.BLACK, 18));
-        form.getChildren().addAll(Arrays.asList(
-                text, usernameLabel, usernameInput, roomIDLabel, roomIDInput));
+        Platform.runLater(() -> {
+            ResourceManager.playClickSound();
+            startButton.setVisible(true);
+            view = "PRIVATE";
+            form.getChildren().clear();
+            Text text = new Text("Join a private room");
+            text.getStyleClass().add("light-text");
+            text.setFont(Font.font("System", FontWeight.BLACK, 18));
+            form.getChildren().addAll(Arrays.asList(
+                    text, usernameLabel, usernameInput, roomIDLabel, roomIDInput));
+        });
     }
 
     @FXML
     void joinPublic(ActionEvent event) {
-        startButton.setVisible(true);
-        view = "PUBLIC";
-        form.getChildren().clear();
-        Text text = new Text("Join a public room");
-        text.getStyleClass().add("light-text");
-        text.setFont(Font.font("System", FontWeight.BLACK, 18));
-        form.getChildren().addAll(Arrays.asList(text,
-                usernameLabel, usernameInput, playerNumberLabel, playerNumberInput));
+        Platform.runLater(() -> {
+            ResourceManager.playClickSound();
+            startButton.setVisible(true);
+            view = "PUBLIC";
+            form.getChildren().clear();
+            Text text = new Text("Join a public room");
+            text.getStyleClass().add("light-text");
+            text.setFont(Font.font("System", FontWeight.BLACK, 18));
+            form.getChildren().addAll(Arrays.asList(text,
+                    usernameLabel, usernameInput, playerNumberLabel, playerNumberInput));
+        });
     }
     @Override
     public void setGUI(GUI gui) {

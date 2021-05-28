@@ -12,6 +12,7 @@ public class ResourceManager {
     private static AudioClip buttonClickSound = null;
 
     public static void playBackgroundMusic() {
+        if (mediaPlayer != null) mediaPlayer.stop();
         Media backgroundMusic = new Media(Objects.requireNonNull(ResourceManager.class.getClassLoader()
                 .getResource("music/bg.mp3")).toExternalForm());
         mediaPlayer = new MediaPlayer(backgroundMusic);

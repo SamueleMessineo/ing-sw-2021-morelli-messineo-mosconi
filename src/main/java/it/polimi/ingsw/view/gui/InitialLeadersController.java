@@ -3,6 +3,7 @@ package it.polimi.ingsw.view.gui;
 import it.polimi.ingsw.model.shared.LeaderCard;
 import it.polimi.ingsw.network.game.DropInitialLeaderCardsResponseMessage;
 import it.polimi.ingsw.utils.GameUtils;
+import it.polimi.ingsw.utils.ResourceManager;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -47,6 +48,7 @@ public class InitialLeadersController implements SceneController{
 
     @FXML
     void confirm(ActionEvent event) {
+        ResourceManager.playClickSound();
         if(card1!=card2 && card1!=-1 && card1<=3 && card2<=3){
             System.out.println("sending " +card1 + " " + card2 );
             gui.getClient().sendMessage(new DropInitialLeaderCardsResponseMessage(card1, card2));
@@ -85,67 +87,79 @@ public class InitialLeadersController implements SceneController{
     }
 
     public void selectUpLeft(MouseEvent mouseEvent) {
-        if((card1==-1 && card2!=0)||(card2==-1 && card1 != 0)){
-            if(card1==-1)card1 = 0;
-            else card2 = 0;
-            upLeftImg.toBack();
-            upLeftCross.setImage(new Image(Objects.requireNonNull(getClass().getClassLoader()
-                    .getResourceAsStream("images/red-cross.png"))));
-            upLeftCross.toFront();
-        } else {
-            if(card1==0)card1=-1;
-            if(card2==0)card2=-1;
-            upLeftCross.setImage(null);
-            upLeftCross.toBack();
-            upLeftImg.toFront();
-        }
+        Platform.runLater(() -> {
+            ResourceManager.playClickSound();
+            if ((card1 == -1 && card2 != 0) || (card2 == -1 && card1 != 0)) {
+                if (card1 == -1) card1 = 0;
+                else card2 = 0;
+                upLeftImg.toBack();
+                upLeftCross.setImage(new Image(Objects.requireNonNull(getClass().getClassLoader()
+                        .getResourceAsStream("images/red-cross.png"))));
+                upLeftCross.toFront();
+            } else {
+                if (card1 == 0) card1 = -1;
+                if (card2 == 0) card2 = -1;
+                upLeftCross.setImage(null);
+                upLeftCross.toBack();
+                upLeftImg.toFront();
+            }
+        });
     }
 
     public void selectUpRight(MouseEvent mouseEvent) {
-        if((card1==-1 && card2!=1)||(card2==-1 && card1 != 1)){
-            if(card1==-1)card1 = 1;
-            else card2 = 1;
-            upRightImg.toBack();
-            upRightCross.setImage(new Image(Objects.requireNonNull(getClass().getClassLoader()
-                    .getResourceAsStream("images/red-cross.png"))));
-            upRightCross.toFront();
-        } else {
-            if(card1==1)card1=-1;
-            if(card2==1)card2=-1;
-            upRightCross.setImage(null);
-            upRightImg.toFront();
-        }
+        Platform.runLater(() -> {
+            ResourceManager.playClickSound();
+            if ((card1 == -1 && card2 != 1) || (card2 == -1 && card1 != 1)) {
+                if (card1 == -1) card1 = 1;
+                else card2 = 1;
+                upRightImg.toBack();
+                upRightCross.setImage(new Image(Objects.requireNonNull(getClass().getClassLoader()
+                        .getResourceAsStream("images/red-cross.png"))));
+                upRightCross.toFront();
+            } else {
+                if (card1 == 1) card1 = -1;
+                if (card2 == 1) card2 = -1;
+                upRightCross.setImage(null);
+                upRightImg.toFront();
+            }
+        });
     }
 
     public void selectBottomLeft(MouseEvent mouseEvent) {
-        if((card1==-1 && card2!=2)||(card2==-1 && card1 != 2)){
-            if(card1==-1)card1 = 2;
-            else card2 = 2;
-            bottomLeftImg.toBack();
-            bottomLeftCross.setImage(new Image(Objects.requireNonNull(getClass().getClassLoader()
-                    .getResourceAsStream("images/red-cross.png"))));
-            bottomLeftCross.toFront();
-        } else {
-            if (card1 == 2) card1 = -1;
-            if (card2 == 2) card2 = -1;
-            bottomLeftCross.setImage(null);
-            bottomLeftImg.toFront();
-        }
+        Platform.runLater(() -> {
+            ResourceManager.playClickSound();
+            if ((card1 == -1 && card2 != 2) || (card2 == -1 && card1 != 2)) {
+                if (card1 == -1) card1 = 2;
+                else card2 = 2;
+                bottomLeftImg.toBack();
+                bottomLeftCross.setImage(new Image(Objects.requireNonNull(getClass().getClassLoader()
+                        .getResourceAsStream("images/red-cross.png"))));
+                bottomLeftCross.toFront();
+            } else {
+                if (card1 == 2) card1 = -1;
+                if (card2 == 2) card2 = -1;
+                bottomLeftCross.setImage(null);
+                bottomLeftImg.toFront();
+            }
+        });
     }
 
     public void selectBottomRight(MouseEvent mouseEvent) {
-        if((card1==-1 && card2!=3)||(card2==-1 && card1 != 3)){
-            if(card1==-1)card1 = 3;
-            else card2 = 3;
-            bottomRightImg.toBack();
-            bottomRightCross.setImage(new Image(Objects.requireNonNull(getClass().getClassLoader()
-                    .getResourceAsStream("images/red-cross.png"))));
-            bottomRightCross.toFront();
-        }else {
-            if(card1==3)card1=-1;
-            if(card2==3)card2=-1;
-            bottomRightCross.setImage(null);
-            bottomRightImg.toFront();
-        }
+        Platform.runLater(() -> {
+            ResourceManager.playClickSound();
+            if((card1==-1 && card2!=3)||(card2==-1 && card1 != 3)){
+                if(card1==-1)card1 = 3;
+                else card2 = 3;
+                bottomRightImg.toBack();
+                bottomRightCross.setImage(new Image(Objects.requireNonNull(getClass().getClassLoader()
+                        .getResourceAsStream("images/red-cross.png"))));
+                bottomRightCross.toFront();
+            }else {
+                if(card1==3)card1=-1;
+                if(card2==3)card2=-1;
+                bottomRightCross.setImage(null);
+                bottomRightImg.toFront();
+            }
+        });
     }
 }

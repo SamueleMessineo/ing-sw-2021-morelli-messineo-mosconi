@@ -5,6 +5,7 @@ import it.polimi.ingsw.model.shared.ProductionPower;
 import it.polimi.ingsw.model.shared.Resource;
 import it.polimi.ingsw.network.game.ActivateProductionResponseMessage;
 import it.polimi.ingsw.utils.GameUtils;
+import it.polimi.ingsw.utils.ResourceManager;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -80,6 +81,7 @@ public class ActivateProductionController implements SceneController {
 
     void handleBasicProduction(MouseEvent event) {
         Platform.runLater(() -> {
+            ResourceManager.playClickSound();
             VBox popupContainer = new VBox();
             popupContainer.setPadding(new Insets(20));
             popupContainer.setSpacing(10);
@@ -142,72 +144,79 @@ public class ActivateProductionController implements SceneController {
 
     @FXML
     void confirmBasic(ActionEvent event) {
-        if (player.getPlayerBoard().canPayResources(basicProduction.getInput())) {
-            player.getPlayerBoard().payResourceCost(basicProduction.getInput());
-            basicProductionContainer.setStyle("-fx-border-color: transparent transparent red transparent;" +
-                    "-fx-border-width: 2; -fx-border-style: solid inside;");
-            basicProductionContainer.setDisable(true);
-            basicProductionContainer.setCursor(Cursor.DEFAULT);
-        } else {
-            gui.displayError("You don't own the selected resources.");
-        }
-        gui.getPopupStage().close();
+        Platform.runLater(() -> {
+            if (player.getPlayerBoard().canPayResources(basicProduction.getInput())) {
+                player.getPlayerBoard().payResourceCost(basicProduction.getInput());
+                basicProductionContainer.setStyle("-fx-border-color: transparent transparent red transparent;" +
+                        "-fx-border-width: 2; -fx-border-style: solid inside;");
+                basicProductionContainer.setDisable(true);
+                basicProductionContainer.setCursor(Cursor.DEFAULT);
+            } else {
+                gui.displayError("You don't own the selected resources.");
+            }
+            gui.getPopupStage().close();
+        });
     }
 
     @FXML
     void selectCardPower(int index) {
-        if (!selectedCardPowers.contains(index)
-                && player.getPlayerBoard().canPayResources(cardPowers.get(index).getInput())) {
+        Platform.runLater(() -> {
+            ResourceManager.playClickSound();
+            if (!selectedCardPowers.contains(index)
+                    && player.getPlayerBoard().canPayResources(cardPowers.get(index).getInput())) {
 
-            if (!cardPowers.get(index).getOutput().containsKey(Resource.ANY))
-                confirmSingleProduction(index);
-            else {
-                VBox popupContainer = new VBox();
-                popupContainer.setPadding(new Insets(20));
-                popupContainer.setSpacing(10);
-                popupContainer.setAlignment(Pos.CENTER_LEFT);
-                HBox resourcePickerContainer = new HBox();
-                resourcePickerContainer.setSpacing(5);
-                for (Resource resource : Arrays.asList(Resource.COIN, Resource.STONE, Resource.SHIELD, Resource.SERVANT)) {
-                    ImageView resourceImageView = GameUtils.getImageView(resource);
-                    resourceImageView.setFitWidth(40);
-                    resourceImageView.setFitHeight(40);
-                    resourceImageView.setCursor(Cursor.HAND);
-                    resourceImageView.setOnMouseClicked(event1 -> selectExtraOutput(index, resource));
-                    resourcePickerContainer.getChildren().add(resourceImageView);
+                if (!cardPowers.get(index).getOutput().containsKey(Resource.ANY))
+                    confirmSingleProduction(index);
+                else {
+                    VBox popupContainer = new VBox();
+                    popupContainer.setPadding(new Insets(20));
+                    popupContainer.setSpacing(10);
+                    popupContainer.setAlignment(Pos.CENTER_LEFT);
+                    HBox resourcePickerContainer = new HBox();
+                    resourcePickerContainer.setSpacing(5);
+                    for (Resource resource : Arrays.asList(Resource.COIN, Resource.STONE, Resource.SHIELD, Resource.SERVANT)) {
+                        ImageView resourceImageView = GameUtils.getImageView(resource);
+                        resourceImageView.setFitWidth(40);
+                        resourceImageView.setFitHeight(40);
+                        resourceImageView.setCursor(Cursor.HAND);
+                        resourceImageView.setOnMouseClicked(event1 -> selectExtraOutput(index, resource));
+                        resourcePickerContainer.getChildren().add(resourceImageView);
+                    }
+                    popupContainer.getChildren().addAll(new Text("Select the output resource"), resourcePickerContainer);
+                    gui.displayPopup(popupContainer);
                 }
-                popupContainer.getChildren().addAll(new Text("Select the output resource"), resourcePickerContainer);
-                gui.displayPopup(popupContainer);
+            } else {
+                gui.displayError("You can't activate this production power.");
             }
-        } else {
-            gui.displayError("You can't activate this production power.");
-        }
+        });
     }
 
     private void selectExtraOutput(int index, Resource resource) {
-        if (numberOfExtraProductions == 2) selectedExtras.add(index - (cardPowers.size()-1));
-        else selectedExtras.add(0);
-        extraOutputs.add(resource);
-        gui.getPopupStage().close();
-        confirmSingleProduction(index);
+        Platform.runLater(() -> {
+            if (numberOfExtraProductions == 2) selectedExtras.add(index - (cardPowers.size()-1));
+            else selectedExtras.add(0);
+            extraOutputs.add(resource);
+            gui.getPopupStage().close();
+            confirmSingleProduction(index);
+        });
     }
 
     private void confirmSingleProduction(int index) {
-        if (index < cardPowers.size() - numberOfExtraProductions)
-            selectedCardPowers.add(index);
-        player.getPlayerBoard().payResourceCost(cardPowers.get(index).getInput());
-        selectedCardPowersContainers.get(index)
-                .setStyle("-fx-border-color: transparent transparent red transparent;" +
-                        "-fx-border-width: 2; -fx-border-style: solid inside;");
-        selectedCardPowersContainers.get(index).setDisable(true);
+        Platform.runLater(() -> {
+            if (index < cardPowers.size() - numberOfExtraProductions)
+                selectedCardPowers.add(index);
+            player.getPlayerBoard().payResourceCost(cardPowers.get(index).getInput());
+            selectedCardPowersContainers.get(index)
+                    .setStyle("-fx-border-color: transparent transparent red transparent;" +
+                            "-fx-border-width: 2; -fx-border-style: solid inside;");
+            selectedCardPowersContainers.get(index).setDisable(true);
+        });
+
     }
 
     @FXML
     void confirm(ActionEvent event) {
-        System.out.println(selectedCardPowers);
-        System.out.println(basicProduction);
-        System.out.println(selectedExtras);
-        System.out.println(extraOutputs);
+        ResourceManager.playClickSound();
         gui.getClient().sendMessage(new ActivateProductionResponseMessage(
                 selectedCardPowers, basicProduction, selectedExtras, extraOutputs));
     }

@@ -3,6 +3,7 @@ package it.polimi.ingsw.view.gui;
 import it.polimi.ingsw.model.shared.Resource;
 import it.polimi.ingsw.network.game.DropResourcesResponseMessage;
 import it.polimi.ingsw.utils.GameUtils;
+import it.polimi.ingsw.utils.ResourceManager;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -60,19 +61,22 @@ public class DropResourcesController implements SceneController{
     }
 
     void updateCount(Resource resource, boolean increment) {
-        GameUtils.incrementValueInResourceMap(resourcesToKeep, resource, increment ? 1 : -1);
-        resourceButtonsMap.get(resource).get(increment ? "minus" : "plus").setDisable(false);
-        if (!increment && resourcesToKeep.get(resource) < 1) {
-            resourceButtonsMap.get(resource).get("minus").setDisable(true);
-        }
-        if (increment && resourcesToKeep.get(resource) >= originalResources.get(resource)) {
-            resourceButtonsMap.get(resource).get("plus").setDisable(true);
-        }
-        resourceAmountTexts.get(resource).setText(resourcesToKeep.get(resource).toString());
+        Platform.runLater(() -> {
+            GameUtils.incrementValueInResourceMap(resourcesToKeep, resource, increment ? 1 : -1);
+            resourceButtonsMap.get(resource).get(increment ? "minus" : "plus").setDisable(false);
+            if (!increment && resourcesToKeep.get(resource) < 1) {
+                resourceButtonsMap.get(resource).get("minus").setDisable(true);
+            }
+            if (increment && resourcesToKeep.get(resource) >= originalResources.get(resource)) {
+                resourceButtonsMap.get(resource).get("plus").setDisable(true);
+            }
+            resourceAmountTexts.get(resource).setText(resourcesToKeep.get(resource).toString());
+        });
     }
 
     @FXML
     void confirmDropSelection(ActionEvent event) {
+        ResourceManager.playClickSound();
         Map<Resource, Integer> resourcesToDrop = new HashMap<>();
         for (Resource resource : originalResources.keySet()) {
             resourcesToDrop.put(resource, originalResources.get(resource) - resourcesToKeep.get(resource));

@@ -5,6 +5,7 @@ import it.polimi.ingsw.network.game.DropLeaderCardResponseMessage;
 import it.polimi.ingsw.network.game.PlayLeaderResponseMessage;
 import it.polimi.ingsw.network.game.SelectMoveResponseMessage;
 import it.polimi.ingsw.utils.GameUtils;
+import it.polimi.ingsw.utils.ResourceManager;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -55,27 +56,32 @@ public class LeaderCardsController implements SceneController{
 
     @FXML
     void cancel(ActionEvent event) {
+        ResourceManager.playClickSound();
         gui.setScene("game-board");
     }
 
     @FXML
     void dropLeader(ActionEvent event){
+        ResourceManager.playClickSound();
         System.out.println("dropLeader");
         gui.getClient().sendMessage(new SelectMoveResponseMessage("DROP_LEADER"));
     }
 
     @FXML
     void playLeader(ActionEvent event){
+        ResourceManager.playClickSound();
         System.out.println("playLeader");
         gui.getClient().sendMessage(new SelectMoveResponseMessage("PLAY_LEADER"));
     }
 
     private void sendLeaderToDrop(int index){
+        ResourceManager.playClickSound();
         System.out.println("sendLeaderToDrop");
         gui.getClient().sendMessage(new DropLeaderCardResponseMessage(index));
     }
 
     private void sendLeaderToPlay(int index){
+        ResourceManager.playClickSound();
         System.out.println("sendLeaderToDrop");
         gui.getClient().sendMessage(new PlayLeaderResponseMessage(index));
     }

@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.player.PlayerCardStack;
 import it.polimi.ingsw.model.shared.DevelopmentCard;
 import it.polimi.ingsw.network.game.SelectStackToPlaceCardResponseMessage;
 import it.polimi.ingsw.utils.GameUtils;
+import it.polimi.ingsw.utils.ResourceManager;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Cursor;
@@ -45,6 +46,7 @@ public class SelectStackToPlaceCardController implements SceneController{
     }
 
     public void sendSelectedStack(int index){
+        ResourceManager.playClickSound();
         gui.getClient().sendMessage(new SelectStackToPlaceCardResponseMessage(index));
     }
 }

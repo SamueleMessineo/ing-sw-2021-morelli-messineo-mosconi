@@ -2,6 +2,7 @@ package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.model.player.PlayerCardStack;
 import it.polimi.ingsw.network.game.SelectMoveResponseMessage;
+import it.polimi.ingsw.utils.ResourceManager;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -40,11 +41,13 @@ public class CardsProductionController implements SceneController {
 
     @FXML
     void sendActivateRequest(ActionEvent event) {
+        ResourceManager.playClickSound();
         gui.getClient().sendMessage(new SelectMoveResponseMessage("ACTIVATE_PRODUCTION"));
     }
 
     @FXML
     void cancel(ActionEvent event) {
+        ResourceManager.playClickSound();
         gui.setScene("game-board");
     }
 

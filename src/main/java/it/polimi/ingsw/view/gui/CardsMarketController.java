@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.shared.DevelopmentCard;
 import it.polimi.ingsw.network.game.BuyDevelopmentCardResponseMessage;
 import it.polimi.ingsw.network.game.SelectMoveResponseMessage;
 import it.polimi.ingsw.utils.GameUtils;
+import it.polimi.ingsw.utils.ResourceManager;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -32,29 +33,34 @@ public class CardsMarketController implements SceneController {
     private HBox buttonsContainer;
 
     public void load(List<MarketCardStack> cardStacks) {
-        vbox.getChildren().clear();
-        FXMLLoader loader = new FXMLLoader(
-                getClass().getClassLoader().getResource("scenes/cards-grid.fxml"));
-        GridPane cardsGrid;
-        try {
-            cardsGrid = loader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-            return;
-        }
-        ((CardsGridController) loader.getController()).setCards(cardStacks);
-        cardsGrid.setScaleX(1.9);
-        cardsGrid.setScaleY(1.9);
-        vbox.setAlignment(Pos.BOTTOM_CENTER);
-        vbox.setSpacing(160);
-        vbox.setPadding(new Insets(0, 0, 30, 0));
-        vbox.getChildren().addAll(cardsGrid, buttonsContainer);
+        Platform.runLater(() -> {
+            vbox.getChildren().clear();
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getClassLoader().getResource("scenes/cards-grid.fxml"));
+            GridPane cardsGrid;
+            try {
+                cardsGrid = loader.load();
+            } catch (IOException e) {
+                e.printStackTrace();
+                return;
+            }
+            ((CardsGridController) loader.getController()).setCards(cardStacks);
+            cardsGrid.setScaleX(1.9);
+            cardsGrid.setScaleY(1.9);
+            vbox.setAlignment(Pos.BOTTOM_CENTER);
+            vbox.setSpacing(160);
+            vbox.setPadding(new Insets(0, 0, 30, 0));
+            vbox.getChildren().addAll(cardsGrid, buttonsContainer);
+        });
     }
 
     @FXML
     void cancel(ActionEvent event) {
-        vbox.getChildren().remove(0);
-        gui.setScene("game-board");
+        Platform.runLater(() -> {
+            ResourceManager.playClickSound();
+            vbox.getChildren().remove(0);
+            gui.setScene("game-board");
+        });
     }
 
     @Override
@@ -97,10 +103,12 @@ public class CardsMarketController implements SceneController {
     }
 
     public void sendCardToBuy(int cardIndex) {
+        ResourceManager.playClickSound();
         gui.getClient().sendMessage(new BuyDevelopmentCardResponseMessage(cardIndex));
     }
 
     public void buyCard(ActionEvent actionEvent) {
+        ResourceManager.playClickSound();
         gui.getClient().sendMessage(new SelectMoveResponseMessage("BUY_CARD"));
     }
 }

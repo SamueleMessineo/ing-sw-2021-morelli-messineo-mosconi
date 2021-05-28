@@ -1,6 +1,7 @@
 package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.model.market.Marble;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
@@ -21,7 +22,7 @@ public class MarblesGridController implements SceneController{
     private HBox extraContainer;
 
     public void setMarbles(List<Marble> marbles, Marble extra){
-        try{
+        Platform.runLater(() -> {
             grid.getChildren().clear();
             Image extraImage = new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(
                     "images/marbles/" + extra.name().toLowerCase() + ".png")));
@@ -30,22 +31,20 @@ public class MarblesGridController implements SceneController{
             extraImageView.setFitHeight(marbleSize);
             extraImageView.setFitWidth(marbleSize);
             extraContainer.getChildren().add(extraImageView);
-            for(int i=0; i<marbles.size(); i++){
-                Image marbleImage=new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(
+            for (int i = 0; i < marbles.size(); i++) {
+                Image marbleImage = new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(
                         "images/marbles/" + marbles.get(i).name().toLowerCase() + ".png")));
-                ImageView marbleImageView=new ImageView(marbleImage);
+                ImageView marbleImageView = new ImageView(marbleImage);
                 marbleImageView.setPreserveRatio(true);
                 marbleImageView.setFitWidth(marbleSize);
                 marbleImageView.setFitHeight(marbleSize);
                 GridPane.setValignment(marbleImageView, VPos.CENTER);
                 GridPane.setHalignment(marbleImageView, HPos.CENTER);
-                int marbleX = (i/4);
-                int marbleY = (i%4);
+                int marbleX = (i / 4);
+                int marbleY = (i % 4);
                 grid.add(marbleImageView, marbleY, marbleX);
             }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+        });
     }
 
     @Override

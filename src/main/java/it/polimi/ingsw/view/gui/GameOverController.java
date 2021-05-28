@@ -1,5 +1,6 @@
 package it.polimi.ingsw.view.gui;
 
+import it.polimi.ingsw.utils.ResourceManager;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -31,6 +32,7 @@ public class GameOverController implements SceneController{
     @FXML
     void playAgain(ActionEvent event) {
 //        gui.setScene("online-offline");
+        ResourceManager.playClickSound();
         try {
             gui.start(gui.getStage());
         } catch (Exception e) {
@@ -40,6 +42,7 @@ public class GameOverController implements SceneController{
 
     @FXML
     void quit(ActionEvent event) {
+        ResourceManager.playClickSound();
         System.exit(0);
     }
 
