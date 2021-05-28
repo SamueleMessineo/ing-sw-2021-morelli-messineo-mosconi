@@ -45,7 +45,18 @@ public class CLI implements UI {
             case 1:
                 this.client = new Client(this);
                 try {
-                    this.client.connect("localhost", 31415);
+                    output.println("Write Server IP");
+                    String server = input.nextLine();
+                    output.println("Write Server Port");
+                    Integer port = Integer.parseInt(input.nextLine());
+                    if(server.equals("")){
+                        //this is just for make easy testing by playing on local host
+                        this.client.connect("localhost", 31415);
+                    } else
+                    {
+                        this.client.connect(server, port);
+                    }
+
                     setup();
                 } catch (IOException e) {
                     output.println("Server unavailable :(");
