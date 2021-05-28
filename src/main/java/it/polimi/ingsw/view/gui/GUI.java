@@ -9,6 +9,7 @@ import it.polimi.ingsw.model.shared.LeaderCard;
 import it.polimi.ingsw.model.shared.ProductionPower;
 import it.polimi.ingsw.model.shared.Resource;
 import it.polimi.ingsw.utils.GameUtils;
+import it.polimi.ingsw.utils.ResourceManager;
 import it.polimi.ingsw.view.UI;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -38,7 +39,6 @@ public class GUI extends Application implements UI {
     private Client client;
     private Game gameState;
     private String username;
-    private MediaPlayer mediaPlayer;
     private Stage popupStage;
 
     public void setUsername(String username) {
@@ -52,7 +52,6 @@ public class GUI extends Application implements UI {
     @Override
     public void start(Stage stage) throws Exception {
         username = null;
-        mediaPlayer = null;
         gameState = null;
         client = null;
         sceneMap = new HashMap<>();
@@ -64,7 +63,7 @@ public class GUI extends Application implements UI {
         popupStage = new Stage();
         popupStage.initOwner(stage);
         popupStage.initModality(Modality.APPLICATION_MODAL);
-        //ìsetMusic();
+        ResourceManager.playBackgroundMusic();
         setScene("online-offline");
 
         Image logo = new Image(Objects.requireNonNull(getClass().getClassLoader()
@@ -145,20 +144,6 @@ public class GUI extends Application implements UI {
                 e.printStackTrace();
             }
         }
-    }
-
-    private void setMusic() {
-        Media backgroundMusic = new Media(Objects.requireNonNull(getClass().getClassLoader().getResource(
-                "music/bg.mp3"
-        )).toExternalForm());
-        mediaPlayer = new MediaPlayer(backgroundMusic);
-        mediaPlayer.setAutoPlay(true);
-        mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
-        mediaPlayer.setVolume(1);
-        mediaPlayer.setOnEndOfMedia(() -> {
-            mediaPlayer.seek(Duration.ZERO);
-            mediaPlayer.play();
-        });
     }
 
     @Override

@@ -13,6 +13,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.AudioClip;
 import javafx.scene.text.Text;
 
 import java.io.*;
@@ -268,7 +269,7 @@ public class GameUtils {
 
     public static AnchorPane buildProductionPowerBook(ProductionPower power) {
         AnchorPane powerPane = new AnchorPane();
-        powerPane.setPrefSize(212,150);
+        powerPane.setPrefSize(212, 150);
         Image bookImage = new Image(Objects.requireNonNull(GameUtils.class.getClassLoader()
                 .getResourceAsStream("images/board/production_book.png")));
         ImageView bookImageView = new ImageView(bookImage);
@@ -279,7 +280,7 @@ public class GameUtils {
         bookImageView.setLayoutY(0);
         powerPane.getChildren().add(bookImageView);
         HBox singleCardPowerContainer = new HBox();
-        singleCardPowerContainer.setPrefSize(212,150);
+        singleCardPowerContainer.setPrefSize(212, 150);
         singleCardPowerContainer.setAlignment(Pos.CENTER);
         singleCardPowerContainer.setSpacing(60);
         VBox inputContainer = new VBox();
