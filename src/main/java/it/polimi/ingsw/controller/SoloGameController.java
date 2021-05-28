@@ -10,6 +10,7 @@ import it.polimi.ingsw.model.shared.Resource;
 import it.polimi.ingsw.model.shared.SoloActionType;
 import it.polimi.ingsw.server.Room;
 
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -122,5 +123,15 @@ public class SoloGameController extends ClassicGameController {
                 }
             }
         }
+    }
+
+    @Override
+    public void dropPlayerResources(Map<Resource, Integer> obtainedResources, Map<Resource, Integer> resourcesToDrop, String playerUsername) throws InvalidParameterException {
+        super.dropPlayerResources(obtainedResources, resourcesToDrop, playerUsername);
+        int totalDropped = 0;
+        for (Resource r : resourcesToDrop.keySet()) {
+            totalDropped += resourcesToDrop.get(r);
+        }
+        movePlayer(game.getLorenzoIlMagnifico().getUsername(), totalDropped);
     }
 }
