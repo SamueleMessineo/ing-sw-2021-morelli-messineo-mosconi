@@ -33,6 +33,7 @@ public class GameMessageHandler {
     }
 
     public void initialSelections(){
+        clientConnection.sendMessage(new UpdateGameStateMessage(gameController.getGame()));
         // calculate the player's position in the playing order
         int playingIndex = room.getConnections().indexOf(clientConnection) - room.getGame().getInkwellPlayer();
         if (playingIndex < 0) {

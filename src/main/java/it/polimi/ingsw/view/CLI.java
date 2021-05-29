@@ -130,7 +130,7 @@ public class CLI implements UI {
 
     @Override
     public void selectInitialResources(List<Resource> resources, int amount) {
-        output.println("Select initial resource(s)");
+        Display.displayGameBoard(gameState.getMarket(), output);
         List<Resource> selectedResources = new ArrayList<>();
         for (int i = 0; i < amount; i++) {
             for (int resourceIndex = 1; resourceIndex <= resources.size(); resourceIndex++) {
@@ -501,4 +501,6 @@ public class CLI implements UI {
     public String getUsername() {
         return username;
     }
+
+
 }

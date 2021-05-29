@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.shared.Resource;
 import it.polimi.ingsw.network.client.UpdateAndDisplayGameStateMessage;
 import it.polimi.ingsw.network.game.*;
 import it.polimi.ingsw.utils.GameUtils;
+import it.polimi.ingsw.view.Display;
 import it.polimi.ingsw.view.UI;
 
 import java.security.InvalidParameterException;
@@ -31,6 +32,7 @@ public class LocalMessageHandler {
         gameController.getGame().addPlayer(new Player(ui.getUsername()).getUsername());
         gameController.getGame().setCurrentPlayer(0);
         player=gameController.getGame().getCurrentPlayer();
+        ui.setGameState(gameController.getGame());
         ui.selectLeaderCards(player.getLeaderCards());
     }
 
