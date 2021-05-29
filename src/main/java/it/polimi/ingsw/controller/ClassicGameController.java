@@ -384,7 +384,7 @@ public class ClassicGameController {
                             // if the other player's tile is inactive
                             if (otherPlayersTile.getState() == PopesFavorTileState.INACTIVE) {
                                 // if player is in pope favor
-                                if (otherPlayer.getFaithTrack().isInPopeFavorByLevel(popeLevel)) {
+                                if (otherPlayer.getFaithTrack().isInPopeFavorByLevel(popeLevel-1)) {
                                     otherPlayersTile.setState(PopesFavorTileState.ACTIVE);
                                 } else { // if player is not in pope favor
                                     otherPlayersTile.setState(PopesFavorTileState.DISCARDED);

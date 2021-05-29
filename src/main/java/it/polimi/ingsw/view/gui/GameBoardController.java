@@ -339,6 +339,28 @@ public class GameBoardController implements SceneController {
                 faithTrackPositionBox.getChildren().add(posImageView);
                 tabContainer.getChildren().add(faithTrackPositionBox);
 
+                // display pope's tiles
+                for (int i = 0; i < 3; i++) {
+                    PopesFavorTile tile = game.getLorenzoIlMagnifico().getFaithTrack().getPopesFavorTiles().get(i);
+                    VBox tileBox = new VBox();
+                    tileBox.setPrefSize(65, 65);
+                    tileBox.setAlignment(Pos.CENTER);
+                    if (tile.getState() != PopesFavorTileState.DISCARDED) {
+                        Image tileImage = new Image(Objects.requireNonNull(getClass().getClassLoader()
+                                .getResourceAsStream("images/faith/tile_" + tile.getState().name() + "_" + i + ".png")));
+                        ImageView tileImageView = new ImageView(tileImage);
+                        tileImageView.setPreserveRatio(true);
+                        tileImageView.setFitWidth(65);
+                        tileImageView.setFitHeight(65);
+                        tileBox.getChildren().add(tileImageView);
+                    }
+                    List<Integer> tileCoordinates = GameUtils.getPopeTileCoordinates(i);
+                    if (tileCoordinates != null) {
+                        tileBox.setLayoutX(tileCoordinates.get(0));
+                        tileBox.setLayoutY(tileCoordinates.get(1));
+                    }
+                    tabContainer.getChildren().add(tileBox);
+                }
 
                 playerTab.setContent(tabContainer);
                 tabPane.getTabs().add(playerTab);

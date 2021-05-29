@@ -74,7 +74,6 @@ public class SoloGameController extends ClassicGameController {
     @Override
     public void movePlayer(String playerName, int positions) {
         super.movePlayer(playerName, positions);
-//        tryPopeReport(game.getLorenzoIlMagnifico());
         activatePopeReport();
     }
 
@@ -100,10 +99,17 @@ public class SoloGameController extends ClassicGameController {
     public void activatePopeReport() {
         super.activatePopeReport();
         FaithTrack currentPlayerFaithTrack = game.getCurrentPlayer().getFaithTrack();
-        if(currentPlayerFaithTrack.inOnPopeSpace()!= -1 && currentPlayerFaithTrack.getPopesFavorTiles().get(currentPlayerFaithTrack.inOnPopeSpace()-1).getState().equals(PopesFavorTileState.INACTIVE)){
-            if(game.getLorenzoIlMagnifico().getFaithTrack().isInPopeFavorByLevel(currentPlayerFaithTrack.inOnPopeSpace())){
+        if(currentPlayerFaithTrack.inOnPopeSpace()!= -1){
+            if(game.getLorenzoIlMagnifico().getFaithTrack().isInPopeFavorByLevel(currentPlayerFaithTrack.inOnPopeSpace()-1)){
                 game.getLorenzoIlMagnifico().getFaithTrack().getPopesFavorTiles().get(currentPlayerFaithTrack.inOnPopeSpace()-1).setState(PopesFavorTileState.ACTIVE);
-            } else  game.getLorenzoIlMagnifico().getFaithTrack().getPopesFavorTiles().get(currentPlayerFaithTrack.inOnPopeSpace()-1).setState(PopesFavorTileState.INACTIVE);
+            } else  game.getLorenzoIlMagnifico().getFaithTrack().getPopesFavorTiles().get(currentPlayerFaithTrack.inOnPopeSpace()-1).setState(PopesFavorTileState.DISCARDED);
+        }
+
+        if(game.getLorenzoIlMagnifico().getFaithTrack().inOnPopeSpace()!= -1 && game.getLorenzoIlMagnifico().getFaithTrack().getPopesFavorTiles().get(game.getLorenzoIlMagnifico().getFaithTrack().inOnPopeSpace()-1).getState().equals(PopesFavorTileState.INACTIVE)){
+                game.getLorenzoIlMagnifico().getFaithTrack().getPopesFavorTiles().get(game.getLorenzoIlMagnifico().getFaithTrack().inOnPopeSpace()-1).setState(PopesFavorTileState.ACTIVE);
+            if(currentPlayerFaithTrack.isInPopeFavorByLevel(game.getLorenzoIlMagnifico().getFaithTrack().inOnPopeSpace()-1)){
+                currentPlayerFaithTrack.getPopesFavorTiles().get(game.getLorenzoIlMagnifico().getFaithTrack().inOnPopeSpace()-1).setState(PopesFavorTileState.ACTIVE);
+            } else  currentPlayerFaithTrack.getPopesFavorTiles().get(game.getLorenzoIlMagnifico().getFaithTrack().inOnPopeSpace()-1).setState(PopesFavorTileState.DISCARDED);
         }
     }
 
