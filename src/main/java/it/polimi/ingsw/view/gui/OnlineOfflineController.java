@@ -27,6 +27,12 @@ public class OnlineOfflineController implements SceneController {
         gui.setScene("connect");
     }
 
+    @FXML
+    void toggleSounds(ActionEvent event) {
+        ResourceManager.playClickSound();
+        ResourceManager.toggleSound();
+    }
+
     @Override
     public void setGUI(GUI gui) {
         this.gui = gui;

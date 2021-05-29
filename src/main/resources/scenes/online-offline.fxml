@@ -15,8 +15,13 @@
       </ImageView>
       <HBox alignment="CENTER" prefHeight="52.0" prefWidth="1280.0" spacing="50.0">
          <children>
-            <Button fx:id="offlineButton" mnemonicParsing="false" styleClass="flat-button" onAction="#playOffline" text="PLAY OFFLINE" />
-            <Button fx:id="onlineButton" mnemonicParsing="false" styleClass="flat-button" onAction="#playOnline" text="PLAY ONLINE" />
+            <Button fx:id="offlineButton" mnemonicParsing="false" onAction="#playOffline" styleClass="flat-button" text="PLAY OFFLINE" />
+            <Button fx:id="onlineButton" mnemonicParsing="false" onAction="#playOnline" styleClass="flat-button" text="PLAY ONLINE" />
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" prefHeight="48.0" prefWidth="1280.0">
+         <children>
+            <Button mnemonicParsing="false" onAction="#toggleSounds" styleClass="flat-button" text="Toggle sounds" />
          </children>
       </HBox>
    </children>

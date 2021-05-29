@@ -20,14 +20,12 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
-import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
 import java.io.IOException;
 import java.util.*;
@@ -39,7 +37,6 @@ public class GUI extends Application implements UI {
     private Client client;
     private Game gameState;
     private String username;
-    private MediaPlayer mediaPlayer;
     private Stage popupStage;
 
     public void setUsername(String username) {
@@ -64,6 +61,7 @@ public class GUI extends Application implements UI {
         popupStage = new Stage();
         popupStage.initOwner(stage);
         popupStage.initModality(Modality.APPLICATION_MODAL);
+        ResourceManager.initializeSound();
         ResourceManager.playBackgroundMusic();
         setScene("online-offline");
 

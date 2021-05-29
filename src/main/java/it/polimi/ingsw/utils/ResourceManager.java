@@ -11,18 +11,25 @@ public class ResourceManager {
     private static MediaPlayer mediaPlayer = null;
     private static AudioClip buttonClickSound = null;
 
-    public static void playBackgroundMusic() {
+    public static void initializeSound() {
         if (mediaPlayer != null) mediaPlayer.stop();
         Media backgroundMusic = new Media(Objects.requireNonNull(ResourceManager.class.getClassLoader()
                 .getResource("music/bg.mp3")).toExternalForm());
         mediaPlayer = new MediaPlayer(backgroundMusic);
-        mediaPlayer.setAutoPlay(true);
         mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
         mediaPlayer.setVolume(0.2);
+        mediaPlayer.setMute(true);
         mediaPlayer.setOnEndOfMedia(() -> {
             mediaPlayer.seek(Duration.ZERO);
             mediaPlayer.play();
         });
+        buttonClickSound = new AudioClip(Objects.requireNonNull(ResourceManager.class.getClassLoader()
+                .getResource("music/buttonClick.mp3")).toString());
+        buttonClickSound.setVolume(0);
+    }
+
+    public static void playBackgroundMusic() {
+        mediaPlayer.play();
     }
 
     public static void toggleSound() {
@@ -31,11 +38,6 @@ public class ResourceManager {
     }
 
     public static void playClickSound() {
-        if (buttonClickSound == null) {
-            buttonClickSound = new AudioClip(Objects.requireNonNull(ResourceManager.class.getClassLoader()
-                    .getResource("music/buttonClick.mp3")).toString());
-            buttonClickSound.setVolume(0.05);
-        }
         buttonClickSound.play();
     }
 }
