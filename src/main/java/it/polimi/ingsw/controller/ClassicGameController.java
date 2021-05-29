@@ -15,6 +15,9 @@ import it.polimi.ingsw.utils.GameUtils;
 import java.security.InvalidParameterException;
 import java.util.*;
 
+/**
+ * ClassicGameController is the controller for multi-player games
+ */
 public class ClassicGameController {
     private final Game game;
 
@@ -24,10 +27,16 @@ public class ClassicGameController {
 
     public ClassicGameController(Game game) { this.game = game; }
 
+    /**
+     * Starts the game
+     */
     public void startGame(){
         selectStartingPlayer();
     }
 
+    /**
+     * Sets a random player as the first to play
+     */
     private void selectStartingPlayer() {
         Random r = new Random();
         int firstPlayerIndex = r.nextInt(game.getPlayers().size());
@@ -36,14 +45,28 @@ public class ClassicGameController {
         game.setInkwellPlayer(firstPlayerIndex);
     }
 
+    /**
+     * @return the Game class which is the primary class of the model
+     */
     public Game getGame() {
         return game;
     }
 
+    /**
+     * Removes the two leader cards the player wanted to drop
+     * @param selection1 index of the first card to drop
+     * @param selection2 index of the second card to drop
+     * @param player the player that selected the two cards
+     */
     public void dropInitialLeaderCards(int selection1, int selection2, String player){
         game.getPlayerByUsername(player).dropInitialLeaderCards(selection1, selection2);
     }
 
+    /**
+     * Gives the chosen initial resources to the players
+     * @param resources resources chosen
+     * @param username player that select the resources
+     */
     public void giveInitialResources(List<Resource> resources, String username) {
         Map<Resource, Integer> resourceMap = new HashMap<>();
         resourceMap.put(resources.get(0), resources.size());
@@ -51,6 +74,9 @@ public class ClassicGameController {
                 .placeOnShelf(resources.size() == 1 ? "top" : "middle", resourceMap);
     }
 
+    /**
+     * @return true if the game is over, else false
+     */
     public boolean isGameOver() {
         for (Player player:
                 game.getPlayers()) {
@@ -60,13 +86,21 @@ public class ClassicGameController {
         return false;
     }
 
+    /**
+     * sets the next player as current player
+     */
     public void computeNextPlayer(){
         int nextPlayer = (game.getPlayers().indexOf(game.getCurrentPlayer()) + 1) % game.getPlayers().size();
         game.setCurrentPlayer(nextPlayer);
-        System.out.println(game.getPlayers().get(nextPlayer));
         if (!game.getPlayers().get(nextPlayer).isActive()) computeNextPlayer();
     }
 
+    /**
+     * represents the action of getting the marbles from the marble market
+     * @param rowOrColumn can be "ROW" if the player desires to shift a row or "COLUMN" if he wants a column
+     * @param index the index of row/column the player desires to shift
+     * @return the marbles of the selected row/column
+     */
     public Map<String, Map<Resource, Integer>> getMarbles(String rowOrColumn, int index) {
         List<Marble> marbles;
         if(rowOrColumn.equals("ROW")){
@@ -120,16 +154,13 @@ public class ClassicGameController {
         return convertedMarbles;
     }
 
-    public void giveResourcesToPlayer(Map<Resource, Integer> resources, String playerUsername)
-            throws InvalidParameterException {
-        Player p = game.getPlayerByUsername(playerUsername);
-        if (!p.getPlayerBoard().getWarehouse().canPlaceResources(resources)) {
-            throw new InvalidParameterException("Not enough space to place these resources");
-        } else {
-            p.getPlayerBoard().getWarehouse().placeResources(resources);
-        }
-    }
-
+    /**
+     * Drops the resources the player does not wish to retain moving other payers and add the others to player's warehouse
+     * @param obtainedResources all the resources the player got shifting the marker
+     * @param resourcesToDrop the resources the player does not wish to retain
+     * @param playerUsername tha player tha selected the resources
+     * @throws InvalidParameterException if there are incompatibilities between obtained resources and resource to drop
+     */
     public void dropPlayerResources(Map<Resource, Integer> obtainedResources, Map<Resource,
             Integer> resourcesToDrop, String playerUsername) throws InvalidParameterException {
         if (resourcesToDrop == null) throw new InvalidParameterException("array is null");
@@ -159,6 +190,12 @@ public class ClassicGameController {
 
     }
 
+
+    /**
+     * Moves a list of players of given positions and activates pope report
+     * @param players list of players to move
+     * @param positions how many positions the players havwe to move
+     */
     public void movePlayers(List<Player> players, int positions){
         if(!players.isEmpty()){
             for (int i = 0; i <positions; i++) {
@@ -176,11 +213,21 @@ public class ClassicGameController {
 
     }
 
+    /**
+     * Represents the move of dropping a leader card
+     * @param card the index of the card to drop
+     */
     public void dropLeader(int card) {
         movePlayer(game.getCurrentPlayer().getUsername(), 1);
         game.getCurrentPlayer().dropLeaderCard(card);
     }
 
+    /**
+     * Represents the move of switching to warehouse shelves
+     * @param shelf1 first shelf
+     * @param shelf2 second shelf
+     * @throws InvalidParameterException if the two shelves can not be switched
+     */
     public void switchShelves(String shelf1, String shelf2) throws InvalidParameterException {
         if (game.getCurrentPlayer().getPlayerBoard().getWarehouse().canSwitchShelves(shelf1, shelf2)) {
             game.getCurrentPlayer().getPlayerBoard().getWarehouse().switchShelves(shelf1, shelf2);
@@ -189,6 +236,11 @@ public class ClassicGameController {
         }
     }
 
+    /**
+     * Computes player's next possible moves
+     * @param alreadyPerformedMove true if a player has already performed one of the unique moves
+     * @return the list of the possible moves
+     */
     public List<String> computeNextPossibleMoves(boolean alreadyPerformedMove) {
         System.out.println("computing");
         List<String> moves = new ArrayList<>();
@@ -241,7 +293,10 @@ public class ClassicGameController {
         return moves;
     }
 
-    public List<DevelopmentCard> getBuyableDevelopementCards(){
+    /**
+     * @return the development cards the player can buy
+     */
+    public List<DevelopmentCard> getBuyableDevelopmentCards(){
         List<DevelopmentCard> developmentCards = new ArrayList<>();
 
         for (MarketCardStack cardsStack : game.getMarket().getCardsGrid()) {
@@ -304,6 +359,7 @@ public class ClassicGameController {
     }
 
     public void movePlayer(String playerName, int positions){
+        System.out.println(playerName + " " + positions);
         Player playerToMove = game.getPlayerByUsername(playerName);
         for (int i = 0; i < positions; i++) {
             playerToMove.getFaithTrack().move();
@@ -312,25 +368,27 @@ public class ClassicGameController {
     }
 
     public void activatePopeReport() {
-        GameUtils.debug("reporting to the Pope");
         for (Player player : game.getPlayers()) {
             GameUtils.debug(String.valueOf(player.getFaithTrack().inOnPopeSpace()));
             int popeLevel = player.getFaithTrack().inOnPopeSpace();
             // for each player, if the player is on a pope space
             // check if the other players are in that space's area
             if (popeLevel != -1) {
-                player.getFaithTrack().getPopesFavorTiles().get(popeLevel-1).setState(PopesFavorTileState.ACTIVE);
-                for (Player otherPlayer : game.getPlayers()) {
-                    // not current player
-                    if (!otherPlayer.getUsername().equals(player.getUsername())) {
-                        PopesFavorTile otherPlayersTile = otherPlayer.getFaithTrack().getPopesFavorTiles().get(popeLevel-1);
-                        // if the other player's tile is inactive
-                        if (otherPlayersTile.getState() == PopesFavorTileState.INACTIVE) {
-                            // if player is in pope favor
-                            if (otherPlayer.getFaithTrack().isInPopeFavorByLevel(popeLevel)) {
-                                otherPlayersTile.setState(PopesFavorTileState.ACTIVE);
-                            } else { // if player is not in pope favor
-                                otherPlayersTile.setState(PopesFavorTileState.DISCARDED);
+                PopesFavorTile currentTile = player.getFaithTrack().getPopesFavorTiles().get(popeLevel-1);
+                if (currentTile.getState() == PopesFavorTileState.INACTIVE) {
+                    currentTile.setState(PopesFavorTileState.ACTIVE);
+                    for (Player otherPlayer : game.getPlayers()) {
+                        // not current player
+                        if (!otherPlayer.getUsername().equals(player.getUsername())) {
+                            PopesFavorTile otherPlayersTile = otherPlayer.getFaithTrack().getPopesFavorTiles().get(popeLevel - 1);
+                            // if the other player's tile is inactive
+                            if (otherPlayersTile.getState() == PopesFavorTileState.INACTIVE) {
+                                // if player is in pope favor
+                                if (otherPlayer.getFaithTrack().isInPopeFavorByLevel(popeLevel)) {
+                                    otherPlayersTile.setState(PopesFavorTileState.ACTIVE);
+                                } else { // if player is not in pope favor
+                                    otherPlayersTile.setState(PopesFavorTileState.DISCARDED);
+                                }
                             }
                         }
                     }

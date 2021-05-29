@@ -5,10 +5,8 @@ import it.polimi.ingsw.controller.Turn;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.shared.DevelopmentCard;
 import it.polimi.ingsw.model.shared.Resource;
-import it.polimi.ingsw.network.client.UpdateAndDisplayGameStateMessage;
 import it.polimi.ingsw.network.game.*;
 import it.polimi.ingsw.utils.GameUtils;
-import it.polimi.ingsw.view.Display;
 import it.polimi.ingsw.view.UI;
 
 import java.security.InvalidParameterException;
@@ -93,7 +91,7 @@ public class LocalMessageHandler {
                     ui.activateProduction(player.possibleProductionPowersToActive());
                     break;
                 case ("BUY_CARD"):
-                    ui.buyDevelopmentCard(gameController.getBuyableDevelopementCards());
+                    ui.buyDevelopmentCard(gameController.getBuyableDevelopmentCards());
                     break;
                 case("END_TURN"):
                     endTurn();
@@ -132,7 +130,7 @@ public class LocalMessageHandler {
     }
 
     public void handle(BuyDevelopmentCardResponseMessage message){
-        DevelopmentCard developmentCard = gameController.getBuyableDevelopementCards().get(message.getSelectedCardIndex());
+        DevelopmentCard developmentCard = gameController.getBuyableDevelopmentCards().get(message.getSelectedCardIndex());
         List<Integer> stacks = gameController.getStacksToPlaceCard(player, developmentCard);
         currentTurn.setBoughtDevelopmentCard(developmentCard);
         if(stacks.size()==1 || gameController.getGame().getCurrentPlayer().getPlayerBoard().getCardStacks().get(stacks.get(0)).isEmpty()){

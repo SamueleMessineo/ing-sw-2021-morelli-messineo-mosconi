@@ -2,9 +2,7 @@ package it.polimi.ingsw.network;
 
 import it.polimi.ingsw.controller.ClassicGameController;
 import it.polimi.ingsw.controller.Turn;
-import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.player.Player;
-import it.polimi.ingsw.model.player.PlayerCardStack;
 import it.polimi.ingsw.model.shared.DevelopmentCard;
 import it.polimi.ingsw.model.shared.Resource;
 import it.polimi.ingsw.network.client.*;
@@ -119,7 +117,7 @@ public class GameMessageHandler {
                     clientConnection.sendMessage(new ActivateProductionRequestMessage(room.getPlayerFromConnection(clientConnection).possibleProductionPowersToActive()));
                     break;
                 case ("BUY_CARD"):
-                    clientConnection.sendMessage(new BuyDevelopmentCardRequestMessage(gameController.getBuyableDevelopementCards()));
+                    clientConnection.sendMessage(new BuyDevelopmentCardRequestMessage(gameController.getBuyableDevelopmentCards()));
                     break;
                 case("END_TURN"):
                     endTurn();
@@ -233,7 +231,7 @@ public class GameMessageHandler {
     }
 
     public void handle(BuyDevelopmentCardResponseMessage message){
-        DevelopmentCard developmentCard = gameController.getBuyableDevelopementCards().get(message.getSelectedCardIndex());
+        DevelopmentCard developmentCard = gameController.getBuyableDevelopmentCards().get(message.getSelectedCardIndex());
         List<Integer> stacks = gameController.getStacksToPlaceCard(room.getGame().getCurrentPlayer(), developmentCard);
         room.getCurrentTurn().setBoughtDevelopmentCard(developmentCard);
         if(stacks.size()==1 || gameController.getGame().getCurrentPlayer().getPlayerBoard().getCardStacks().get(stacks.get(0)).isEmpty()){
