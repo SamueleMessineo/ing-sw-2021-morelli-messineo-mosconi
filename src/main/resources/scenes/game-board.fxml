@@ -156,9 +156,10 @@
                               <Image url="@../images/blue-background.png" />
                            </image>
                         </ImageView>
-                        <VBox alignment="CENTER" prefHeight="690.0" prefWidth="843.0" spacing="20.0">
+                        <VBox alignment="CENTER" prefHeight="690.0" prefWidth="843.0" spacing="40.0">
                            <children>
                               <Button mnemonicParsing="false" onAction="#toggleSound" styleClass="flat-button" text="Toggle sound" />
+                              <Button mnemonicParsing="false" onAction="#getExtraResources" styleClass="flat-button" text="Extra resources" />
                            </children>
                         </VBox>
                      </children></AnchorPane>

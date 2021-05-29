@@ -257,6 +257,17 @@ public class GameMessageHandler {
 
     }
 
+    public void handle(GetResourcesCheatMessage message) {
+        gameController.giveExtraResources();
+        room.sendAll(new UpdateAndDisplayGameStateMessage(room.getGame()));
+        for (ClientConnection connection : room.getConnections()) {
+            Player p = room.getPlayerFromConnection(connection);
+            if (p.getUsername().equals(room.getCurrentTurn().getCurrentPlayer())) {
+                connection.sendMessage(new SelectMoveRequestMessage(room.getCurrentTurn().getMoves()));
+            }
+        }
+    }
+
     private void sendStateAndMovesForNextTurn(){
 
         ClientConnection currentPlayer = room.getConnections().get(room.getGame().getPlayers().indexOf(

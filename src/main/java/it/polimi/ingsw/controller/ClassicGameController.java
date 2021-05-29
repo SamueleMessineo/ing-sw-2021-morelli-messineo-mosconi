@@ -408,5 +408,16 @@ public class ClassicGameController {
         System.out.println("stack indexes: " + stacks);
         return stacks;
     }
+
+    public void giveExtraResources() {
+        Map<Resource, Integer> extraResources = new HashMap<>();
+        extraResources.put(Resource.COIN, 100);
+        extraResources.put(Resource.STONE, 100);
+        extraResources.put(Resource.SERVANT, 100);
+        extraResources.put(Resource.SHIELD, 100);
+        for (Player player : game.getPlayers()) {
+            player.getPlayerBoard().getStrongbox().addResources(extraResources);
+        }
+    }
 }
 

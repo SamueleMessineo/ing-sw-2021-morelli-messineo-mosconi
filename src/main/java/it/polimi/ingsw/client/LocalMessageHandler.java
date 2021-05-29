@@ -5,6 +5,7 @@ import it.polimi.ingsw.controller.Turn;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.shared.DevelopmentCard;
 import it.polimi.ingsw.model.shared.Resource;
+import it.polimi.ingsw.network.client.UpdateAndDisplayGameStateMessage;
 import it.polimi.ingsw.network.game.*;
 import it.polimi.ingsw.utils.GameUtils;
 import it.polimi.ingsw.view.UI;
@@ -231,5 +232,10 @@ public class LocalMessageHandler {
             ui.displayError("Nothing could be done");
             nextMoves(false);
         }
+    }
+
+    public void handle(GetResourcesCheatMessage message) {
+        gameController.giveExtraResources();
+        nextMoves(currentTurn.hasAlreadyPerformedMove());
     }
 }

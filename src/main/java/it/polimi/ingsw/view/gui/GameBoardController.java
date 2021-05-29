@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.Shelf;
 import it.polimi.ingsw.model.shared.*;
+import it.polimi.ingsw.network.game.GetResourcesCheatMessage;
 import it.polimi.ingsw.network.game.SelectMoveResponseMessage;
 import it.polimi.ingsw.utils.GameUtils;
 import it.polimi.ingsw.utils.ResourceManager;
@@ -458,6 +459,11 @@ public class GameBoardController implements SceneController {
     @FXML
     void toggleSound(ActionEvent event) {
         ResourceManager.toggleSound();
+    }
+
+    @FXML
+    void getExtraResources(ActionEvent event) {
+        gui.getClient().sendMessage(new GetResourcesCheatMessage());
     }
 
     @Override
