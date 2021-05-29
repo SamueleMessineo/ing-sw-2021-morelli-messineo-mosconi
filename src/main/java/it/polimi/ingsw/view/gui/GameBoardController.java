@@ -53,6 +53,8 @@ public class GameBoardController implements SceneController {
     @FXML
     private Button endTurnButton;
     @FXML
+    private Text whosPlayingText;
+    @FXML
     private Tab settingsTab;
 
     @FXML
@@ -64,6 +66,10 @@ public class GameBoardController implements SceneController {
         Platform.runLater(() -> {
             gameState = game;
             playerInfo.setText(gui.getUsername() + ": " + gameState.getPlayerByUsername(gui.getUsername()).getVP() + " points");
+            if (gui.getUsername().equals(gameState.getCurrentPlayer().getUsername()))
+                whosPlayingText.setText("It's your turn to play!");
+            else
+                whosPlayingText.setText(gameState.getCurrentPlayer().getUsername() + " is playing. Wait for your turn!");
             FXMLLoader cardsLoader = new FXMLLoader(
                     getClass().getClassLoader().getResource("scenes/cards-grid.fxml"));
             FXMLLoader marblesLoader = new FXMLLoader(

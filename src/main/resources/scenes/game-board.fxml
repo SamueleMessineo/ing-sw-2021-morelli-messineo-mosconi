@@ -20,9 +20,9 @@
             <Image url="@../images/board/game-board.png" />
          </image>
       </ImageView>
-      <VBox alignment="CENTER" fillWidth="false" prefHeight="720.0" prefWidth="393.0" spacing="20.0">
+      <VBox alignment="CENTER" fillWidth="false" prefHeight="720.0" prefWidth="393.0" spacing="10.0">
          <children>
-            <HBox alignment="CENTER_LEFT" prefHeight="56.0" prefWidth="354.0" spacing="20.0">
+            <HBox alignment="CENTER_LEFT" prefHeight="46.0" prefWidth="354.0" spacing="20.0">
                <children>
                   <Button fx:id="endTurnButton" disable="true" mnemonicParsing="false" onAction="#endTurn" styleClass="flat-button" text="End Turn" />
                   <Text fx:id="playerInfo" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Alberto">
@@ -32,6 +32,15 @@
                      <effect>
                         <DropShadow />
                      </effect>
+                  </Text>
+               </children>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="24.0" prefWidth="354.0">
+               <children>
+                  <Text fx:id="whosPlayingText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Alberto is playing. Wait for your turn!">
+                     <font>
+                        <Font name="System Bold" size="13.0" />
+                     </font>
                   </Text>
                </children>
             </HBox>
