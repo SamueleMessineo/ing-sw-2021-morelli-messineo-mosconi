@@ -98,7 +98,7 @@
                   </HBox>
                </children>
             </VBox>
-              <Button mnemonicParsing="false" onAction="#confirm" prefHeight="32.0" prefWidth="124.0" styleClass="flat-button" text="Confirm" />
+              <Button fx:id="confirmButton" mnemonicParsing="false" onAction="#confirm" prefHeight="32.0" prefWidth="124.0" styleClass="flat-button" text="Confirm" />
           </children>
       </VBox>
    </children>

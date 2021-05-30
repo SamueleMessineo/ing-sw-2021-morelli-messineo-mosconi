@@ -7,16 +7,19 @@ import it.polimi.ingsw.utils.ResourceManager;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
+import java.awt.*;
 import java.util.List;
 import java.util.Objects;
 
 public class InitialLeadersController implements SceneController{
+
     private GUI gui;
     @FXML
     private VBox cardGrid;
@@ -40,6 +43,8 @@ public class InitialLeadersController implements SceneController{
     private ImageView bottomLeftCross;
     @FXML
     private ImageView bottomRightCross;
+    @FXML
+    private Button confirmButton;
 
     private List<LeaderCard> cards;
 
@@ -52,6 +57,11 @@ public class InitialLeadersController implements SceneController{
         if(card1!=card2 && card1!=-1 && card1<=3 && card2<=3){
             System.out.println("sending " +card1 + " " + card2 );
             gui.getClient().sendMessage(new DropInitialLeaderCardsResponseMessage(card1, card2));
+
+            confirmButton.setDisable(true);
+            confirmButton.setText("Waiting for other players to select their cards");
+            confirmButton.setPrefWidth(380);
+
         }
     }
 
