@@ -309,6 +309,9 @@ public class ClassicGameController {
         return developmentCards;
     }
 
+    /**
+     * @return the leader cards the player can play
+     */
     public List<LeaderCard> getPlayableLeaderCards(){
         List<LeaderCard> leaderCards = new ArrayList<>();
 
@@ -320,6 +323,13 @@ public class ClassicGameController {
         return leaderCards;
     }
 
+    /**
+     * Represents the activate production move
+     * @param selectedStacks the list of the indexes of the selected stacks out of the ones that can be activated
+     * @param basicProduction the basic production power the player wants to use
+     * @param extraProductionPowers the list of the indexes of the selected extra stacks out of the ones that can be activated
+     * @param extraOutput the resources the player wants as outputs of extra powers
+     */
     public void activateProduction(List<Integer> selectedStacks, ProductionPower basicProduction, List<Integer> extraProductionPowers, List<Resource> extraOutput){
         if (selectedStacks != null) {
             List<ProductionPower> powers = game.getCurrentPlayer().possibleProductionPowersToActive();
@@ -358,6 +368,11 @@ public class ClassicGameController {
         }
     }
 
+    /**
+     * Moves a player of given positions and activate Pope report
+     * @param playerName  the player to move
+     * @param positions  the amount of positions to move the player
+     */
     public void movePlayer(String playerName, int positions){
         System.out.println(playerName + " " + positions);
         Player playerToMove = game.getPlayerByUsername(playerName);
@@ -367,6 +382,9 @@ public class ClassicGameController {
         }
     }
 
+    /**
+     * Checks if a player is on a pope space, if yes sets all other player's Pope favor tiles to active or discarded
+     */
     public void activatePopeReport() {
         for (Player player : game.getPlayers()) {
             GameUtils.debug(String.valueOf(player.getFaithTrack().inOnPopeSpace()));
@@ -400,6 +418,11 @@ public class ClassicGameController {
         }
     }
 
+    /**
+     * Represents the action of buying a development card
+     * @param stackIndex index of the stack where the card has to placed
+     * @param developmentCard the just bought card
+     */
     public void buyDevelopmentCard(Integer stackIndex, DevelopmentCard developmentCard){
         game.getCurrentPlayer().getPlayerBoard().getCardStacks().get(stackIndex).add(developmentCard);
         game.getCurrentPlayer().getPlayerBoard().payResourceCost(game.getCurrentPlayer().computeDiscountedCost(developmentCard));
@@ -412,6 +435,10 @@ public class ClassicGameController {
         }
     }
 
+    /**
+     * Represents the action of playing a leader
+     * @param cardIndex the index of the leader card to play
+     */
     public void playLeader(int cardIndex) {
         LeaderCard leaderCard = getPlayableLeaderCards().get(cardIndex);
         game.getCurrentPlayer().playLeaderCard(leaderCard);
@@ -424,6 +451,10 @@ public class ClassicGameController {
         }
     }
 
+    /**
+     * Computes the final standing
+     * @return the standing sorted by VP
+     */
     public Map<String, Integer> computeStanding() {
         Map<String, Integer> standing = new LinkedHashMap<>();
         List<Player> standingList = new ArrayList<>(game.getPlayers());
@@ -438,6 +469,10 @@ public class ClassicGameController {
         return standing;
     }
 
+    /**
+     * Computes the winner
+     * @return the player with the highest VP
+     */
     public String computeWinner() {
         String winner = game.getPlayers().get(0).getUsername();
         int points =  game.getPlayers().get(0).getVP();
@@ -452,6 +487,12 @@ public class ClassicGameController {
         return winner;
     }
 
+    /**
+     * Given a development card it computes the stacks where the player can place the card
+     * @param player the player that bought the card
+     * @param developmentCard the bought development card
+     * @return the list of the indexes  of  the stacks where the card can be placed
+     */
     public List<Integer> getStacksToPlaceCard(Player player, DevelopmentCard developmentCard){
         List<Integer> stacks = new ArrayList<>();
         List<PlayerCardStack> allStacks = player.getPlayerBoard().getCardStacks();
@@ -470,6 +511,9 @@ public class ClassicGameController {
         return stacks;
     }
 
+    /**
+     * Cheat to put 100 resources of each type in every player strongbox
+     */
     public void giveExtraResources() {
         Map<Resource, Integer> extraResources = new HashMap<>();
         extraResources.put(Resource.COIN, 100);
