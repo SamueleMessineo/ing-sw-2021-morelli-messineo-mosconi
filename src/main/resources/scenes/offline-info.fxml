@@ -25,6 +25,6 @@
                 <Insets left="200.0" right="200.0" />
             </padding>
         </VBox>
-        <Button mnemonicParsing="false" styleClass="flat-button" onAction="#confirm" text="Connect" />
+        <Button mnemonicParsing="false" styleClass="flat-button" onAction="#confirm" text="Confirm" />
     </children>
 </VBox>

@@ -377,7 +377,10 @@ public class ClassicGameController {
                 PopesFavorTile currentTile = player.getFaithTrack().getPopesFavorTiles().get(popeLevel-1);
                 if (currentTile.getState() == PopesFavorTileState.INACTIVE) {
                     currentTile.setState(PopesFavorTileState.ACTIVE);
-                    for (Player otherPlayer : game.getPlayers()) {
+                    List<Player> allPlayers = new ArrayList<>();
+                    allPlayers.addAll(game.getInactivePlayers());
+                    allPlayers.addAll(game.getPlayers());
+                    for (Player otherPlayer : allPlayers) {
                         // not current player
                         if (!otherPlayer.getUsername().equals(player.getUsername())) {
                             PopesFavorTile otherPlayersTile = otherPlayer.getFaithTrack().getPopesFavorTiles().get(popeLevel - 1);
