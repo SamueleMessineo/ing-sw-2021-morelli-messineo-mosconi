@@ -16,6 +16,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The controller for solo game (both online and local), it overrides some methods of ClassicGameController
+ */
 public class SoloGameController extends ClassicGameController {
     private final Game game;
 
@@ -33,6 +36,10 @@ public class SoloGameController extends ClassicGameController {
         game.setSoloActionTypes();
     }
 
+    /**
+     * Override the super method checking if LorenzoIlMagnifico won
+     * @return true if the game is over
+     */
     @Override
     public boolean isGameOver() {
 
@@ -47,6 +54,10 @@ public class SoloGameController extends ClassicGameController {
         return super.isGameOver();
     }
 
+    /**
+     * Override the super method computing LorenzoIlMagnifico VP
+     * @return the final standing standing
+     */
     @Override
     public Map<String, Integer> computeStanding() {
         Map<String, Integer> standing = new HashMap<>();
@@ -61,6 +72,10 @@ public class SoloGameController extends ClassicGameController {
         return standing;
     }
 
+    /**
+     * Override the super method adding the check on LorenzoIlMagnifico
+     * @return the name of the winner
+     */
     @Override
     public String computeWinner() {
         if(game.getLorenzoIlMagnifico().getFaithTrack().getPosition()==FaithTrack.getMaxposition())return game.getLorenzoIlMagnifico().getUsername();
@@ -71,12 +86,17 @@ public class SoloGameController extends ClassicGameController {
         return super.computeWinner();
     }
 
+    /*
     @Override
     public void movePlayer(String playerName, int positions) {
         super.movePlayer(playerName, positions);
-        activatePopeReport();
+        //activatePopeReport();
     }
+     */
 
+    /**
+     * Overrides super method by drawing LorenzoIlMagnifico action
+     */
     @Override
     public void computeNextPlayer() {
         SoloActionType soloActionType = game.getSoloActionTypes().pop();
@@ -95,8 +115,12 @@ public class SoloGameController extends ClassicGameController {
         }
     }
 
+    /**
+     * Ovverides super method checking if Lorenzo have to activate Pope report or setting his tile to active/discarded if another player activated Pope Report
+     */
     @Override
     public void activatePopeReport() {
+        System.out.println(2);
         super.activatePopeReport();
         FaithTrack currentPlayerFaithTrack = game.getCurrentPlayer().getFaithTrack();
         if(currentPlayerFaithTrack.inOnPopeSpace()!= -1){
@@ -113,6 +137,7 @@ public class SoloGameController extends ClassicGameController {
         }
     }
 
+    /*
     @Override
     public void movePlayers(List<Player> players, int positions) {
         if(!players.isEmpty()){
@@ -130,7 +155,14 @@ public class SoloGameController extends ClassicGameController {
             }
         }
     }
+     */
 
+    /**
+     * Ovverides wuper method by moving LorenzoIlMagnifico when resources are dropped
+     * @param obtainedResources all the resources the player got shifting the marker
+     * @param resourcesToDrop the resources the player does not wish to retain
+     * @param playerUsername tha player tha selected the resources
+     */
     @Override
     public void dropPlayerResources(Map<Resource, Integer> obtainedResources, Map<Resource, Integer> resourcesToDrop, String playerUsername) throws InvalidParameterException {
         super.dropPlayerResources(obtainedResources, resourcesToDrop, playerUsername);

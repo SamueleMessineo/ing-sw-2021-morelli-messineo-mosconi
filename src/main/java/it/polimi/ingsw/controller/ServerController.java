@@ -20,6 +20,13 @@ public class ServerController {
         this.server = server;
     }
 
+    /**
+     * Creates a room for a game
+     * @param privateRoom true if it is a private game
+     * @param username of the player creating the room
+     * @param numberOfPlayers of the game
+     * @param clientConnection of the player creating the room
+     */
     public void createRoom(boolean privateRoom, String username, int numberOfPlayers, ClientConnection clientConnection){
         List<ClientConnection> clientConnections=server.getPendingConnections();
         clientConnections.remove(clientConnection);
@@ -31,13 +38,19 @@ public class ServerController {
 
         server.addRoom(currentRoomId,room);
 
-        sendRoomDetails(currentRoomId, room, clientConnection);
+        sendRoomDetails(currentRoomId, room);
 
         if (room.isFull()){
             startSoloGame(room);
         }
     }
 
+    /**
+     * Adds the player to the game that has the selected roomID
+     * @param username of the player to add
+     * @param roomId of the game the player wants to join
+     * @param clientConnection of the player to add
+     */
     public void addPlayerByRoomId(String username,int roomId, ClientConnection clientConnection){
         if (server.getRooms().get(roomId) == null) {
             clientConnection.sendMessage(new ErrorMessage("room not found"));
@@ -89,12 +102,18 @@ public class ServerController {
         List<ClientConnection> clientConnections=server.getPendingConnections();
         clientConnections.remove(clientConnection);
         room.addConnection(clientConnection);
-        sendRoomDetails(roomId, room, clientConnection);
+        sendRoomDetails(roomId, room);
         if (room.isFull()){
             startGame(room);
         }
     }
 
+    /**
+     * Adds the player to a game that has the selected number of player, if the number  is 0 the player will be added to a  random  game
+     * @param numberOfPlayers of the game
+     * @param username of the  player to add
+     * @param clientConnection of the player to add
+     */
     public void addPlayerToPublicRoom(int numberOfPlayers, String username, ClientConnection clientConnection){
 
         List<Room> rooms = new ArrayList<>(server.getRooms().values());
@@ -129,14 +148,19 @@ public class ServerController {
                 currentRoomId = entry.getKey();
             }
         }
-        sendRoomDetails(currentRoomId, room, clientConnection);
+        sendRoomDetails(currentRoomId, room);
 
         if (room.isFull()){
             startGame(room);
         }
     }
 
-    public void sendRoomDetails(int roomId, Room room, ClientConnection clientConnection){
+    /**
+     * Sends the players, number of players and roomID of the game to all players
+     * @param roomId of the game
+     * @param room of the game
+     */
+    public void sendRoomDetails(int roomId, Room room){
         ArrayList<String> players = new ArrayList<>();
         for (Player player : room.getGame().getPlayers()) {
             players.add(player.getUsername());
@@ -144,12 +168,20 @@ public class ServerController {
         room.sendAll(new RoomDetailsMessage(players, room.getNumberOfPlayers(), roomId));
     }
 
+    /**
+     * Compute the id of the next room, it is an int between 1000 and 9999
+     * @return the id of the next room
+     */
     private int getRoomId(){
         roomId++;
         if (roomId > 9999)roomId=1000;
         return roomId;
     }
 
+    /**
+     * When the room is full sets the GameMessageHandler to all players and start the game
+     * @param room of the game that is starting
+     */
     private void startGame(Room room){
         room.sendAll(new StringMessage("Game is starting!"));
         ClassicGameController classicGameController = new ClassicGameController(room);
@@ -162,6 +194,10 @@ public class ServerController {
         }
     }
 
+    /**
+     * Starts a solo game
+     * @param room of the game that is starting
+     */
     private void startSoloGame(Room room){
         ClientConnection clientConnection = room.getConnections().get(0);
         ClassicGameController soloGameController = new SoloGameController(room);

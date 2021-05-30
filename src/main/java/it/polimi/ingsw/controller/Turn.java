@@ -8,6 +8,9 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
 
+/**
+ * This class has all the information of a single turn of the game
+ */
 public class Turn {
     private String currentPlayer;
     private List<String> moves;
@@ -25,6 +28,9 @@ public class Turn {
         this.moves = moves;
     }
 
+    /**
+     * @return the player that is playing
+     */
     public String getCurrentPlayer() {
         return currentPlayer;
     }
@@ -33,6 +39,9 @@ public class Turn {
         this.currentPlayer = currentPlayer;
     }
 
+    /**
+     * @return the moves tha player can perform
+     */
     public List<String> getMoves() {
         return moves;
     }
@@ -41,18 +50,31 @@ public class Turn {
         this.moves = moves;
     }
 
+    /**
+     * @param move the move a player wants to make
+     * @param username the player name
+     * @return true if the player is the current player and can permorm the move
+     */
     public boolean isValidMove(String move, String username){
         return moves.contains(move) && currentPlayer.equals(username);
     }
+
 
     public void setAlreadyPerformedMove(boolean alreadyPerformedMove) {
         this.alreadyPerformedMove = alreadyPerformedMove;
     }
 
+    /**
+     * Checks if a the current player has already performed one of the unique moves
+     * @return true if the player has performed one move between activating production, buying a card and getting marbles
+     */
     public boolean hasAlreadyPerformedMove() {
         return alreadyPerformedMove;
     }
 
+    /**
+     * @return the resources obtained by the player this turn by switching a row or column of marble structure
+     */
     public Map<Resource, Integer> getConverted() {
         return converted;
     }
@@ -92,6 +114,9 @@ public class Turn {
         this.conversionOptions = conversionOptions;
     }
 
+    /**
+     * @return the development card the player bought this turn
+     */
     public DevelopmentCard getBoughtDevelopmentCard() {
         return boughtDevelopmentCard;
     }

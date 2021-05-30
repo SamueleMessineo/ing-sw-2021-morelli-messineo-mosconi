@@ -386,6 +386,7 @@ public class ClassicGameController {
      * Checks if a player is on a pope space, if yes sets all other player's Pope favor tiles to active or discarded
      */
     public void activatePopeReport() {
+        System.out.println(1);
         for (Player player : game.getPlayers()) {
             GameUtils.debug(String.valueOf(player.getFaithTrack().inOnPopeSpace()));
             int popeLevel = player.getFaithTrack().inOnPopeSpace();
