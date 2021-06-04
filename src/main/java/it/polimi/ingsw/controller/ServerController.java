@@ -60,14 +60,20 @@ public class ServerController {
                 int playerNumber = game.getPlayers().size() ;
                 Room room = new Room(game,playerNumber,true, clientConnection, roomId);
 
+                if(game.getPlayers().size()==1){
+                    gameController = new SoloGameController(room);
+                } else gameController = new ClassicGameController(room);
                 server.addRoom(roomId, room);
 
                 List<ClientConnection> clientConnections=server.getPendingConnections();
                 clientConnections.remove(clientConnection);
                 room.getConnections().add(game.getPlayers().indexOf(game.getPlayerByUsername(username)), clientConnection);
 
+                clientConnection.setGameMessageHandler(new GameMessageHandler(gameController, clientConnection, room));
                 if (room.isFull()){
-                    startSoloGame(room);
+                    room.setCurrentTurn(new Turn(username, room.getGameController().computeNextPossibleMoves(false)));
+                    clientConnection.sendMessage(new UpdateAndDisplayGameStateMessage(game));
+                    clientConnection.sendMessage(new SelectMoveRequestMessage(room.getCurrentTurn().getMoves()));
                     return;
                 }
 
@@ -75,7 +81,8 @@ public class ServerController {
                      game.getPlayers()) {
                     if(!player.getUsername().equals(username))player.setActive(false);
                 }
-
+                sendRoomDetails(roomId, room);
+                return;
             }
             clientConnection.sendMessage(new ErrorMessage("room not found"));
             return;
