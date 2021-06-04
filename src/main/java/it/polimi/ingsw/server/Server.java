@@ -1,6 +1,7 @@
 package it.polimi.ingsw.server;
 
 import it.polimi.ingsw.controller.ServerController;
+import it.polimi.ingsw.utils.GameUtils;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -22,6 +23,7 @@ public class Server {
 
     public Server() throws IOException {
         this.serverSocket = new ServerSocket(PORT);
+
     }
 
     public ServerController getServerController() {

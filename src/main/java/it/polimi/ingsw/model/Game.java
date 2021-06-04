@@ -77,10 +77,18 @@ public class Game implements Serializable{
     }
 
     /**
-     * Returns the list of active players in the game.
+     * Returns the list of players in the game.
      * @return The list of players in the game.
      */
     public ArrayList<Player> getPlayers() {
+        return players;
+    }
+
+    /**
+     * Returns the list of active players in the game.
+     * @return The list of players in the game.
+     */
+    public ArrayList<Player> getActivePlayers() {
         ArrayList<Player> activePlayers = new ArrayList<>();
         for (Player p : players) {
             if (p.isActive()) activePlayers.add(p);

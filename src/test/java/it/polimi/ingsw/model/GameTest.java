@@ -1,7 +1,6 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.player.Player;
-import it.polimi.ingsw.model.shared.DevelopmentCard;
 import it.polimi.ingsw.model.shared.LeaderCard;
 import org.junit.Before;
 import org.junit.Test;
@@ -42,17 +41,17 @@ public class GameTest {
         structure.addPlayer("LorenzoNonMagnifico");
 
 
-        assertEquals(player1.getUsername(), structure.getPlayers().get(0).getUsername());
-        assertEquals(player2.getUsername(), structure.getPlayers().get(1).getUsername());
-        assertEquals(player3.getUsername(), structure.getPlayers().get(2).getUsername());
-        assertNotEquals(player4.getUsername(), structure.getPlayers().get(3).getUsername());
+        assertEquals(player1.getUsername(), structure.getActivePlayers().get(0).getUsername());
+        assertEquals(player2.getUsername(), structure.getActivePlayers().get(1).getUsername());
+        assertEquals(player3.getUsername(), structure.getActivePlayers().get(2).getUsername());
+        assertNotEquals(player4.getUsername(), structure.getActivePlayers().get(3).getUsername());
 
         ArrayList<LeaderCard> leaderCardsSum = new ArrayList<>();
         for (int i = 0; i < 4; i++) {
-            leaderCardsSum.addAll(structure.getPlayers().get(i).getLeaderCards());
+            leaderCardsSum.addAll(structure.getActivePlayers().get(i).getLeaderCards());
 
-            assertEquals(4, structure.getPlayers().get(i).getLeaderCards().stream().count());
-            assertEquals(4, structure.getPlayers().get(i).getLeaderCards().stream().count());
+            assertEquals(4, structure.getActivePlayers().get(i).getLeaderCards().stream().count());
+            assertEquals(4, structure.getActivePlayers().get(i).getLeaderCards().stream().count());
         }
 
 

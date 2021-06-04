@@ -358,4 +358,11 @@ public class Display {
         result += "\u001B[0m";
         return result;
     }
+
+    public static void displayShelves(List<String> shelvesNames, Warehouse warehouse, PrintStream output){
+        output.println("\nWAREHOUSE:");
+        for(String name: shelvesNames){
+            output.println(name+": "+warehouse.getShelf(name));
+        }
+    }
 }

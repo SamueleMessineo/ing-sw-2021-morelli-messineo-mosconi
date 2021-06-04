@@ -6,7 +6,6 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.market.MarbleStructure;
 import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.PlayerCardStack;
-import it.polimi.ingsw.model.player.Warehouse;
 import it.polimi.ingsw.model.shared.DevelopmentCard;
 import it.polimi.ingsw.model.shared.LeaderCard;
 import it.polimi.ingsw.model.shared.ProductionPower;
@@ -17,7 +16,6 @@ import it.polimi.ingsw.network.setup.JoinPrivateRoomMessage;
 import it.polimi.ingsw.network.setup.JoinPublicRoomMessage;
 import it.polimi.ingsw.utils.GameUtils;
 
-import java.awt.desktop.OpenURIEvent;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.util.*;
@@ -167,8 +165,9 @@ public class CLI implements UI {
 
         if(gameState.getCurrentPlayer()!= gameState.getPlayerByUsername(username)){
            for (Player player:
-                gameState.getPlayers()) {
+                gameState.getActivePlayers()) {
                    Display.displayPlayerBoard(gameState.getPlayerByUsername(player.getUsername()), output);
+               if(gameState.getActivePlayers().get(gameState.getInkwellPlayer()).getUsername().equals(player.getUsername()))output.println("Inkwell");
                    output.println("Wait your turn");
            }
        } else Display.displayPlayerBoard(gameState.getPlayerByUsername(username), output);
@@ -185,14 +184,13 @@ public class CLI implements UI {
         output.println("Enter the username of a player you want to visit");
         output.print("[");
         for (Player player:
-                gameState.getPlayers()) {
+                gameState.getActivePlayers()) {
             output.print(player.getUsername() + "(" + player.getVP() + " points) ");
         }
         if(gameState.getLorenzoIlMagnifico() != null)output.print("LorenzoIlMagnifico (" + gameState.getLorenzoIlMagnifico().getVP() + ")");
         output.println("]");
         output.print("username: ");
         Player player;
-
 
             try {
                 do{
@@ -297,17 +295,11 @@ public class CLI implements UI {
         client.sendMessage(new DropLeaderCardResponseMessage(selection));
     }
 
-    private void displayShelves(List<String> shelvesNames){
-        Warehouse warehouse=gameState.getCurrentPlayer().getPlayerBoard().getWarehouse();
-        output.println("\nWAREHOUSE:");
-        for(String name: shelvesNames){
-            output.println(name+": "+warehouse.getShelf(name));
-        }
-    }
+
 
     @Override
     public void switchShelves(ArrayList<String> shelves) {
-        displayShelves(shelves);
+        Display.displayShelves(shelves, gameState.getCurrentPlayer().getPlayerBoard().getWarehouse() , output);
         String selection1;
         String selection2;
         output.println("Select the name of the shelves you want to switch");
@@ -354,7 +346,6 @@ public class CLI implements UI {
                         selection = GameUtils.askIntegerInput(message,indexes.get(0),size, output, input);
                     } while (!indexes.contains(selection));
 
-
                     if(indexes.contains(selection)) {
 
                         if (selection == 0) {
@@ -395,8 +386,6 @@ public class CLI implements UI {
                 }
                 GameUtils.debug(selectedStacks.toString());
                 client.sendMessage(new ActivateProductionResponseMessage(selectedStacks, selectedBasicProductionPowers, extraProductionPowers, extraOutputs));
-
-
     }
 
     private Resource askExtraOutput(){

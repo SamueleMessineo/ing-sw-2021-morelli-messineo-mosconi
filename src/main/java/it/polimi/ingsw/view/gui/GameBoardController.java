@@ -96,7 +96,7 @@ public class GameBoardController implements SceneController {
             marblesContainer.getChildren().add(marblesGrid);
             // populate player tabs
             tabPane.getTabs().clear();
-            for (Player p : gameState.getPlayers()) {
+            for (Player p : gameState.getActivePlayers()) {
                 Tab playerTab = new Tab();
                 playerTab.setText(p.getUsername() + ": " + p.getVP() + " points");
                 AnchorPane tabContainer = new AnchorPane();
@@ -475,7 +475,7 @@ public class GameBoardController implements SceneController {
     void endTurn(ActionEvent event) {
         ResourceManager.playClickSound();
         gui.getClient().sendMessage(new SelectMoveResponseMessage("END_TURN"));
-        if(gameState.getPlayers().size()!=1)displayPossibleMoves(new ArrayList<>());
+        if(gameState.getActivePlayers().size()!=1)displayPossibleMoves(new ArrayList<>());
     }
 
     @FXML

@@ -41,7 +41,7 @@ public class LocalMessageHandler {
 
     public void startTurn(){
         currentTurn = new Turn(player.getUsername(), gameController.computeNextPossibleMoves(false));
-        GameUtils.writeGama(gameController.getGame(), 42);
+        GameUtils.writeGame(gameController.getGame(), 42);
         ui.setGameState(GameUtils.readGame(42));
         //ui.setGameState(gameController.getGame());
         ui.displayGameState();
@@ -54,7 +54,7 @@ public class LocalMessageHandler {
         if(!checkGameOver()){
             currentTurn.setAlreadyPerformedMove(alreadyPerformedMoves);
             currentTurn.setMoves(gameController.computeNextPossibleMoves(currentTurn.hasAlreadyPerformedMove()));
-            GameUtils.writeGama(gameController.getGame(), 42);
+            GameUtils.writeGame(gameController.getGame(), 42);
             ui.setGameState(GameUtils.readGame(42));
             ui.displayGameState();
             ui.displayPossibleMoves(currentTurn.getMoves());
@@ -67,6 +67,7 @@ public class LocalMessageHandler {
             Map<String, Integer> standing = gameController.computeStanding();
             String winner = gameController.computeWinner();
             ui.gameOver(winner, standing);
+            GameUtils.deleteSavedGame(42);
             return true;
         } else return false;
     }

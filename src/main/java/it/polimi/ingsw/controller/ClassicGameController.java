@@ -8,7 +8,6 @@ import it.polimi.ingsw.model.player.Player;
 import it.polimi.ingsw.model.player.PlayerCardStack;
 import it.polimi.ingsw.model.player.Warehouse;
 import it.polimi.ingsw.model.shared.*;
-import it.polimi.ingsw.network.game.GameMessage;
 import it.polimi.ingsw.server.Room;
 import it.polimi.ingsw.utils.GameUtils;
 
@@ -39,7 +38,7 @@ public class ClassicGameController {
      */
     private void selectStartingPlayer() {
         Random r = new Random();
-        int firstPlayerIndex = r.nextInt(game.getPlayers().size());
+        int firstPlayerIndex = r.nextInt(game.getActivePlayers().size());
         System.out.println("first player index: " + firstPlayerIndex);
         game.setCurrentPlayer(firstPlayerIndex);
         game.setInkwellPlayer(firstPlayerIndex);
@@ -79,7 +78,7 @@ public class ClassicGameController {
      */
     public boolean isGameOver() {
         for (Player player:
-                game.getPlayers()) {
+                game.getActivePlayers()) {
             if ((player.getFaithTrack().getPosition() >= FaithTrack.getMaxposition())||
                         player.getPlayerBoard().getCardStacks().get(0).size()+player.getPlayerBoard().getCardStacks().get(1).size()+player.getPlayerBoard().getCardStacks().get(2).size() >= 7)return true;
         }
@@ -90,9 +89,9 @@ public class ClassicGameController {
      * sets the next player as current player
      */
     public void computeNextPlayer(){
-        int nextPlayer = (game.getPlayers().indexOf(game.getCurrentPlayer()) + 1) % game.getPlayers().size();
+        int nextPlayer = (game.getActivePlayers().indexOf(game.getCurrentPlayer()) + 1) % game.getActivePlayers().size();
         game.setCurrentPlayer(nextPlayer);
-        if (!game.getPlayers().get(nextPlayer).isActive()) computeNextPlayer();
+        if (!game.getActivePlayers().get(nextPlayer).isActive()) computeNextPlayer();
     }
 
     /**
@@ -184,7 +183,7 @@ public class ClassicGameController {
 
         player.getPlayerBoard().getWarehouse().placeResources(resourcesToAdd);
 
-        List<Player> other = new ArrayList<>(game.getPlayers());
+        List<Player> other = new ArrayList<>(game.getActivePlayers());
         other.remove(player);
         movePlayers(other, totalDropped);
 
@@ -205,7 +204,7 @@ public class ClassicGameController {
 
                 }
                 // and check if the pope favor gets activated
-                for (Player p : game.getPlayers()) {
+                for (Player p : game.getActivePlayers()) {
                     activatePopeReport();
                 }
             }
@@ -387,7 +386,7 @@ public class ClassicGameController {
      */
     public void activatePopeReport() {
         System.out.println(1);
-        for (Player player : game.getPlayers()) {
+        for (Player player : game.getActivePlayers()) {
             GameUtils.debug(String.valueOf(player.getFaithTrack().inOnPopeSpace()));
             int popeLevel = player.getFaithTrack().inOnPopeSpace();
             // for each player, if the player is on a pope space
@@ -398,7 +397,7 @@ public class ClassicGameController {
                     currentTile.setState(PopesFavorTileState.ACTIVE);
                     List<Player> allPlayers = new ArrayList<>();
                     allPlayers.addAll(game.getInactivePlayers());
-                    allPlayers.addAll(game.getPlayers());
+                    allPlayers.addAll(game.getActivePlayers());
                     for (Player otherPlayer : allPlayers) {
                         // not current player
                         if (!otherPlayer.getUsername().equals(player.getUsername())) {
@@ -458,7 +457,7 @@ public class ClassicGameController {
      */
     public Map<String, Integer> computeStanding() {
         Map<String, Integer> standing = new LinkedHashMap<>();
-        List<Player> standingList = new ArrayList<>(game.getPlayers());
+        List<Player> standingList = new ArrayList<>(game.getActivePlayers());
         standingList.sort((o1, o2) -> o2.getVP() - o1.getVP());
 
         int points;
@@ -475,11 +474,11 @@ public class ClassicGameController {
      * @return the player with the highest VP
      */
     public String computeWinner() {
-        String winner = game.getPlayers().get(0).getUsername();
-        int points =  game.getPlayers().get(0).getVP();
+        String winner = game.getActivePlayers().get(0).getUsername();
+        int points =  game.getActivePlayers().get(0).getVP();
 
         for (Player player:
-                game.getPlayers()) {
+                game.getActivePlayers()) {
             if(player.getVP() >= points){
                 winner=player.getUsername();
                 points = player.getVP();
@@ -521,7 +520,7 @@ public class ClassicGameController {
         extraResources.put(Resource.STONE, 100);
         extraResources.put(Resource.SERVANT, 100);
         extraResources.put(Resource.SHIELD, 100);
-        for (Player player : game.getPlayers()) {
+        for (Player player : game.getActivePlayers()) {
             player.getPlayerBoard().getStrongbox().addResources(extraResources);
         }
     }

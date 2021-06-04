@@ -136,7 +136,7 @@ public class GameUtils {
         System.out.println("\u001B[36m" + string + "\u001B[0m");
     }
 
-    public static void writeGama(Game game, Integer roomID){
+    public static void writeGame(Game game, Integer roomID){
         try {
             FileOutputStream fileOut = new FileOutputStream("src/main/resources/games/" + roomID + ".ser");
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
@@ -315,5 +315,15 @@ public class GameUtils {
         singleCardPowerContainer.setLayoutY(0);
         powerPane.getChildren().add(singleCardPowerContainer);
         return powerPane;
+    }
+
+    public static void deleteSavedGame(int roomId){
+        try {
+            //File file = new File(Objects.requireNonNull(GameUtils.class.getClassLoader().getResource("games/" + roomId + ".ser")).toURI());
+            File file = new File("src/main/resources/games/" + roomId + ".ser");
+            file.delete();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
     }
 }

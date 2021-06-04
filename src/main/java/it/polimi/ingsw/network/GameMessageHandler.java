@@ -61,7 +61,7 @@ public class GameMessageHandler {
     }
 
     private void startPlayingIfReady() {
-        for (Player p : room.getGame().getPlayers()) {
+        for (Player p : room.getGame().getActivePlayers()) {
             if (p.getLeaderCards().size() != 2) {
                 clientConnection.sendMessage(new StringMessage("Waiting for other players to select their cards"));
                 return;
@@ -85,11 +85,12 @@ public class GameMessageHandler {
                 room.getPlayerFromConnection(clientConnection).getUsername());
         clientConnection.sendMessage(new DropInitialLeaderCardsRequestMessage(
                 room.getPlayerFromConnection(clientConnection).getLeaderCards()));
+        GameUtils.writeGame(gameController.getGame(), room.getId());
     }
 
     public void handle(DropInitialLeaderCardsResponseMessage message){
         gameController.dropInitialLeaderCards(message.getCard1(), message.getCard2(), room.getPlayerFromConnection(clientConnection).getUsername());
-        GameUtils.saveGameState(room.getGame(), room.getId());
+        GameUtils.writeGame(gameController.getGame(), room.getId());
         ready = true;
         startPlayingIfReady();
     }
@@ -268,13 +269,13 @@ public class GameMessageHandler {
     }
 
     private void sendStateAndMovesForNextTurn(){
-
-        ClientConnection currentPlayer = room.getConnections().get(room.getGame().getPlayers().indexOf(
+        ClientConnection currentPlayer = room.getConnections().get(room.getGame().getActivePlayers().indexOf(
                 room.getGame().getCurrentPlayer()));
         GameUtils.debug(room.getPlayerFromConnection(currentPlayer).getUsername());
+        GameUtils.writeGame(gameController.getGame(), room.getId());
         room.sendAll(new UpdateAndDisplayGameStateMessage(room.getGame()));
 
-        if(!gameController.isGameOver() || (room.getGame().getPlayers().indexOf(room.getPlayerFromConnection(currentPlayer)) != room.getGame().getInkwellPlayer())){
+        if(!gameController.isGameOver() || (room.getGame().getActivePlayers().indexOf(room.getPlayerFromConnection(currentPlayer)) != room.getGame().getInkwellPlayer())){
             room.setCurrentTurn(new Turn(room.getPlayerFromConnection(currentPlayer).getUsername(), gameController.computeNextPossibleMoves(false)));
             SelectMoveRequestMessage selectMoveRequestMessage = new SelectMoveRequestMessage(room.getCurrentTurn().getMoves());
             currentPlayer.sendMessage(selectMoveRequestMessage);
@@ -282,6 +283,7 @@ public class GameMessageHandler {
             Map<String, Integer> standing = gameController.computeStanding();
             String winner = gameController.computeWinner();
             room.sendAll(new GameOverMessage(winner, standing));
+            GameUtils.deleteSavedGame(room.getId());
         }
     }
 
@@ -289,6 +291,7 @@ public class GameMessageHandler {
         room.getCurrentTurn().setMoves(gameController.computeNextPossibleMoves(room.getCurrentTurn().hasAlreadyPerformedMove()));
         clientConnection.sendMessage(new UpdateAndDisplayGameStateMessage(room.getGame()));
         clientConnection.sendMessage(new SelectMoveRequestMessage(room.getCurrentTurn().getMoves()));
+        GameUtils.writeGame(gameController.getGame(), room.getId());
     }
 
     private void endTurn(){
@@ -305,7 +308,7 @@ public class GameMessageHandler {
             room.sendAll(new StringMessage(disconnectedPlayer.getUsername() + " disconnected"));
             return;
         }
-        room.sendAll(new StringMessage(disconnectedPlayer.getUsername() + " disconnected"));
+        room.sendAll(new ErrorMessage(disconnectedPlayer.getUsername() + " disconnected"));
 
         if(room.getCurrentTurn()!= null && disconnectedPlayer.equals(room.getGame().getPlayerByUsername(room.getCurrentTurn().getCurrentPlayer()))){
             GameUtils.debug("ending turn");
@@ -321,7 +324,7 @@ public class GameMessageHandler {
         }
          */
 
-        System.out.println("players" + gameController.getGame().getPlayers() + "conncetions" + room.getConnections().size());
+        System.out.println("players" + gameController.getGame().getActivePlayers() + "conncetions" + room.getConnections().size());
 
     }
 
@@ -331,5 +334,9 @@ public class GameMessageHandler {
 
     public boolean isReady() {
         return ready;
+    }
+
+    public void setReady(boolean ready) {
+        this.ready = ready;
     }
 }

@@ -63,7 +63,7 @@ public class Room {
     }
 
     public Player getPlayerFromConnection(ClientConnection clientConnection){
-        return getGame().getPlayers().get(getConnections().indexOf(clientConnection));
+        return getGame().getActivePlayers().get(getConnections().indexOf(clientConnection));
     }
 
     public Turn getCurrentTurn() {
