@@ -97,7 +97,7 @@ public class ClientConnection implements Runnable{
         while (isConnected()) {
             sendMessage(new PingMessage());
             long start = System.currentTimeMillis();
-            long end = start + 5*1000; // 5 seconds * 1000 ms/sec
+            long end = start + 10*1000; // 5 seconds * 1000 ms/sec
             while (System.currentTimeMillis() < end);
             if (receivedPong) {
                 receivedPong = false;

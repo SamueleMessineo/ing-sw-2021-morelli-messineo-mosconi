@@ -9,6 +9,7 @@ import it.polimi.ingsw.model.shared.PopesFavorTileState;
 import it.polimi.ingsw.model.shared.Resource;
 import it.polimi.ingsw.model.shared.SoloActionType;
 import it.polimi.ingsw.server.Room;
+import it.polimi.ingsw.utils.GameUtils;
 
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
@@ -124,14 +125,15 @@ public class SoloGameController extends ClassicGameController {
         super.activatePopeReport();
         FaithTrack currentPlayerFaithTrack = game.getCurrentPlayer().getFaithTrack();
         if(currentPlayerFaithTrack.inOnPopeSpace()!= -1){
-            if(game.getLorenzoIlMagnifico().getFaithTrack().isInPopeFavorByLevel(currentPlayerFaithTrack.inOnPopeSpace()-1)){
+            GameUtils.debug("check " + (currentPlayerFaithTrack.inOnPopeSpace()-1) );
+            if(game.getLorenzoIlMagnifico().getFaithTrack().isInPopeFavorByLevel(currentPlayerFaithTrack.inOnPopeSpace())){
                 game.getLorenzoIlMagnifico().getFaithTrack().getPopesFavorTiles().get(currentPlayerFaithTrack.inOnPopeSpace()-1).setState(PopesFavorTileState.ACTIVE);
             } else  game.getLorenzoIlMagnifico().getFaithTrack().getPopesFavorTiles().get(currentPlayerFaithTrack.inOnPopeSpace()-1).setState(PopesFavorTileState.DISCARDED);
         }
 
         if(game.getLorenzoIlMagnifico().getFaithTrack().inOnPopeSpace()!= -1 && game.getLorenzoIlMagnifico().getFaithTrack().getPopesFavorTiles().get(game.getLorenzoIlMagnifico().getFaithTrack().inOnPopeSpace()-1).getState().equals(PopesFavorTileState.INACTIVE)){
                 game.getLorenzoIlMagnifico().getFaithTrack().getPopesFavorTiles().get(game.getLorenzoIlMagnifico().getFaithTrack().inOnPopeSpace()-1).setState(PopesFavorTileState.ACTIVE);
-            if(currentPlayerFaithTrack.isInPopeFavorByLevel(game.getLorenzoIlMagnifico().getFaithTrack().inOnPopeSpace()-1)){
+            if(currentPlayerFaithTrack.isInPopeFavorByLevel(game.getLorenzoIlMagnifico().getFaithTrack().inOnPopeSpace())){
                 currentPlayerFaithTrack.getPopesFavorTiles().get(game.getLorenzoIlMagnifico().getFaithTrack().inOnPopeSpace()-1).setState(PopesFavorTileState.ACTIVE);
             } else  currentPlayerFaithTrack.getPopesFavorTiles().get(game.getLorenzoIlMagnifico().getFaithTrack().inOnPopeSpace()-1).setState(PopesFavorTileState.DISCARDED);
         }
