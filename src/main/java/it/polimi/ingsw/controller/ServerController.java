@@ -143,7 +143,6 @@ public class ServerController {
                if(!clientConnection.getGameMessageHandler().isReady()){
                    clientConnection.getGameMessageHandler().initialSelections();
                }
-
                else {
                    room.sendAll(new StringMessage(username + " is back in the game!"));
                    room.sendAll(new UpdateGameStateMessage(room.getGame()));
@@ -151,10 +150,10 @@ public class ServerController {
                    if(room.isRecreated() ){
                        if( room.getGame().getActivePlayers().size() == room.getNumberOfPlayers()){
                            room.sendAll(new UpdateAndDisplayGameStateMessage(room.getGame()));
+                           room.getConnections().get(room.getGame().getPlayers().indexOf(room.getGame().getCurrentPlayer())).sendMessage(new SelectMoveRequestMessage(room.getCurrentTurn().getMoves()));
                            room.setRecreated(false);
                        }
-                    }
-                   else clientConnection.sendMessage(new UpdateAndDisplayGameStateMessage(room.getGame()));
+                    } else clientConnection.sendMessage(new UpdateAndDisplayGameStateMessage(room.getGame()));
 
                    if(room.getGame().getActivePlayers().size()==1){
                        room.setCurrentTurn(new Turn(username, room.getGameController().computeNextPossibleMoves(false)));

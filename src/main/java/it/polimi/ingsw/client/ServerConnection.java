@@ -3,6 +3,7 @@ package it.polimi.ingsw.client;
 import it.polimi.ingsw.network.ClientMessageHandler;
 import it.polimi.ingsw.network.Message;
 import it.polimi.ingsw.network.client.ClientMessage;
+import it.polimi.ingsw.network.client.ErrorMessage;
 import it.polimi.ingsw.network.pingpong.PongMessage;
 
 import java.io.IOException;
@@ -46,7 +47,10 @@ public class ServerConnection implements Runnable {
         try {
             m = (Message) inputStream.readObject();
         } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
+            ErrorMessage message = new ErrorMessage("Server unavailable :(");
+            message.accept(clientMessageHandler);
+            System.exit(404);
+           // e.printStackTrace();
         }
         return m;
     }

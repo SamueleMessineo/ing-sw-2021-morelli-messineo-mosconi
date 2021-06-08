@@ -24,6 +24,7 @@ public class Room {
         this.isPrivate = isPrivate;
         this.id = id;
         addConnection(host);
+        recreated = false;
     }
 
     public Game getGame() {
