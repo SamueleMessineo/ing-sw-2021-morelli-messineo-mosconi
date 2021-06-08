@@ -27,7 +27,7 @@ import java.util.*;
 public class ActivateProductionController implements SceneController {
     private GUI gui;
     private Player player;
-    private ProductionPower basicProduction;
+    private ProductionPower basicProduction = null;
     private List<Integer> selectedCardPowers;
     private Button confirmBasicProductionButton;
     private List<AnchorPane> selectedCardPowersContainers;

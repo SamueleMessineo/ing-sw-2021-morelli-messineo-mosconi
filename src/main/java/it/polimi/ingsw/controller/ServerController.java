@@ -61,6 +61,7 @@ public class ServerController {
                 System.out.println(game.getPlayers());
                 int playerNumber = game.getPlayers().size() ;
                 Room room = new Room(game,playerNumber,true, null, roomId);
+                room.setRecreated(true);
 
                 if(game.getPlayers().size()==1){
                     gameController = new SoloGameController(room);
@@ -140,16 +141,21 @@ public class ServerController {
                    clientConnection.getGameMessageHandler().setReady(true);
                }
                if(!clientConnection.getGameMessageHandler().isReady()){
-                   System.out.println("if");
                    clientConnection.getGameMessageHandler().initialSelections();
                }
 
                else {
-                   System.out.println("else");
                    room.sendAll(new StringMessage(username + " is back in the game!"));
                    room.sendAll(new UpdateGameStateMessage(room.getGame()));
-                   room.sendAll(new UpdateAndDisplayGameStateMessage(room.getGame()));
-                   //clientConnection.sendMessage(new UpdateAndDisplayGameStateMessage(room.getGame()));
+                   //room.sendAll(new UpdateAndDisplayGameStateMessage(room.getGame()));
+                   if(room.isRecreated() ){
+                       if( room.getGame().getActivePlayers().size() == room.getNumberOfPlayers()){
+                           room.sendAll(new UpdateAndDisplayGameStateMessage(room.getGame()));
+                           room.setRecreated(false);
+                       }
+                    }
+                   else clientConnection.sendMessage(new UpdateAndDisplayGameStateMessage(room.getGame()));
+
                    if(room.getGame().getActivePlayers().size()==1){
                        room.setCurrentTurn(new Turn(username, room.getGameController().computeNextPossibleMoves(false)));
                        room.sendAll(new SelectMoveRequestMessage(room.getCurrentTurn().getMoves()));

@@ -416,10 +416,13 @@ public class CLI implements UI {
             if(gameState.getCurrentPlayer().getPlayerBoard().getResources().get(r)>0)availableResources.add(r);
         }
         List<Resource> allRes = new ArrayList<>();
-        allRes.add(Resource.STONE);
+        allRes.add(Resource.SHIELD);
         allRes.add(Resource.COIN);
         allRes.add(Resource.SERVANT);
-        allRes.add(Resource.SHIELD);
+        allRes.add(Resource.STONE);
+
+
+
 
         output.println("These are your available resources " + Display.displayResourceList(availableResources));
         resources.add(GameUtils.askIntegerInput("What is the first resource you want to put as input?",1,availableResources.size(), output, input)-1);

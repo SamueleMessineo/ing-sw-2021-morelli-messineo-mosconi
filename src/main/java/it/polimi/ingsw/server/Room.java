@@ -16,6 +16,7 @@ public class Room {
     private ClassicGameController gameController;
     private Turn currentTurn;
     private final int id;
+    private boolean recreated;
 
     public Room(Game game, int numberOfPlayers, boolean isPrivate, ClientConnection host, int id) {
         this.game = game;
@@ -80,5 +81,13 @@ public class Room {
 
     public ClassicGameController getGameController() {
         return gameController;
+    }
+
+    public void setRecreated(boolean recreated) {
+        this.recreated = recreated;
+    }
+
+    public boolean isRecreated() {
+        return recreated;
     }
 }

@@ -118,9 +118,9 @@ public class PlayerBoard implements Serializable {
 
     public void activateProductionPower(ProductionPower productionPower){
         payResourceCost(productionPower.getInput());
-        Map<Resource,Integer> ouput = GameUtils.emptyResourceMap();
-        ouput.putAll(productionPower.getOutput());
-        strongbox.addResources(ouput);
+        Map<Resource,Integer> output = GameUtils.emptyResourceMap();
+        output.putAll(productionPower.getOutput());
+        strongbox.addResources(output);
     }
 
     public boolean canPlaceDevelopmentCard(DevelopmentCard card) {
@@ -142,7 +142,7 @@ public class PlayerBoard implements Serializable {
     public void payResourceCost(Map<Resource, Integer>cost){
         GameUtils.debug("paying: " + cost);
         if (!canPayResources(cost)) return;
-
+        GameUtils.debug("can pay");
         for (Resource resource : cost.keySet()) {
             boolean placed = false;
             // try to remove from shelves and extra slots

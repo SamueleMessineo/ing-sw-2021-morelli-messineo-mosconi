@@ -330,7 +330,9 @@ public class ClassicGameController {
      * @param extraOutput the resources the player wants as outputs of extra powers
      */
     public void activateProduction(List<Integer> selectedStacks, ProductionPower basicProduction, List<Integer> extraProductionPowers, List<Resource> extraOutput){
+       GameUtils.debug("in activate production " + selectedStacks );
         if (selectedStacks != null) {
+            GameUtils.debug("in activate production " + selectedStacks );
             List<ProductionPower> powers = game.getCurrentPlayer().possibleProductionPowersToActive();
             GameUtils.debug("powers: " + powers);
 
@@ -346,9 +348,11 @@ public class ClassicGameController {
             }
         }
         if (basicProduction != null) {
+            GameUtils.debug("In basic" + basicProduction);
            game.getCurrentPlayer().getPlayerBoard().activateProductionPower(basicProduction);
         }
-        if(extraProductionPowers != null){
+        if(extraProductionPowers != null && !extraProductionPowers.isEmpty()){
+            GameUtils.debug("in extra");
             int outRes = 0;
             for (Integer extraProductionPower : extraProductionPowers) {
                 movePlayer(game.getCurrentPlayer().getUsername(), 1);
