@@ -219,6 +219,9 @@ public class ActivateProductionController implements SceneController {
         ResourceManager.playClickSound();
         gui.getClient().sendMessage(new ActivateProductionResponseMessage(
                 selectedCardPowers, basicProduction, selectedExtras, extraOutputs));
+        basicProduction = null;
+        selectedCardPowers = null;
+        selectedExtras = null;
     }
 
     @Override
