@@ -24,10 +24,16 @@ public class OfflineInfoController implements SceneController{
         ResourceManager.playClickSound();
         Platform.runLater(() -> {
             username = usernameInput.getText();
-            gui.setUsername(username);
-            GameUtils.debug(username);
-            if(username!= null)
-                gui.initializeClient(false);
+            if(!username.trim().equalsIgnoreCase("lorenzoilmagnifico")){
+                gui.setUsername(username);
+                GameUtils.debug(username);
+                if(username!= null)
+                    gui.initializeClient(false);
+            }
+           else {
+               gui.displayError("There is only one Lorenzo il Magnifico");
+               gui.setScene("offline-info");
+            }
         });
     }
 

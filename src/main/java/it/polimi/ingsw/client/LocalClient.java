@@ -19,7 +19,13 @@ public class LocalClient extends Client {
 
     @Override
     public void run() {
-        ui.askUsername();
+        do{
+            if(ui.getUsername() != null && ui.getUsername().trim().equalsIgnoreCase("lorenzoilmagnifico")){
+                ui.displayError("There is only one 'Lorenzo Il Magnifico'");
+            }
+            ui.askUsername();
+        } while (ui.getUsername().trim().equalsIgnoreCase("lorenzoilmagnifico"));
+
         localMessageHandler.startPlaying();
     }
 

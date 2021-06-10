@@ -47,7 +47,10 @@ public class SetupGameController implements SceneController{
                     try {
                         int playerNumber = Integer.parseInt(playerNumberInput.getText());
                         boolean privateGame = privateCheckbox.isSelected();
-                        client.sendMessage(new CreateRoomMessage(privateGame, playerNumber, username));
+                        if(playerNumber==1 && gui.getUsername().trim().equalsIgnoreCase("lorenzoilmagnifico")){
+                            gui.displayError("There is only one Lorenzo il Magnifico");
+                            gui.setScene("setup-game");
+                        } else client.sendMessage(new CreateRoomMessage(privateGame, playerNumber, username));
                     } catch (NumberFormatException e) {
                         errorMessage.setText("The number of players is invalid.");
                         form.getChildren().add(errorMessage);
