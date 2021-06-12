@@ -77,7 +77,9 @@ public class ClientConnection implements Runnable{
             outputStream.flush();
             //logger.warning(m.toString());
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("pipe broke so client disconnected, wait for ping to fail");
+//            gameMessageHandler.deactivateConnection(this);
+//            e.printStackTrace();
         }
     }
 
@@ -120,6 +122,4 @@ public class ClientConnection implements Runnable{
     public void setConnected(boolean connected) {
         this.connected = connected;
     }
-
-
 }
