@@ -3,6 +3,7 @@ package it.polimi.ingsw.view.gui;
 import it.polimi.ingsw.model.market.MarketCardStack;
 import it.polimi.ingsw.model.shared.DevelopmentCard;
 import it.polimi.ingsw.utils.GameUtils;
+import it.polimi.ingsw.utils.ResourceManager;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
@@ -23,7 +24,7 @@ public class CardsGridController implements SceneController {
             for (MarketCardStack stack : cardStacks) {
                 if (!stack.isEmpty()) {
                     DevelopmentCard topCard = stack.peek();
-                    ImageView cardImageView = GameUtils.getImageView(topCard);
+                    ImageView cardImageView = ResourceManager.getImageView(topCard);
                     cardImageView.setFitWidth(200);
                     cardImageView.setFitHeight(95);
                     GridPane.setValignment(cardImageView, VPos.CENTER);

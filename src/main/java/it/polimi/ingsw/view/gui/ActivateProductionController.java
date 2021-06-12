@@ -69,7 +69,7 @@ public class ActivateProductionController implements SceneController {
             selectedExtras = new ArrayList<>();
             for (ProductionPower cardPower : powers) {
                 if (cardPower.getOutput().containsKey(Resource.ANY)) numberOfExtraProductions++;
-                AnchorPane powerPane = GameUtils.buildProductionPowerBook(cardPower);
+                AnchorPane powerPane = ResourceManager.buildProductionPowerBook(cardPower);
                 powerPane.setOnMouseClicked(event -> selectCardPower(powers.indexOf(cardPower)));
                 selectedCardPowersContainers.add(powerPane);
                 productionsContainer.getChildren().add(powerPane);
@@ -96,7 +96,7 @@ public class ActivateProductionController implements SceneController {
                 HBox resourcePickerContainer = new HBox();
                 resourcePickerContainer.setSpacing(5);
                 for (Map.Entry<Resource, Integer> entry : playerResources.entrySet()) {
-                    ImageView resourceImageView = GameUtils.getImageView(entry.getKey());
+                    ImageView resourceImageView = ResourceManager.getImageView(entry.getKey());
                     resourceImageView.setFitWidth(40);
                     resourceImageView.setFitHeight(40);
                     resourceImageView.setCursor(Cursor.HAND);
@@ -107,7 +107,7 @@ public class ActivateProductionController implements SceneController {
             }
             HBox outputPickerContainer = new HBox();
             for (Resource resource : Arrays.asList(Resource.COIN, Resource.SERVANT, Resource.SHIELD, Resource.STONE)) {
-                ImageView resourceImageView = GameUtils.getImageView(resource);
+                ImageView resourceImageView = ResourceManager.getImageView(resource);
                 resourceImageView.setFitWidth(40);
                 resourceImageView.setFitHeight(40);
                 resourceImageView.setCursor(Cursor.HAND);
@@ -128,7 +128,7 @@ public class ActivateProductionController implements SceneController {
             GameUtils.incrementValueInResourceMap(map, resource, 1);
             for (Node imageView : pickerContainer.getChildren()) {
                 if(!imageView.equals(imageViewClicked)) {
-                    GameUtils.setDarkImageView((ImageView) imageView, 1);
+                    ResourceManager.setDarkImageView((ImageView) imageView, 1);
                 }
                 imageView.setDisable(true);
             }
@@ -175,7 +175,7 @@ public class ActivateProductionController implements SceneController {
                     HBox resourcePickerContainer = new HBox();
                     resourcePickerContainer.setSpacing(5);
                     for (Resource resource : Arrays.asList(Resource.COIN, Resource.STONE, Resource.SHIELD, Resource.SERVANT)) {
-                        ImageView resourceImageView = GameUtils.getImageView(resource);
+                        ImageView resourceImageView = ResourceManager.getImageView(resource);
                         resourceImageView.setFitWidth(40);
                         resourceImageView.setFitHeight(40);
                         resourceImageView.setCursor(Cursor.HAND);

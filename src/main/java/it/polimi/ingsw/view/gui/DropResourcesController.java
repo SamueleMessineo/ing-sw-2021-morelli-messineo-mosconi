@@ -37,7 +37,7 @@ public class DropResourcesController implements SceneController{
                 VBox resourceContainer = new VBox();
                 resourceContainer.setAlignment(Pos.BOTTOM_CENTER);
                 resourceContainer.setSpacing(5);
-                ImageView imageView = GameUtils.getImageView(resource);
+                ImageView imageView = ResourceManager.getImageView(resource);
                 imageView.setScaleX(0.5);
                 imageView.setScaleY(0.5);
                 resourceContainer.getChildren().add(imageView);

@@ -87,7 +87,7 @@ public class CardsMarketController implements SceneController {
             vbox.setPadding(new Insets(0, 0, 30, 0));
             vbox.getChildren().add(cardsGrid);
             for (DevelopmentCard card : developmentCards) {
-                ImageView cardImageView = GameUtils.getImageView(card);
+                ImageView cardImageView = ResourceManager.getImageView(card);
                 cardImageView.setFitWidth(200);
                 cardImageView.setFitHeight(95);
                 cardImageView.setCursor(Cursor.HAND);

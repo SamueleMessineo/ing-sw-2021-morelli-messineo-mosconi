@@ -3,6 +3,7 @@ package it.polimi.ingsw.view.gui;
 import it.polimi.ingsw.model.player.PlayerCardStack;
 import it.polimi.ingsw.model.shared.DevelopmentCard;
 import it.polimi.ingsw.utils.GameUtils;
+import it.polimi.ingsw.utils.ResourceManager;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.image.ImageView;
@@ -24,7 +25,7 @@ public class PlayerCardStacksController implements SceneController {
                 singleCardStackContainer.setPrefSize(150, 210);
                 for (int i = 0; i < playerCardStack.size(); i++) {
                     DevelopmentCard card = playerCardStack.get(i);
-                    ImageView cardImageView = GameUtils.getImageView(card);
+                    ImageView cardImageView = ResourceManager.getImageView(card);
                     cardImageView.setFitHeight(160);
                     cardImageView.setFitWidth(200);
                     cardImageView.setLayoutX(75-(cardImageView.getLayoutBounds().getWidth()/2)

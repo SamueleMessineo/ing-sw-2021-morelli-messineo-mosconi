@@ -113,10 +113,10 @@ public class GameBoardController implements SceneController {
                 for (LeaderCard leaderCard : allLeaders) {
                     ImageView leaderImageView = null;
                     if (p.getUsername().equals(gui.getUsername())) {
-                        leaderImageView = GameUtils.getImageView(leaderCard);
+                        leaderImageView = ResourceManager.getImageView(leaderCard);
                     } else {
                         if (p.getPlayedLeaderCards().contains(leaderCard)) {
-                            leaderImageView = GameUtils.getImageView(leaderCard);
+                            leaderImageView = ResourceManager.getImageView(leaderCard);
                         } else {
                             Image leaderImage = new Image(Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(
                                     "images/leaders/leader_back.png")));
@@ -128,7 +128,7 @@ public class GameBoardController implements SceneController {
                     leaderImageView.setFitWidth(200);
                     leaderImageView.setFitHeight(160);
                     if(!p.getPlayedLeaderCards().contains(leaderCard)){
-                        GameUtils.setDarkImageView(leaderImageView, 0.5);
+                        ResourceManager.setDarkImageView(leaderImageView, 0.5);
                     }
 
                     leadersContainer.getChildren().add(leaderImageView);
@@ -164,7 +164,7 @@ public class GameBoardController implements SceneController {
                         shelfResourcesContainer.setPadding(new Insets(0, 10, 0, 10));
                         shelfResourcesContainer.setSpacing(10);
                         for (int i = 0; i < shelf.getResourceNumber(); i++) {
-                            ImageView resourceImageView = GameUtils.getImageView(shelf.getResourceType());
+                            ImageView resourceImageView = ResourceManager.getImageView(shelf.getResourceType());
                             resourceImageView.setFitWidth(40);
                             resourceImageView.setFitHeight(40);
                             shelfResourcesContainer.getChildren().add(resourceImageView);
@@ -188,7 +188,7 @@ public class GameBoardController implements SceneController {
                         extraShelfResourcesContainer.setSpacing(25);
                         extraShelfResourcesContainer.setAlignment(Pos.CENTER_LEFT);
                         for (int i = 0; i < shelf.getResourceNumber(); i++) {
-                            ImageView resourceImageView = GameUtils.getImageView(shelf.getResourceType());
+                            ImageView resourceImageView = ResourceManager.getImageView(shelf.getResourceType());
                             resourceImageView.setFitWidth(40);
                             resourceImageView.setFitHeight(40);
                             extraShelfResourcesContainer.getChildren().add(resourceImageView);
@@ -222,7 +222,7 @@ public class GameBoardController implements SceneController {
                 for (Map.Entry<Resource, Integer> entry : strongboxResources.entrySet()) {
                     int i = Arrays.asList(Resource.COIN, Resource.SHIELD, Resource.SERVANT, Resource.STONE)
                             .indexOf(entry.getKey());
-                    ImageView resourceImage = GameUtils.getImageView(entry.getKey());
+                    ImageView resourceImage = ResourceManager.getImageView(entry.getKey());
                     HBox resourceContainer = new HBox();
                     resourceContainer.setAlignment(Pos.CENTER);
                     resourceContainer.setPrefSize(112.5, 94);

@@ -49,7 +49,7 @@ public class WarehouseController implements SceneController{
                     shelfResourcesContainer.setPadding(new Insets(0, 10, 0, 10));
                     shelfResourcesContainer.setSpacing(10);
                     for (int i = 0; i < shelf.getResourceNumber(); i++) {
-                        ImageView resourceImageView = GameUtils.getImageView(shelf.getResourceType());
+                        ImageView resourceImageView = ResourceManager.getImageView(shelf.getResourceType());
                         resourceImageView.setFitWidth(40);
                         resourceImageView.setFitHeight(40);
                         shelfResourcesContainer.getChildren().add(resourceImageView);
@@ -74,7 +74,7 @@ public class WarehouseController implements SceneController{
                     extraShelfResourcesContainer.setSpacing(25);
                     extraShelfResourcesContainer.setAlignment(Pos.CENTER_LEFT);
                     for (int i = 0; i < shelf.getResourceNumber(); i++) {
-                        ImageView resourceImageView = GameUtils.getImageView(shelf.getResourceType());
+                        ImageView resourceImageView = ResourceManager.getImageView(shelf.getResourceType());
                         resourceImageView.setFitWidth(40);
                         resourceImageView.setFitHeight(40);
                         extraShelfResourcesContainer.getChildren().add(resourceImageView);

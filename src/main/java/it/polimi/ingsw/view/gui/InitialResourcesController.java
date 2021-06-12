@@ -93,7 +93,7 @@ public class InitialResourcesController implements SceneController {
                 resourceContainer.setAlignment(Pos.CENTER);
                 resourceContainer.setSpacing(5);
                 System.out.println("create resource vbox");
-                ImageView imageView = GameUtils.getImageView(resource);
+                ImageView imageView = ResourceManager.getImageView(resource);
                 imageView.setScaleX(0.5);
                 imageView.setScaleY(0.5);
                 resourceContainer.getChildren().add(imageView);
@@ -140,7 +140,7 @@ public class InitialResourcesController implements SceneController {
         for (MarketCardStack stack : cardStacks) {
             if (!stack.isEmpty()) {
                 DevelopmentCard topCard = stack.peek();
-                ImageView cardImageView = GameUtils.getImageView(topCard);
+                ImageView cardImageView = ResourceManager.getImageView(topCard);
                 cardImageView.setFitWidth(200);
                 cardImageView.setFitHeight(95);
                 GridPane.setValignment(cardImageView, VPos.CENTER);

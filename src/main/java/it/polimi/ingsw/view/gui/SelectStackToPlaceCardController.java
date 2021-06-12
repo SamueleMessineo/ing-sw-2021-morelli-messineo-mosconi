@@ -27,7 +27,7 @@ public class SelectStackToPlaceCardController implements SceneController{
                 ImageView cardImageView = null;
                 if (!playerCardStack.isEmpty()) {
                     DevelopmentCard topCard = playerCardStack.peek();
-                    cardImageView = GameUtils.getImageView(topCard);
+                    cardImageView = ResourceManager.getImageView(topCard);
                     cardImageView.setPreserveRatio(true);
                     cardImageView.setCursor(Cursor.HAND);
                     cardImageView.setFitWidth(400);

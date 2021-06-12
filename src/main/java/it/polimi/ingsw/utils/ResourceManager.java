@@ -1,8 +1,21 @@
 package it.polimi.ingsw.utils;
 
+import it.polimi.ingsw.model.shared.DevelopmentCard;
+import it.polimi.ingsw.model.shared.LeaderCard;
+import it.polimi.ingsw.model.shared.ProductionPower;
+import it.polimi.ingsw.model.shared.Resource;
+import javafx.geometry.Pos;
+import javafx.scene.CacheHint;
+import javafx.scene.effect.ColorAdjust;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.text.Text;
 import javafx.util.Duration;
 
 import java.util.Objects;
@@ -39,5 +52,89 @@ public class ResourceManager {
 
     public static void playClickSound() {
         buttonClickSound.play();
+    }
+
+    public static ImageView getImageView(Resource resource) {
+        Image resourceImage = new Image(Objects.requireNonNull(GameUtils.class.getClassLoader()
+                .getResourceAsStream("images/resources/" + resource.name().toLowerCase() + ".png")));
+        ImageView resourceImageView = new ImageView(resourceImage);
+        resourceImageView.setPreserveRatio(true);
+        return resourceImageView;
+    }
+
+    public static ImageView getImageView(DevelopmentCard card) {
+        Image cardImage = new Image(Objects.requireNonNull(GameUtils.class.getClassLoader()
+                .getResourceAsStream("images/development/development_" + card.getCardType().name().toLowerCase()
+                        + "_" + card.getScore() + ".png")));
+        ImageView cardImageView = new ImageView(cardImage);
+        cardImageView.setPreserveRatio(true);
+        return cardImageView;
+    }
+
+    public static ImageView getImageView(LeaderCard card) {
+        Image cardImage = new Image(Objects.requireNonNull(GameUtils.class.getClassLoader()
+                .getResourceAsStream("images/leaders/leader_" + card.getEffectScope().toLowerCase()
+                        + "_" + card.getEffectObject().name().toLowerCase() + ".png")));
+        ImageView cardImageView = new ImageView(cardImage);
+        cardImageView.setPreserveRatio(true);
+        return cardImageView;
+    }
+
+    public static void setDarkImageView(ImageView imageView, double value){
+        ColorAdjust blackout = new ColorAdjust();
+        blackout.setBrightness(-value);
+        imageView.setEffect(blackout);
+        imageView.setCache(true);
+        imageView.setCacheHint(CacheHint.SPEED);
+    }
+
+    public static AnchorPane buildProductionPowerBook(ProductionPower power) {
+        AnchorPane powerPane = new AnchorPane();
+        powerPane.setPrefSize(212, 150);
+        Image bookImage = new Image(Objects.requireNonNull(GameUtils.class.getClassLoader()
+                .getResourceAsStream("images/board/production_book.png")));
+        ImageView bookImageView = new ImageView(bookImage);
+        bookImageView.setPreserveRatio(true);
+        bookImageView.setFitHeight(150);
+        bookImageView.setFitWidth(212);
+        bookImageView.setLayoutX(0);
+        bookImageView.setLayoutY(0);
+        powerPane.getChildren().add(bookImageView);
+        HBox singleCardPowerContainer = new HBox();
+        singleCardPowerContainer.setPrefSize(212, 150);
+        singleCardPowerContainer.setAlignment(Pos.CENTER);
+        singleCardPowerContainer.setSpacing(60);
+        VBox inputContainer = new VBox();
+        inputContainer.setAlignment(Pos.CENTER);
+        for (Resource inputResource : power.getInput().keySet()) {
+            HBox singleResourceContainer = new HBox();
+            singleResourceContainer.setAlignment(Pos.CENTER);
+            singleResourceContainer.setSpacing(3);
+            ImageView resourceImageView = ResourceManager.getImageView(inputResource);
+            resourceImageView.setFitWidth(35);
+            resourceImageView.setFitHeight(35);
+            singleResourceContainer.getChildren().addAll(
+                    new Text(power.getInput().get(inputResource).toString()), resourceImageView);
+            inputContainer.getChildren().add(singleResourceContainer);
+        }
+        singleCardPowerContainer.getChildren().add(inputContainer);
+        VBox outputContainer = new VBox();
+        outputContainer.setAlignment(Pos.CENTER);
+        for (Resource outputResource : power.getOutput().keySet()) {
+            HBox singleResourceContainer = new HBox();
+            singleResourceContainer.setAlignment(Pos.CENTER);
+            singleResourceContainer.setSpacing(3);
+            ImageView resourceImageView = ResourceManager.getImageView(outputResource);
+            resourceImageView.setFitWidth(35);
+            resourceImageView.setFitHeight(35);
+            singleResourceContainer.getChildren().addAll(
+                    new Text(power.getOutput().get(outputResource).toString()), resourceImageView);
+            outputContainer.getChildren().add(singleResourceContainer);
+        }
+        singleCardPowerContainer.getChildren().add(outputContainer);
+        singleCardPowerContainer.setLayoutX(0);
+        singleCardPowerContainer.setLayoutY(0);
+        powerPane.getChildren().add(singleCardPowerContainer);
+        return powerPane;
     }
 }

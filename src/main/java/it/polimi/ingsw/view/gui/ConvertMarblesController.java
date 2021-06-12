@@ -56,7 +56,7 @@ public class ConvertMarblesController implements SceneController {
                 resourceNumberText.setEffect(new DropShadow());
                 row.getChildren().add(resourceNumberText);
                 for (Resource resourceOption : options) {
-                    ImageView resourceImage = GameUtils.getImageView(resourceOption);
+                    ImageView resourceImage = ResourceManager.getImageView(resourceOption);
                     resourceImage.setFitHeight(50);
                     resourceImage.setFitWidth(50);
                     ColorAdjust bw = new ColorAdjust();

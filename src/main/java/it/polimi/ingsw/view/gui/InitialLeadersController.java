@@ -70,7 +70,7 @@ public class InitialLeadersController implements SceneController{
             GameUtils.debug(cards.toString());
             this.cards = cards;
             for (LeaderCard card : cards) {
-                ImageView imageView = GameUtils.getImageView(card);
+                ImageView imageView = ResourceManager.getImageView(card);
                 imageView.setScaleX(0.5);
                 imageView.setScaleY(0.5);
                 switch (cards.indexOf(card)) {

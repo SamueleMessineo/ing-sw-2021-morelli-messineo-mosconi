@@ -37,7 +37,7 @@ public class LeaderCardsController implements SceneController{
             leadersContainer.setPrefHeight(188);
             leadersContainer.setAlignment(Pos.CENTER);
             for (LeaderCard leaderCard : leaderCards) {
-                ImageView leaderImageView = GameUtils.getImageView(leaderCard);
+                ImageView leaderImageView = ResourceManager.getImageView(leaderCard);
                 leaderImageView.setFitWidth(300);
                 leaderImageView.setFitHeight(240);
                 if (type.equals("DROP")) {
