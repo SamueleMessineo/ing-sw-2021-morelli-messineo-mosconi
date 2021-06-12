@@ -17,11 +17,11 @@ Final project for the Software Engineering course at Polytechnic of Milan, 2021.
 |Server|✔️|
 |CLI|✔️|
 |GUI|✔️|
-|Persistence|✖️|
-|Parameter editor|✖️|
+|Persistence|✔️|
 |Offline games|✔️|
 |Multiple games|✔️|
 |Disconnection resilience|✔️|
+|Parameter editor|✖️|
 
 ## How to start
 
