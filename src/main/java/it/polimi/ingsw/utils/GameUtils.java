@@ -11,42 +11,6 @@ import java.util.*;
 
 public class GameUtils {
 
-    public static void saveGameState(Game game, int roomID) {
-        String gamesFolderPath = "src/main/resources/games/";
-
-        GsonBuilder builder = new GsonBuilder();
-        Gson gson = builder.create();
-
-        String gameJSON = gson.toJson(game);
-
-        new File(gamesFolderPath).mkdirs();
-        File outputFile = new File(gamesFolderPath + roomID + ".json");
-        FileWriter writer;
-        try {
-            writer = new FileWriter(outputFile);
-
-            writer.write(gameJSON);
-            writer.flush();
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static Game loadGameState(int roomID) {
-        GsonBuilder builder = new GsonBuilder();
-        Gson gson = builder.create();
-
-        BufferedReader reader = null;
-        try {
-            reader = new BufferedReader(new FileReader("src/main/resources/games/" + roomID + ".json"));
-            return gson.fromJson(reader, Game.class);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
     public static Map<Resource, Integer> emptyResourceMap(){
         Map<Resource,Integer> emptyMap=new HashMap<>();
         emptyMap.put(Resource.SHIELD,0);
@@ -125,9 +89,30 @@ public class GameUtils {
         System.out.println("\u001B[36m" + string + "\u001B[0m");
     }
 
+    private static String getPath() {
+        String OS = (System.getProperty("os.name")).toUpperCase();
+        String workingDirectory;
+        if (OS.contains("WIN")) {
+            // windows
+            workingDirectory = System.getenv("AppData");
+            workingDirectory += "/mor";
+        } else if (OS.contains("MAC")){
+            // mac
+            workingDirectory = System.getProperty("user.home");
+            workingDirectory += "/Library/Application Support/mor";
+        } else {
+            // linux
+            workingDirectory = System.getProperty("user.home");
+            workingDirectory += "/.mor";
+        }
+        new File(workingDirectory).mkdirs();
+        return workingDirectory;
+    }
+
     public static void writeGame(Game game, Integer roomID){
+        String basePath = getPath();
         try {
-            FileOutputStream fileOut = new FileOutputStream("src/main/resources/games/" + roomID + ".ser");
+            FileOutputStream fileOut = new FileOutputStream(basePath + "/" + roomID + ".ser");
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
             out.writeObject(game);
             out.close();
@@ -139,8 +124,9 @@ public class GameUtils {
 
     public static Game readGame(Integer roomID){
         Game game = null;
+        String basePath = getPath();
         try {
-            FileInputStream fileIn = new FileInputStream("src/main/resources/games/" + roomID + ".ser");
+            FileInputStream fileIn = new FileInputStream(basePath + "/" + roomID + ".ser");
             ObjectInputStream in = new ObjectInputStream(fileIn);
             game = (Game) in.readObject();
             in.close();
@@ -150,6 +136,16 @@ public class GameUtils {
 
         }
         return game;
+    }
+
+    public static void deleteSavedGame(int roomId){
+        String basePath = getPath();
+        try {
+            File file = new File(basePath + "/" + roomId + ".ser");
+            file.delete();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     public static List<Integer> getFaithTrackPositionCoordinates(int pos) {
@@ -219,16 +215,6 @@ public class GameUtils {
                 return Arrays.asList(655,69);
             default:
                 return null;
-        }
-    }
-
-    public static void deleteSavedGame(int roomId){
-        try {
-            //File file = new File(Objects.requireNonNull(GameUtils.class.getClassLoader().getResource("games/" + roomId + ".ser")).toURI());
-            File file = new File("src/main/resources/games/" + roomId + ".ser");
-            file.delete();
-        } catch (Exception e){
-            e.printStackTrace();
         }
     }
 }
