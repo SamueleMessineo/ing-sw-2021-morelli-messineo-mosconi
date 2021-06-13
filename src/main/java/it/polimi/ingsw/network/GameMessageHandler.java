@@ -15,6 +15,10 @@ import it.polimi.ingsw.utils.GameUtils;
 import java.security.InvalidParameterException;
 import java.util.*;
 
+/**
+ * This class handles the messages coming from the client by calling controller methods and
+ * computes the next message to send to the client
+ */
 public class GameMessageHandler {
 
     private final ClassicGameController gameController;
@@ -30,6 +34,9 @@ public class GameMessageHandler {
 
     }
 
+    /**
+     * Sends the messages to select the initial resources or the initial leaders
+     */
     public void initialSelections(){
         clientConnection.sendMessage(new UpdateGameStateMessage(gameController.getGame()));
         // calculate the player's position in the playing order
@@ -60,6 +67,9 @@ public class GameMessageHandler {
         }
     }
 
+    /**
+     * When everyone is ready sends the moves to the first player
+     */
     private void startPlayingIfReady() {
         for (Player p : room.getGame().getActivePlayers()) {
             if (p.getLeaderCards().size() != 2) {
@@ -72,6 +82,10 @@ public class GameMessageHandler {
         sendStateAndMovesForNextTurn();
     }
 
+    /**
+     * After the player have got some new resources from the market this methods send a message asking which resources
+     * he wants to drop
+     */
     private void askToDropResources() {
         System.out.println("merge resources");
         Map<Resource, Integer> allResources = new HashMap<>(room.getCurrentTurn().getConverted());
@@ -80,6 +94,11 @@ public class GameMessageHandler {
         clientConnection.sendMessage(new DropResourceRequestMessage(allResources));
     }
 
+    /**
+     * Receives the message containing the resources the player selected and tells the controller
+     * to add these resources to the player warehouse
+     * @param message containing the selected initial resources
+     */
     public void handle(SelectInitialResourceResponseMessage message) {
         gameController.giveInitialResources(message.getSelectedResources(),
                 room.getPlayerFromConnection(clientConnection).getUsername());
@@ -88,6 +107,11 @@ public class GameMessageHandler {
         GameUtils.writeGame(gameController.getGame(), room.getId());
     }
 
+    /**
+     * Receives the message containing the leader cards the player selected to drop and tells the controller
+     * to remove these resources to the player leader cards
+     * @param message containing the leader cards the player is dropping
+     */
     public void handle(DropInitialLeaderCardsResponseMessage message){
         gameController.dropInitialLeaderCards(message.getCard1(), message.getCard2(), room.getPlayerFromConnection(clientConnection).getUsername());
         GameUtils.writeGame(gameController.getGame(), room.getId());

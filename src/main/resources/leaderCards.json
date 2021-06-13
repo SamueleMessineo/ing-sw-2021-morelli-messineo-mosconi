@@ -55,7 +55,7 @@
 
   {
     "resourceRequirements": {
-    "STONE": 2
+    "STONE": 5
     },
     "score": 3,
     "effectScope": "Storage",
@@ -64,7 +64,7 @@
 
   {
     "resourceRequirements": {
-    "SHIELD": 2
+    "SERVANT": 5
     },
     "score": 3,
     "effectScope": "Storage",

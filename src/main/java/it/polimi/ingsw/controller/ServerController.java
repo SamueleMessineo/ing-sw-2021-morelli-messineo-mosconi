@@ -103,9 +103,7 @@ public class ServerController {
                      game.getActivePlayers()) {
                     players.add(p.getUsername());
                 }
-                System.out.println("chip");
                 room.getGameController().computeNextPossibleMoves(false);
-                System.out.println("chop");
                 room.setCurrentTurn(new Turn(game.getCurrentPlayer().getUsername(), room.getGameController().computeNextPossibleMoves(false)));
                 clientConnection.sendMessage(new RoomDetailsMessage(players, room.getNumberOfPlayers(), roomId));
                 //sendRoomDetails(roomId, room);
