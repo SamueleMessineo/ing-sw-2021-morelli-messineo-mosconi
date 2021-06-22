@@ -26,9 +26,21 @@ Final project for the Software Engineering course at Polytechnic of Milan, 2021.
 ## How to start
 This game can be played either online or offline. In order to play online you have to start the server using this command 
 ```
-$java -jar PSP42-client.jar
-
+$ java -jar PSP42-server.jar
 ```
+At this point the client can be started in two ways:
+- **As CLI**
+   ```
+  $ java -jar PSP42-client.jar cli
+  ```
+- **As GUI (default)**
+  ```
+  $ java -jar PSP42-client.jar 
+  ```
+ 
+When playing online the user has to select the server ip address and the port. The port is 31415.
+
+  
 
 ## Build
 
