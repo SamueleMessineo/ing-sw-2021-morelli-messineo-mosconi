@@ -1,5 +1,6 @@
 package it.polimi.ingsw.model.player;
 import it.polimi.ingsw.model.shared.PopesFavorTile;
+import it.polimi.ingsw.model.shared.PopesFavorTileState;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -40,7 +41,12 @@ public class FaithTrack implements Serializable {
      * @return player's last checkpoint as an int
      */
     public int getVP() {
-        return VP.get(position/3);
+        int points = 0;
+        for (PopesFavorTile tile : popesFavorTiles
+             ) {
+            if(tile.getState().equals(PopesFavorTileState.ACTIVE))points+= tile.getScore();
+        }
+        return (VP.get(position/3) + points);
     }
 
     /**

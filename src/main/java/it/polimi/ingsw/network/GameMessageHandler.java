@@ -119,6 +119,11 @@ public class GameMessageHandler {
         startPlayingIfReady();
     }
 
+    /**
+     * Receives the move the player wants to perform and after checking if is valid sends back the
+     * right message in order to perform the move
+     * @param message the type of move the player wants to perform
+     */
     public void handle(SelectMoveResponseMessage message){
         System.out.println("received");
         System.out.println(room.getCurrentTurn().getMoves());
