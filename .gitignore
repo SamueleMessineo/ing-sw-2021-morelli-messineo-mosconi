@@ -220,3 +220,5 @@ $RECYCLE.BIN/
 documentation/
 
 src/main/resources/games/
+
+!deliverables/
