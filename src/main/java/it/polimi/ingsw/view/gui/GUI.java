@@ -20,7 +20,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
-import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -30,9 +29,18 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.*;
 
+/**
+ * The main class for the GUI, extends a JavaFX Application
+ */
 public class GUI extends Application implements UI {
     private Stage stage;
+    /**
+     * A map storing all the scenes, this is used in the setScene method to quickly change scene
+     */
     private Map<String, Scene> sceneMap;
+    /**
+     * The scene controllers, these have the same key as their corresponding scene in the 'sceneMap'
+     */
     private Map<String, SceneController> controllerMap;
     private Client client;
     private Game gameState;
@@ -47,6 +55,12 @@ public class GUI extends Application implements UI {
         return stage;
     }
 
+    /**
+     * The method called when the application starts: attributes are reset, scenes are preloaded,
+     * the stage is set up, sounds are loaded and the game icon is set.
+     * @param stage
+     * @throws Exception
+     */
     @Override
     public void start(Stage stage) throws Exception {
         username = null;
@@ -71,11 +85,19 @@ public class GUI extends Application implements UI {
 
     }
 
+    /**
+     * The method called when the application stops.
+     * @throws Exception
+     */
     @Override
     public void stop() throws Exception {
         System.exit(0);
     }
 
+    /**
+     * Initialized a Client or LocalClient depending on the user's choice to play online or offline.
+     * @param online a boolean indicating whether the client is playing online or offline
+     */
     public void initializeClient(boolean online) {
         if (online) {
             this.client = new Client(this);
@@ -94,6 +116,10 @@ public class GUI extends Application implements UI {
         launch();
     }
 
+    /**
+     * Changes the scene to the given one
+     * @param sceneName the name of the scene to be shown
+     */
     public void setScene(String sceneName) {
         System.out.println("display " + sceneName);
         try {
@@ -126,6 +152,10 @@ public class GUI extends Application implements UI {
         }
     }
 
+    /**
+     * Preloads from memory all the scenes and their respective controllers
+     * and stores them in maps for easy access
+     */
     private void loadScenes() {
         for (String sceneName : Arrays.asList(
                 "online-offline", "connect", "setup-game", "room-details", "initial-resources",
@@ -152,6 +182,10 @@ public class GUI extends Application implements UI {
         setScene("room-details");
     }
 
+    /**
+     * Display a popup window with the given parent as body
+     * @param parent the body of the popup
+     */
     public void displayPopup(Parent parent) {
         Platform.runLater(() -> {
             Scene scene = new Scene(parent);
@@ -165,6 +199,10 @@ public class GUI extends Application implements UI {
         return popupStage;
     }
 
+    /**
+     * Display an error popup with the given string as body
+     * @param body the error message
+     */
     @Override
     public void displayError(String body) {
         VBox vBox = new VBox();
