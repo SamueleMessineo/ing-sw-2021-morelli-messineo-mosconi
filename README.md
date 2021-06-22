@@ -24,6 +24,11 @@ Final project for the Software Engineering course at Polytechnic of Milan, 2021.
 |Parameter editor|✖️|
 
 ## How to start
+This game can be played either online or offline. In order to play online you have to start the server using this command 
+```
+$java -jar PSP42-client.jar
+
+```
 
 ## Build
 
