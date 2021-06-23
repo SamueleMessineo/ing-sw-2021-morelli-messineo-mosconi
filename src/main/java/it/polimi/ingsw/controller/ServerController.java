@@ -27,7 +27,7 @@ public class ServerController {
      * @param numberOfPlayers of the game
      * @param clientConnection of the player creating the room
      */
-    public void createRoom(boolean privateRoom, String username, int numberOfPlayers, ClientConnection clientConnection){
+    public synchronized void createRoom(boolean privateRoom, String username, int numberOfPlayers, ClientConnection clientConnection){
         List<ClientConnection> clientConnections=server.getPendingConnections();
         clientConnections.remove(clientConnection);
 
@@ -51,7 +51,7 @@ public class ServerController {
      * @param roomId of the game the player wants to join
      * @param clientConnection of the player to add
      */
-    public void addPlayerByRoomId(String username,int roomId, ClientConnection clientConnection){
+    public synchronized void addPlayerByRoomId(String username,int roomId, ClientConnection clientConnection){
         if (server.getRooms().get(roomId) == null) {
             Game game = GameUtils.readGame(roomId);
             if(game!=null && game.getPlayerByUsername(username) != null){
@@ -182,7 +182,7 @@ public class ServerController {
      * @param username of the  player to add
      * @param clientConnection of the player to add
      */
-    public void addPlayerToPublicRoom(int numberOfPlayers, String username, ClientConnection clientConnection){
+    public synchronized void addPlayerToPublicRoom(int numberOfPlayers, String username, ClientConnection clientConnection){
 
         List<Room> rooms = new ArrayList<>(server.getRooms().values());
 
@@ -228,7 +228,7 @@ public class ServerController {
      * @param roomId of the game
      * @param room of the game
      */
-    public void sendRoomDetails(int roomId, Room room){
+    public synchronized void sendRoomDetails(int roomId, Room room){
         ArrayList<String> players = new ArrayList<>();
         for (Player player : room.getGame().getActivePlayers()) {
             players.add(player.getUsername());
@@ -240,7 +240,7 @@ public class ServerController {
      * Compute the id of the next room, it is an int between 1000 and 9999
      * @return the id of the next room
      */
-    private int getRoomId(){
+    private synchronized int getRoomId(){
         roomId++;
         if (roomId > 9999)roomId=1000;
         return roomId;
@@ -250,7 +250,7 @@ public class ServerController {
      * When the room is full sets the GameMessageHandler to all players and start the game
      * @param room of the game that is starting
      */
-    private void startGame(Room room){
+    private synchronized void startGame(Room room){
         room.sendAll(new StringMessage("Game is starting!"));
         ClassicGameController classicGameController = new ClassicGameController(room);
         classicGameController.startGame();
@@ -266,7 +266,7 @@ public class ServerController {
      * Starts a solo game
      * @param room of the game that is starting
      */
-    private void startSoloGame(Room room){
+    private synchronized void startSoloGame(Room room){
         ClientConnection clientConnection = room.getConnections().get(0);
         ClassicGameController soloGameController = new SoloGameController(room);
         room.setGameController(soloGameController);
