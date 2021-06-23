@@ -203,8 +203,10 @@ public class ActivateProductionController implements SceneController {
 
     private void confirmSingleProduction(int index) {
         Platform.runLater(() -> {
+            System.out.println("index: " + index + " sizeof cardPowers: " + cardPowers.size() + " n extra: " + numberOfExtraProductions);
             if (index < cardPowers.size() - numberOfExtraProductions)
                 selectedCardPowers.add(index);
+            System.out.println(selectedCardPowers);
             player.getPlayerBoard().payResourceCost(cardPowers.get(index).getInput());
             selectedCardPowersContainers.get(index)
                     .setStyle("-fx-border-color: transparent transparent red transparent;" +
@@ -217,6 +219,7 @@ public class ActivateProductionController implements SceneController {
     @FXML
     void confirm(ActionEvent event) {
         ResourceManager.playClickSound();
+        System.out.println(selectedCardPowers);
         gui.getClient().sendMessage(new ActivateProductionResponseMessage(
                 selectedCardPowers, basicProduction, selectedExtras, extraOutputs));
         basicProduction = null;
