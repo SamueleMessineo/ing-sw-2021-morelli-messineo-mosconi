@@ -42,12 +42,15 @@ public class ActivateProductionController implements SceneController {
     private HBox productionsContainer;
     @FXML
     private HBox buttonsContainer;
+    @FXML
+    private Button confirmActivationButton;
 
     public void load(List<ProductionPower> powers) {
         Platform.runLater(() -> {
             player = gui.getGame().getPlayerByUsername(gui.getUsername());
             vbox.getChildren().clear();
             productionsContainer.getChildren().clear();
+            confirmActivationButton.setDisable(true);
             // check default production
             if (player.canActivateBasicProduction()) {
                 basicProductionContainer = new AnchorPane();
@@ -155,6 +158,7 @@ public class ActivateProductionController implements SceneController {
                 gui.displayError("You don't own the selected resources.");
             }
             gui.getPopupStage().close();
+            confirmActivationButton.setDisable(false);
         });
     }
 
@@ -212,6 +216,7 @@ public class ActivateProductionController implements SceneController {
                     .setStyle("-fx-border-color: transparent transparent red transparent;" +
                             "-fx-border-width: 2; -fx-border-style: solid inside;");
             selectedCardPowersContainers.get(index).setDisable(true);
+            confirmActivationButton.setDisable(false);
         });
 
     }
