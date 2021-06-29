@@ -24,6 +24,9 @@ import javafx.scene.text.Text;
 
 import java.util.*;
 
+/**
+ * Controller for the production powers activation scene.
+ */
 public class ActivateProductionController implements SceneController {
     private GUI gui;
     private Player player;
@@ -45,6 +48,10 @@ public class ActivateProductionController implements SceneController {
     @FXML
     private Button confirmActivationButton;
 
+    /**
+     * Displays all the powers that can be activated.
+     * @param powers the list of powers.
+     */
     public void load(List<ProductionPower> powers) {
         Platform.runLater(() -> {
             player = gui.getGame().getPlayerByUsername(gui.getUsername());
@@ -60,7 +67,7 @@ public class ActivateProductionController implements SceneController {
                 basicProductionImageView.setPreserveRatio(true);
                 basicProductionImageView.setFitWidth(150);
                 basicProductionContainer.getChildren().add(basicProductionImageView);
-                basicProductionContainer.setOnMouseClicked(this::handleBasicProduction);
+                basicProductionContainer.setOnMouseClicked(this::clickBasicProduction);
                 basicProductionContainer.setCursor(Cursor.HAND);
                 productionsContainer.getChildren().add(basicProductionContainer);
             }
@@ -73,7 +80,7 @@ public class ActivateProductionController implements SceneController {
             for (ProductionPower cardPower : powers) {
                 if (cardPower.getOutput().containsKey(Resource.ANY)) numberOfExtraProductions++;
                 AnchorPane powerPane = ResourceManager.buildProductionPowerBook(cardPower);
-                powerPane.setOnMouseClicked(event -> selectCardPower(powers.indexOf(cardPower)));
+                powerPane.setOnMouseClicked(event -> clickCardProduction(powers.indexOf(cardPower)));
                 selectedCardPowersContainers.add(powerPane);
                 productionsContainer.getChildren().add(powerPane);
             }
@@ -82,7 +89,11 @@ public class ActivateProductionController implements SceneController {
         });
     }
 
-    void handleBasicProduction(MouseEvent event) {
+    /**
+     * Handles a click on the basic production.
+     * @param event the javafx event
+     */
+    void clickBasicProduction(MouseEvent event) {
         Platform.runLater(() -> {
             ResourceManager.playClickSound();
             VBox popupContainer = new VBox();
@@ -119,13 +130,20 @@ public class ActivateProductionController implements SceneController {
             }
             popupContainer.getChildren().addAll(new Text("Select the output resource"), outputPickerContainer);
             confirmBasicProductionButton = new Button("Confirm");
-            confirmBasicProductionButton.setOnAction(this::confirmBasic);
+            confirmBasicProductionButton.setOnAction(this::confirmBasicProduction);
             confirmBasicProductionButton.setDisable(true);
             popupContainer.getChildren().add(confirmBasicProductionButton);
             gui.displayPopup(popupContainer);
         });
     }
 
+    /**
+     * Saves the clicked resource for the basic production power.
+     * @param resource the clicked resource.
+     * @param map the input or output map for the basic production power.
+     * @param pickerContainer the reference to the javafx container of the row of resources.
+     * @param imageViewClicked the reference to the javafx image view of the clicked resource.
+     */
     void resourceClick(Resource resource, Map<Resource, Integer> map, HBox pickerContainer, ImageView imageViewClicked) {
         Platform.runLater(() -> {
             GameUtils.incrementValueInResourceMap(map, resource, 1);
@@ -145,8 +163,12 @@ public class ActivateProductionController implements SceneController {
         });
     }
 
+    /**
+     * Confirms the activation of the basic production power.
+     * @param event the javafx event.
+     */
     @FXML
-    void confirmBasic(ActionEvent event) {
+    void confirmBasicProduction(ActionEvent event) {
         Platform.runLater(() -> {
             if (player.getPlayerBoard().canPayResources(basicProduction.getInput())) {
                 player.getPlayerBoard().payResourceCost(basicProduction.getInput());
@@ -162,8 +184,12 @@ public class ActivateProductionController implements SceneController {
         });
     }
 
+    /**
+     * Handles a click on a card's production power.
+     * @param index the index of the selected card production power.
+     */
     @FXML
-    void selectCardPower(int index) {
+    void clickCardProduction(int index) {
         Platform.runLater(() -> {
             ResourceManager.playClickSound();
             if (!selectedCardPowers.contains(index)
@@ -183,7 +209,7 @@ public class ActivateProductionController implements SceneController {
                         resourceImageView.setFitWidth(40);
                         resourceImageView.setFitHeight(40);
                         resourceImageView.setCursor(Cursor.HAND);
-                        resourceImageView.setOnMouseClicked(event1 -> selectExtraOutput(index, resource));
+                        resourceImageView.setOnMouseClicked(event1 -> selectExtraProductionOutput(index, resource));
                         resourcePickerContainer.getChildren().add(resourceImageView);
                     }
                     popupContainer.getChildren().addAll(new Text("Select the output resource"), resourcePickerContainer);
@@ -195,7 +221,12 @@ public class ActivateProductionController implements SceneController {
         });
     }
 
-    private void selectExtraOutput(int index, Resource resource) {
+    /**
+     * Saves the output resource selected by the player for the clicked extra production power.
+     * @param index the index of the power.
+     * @param resource  the selected output resource.
+     */
+    private void selectExtraProductionOutput(int index, Resource resource) {
         Platform.runLater(() -> {
             if (numberOfExtraProductions == 2) selectedExtras.add(index - (cardPowers.size()-1));
             else selectedExtras.add(0);
@@ -205,6 +236,10 @@ public class ActivateProductionController implements SceneController {
         });
     }
 
+    /**
+     * Confirms the activation of a card's production power.
+     * @param index the index of the activated production power.
+     */
     private void confirmSingleProduction(int index) {
         Platform.runLater(() -> {
             System.out.println("index: " + index + " sizeof cardPowers: " + cardPowers.size() + " n extra: " + numberOfExtraProductions);
@@ -221,6 +256,10 @@ public class ActivateProductionController implements SceneController {
 
     }
 
+    /**
+     * Confirms the activation of all the selected production powers.
+     * @param event the javafx event.
+     */
     @FXML
     void confirm(ActionEvent event) {
         ResourceManager.playClickSound();
