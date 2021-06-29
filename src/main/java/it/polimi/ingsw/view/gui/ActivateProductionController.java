@@ -269,6 +269,7 @@ public class ActivateProductionController implements SceneController {
         basicProduction = null;
         selectedCardPowers = null;
         selectedExtras = null;
+        numberOfExtraProductions = 0;
     }
 
     @Override

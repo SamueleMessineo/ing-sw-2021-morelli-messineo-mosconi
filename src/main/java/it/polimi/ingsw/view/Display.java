@@ -6,7 +6,6 @@ import it.polimi.ingsw.model.market.Market;
 import it.polimi.ingsw.model.player.*;
 import it.polimi.ingsw.model.shared.*;
 
-import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.*;
 
@@ -121,7 +120,7 @@ public class Display {
         for (int i = 0; i < 3; i++) {
             PopesFavorTile popesFavorTile = player.getFaithTrack().getPopesFavorTiles().get(i);
             output.print("Pope's favor tile level "+ (i+1) + ": ");
-            displayPopeTyle(popesFavorTile, output);
+            displayPopeTile(popesFavorTile, output);
 
         }
         output.println("\n 🏦 Storage");
@@ -163,7 +162,7 @@ public class Display {
         }
     }
 
-    private static void displayPopeTyle(PopesFavorTile popesFavorTile, PrintStream output){
+    private static void displayPopeTile(PopesFavorTile popesFavorTile, PrintStream output){
         switch (popesFavorTile.getState()){
             case INACTIVE:
                 output.println(paint("YELLOW", "☐"));
@@ -302,7 +301,7 @@ public class Display {
                 leaderCards) {
             output.println("card number "+(leaderCards.indexOf(leader)+1));
             Display.displayLeader(leader, output);
-            output.println();
+            output.println("\n");
         }
     }
 

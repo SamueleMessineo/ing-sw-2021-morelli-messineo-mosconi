@@ -160,6 +160,11 @@ public class GameMessageHandler {
         }
     }
 
+    /**
+     * This method receive the row or column that the user wants to shift and calls the method of the controller to perform it.
+     * Then if the player has two leaders with marbles effect it ask the resource type else asks if he wants to drop any resource.
+     * @param message the column of row the player wants to shift.
+     */
     public void handle(SelectMarblesResponseMessage message){
         System.out.println("received get marbles response");
         Map<String, Map<Resource, Integer>> resources = gameController.getMarbles(message.getRowOrColumn(), message.getIndex());
@@ -187,17 +192,29 @@ public class GameMessageHandler {
             askToDropResources();
     }
 
+    /**
+     * This method receives a leader card the player wants to drop and calls the corresponding controller method.
+     * @param message that contains the index of the card the player wants to drop.
+     */
     public void handle(DropLeaderCardResponseMessage message){
         gameController.dropLeader(message.getCard());
         clientConnection.sendMessage(new StringMessage("Your have " +room.getPlayerFromConnection(clientConnection).getFaithTrack().getPosition() +" faith points"));
         sendNextMoves();
     }
 
+    /**
+     * This method receives a leader card the player wants to play and calls the corresponding controller method.
+     * @param message that contains the index of the card the player wants to play.
+     */
     public void handle(PlayLeaderResponseMessage message){
         gameController.playLeader(message.getCardIndex());
         sendNextMoves();
     }
 
+    /**
+     * This method receive the name of two shelves the player wants to switch.
+     * @param message is a message with 2 String one containing the name of the first shelf and one the other.
+     */
     public void handle(SwitchShelvesResponseMessage message) {
         try {
             gameController.switchShelves(message.getShelf1(), message.getShelf2());
@@ -208,6 +225,10 @@ public class GameMessageHandler {
         }
     }
 
+    /**
+     * This method is called if a player has 2 leader with Marble scope get marbles from the market.
+     * @param message with a map containing the resources the player bought.
+     */
     public void handle(SelectResourceForWhiteMarbleResponseMessage message) {
         Map<Resource, Integer> resourcesConverted=message.getResources();
         int amountConverted = 0;
@@ -231,6 +252,11 @@ public class GameMessageHandler {
         askToDropResources();
     }
 
+    /**
+     * This method receives the card of which the player wants to activate production.
+     * @param message  with the basic production power, the production powers activated and extra production activated
+     *                 with their output resources.
+     */
     public void handle(ActivateProductionResponseMessage message){
         if(message.getSelectedStacks()!=null || message.getBasicProduction() != null || message.getExtraProductionPowers() != null) {
             gameController.activateProduction(message.getSelectedStacks(), message.getBasicProduction(), message.getExtraProductionPowers(), message.getExtraOutput());
@@ -244,6 +270,10 @@ public class GameMessageHandler {
         }
     }
 
+    /**
+     * This method is called when a player wants do drop resources he just got.
+     * @param message with the resources the player wants to drop.
+     */
     public void handle(DropResourcesResponseMessage message){
         Map<Resource, Integer> resourcesConverted = room.getCurrentTurn().getConverted();
         System.out.println(resourcesConverted);
@@ -260,6 +290,10 @@ public class GameMessageHandler {
         sendNextMoves();
     }
 
+    /**
+     * This method is called when a player buy a card.
+     * @param message with the card the player is buying.
+     */
     public void handle(BuyDevelopmentCardResponseMessage message){
         DevelopmentCard developmentCard = gameController.getBuyableDevelopmentCards().get(message.getSelectedCardIndex());
         List<Integer> stacks = gameController.getStacksToPlaceCard(room.getGame().getCurrentPlayer(), developmentCard);
@@ -274,6 +308,10 @@ public class GameMessageHandler {
 
     }
 
+    /**
+     * This method is called if the player has to choose on which stack he wants to place a card.
+     * @param message with the index of the stack on which the player is placying the card.
+     */
     public void handle(SelectStackToPlaceCardResponseMessage message){
         if(room.getGame().getCurrentPlayer().getPlayerBoard().getCardStacks().get(message.getSelectedStackIndex()).canPlaceCard(room.getCurrentTurn().getBoughtDevelopmentCard())){
            gameController.buyDevelopmentCard(message.getSelectedStackIndex(), room.getCurrentTurn().getBoughtDevelopmentCard());
@@ -286,6 +324,10 @@ public class GameMessageHandler {
 
     }
 
+    /**
+     * This method is used to give extra resources to all players when debugging
+     * @param message signaling the extra resources
+     */
     public void handle(GetResourcesCheatMessage message) {
         gameController.giveExtraResources();
         room.sendAll(new UpdateAndDisplayGameStateMessage(room.getGame()));
@@ -297,6 +339,10 @@ public class GameMessageHandler {
         }
     }
 
+    /**
+     * This method is called when a player ended his turn, if the game is over sends the standing otherwise sends the
+     * moves to the next player.
+     */
     private void sendStateAndMovesForNextTurn(){
         ClientConnection currentPlayer = room.getConnections().get(room.getGame().getActivePlayers().indexOf(
                 room.getGame().getCurrentPlayer()));
@@ -316,6 +362,9 @@ public class GameMessageHandler {
         }
     }
 
+    /**
+     * After a player performed a move this sends the next moves he can do.
+     */
     private void sendNextMoves(){
         room.getCurrentTurn().setMoves(gameController.computeNextPossibleMoves(room.getCurrentTurn().hasAlreadyPerformedMove()));
         clientConnection.sendMessage(new UpdateAndDisplayGameStateMessage(room.getGame()));
@@ -323,12 +372,19 @@ public class GameMessageHandler {
         GameUtils.writeGame(gameController.getGame(), room.getId());
     }
 
+    /**
+     * Computes the next player and calls the method to send the moves to the next player.
+     */
     private void endTurn(){
         gameController.computeNextPlayer();
         sendStateAndMovesForNextTurn();
         GameUtils.debug(gameController.getGame().getCurrentPlayer().getUsername());
     }
 
+    /**
+     * This methods deactivates a connection.
+     * @param connection the connection to deactivate.
+     */
     public void deactivateConnection(ClientConnection connection) {
         connection.setConnected(false);
         Player disconnectedPlayer = room.getPlayerFromConnection(connection);
@@ -345,26 +401,31 @@ public class GameMessageHandler {
         } else  room.sendAll(new UpdateGameStateMessage(room.getGame()));
 
         disconnectedPlayer.setActive(false);
-        /*
-        if(room.getGame().getPlayers().size() == 1){
-            System.out.println("game over");
-            room.sendAll(new StringMessage("Game ended for lack of players"));
-            // room.sendAll(new GameOverMessage(gameController.computeWinner(), gameController.computeStanding()));
-        }
-         */
 
         System.out.println("players" + gameController.getGame().getActivePlayers() + "conncetions" + room.getConnections().size());
 
     }
 
+    /**
+     * Sets the clientConnection
+     * @param clientConnection to set
+     */
     public void setClientConnection(ClientConnection clientConnection) {
         this.clientConnection = clientConnection;
     }
 
+    /**
+     * Checks if the player is ready to start the game.
+     * @return True if the player choose the initial leaders  and resources
+     */
     public boolean isReady() {
         return ready;
     }
 
+    /**
+     * Sets ready to true if the player choose the initial leaders  and resources
+     * @param ready true if the player choose the initial leaders  and resources
+     */
     public void setReady(boolean ready) {
         this.ready = ready;
     }

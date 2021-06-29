@@ -158,11 +158,7 @@ public class CLI implements UI {
 
     @Override
     public void displayGameState() {
-        // displayPlayerBoard(gameState.getPlayerByUsername(username));
-
        Display.displayGameBoard(gameState.getMarket(), output);
-       //momentary fix
-
         if(gameState.getCurrentPlayer()!= gameState.getPlayerByUsername(username)){
            for (Player player:
                 gameState.getActivePlayers()) {
@@ -172,12 +168,6 @@ public class CLI implements UI {
            }
        } else Display.displayPlayerBoard(gameState.getPlayerByUsername(username), output);
 
-       // todo this in preferable to the above one but gives problems. Go Fix it
-        /*
-       if (gameState.getCurrentPlayer()!= gameState.getPlayerByUsername(username)) {
-           executor.submit(this::askToDisplayPlayerBoard);
-       }
-         */
     }
 
     private void askToDisplayPlayerBoard(){
@@ -396,8 +386,6 @@ public class CLI implements UI {
         allRes.add(Resource.SERVANT);
         allRes.add(Resource.STONE);
         allRes.add(Resource.COIN);
-
-
         selection = GameUtils.askIntegerInput("Which resource do you want in output?\n"+ Display.displayResourceList(allRes), 1, 4, output, input)-1;
 
         resource = allRes.get(selection);
@@ -420,9 +408,6 @@ public class CLI implements UI {
         allRes.add(Resource.COIN);
         allRes.add(Resource.SERVANT);
         allRes.add(Resource.STONE);
-
-
-
 
         output.println("These are your available resources " + Display.displayResourceList(availableResources));
         resources.add(GameUtils.askIntegerInput("What is the first resource you want to put as input?",1,availableResources.size(), output, input)-1);
@@ -452,11 +437,9 @@ public class CLI implements UI {
 
     @Override
     public void selectStackToPlaceCard(List<Integer> stackIndexes) {
-
         for (Integer index:
              stackIndexes) {
             System.out.println(stackIndexes.indexOf(index)+1 + ":");
-
             PlayerCardStack playerCardStack = gameState.getCurrentPlayer().getPlayerBoard().getCardStacks().get(index);
             if(playerCardStack.isEmpty())output.println("Empty");
             else output.println(Display.paintCard(playerCardStack.peek().getCardType()) + playerCardStack + "\u001B[0m");
@@ -493,6 +476,4 @@ public class CLI implements UI {
     public String getUsername() {
         return username;
     }
-
-
 }
