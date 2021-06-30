@@ -29,10 +29,12 @@ public class Game implements Serializable{
     private ArrayList<LeaderCard> leaderCards=new ArrayList<>();
     private Player LorenzoIlMagnifico;
 
+    /**
+     * Game class constructor.
+     */
     public Game()  {
         this.players = new ArrayList<Player>();
         this.market = new Market();
-        //TODO single soloActionType for single player
         try {
             loadResources();
         }catch (FileNotFoundException e){
@@ -64,6 +66,10 @@ public class Game implements Serializable{
         return inkwellPlayer;
     }
 
+    /**
+     * Sets the inkwell player.
+     * @param inkwellPlayer index of first player.
+     */
     public void setInkwellPlayer(int inkwellPlayer) {
         this.inkwellPlayer = inkwellPlayer;
     }
@@ -156,6 +162,11 @@ public class Game implements Serializable{
         leaderCards.removeAll(leaderCards.subList(0,4));
     }
 
+    /**
+     * Gets a Player associated with a username.
+     * @param username the username of the player.
+     * @return the Player associated with username.
+     */
     public Player getPlayerByUsername(String username){
         if(username.trim().replaceAll(" ","").toLowerCase().equals("lorenzoilmagnifico"))return getLorenzoIlMagnifico();
         try {
@@ -166,14 +177,25 @@ public class Game implements Serializable{
 
     }
 
+    /**
+     * Gets LorenzoIlMagnifico.
+     * @return LorenzoIlMagnifico.
+     */
     public Player getLorenzoIlMagnifico() {
         return LorenzoIlMagnifico;
     }
 
+    /**
+     * Sets LorenzoIlMagnifico if the game is a soloGame.
+     * @param lorenzoIlMagnifico a Player with LorenzoIlMagnifico as username.
+     */
     public void setLorenzoIlMagnifico(Player lorenzoIlMagnifico) {
         LorenzoIlMagnifico = lorenzoIlMagnifico;
     }
 
+    /**
+     * Sets the seven soloActionTiles and shuffles them.
+     */
     public void setSoloActionTypes() {
         soloActionTypes = new Stack<>();
         soloActionTypes.add(SoloActionType.PLUS_ONE);
@@ -187,10 +209,18 @@ public class Game implements Serializable{
 
     }
 
+    /**
+     * Gets the SoloActionTiles.
+     * @return a list with the SoloActionTiles.
+     */
     public Stack<SoloActionType> getSoloActionTypes() {
         return soloActionTypes;
     }
 
+    /**
+     * Removes two cards from a stack associated with the soloActionTile.
+     * @param soloActionType that contains the color of the stack.
+     */
     public void removeCardsByLorenzo(SoloActionType soloActionType){
 
         for (int i = market.getCardsGrid().size()-1; i >= 0 ; i--) {

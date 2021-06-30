@@ -13,6 +13,9 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * Server class, it listens for new clients trying  to connect and keeps the list of the rooms and clients.
+ */
 public class Server {
 
     private final int PORT = 31415;
@@ -21,15 +24,26 @@ public class Server {
     private final ServerController serverController=new ServerController(this);
     private final Map<Integer , Room> rooms = new HashMap<>();
 
+    /**
+     * Constructor of the Server class.
+     */
     public Server() throws IOException {
         this.serverSocket = new ServerSocket(PORT);
 
     }
 
+    /**
+     * Gets the server controller.
+     * @return serverController.
+     */
     public ServerController getServerController() {
         return serverController;
     }
 
+    /**
+     * Gets the list of the connections that haven't been assigned to a room yet.
+     * @return pendingConnections.
+     */
     public List<ClientConnection> getPendingConnections() {
         return pendingConnections;
     }
@@ -47,6 +61,9 @@ public class Server {
         rooms.remove(roomID);
     }
 
+    /**
+     * Listens for new clients.
+     */
     public void run() {
         while (true) {
             System.out.println("waiting for client connection...");

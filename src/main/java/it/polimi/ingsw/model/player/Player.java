@@ -23,6 +23,9 @@ public class Player implements Serializable {
     private ArrayList<LeaderCard> playedLeaderCards;
     private boolean active = true;
 
+    /**
+     * Player class constructor.
+     */
     public Player(String username) {
         this.username = username;
         faithTrack = new FaithTrack();
@@ -121,10 +124,18 @@ public class Player implements Serializable {
         leaderCards.remove(sel);
     }
 
+    /**
+     * Sets player leader cards.
+     * @param leaderCards a list of 4 leader cards.
+     */
     public void setLeaderCards(ArrayList<LeaderCard> leaderCards) {
         this.leaderCards = leaderCards;
     }
 
+    /**
+     * Player leader cards.
+     * @return a List with player leader cards.
+     */
     public ArrayList<LeaderCard> getPlayedLeaderCards() {
         return playedLeaderCards;
     }
@@ -179,11 +190,20 @@ public class Player implements Serializable {
         return true;
     }
 
+    /**
+     * Removes a leader card form leaderCards list and adds it to played leader class.
+     * @param leaderCard the LeaderCard that the player is playing.
+     */
     public void playLeaderCard(LeaderCard leaderCard){
         leaderCards.remove(leaderCard);
         playedLeaderCards.add(leaderCard);
     }
 
+    /**
+     * Return the EffectObjects, if present, associated with an EffectScope.
+     * @param effectScope a String of which it is interested to know if the Player has active effects of that type.
+     * @return the Objects of activeLeaders of the Player that have effectScope as scope.
+     */
     public List<Resource> hasActiveEffectOn(String effectScope) {
         List<Resource> resources = new ArrayList<>();
         for (LeaderCard card : playedLeaderCards) {
@@ -194,6 +214,11 @@ public class Player implements Serializable {
         return resources;
     }
 
+    /**
+     * Checks if the player has the resources to buy and place a development card.
+     * @param developmentCard the development card of interest.
+     * @return true if the player can buy and place the development card.
+     */
     public boolean canBuyAndPlaceDevelopmentCard(DevelopmentCard developmentCard){
         Map<Resource, Integer> cardCost = computeDiscountedCost(developmentCard);
 
@@ -201,6 +226,11 @@ public class Player implements Serializable {
                 && playerBoard.canPlaceDevelopmentCard(developmentCard);
     }
 
+    /**
+     * Checks the price of a development card for the player.
+     * @param developmentCard the Development card of interest.
+     * @return a Map<Resource, Integer> with the cost of the card.
+     */
     public Map<Resource, Integer> computeDiscountedCost(DevelopmentCard developmentCard){
         Map<Resource, Integer> cost = developmentCard.getCost();
 
@@ -213,6 +243,10 @@ public class Player implements Serializable {
         return  cost;
     }
 
+    /**
+     * Checks if the player can activate productions.
+     * @return true if the player can activate at least one production.
+     */
     public boolean canActivateProduction() {
         Map<Resource, Integer> allResources = new HashMap<>(playerBoard.getResources());
         allResources = GameUtils.sumResourcesMaps(allResources, GameUtils.emptyResourceMap());
@@ -252,6 +286,10 @@ public class Player implements Serializable {
         return false;
     }
 
+    /**
+     * Checks which  development  cards have a production power that can be activated.
+     * @return a List with the development cards the player can activate the production on.
+     */
     public ArrayList<DevelopmentCard> possibleDevelopmentCardProduction(){
         Map<Resource, Integer> allResources = new HashMap<>(playerBoard.getResources());
         ArrayList<DevelopmentCard> developmentCardsToActive=new ArrayList<>();
@@ -270,6 +308,10 @@ public class Player implements Serializable {
         return developmentCardsToActive;
     }
 
+    /**
+     * Return player's extra production that can be activated.
+     * @return a List with the extra productions that the player can activate.
+     */
     public ArrayList<ProductionPower> possibleExtraProductionPower(){
         Map<Resource, Integer> allResources = new HashMap<>(playerBoard.getResources());
         ArrayList<ProductionPower> extraProductionPowersToActive=new ArrayList<>();
@@ -288,6 +330,10 @@ public class Player implements Serializable {
         return extraProductionPowersToActive;
     }
 
+    /**
+     * Return player's production that can be activated.
+     * @return a List with the productions that the player can activate.
+     */
     public ArrayList<ProductionPower> possibleProductionPowersToActive(){
         ArrayList<ProductionPower> productionPowers=new ArrayList<>();
         if(canActivateProduction()) {
@@ -300,6 +346,10 @@ public class Player implements Serializable {
         return productionPowers;
     }
 
+    /**
+     * Checks if the player can activate a basic production.
+     * @return true if the player has at least 2 resources.
+     */
     public boolean canActivateBasicProduction(){
         Map<Resource,Integer> resources=new HashMap<>(playerBoard.getResources());
         int res=0;
@@ -312,10 +362,18 @@ public class Player implements Serializable {
         return false;
     }
 
+    /**
+     * Checks if the player is active.
+     * @return true if the player is active.
+     */
     public boolean isActive() {
         return active;
     }
 
+    /**
+     * Sests player active/inactive status.
+     * @param active true if the player is active.
+     */
     public void setActive(boolean active) {
         this.active = active;
     }

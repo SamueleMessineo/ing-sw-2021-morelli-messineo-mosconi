@@ -15,16 +15,27 @@ public class MarketCardStack extends Stack<DevelopmentCard> implements Serializa
     private final int level;
     private final CardType type;
 
+    /**
+     * Constructor of the MarketCardStack class.
+     */
     public MarketCardStack(int level, CardType type) {
         super();
         this.level = level;
         this.type = type;
     }
 
+    /**
+     * Gets stack type.
+     * @return type.
+     */
     public CardType getType() {
         return type;
     }
 
+    /**
+     * Gets stack level.
+     * @return level.
+     */
     public int getLevel() {
         return level;
     }

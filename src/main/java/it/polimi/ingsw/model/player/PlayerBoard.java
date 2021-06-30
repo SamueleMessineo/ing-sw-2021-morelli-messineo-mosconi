@@ -20,6 +20,9 @@ public class PlayerBoard implements Serializable {
     private final Strongbox strongbox;
     private ArrayList<ProductionPower> extraProductionPowers = new ArrayList<>();
 
+    /**
+     * PLayerBoard class constructor.
+     */
     public PlayerBoard() {
         warehouse = new Warehouse();
         for (int i = 0; i < 3; i++) {
@@ -116,6 +119,10 @@ public class PlayerBoard implements Serializable {
         }
     }
 
+    /**
+     * Removes productionPowers inputs and adds ProductionPowerOutputs.
+     * @param productionPower a ProductionPower to activate.
+     */
     public void activateProductionPower(ProductionPower productionPower){
         payResourceCost(productionPower.getInput());
         Map<Resource,Integer> output = GameUtils.emptyResourceMap();
@@ -123,6 +130,11 @@ public class PlayerBoard implements Serializable {
         strongbox.addResources(output);
     }
 
+    /**
+     * Chcks if a development card can be placed.
+     * @param card a Development card to place.
+     * @return true if there is a stack where the development card can be place.
+     */
     public boolean canPlaceDevelopmentCard(DevelopmentCard card) {
         for (PlayerCardStack playerCardStack: cardStacks){
             if(playerCardStack.canPlaceCard(card))
@@ -131,6 +143,11 @@ public class PlayerBoard implements Serializable {
         return false;
     }
 
+    /**
+     * Checks if there are enough resources to pay a cost.
+     * @param cost a Map<Resource, Integer>.
+     * @return true if for each value of  the  map the player has more or equal resources of that type.
+     */
     public boolean canPayResources(Map<Resource, Integer>cost) {
         Map<Resource, Integer> allResources = new HashMap<>(getResources());
         for (Resource resource : cost.keySet()) {
@@ -139,6 +156,10 @@ public class PlayerBoard implements Serializable {
         return true;
     }
 
+    /**
+     * Removes the resources of cost from user resources prioritizing the warehouse.
+     * @param cost a Map<Resource, Integer>.
+     */
     public void payResourceCost(Map<Resource, Integer>cost){
         GameUtils.debug("paying: " + cost);
         if (!canPayResources(cost)) return;

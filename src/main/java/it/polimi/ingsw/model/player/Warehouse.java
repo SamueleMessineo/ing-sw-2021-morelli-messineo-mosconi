@@ -15,6 +15,9 @@ public class Warehouse implements Serializable {
     private final ArrayList<Shelf> shelves = new ArrayList<>();
     private final ArrayList<String> shelfNames = new ArrayList<>(Arrays.asList("top", "middle", "bottom"));
 
+    /**
+     * Warehouse class constructor.
+     */
     public Warehouse() {
         for (int i = 1; i <= 3; i++) {
             shelves.add(new Shelf(i));
@@ -181,6 +184,11 @@ public class Warehouse implements Serializable {
         }
     }
 
+    /**
+     * Checks if some resources can be placed in the warehouse.
+     * @param resourcesToPlace the resources that the player is trying to place.
+     * @return true if the resources can be placed in the warehouse according to the game rules.
+     */
     public boolean canPlaceResources(Map<Resource,Integer> resourcesToPlace){
         resourcesToPlace = GameUtils.sumResourcesMaps(resourcesToPlace, GameUtils.emptyResourceMap());
         Map<Resource,Integer> resourcesInWarehouse=new HashMap<>(getResources());
@@ -206,6 +214,11 @@ public class Warehouse implements Serializable {
         }
     }
 
+    /**
+     * Checks if some resources can be placed in the warehouse without considering.
+     * @param resourcesToPlace the resources that the player is trying to place.
+     * @return true if the resources can be placed in the standard shelves of the warehouse according to the game rules.
+     */
     private boolean canPlaceResourcesInWarehouseWithoutExtraShelves(Map<Resource,Integer> resourcesToPlace){
         int numOfTypeRes=0;
         for(Resource resource:resourcesToPlace.keySet()){
@@ -226,6 +239,11 @@ public class Warehouse implements Serializable {
         return resourcesToPlace.equals(GameUtils.emptyResourceMap());
     }
 
+    /**
+     * Checks if some resources can be placed in the warehouse's extra shelves.
+     * @param resourcesToPlace the resources that the player is trying to place.
+     * @return true if the resources can be placed in the extra shelves of the warehouse according to the game rules.
+     */
     private boolean canPlaceResourcesInWarehouseWithExtraShelves(Map<Resource,Integer> resourcesToPlace) {
         List<Resource> resTypeExtraShelf=new ArrayList<>();
         if (shelfNames.contains("extra1"))
@@ -244,6 +262,10 @@ public class Warehouse implements Serializable {
         return canPlaceResourcesInWarehouseWithoutExtraShelves(resourcesToPlace);
     }
 
+    /**
+     * Adds some resources to the warehouse.
+     * @param resourcesToPlace a Map<Resource, Integer>
+     */
     public void placeResources(Map<Resource, Integer> resourcesToPlace) {
         if (!canPlaceResources(resourcesToPlace)) return;
         Map<Resource, Integer> allResources = GameUtils.sumResourcesMaps(getResources(), resourcesToPlace);

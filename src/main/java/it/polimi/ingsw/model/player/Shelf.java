@@ -17,6 +17,10 @@ public class Shelf implements Storage, Serializable {
     private final int maxSize;
     private boolean fixed = false;
 
+    /**
+     * Shelf class constructor.
+     * @param maxSize the maximum number of resources that can be placed on the shelf.
+     */
     public Shelf(int maxSize) {
         this.maxSize = maxSize;
     }
