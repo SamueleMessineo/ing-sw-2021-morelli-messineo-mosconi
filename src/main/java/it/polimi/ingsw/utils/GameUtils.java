@@ -11,6 +11,10 @@ import java.util.*;
 
 public class GameUtils {
 
+    /**
+     * Creates a new map with all the resources as keys with a value of 0.
+     * @return the create emptyResourceMap.
+     */
     public static Map<Resource, Integer> emptyResourceMap(){
         Map<Resource,Integer> emptyMap=new HashMap<>();
         emptyMap.put(Resource.SHIELD,0);
@@ -20,6 +24,12 @@ public class GameUtils {
         return emptyMap;
     }
 
+    /**
+     * Sums the values of each key of 2 Maps<Resource, Integer>
+     * @param map1 first map.
+     * @param map2 second map.
+     * @return a new map with all the resources and values as the sum of the values of the input map for that resource.
+     */
     public static Map<Resource, Integer> sumResourcesMaps(Map<Resource, Integer> map1, Map<Resource, Integer> map2){
         Map<Resource, Integer> mapToAdd1=emptyResourceMap();
         mapToAdd1.putAll(map1);
@@ -34,6 +44,11 @@ public class GameUtils {
         return sum;
     }
 
+    /**
+     * Sorts a resource Map in descending order.
+     * @param resources a Map<Resource, Integer>
+     * @return a LinkedHashMap with same keys and values as the input Map but sorted in descending order.
+     */
     public static LinkedHashMap<Resource, Integer> sortResourceMapByValues(Map<Resource, Integer> resources) {
         LinkedHashMap<Resource, Integer> sorted = new LinkedHashMap<>(resources);
 
@@ -47,6 +62,15 @@ public class GameUtils {
         return sorted;
     }
 
+    /**
+     * Takes an input from the user, converts it to int, checks if is in a range and prints it on the PrintStream.
+     * @param message a String that ask a number to the user.
+     * @param minBoundary minimum value of the user input.
+     * @param maxBoundary maximum value of the user input.
+     * @param output a PrintStream on which the converted int is printed.
+     * @param input a Scanner to read what the user is writing.
+     * @return the user char input converted to an int.
+     */
     public static int askIntegerInput(String message, int minBoundary, int maxBoundary, PrintStream output, Scanner input) {
         int selection;
         while (true) {
@@ -65,12 +89,24 @@ public class GameUtils {
         return selection;
     }
 
+    /**
+     * Increments the resource value of an amount.
+     * @param resourceMap a Map<Resource, Integer>.
+     * @param resource the resource of which the value is to increment.
+     * @param amount how much the value of resource has to be incremented.
+     * @return the input map with an incremented value.
+     */
     public static Map<Resource, Integer> incrementValueInResourceMap(Map<Resource, Integer> resourceMap, Resource resource, int amount) {
         if (resourceMap.containsKey(resource)) amount += resourceMap.get(resource);
         resourceMap.put(resource, amount);
         return resourceMap;
     }
 
+    /**
+     * Converts a marble to its resource.
+     * @param marble the marble to convert.
+     * @return the resource associated to the marble.
+     */
     public static Resource convertMarbleToResource(Marble marble) {
         switch (marble) {
             case BLUE: // convert to shied
@@ -85,10 +121,18 @@ public class GameUtils {
         return null;
     }
 
+    /**
+     * Used for debug, prints a string in a light blue color.
+     * @param string to print.
+     */
     public static void debug(String string){
         System.out.println("\u001B[36m" + string + "\u001B[0m");
     }
 
+    /**
+     * Checks the OS and finds the path to the directory in which the games should be saved called "/.mor".
+     * @return path of the directory in which the game are to be saved, if it does not exists it is created.
+     */
     private static String getPath() {
         String OS = (System.getProperty("os.name")).toUpperCase();
         String workingDirectory;
@@ -109,6 +153,11 @@ public class GameUtils {
         return workingDirectory;
     }
 
+    /**
+     * Saves the game in the "/.mor" directory.
+     * @param game to save.
+     * @param roomID id of the game room, used to identify the file.
+     */
     public static void writeGame(Game game, Integer roomID){
         String basePath = getPath();
         try {
@@ -122,6 +171,11 @@ public class GameUtils {
         }
     }
 
+    /**
+     * Reads a game from the "/.mor" directory.
+     * @param roomID the id of the room associated to the game, is used to identify the file.
+     * @return "/.mor/"+roomId+".ser"
+     */
     public static Game readGame(Integer roomID){
         Game game = null;
         String basePath = getPath();
@@ -138,6 +192,10 @@ public class GameUtils {
         return game;
     }
 
+    /**
+     * Deletes a saved game from memory.
+     * @param roomId the id Associated to the game that has to be deleted.
+     */
     public static void deleteSavedGame(int roomId){
         String basePath = getPath();
         try {
@@ -148,6 +206,11 @@ public class GameUtils {
         }
     }
 
+    /**
+     * Gets the display coordinates of a faith track position.
+     * @param pos an integer between 0 and 24.
+     * @return the coordinates associated with pos.
+     */
     public static List<Integer> getFaithTrackPositionCoordinates(int pos) {
         switch (pos) {
             case 0:
@@ -205,6 +268,11 @@ public class GameUtils {
         }
     }
 
+    /**
+     * Gets the display coordinates of a PopeTile.
+     * @param index an integer between 0 and 2.
+     * @return the coordinates associated with index.
+     */
     public static List<Integer> getPopeTileCoordinates(int index) {
         switch (index) {
             case 0:

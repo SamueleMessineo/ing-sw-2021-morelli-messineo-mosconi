@@ -24,6 +24,9 @@ public class ResourceManager {
     private static MediaPlayer mediaPlayer = null;
     private static AudioClip buttonClickSound = null;
 
+    /**
+     * Sets the music and click sound.
+     */
     public static void initializeSound() {
         if (mediaPlayer != null) mediaPlayer.stop();
         Media backgroundMusic = new Media(Objects.requireNonNull(ResourceManager.class.getClassLoader()
@@ -41,19 +44,33 @@ public class ResourceManager {
         buttonClickSound.setVolume(0);
     }
 
+    /**
+     * Starts the background music.
+     */
     public static void playBackgroundMusic() {
         mediaPlayer.play();
     }
 
+    /**
+     * Toggles sounds.
+     */
     public static void toggleSound() {
         mediaPlayer.setMute(!mediaPlayer.isMute());
         buttonClickSound.setVolume(buttonClickSound.getVolume() == 0 ? 0.05 : 0);
     }
 
+    /**
+     * Starts click sounds.
+     */
     public static void playClickSound() {
         buttonClickSound.play();
     }
 
+    /**
+     * Gets the ImageView of a resource.
+     * @param resource resource of which the view is wanted.
+     * @return the ImageView associated with the resource.
+     */
     public static ImageView getImageView(Resource resource) {
         Image resourceImage = new Image(Objects.requireNonNull(GameUtils.class.getClassLoader()
                 .getResourceAsStream("images/resources/" + resource.name().toLowerCase() + ".png")));
@@ -62,6 +79,11 @@ public class ResourceManager {
         return resourceImageView;
     }
 
+    /**
+     * Gets the ImageView of a developmentCard.
+     * @param card developmentCard of which the view is wanted.
+     * @return the ImageView associated with the card.
+     */
     public static ImageView getImageView(DevelopmentCard card) {
         Image cardImage = new Image(Objects.requireNonNull(GameUtils.class.getClassLoader()
                 .getResourceAsStream("images/development/development_" + card.getCardType().name().toLowerCase()
@@ -71,6 +93,11 @@ public class ResourceManager {
         return cardImageView;
     }
 
+    /**
+     * Gets the ImageView of a leaderCard.
+     * @param card leaderCard of which the view is wanted.
+     * @return the ImageView associated with the card.
+     */
     public static ImageView getImageView(LeaderCard card) {
         Image cardImage = new Image(Objects.requireNonNull(GameUtils.class.getClassLoader()
                 .getResourceAsStream("images/leaders/leader_" + card.getEffectScope().toLowerCase()
@@ -80,6 +107,11 @@ public class ResourceManager {
         return cardImageView;
     }
 
+    /**
+     * Darkens the colors of an imageView of a double value.
+     * @param imageView that has to change its colors.
+     * @param value of how much to darkens the image.
+     */
     public static void setDarkImageView(ImageView imageView, double value){
         ColorAdjust blackout = new ColorAdjust();
         blackout.setBrightness(-value);
@@ -88,6 +120,11 @@ public class ResourceManager {
         imageView.setCacheHint(CacheHint.SPEED);
     }
 
+    /**
+     * Builds the Image of a ProductionPower.
+     * @param power the production power of which the image has to be created.
+     * @return an AnchorPane containing the Image associated with the ProductionPower.
+     */
     public static AnchorPane buildProductionPowerBook(ProductionPower power) {
         AnchorPane powerPane = new AnchorPane();
         powerPane.setPrefSize(212, 150);
@@ -138,6 +175,10 @@ public class ResourceManager {
         return powerPane;
     }
 
+    /**
+     * Gets the Inkwell image.
+     * @return inkwell image.
+     */
     public static Image getInkwell() {
         return new Image(Objects.requireNonNull(GameUtils.class.getClassLoader()
                 .getResourceAsStream("images/punchboard/calamaio.png")));
