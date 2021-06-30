@@ -27,6 +27,10 @@ import javafx.scene.text.Text;
 import java.io.IOException;
 import java.util.*;
 
+/**
+ * The controller for the scene that lets the player
+ * choose which resources to obtain at the start of the game.
+ */
 public class InitialResourcesController implements SceneController {
     private GUI gui;
     @FXML
@@ -41,6 +45,11 @@ public class InitialResourcesController implements SceneController {
     private int totalResourcesSelected = 0;
     private final Map<Resource, Map<String, Button>> resourceButtonsMap = new HashMap<>();
 
+    /**
+     * Updates the selected amount of the given resource.
+     * @param resource the selected resource.
+     * @param increment true if the count should be increased by 1, false if it should be decreased.
+     */
     void updateCount(Resource resource, boolean increment) {
         Platform.runLater(() -> {
             GameUtils.incrementValueInResourceMap(selectedResources, resource, increment ? 1 : -1);
@@ -66,6 +75,10 @@ public class InitialResourcesController implements SceneController {
         });
     }
 
+    /**
+     * Confirms the selected resources.
+     * @param event the javafx event.
+     */
     @FXML
     void confirm(ActionEvent event) {
         ResourceManager.playClickSound();
@@ -82,6 +95,11 @@ public class InitialResourcesController implements SceneController {
         }
     }
 
+    /**
+     * Display the resources to choose from.
+     * @param resources the obtainable resources.
+     * @param amount the amount of resources to choose.
+     */
     public void displayList(List<Resource> resources, int amount) {
         Platform.runLater(() -> {
             toSelect = amount;
@@ -116,6 +134,10 @@ public class InitialResourcesController implements SceneController {
         });
     }
 
+    /**
+     * Opens a popup showing the development cards market.
+     * @param actionEvent the javafx event.
+     */
     public void peekMarket(ActionEvent actionEvent) {
         List<MarketCardStack> cardStacks = gui.getGame().getMarket().getCardsGrid();
         VBox popupContainer = new VBox();
@@ -155,6 +177,10 @@ public class InitialResourcesController implements SceneController {
         gui.displayPopup(popupContainer);
     }
 
+    /**
+     * Opens a popup showing the marbles grid.
+     * @param actionEvent the javafx event.
+     */
     public void peekMarbles(ActionEvent actionEvent) {
         Platform.runLater(() -> {
             VBox popupContainer = new VBox();

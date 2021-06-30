@@ -20,6 +20,9 @@ import javafx.scene.layout.VBox;
 
 import java.util.*;
 
+/**
+ * The controller for the scene showing the player's warehouse.
+ */
 public class WarehouseController implements SceneController{
     private GUI gui;
     private Map<String, HBox> shelfContainerMap;
@@ -31,6 +34,10 @@ public class WarehouseController implements SceneController{
     @FXML
     private HBox buttonsContainer;
 
+    /**
+     * Display all the shelves (extras too) and their contents.
+     * @param warehouse the player's warehouse.
+     */
     public void load(Warehouse warehouse) {
         Platform.runLater(() -> {
             // display the warehouse
@@ -100,12 +107,20 @@ public class WarehouseController implements SceneController{
         });
     }
 
+    /**
+     * Signals that the player wants to move the shelves.
+     * @param event the javafx event.
+     */
     @FXML
     void requestSwitch(ActionEvent event) {
         ResourceManager.playClickSound();
         gui.getClient().sendMessage(new SelectMoveResponseMessage("SWITCH_SHELVES"));
     }
 
+    /**
+     * Lets the user choose which shelves to switch.
+     * @param shelves the player's shelves.
+     */
     void allowSwitch(List<String> shelves) {
         Platform.runLater(() -> {
             selected = new ArrayList<>();
@@ -125,6 +140,10 @@ public class WarehouseController implements SceneController{
         });
     }
 
+    /**
+     * Select a shelf to switch.
+     * @param shelfName the name of the shelf to select.
+     */
     void select(String shelfName) {
         Platform.runLater(() -> {
             ResourceManager.playClickSound();
@@ -145,6 +164,9 @@ public class WarehouseController implements SceneController{
         });
     }
 
+    /**
+     * Confirm the switch of shelves.
+     */
     @FXML
     void confirm() {
         ResourceManager.playClickSound();
@@ -157,6 +179,10 @@ public class WarehouseController implements SceneController{
         this.gui = gui;
     }
 
+    /**
+     * Goes back to the main scene of the game board.
+     * @param actionEvent the javafx event.
+     */
     public void cancel(ActionEvent actionEvent) {
         ResourceManager.playClickSound();
         gui.setScene("game-board");

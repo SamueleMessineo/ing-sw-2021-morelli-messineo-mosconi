@@ -18,6 +18,9 @@ import javafx.scene.text.Text;
 
 import java.util.Arrays;
 
+/**
+ * The controller for the game creation or joining scene.
+ */
 public class SetupGameController implements SceneController{
     private GUI gui;
     @FXML
@@ -34,6 +37,10 @@ public class SetupGameController implements SceneController{
     private final Text errorMessage = new Text("Invalid format"){{getStyleClass().add("light-text");}};
     private String view = "CREATE";
 
+    /**
+     * Starts the game based on the current view (CREATE, PUBLIC, PRIVATE).
+     * @param event the javafx event.
+     */
     @FXML
     void start(ActionEvent event) {
         Platform.runLater(() -> {
@@ -79,6 +86,10 @@ public class SetupGameController implements SceneController{
         });
     }
 
+    /**
+     * Show the form with the inputs required to create a game.
+     * @param event the javafx event.
+     */
     @FXML
     void createGame(ActionEvent event) {
         Platform.runLater(() -> {
@@ -94,6 +105,10 @@ public class SetupGameController implements SceneController{
         });
     }
 
+    /**
+     * Show the form with the inputs required to join a private room.
+     * @param event the javafx event.
+     */
     @FXML
     void joinPrivate(ActionEvent event) {
         Platform.runLater(() -> {
@@ -109,6 +124,10 @@ public class SetupGameController implements SceneController{
         });
     }
 
+    /**
+     * Show the form with the inputs required to join a public game.
+     * @param event the javafx event.
+     */
     @FXML
     void joinPublic(ActionEvent event) {
         Platform.runLater(() -> {
