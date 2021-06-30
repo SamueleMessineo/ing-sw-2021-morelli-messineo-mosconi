@@ -4,12 +4,16 @@ import it.polimi.ingsw.model.shared.DevelopmentCard;
 import it.polimi.ingsw.model.shared.LeaderCard;
 import it.polimi.ingsw.model.shared.ProductionPower;
 import it.polimi.ingsw.model.shared.Resource;
+import javafx.geometry.HPos;
 import javafx.geometry.Pos;
+import javafx.geometry.VPos;
 import javafx.scene.CacheHint;
+import javafx.scene.Cursor;
 import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.AudioClip;
@@ -60,7 +64,7 @@ public class ResourceManager {
     }
 
     /**
-     * Starts click sounds.
+     * Plays a click sound.
      */
     public static void playClickSound() {
         buttonClickSound.play();
@@ -176,11 +180,20 @@ public class ResourceManager {
     }
 
     /**
-     * Gets the Inkwell image.
-     * @return inkwell image.
+     * Builds the ImageView of the arrows in the marbles grid.
+     * @param direction the direction of the arrow.
+     * @return the ImageView of the arrow.
      */
-    public static Image getInkwell() {
-        return new Image(Objects.requireNonNull(GameUtils.class.getClassLoader()
-                .getResourceAsStream("images/punchboard/calamaio.png")));
+    public static ImageView getMarblesArrow(String direction) {
+        Image arrowImage = new Image(Objects.requireNonNull(ResourceManager.class.getClassLoader()
+                .getResourceAsStream("images/marbles/marbles_arrow_"+direction+".png")));
+        ImageView imageView = new ImageView(arrowImage);
+        imageView.setPreserveRatio(true);
+        imageView.setFitHeight(60);
+        imageView.setFitWidth(60);
+        imageView.setCursor(Cursor.HAND);
+        GridPane.setValignment(imageView, VPos.CENTER);
+        GridPane.setHalignment(imageView, HPos.CENTER);
+        return imageView;
     }
 }

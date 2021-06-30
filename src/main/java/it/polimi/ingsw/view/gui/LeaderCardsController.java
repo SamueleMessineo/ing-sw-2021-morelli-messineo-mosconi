@@ -17,6 +17,10 @@ import javafx.scene.layout.VBox;
 
 import java.util.List;
 
+/**
+ * The controller for the scene displaying the player's leader cards
+ * and allowing the choices of playing or discarding one.
+ */
 public class LeaderCardsController implements SceneController{
     private GUI gui;
     @FXML
@@ -24,6 +28,13 @@ public class LeaderCardsController implements SceneController{
     @FXML
     private HBox buttonContainer;
 
+    /**
+     * Display the player's leader cards.
+     * @param leaderCards the player's leader cards.
+     * @param type a string with the value of 'SHOW' if a row of buttons should be displayed letting the
+     *             player select whether to play or drop a card, 'DROP' if clicking on a card should drop it,
+     *             'PLAY' if clicking on a card should play it.
+     */
     public void load(List<LeaderCard> leaderCards, String type) {
         GameUtils.debug(leaderCards.toString());
         Platform.runLater(() -> {
@@ -54,12 +65,20 @@ public class LeaderCardsController implements SceneController{
         });
     }
 
+    /**
+     * Go back to the main scene of the game board.
+     * @param event the javafx event.
+     */
     @FXML
     void cancel(ActionEvent event) {
         ResourceManager.playClickSound();
         gui.setScene("game-board");
     }
 
+    /**
+     * Allow the user to choose a card to drop.
+     * @param event the javafx event.
+     */
     @FXML
     void dropLeader(ActionEvent event){
         ResourceManager.playClickSound();
@@ -67,6 +86,10 @@ public class LeaderCardsController implements SceneController{
         gui.getClient().sendMessage(new SelectMoveResponseMessage("DROP_LEADER"));
     }
 
+    /**
+     * Allow the user to choose a card to play.
+     * @param event the javafx event.
+     */
     @FXML
     void playLeader(ActionEvent event){
         ResourceManager.playClickSound();
@@ -74,17 +97,26 @@ public class LeaderCardsController implements SceneController{
         gui.getClient().sendMessage(new SelectMoveResponseMessage("PLAY_LEADER"));
     }
 
+    /**
+     * Drop the selected card.
+     * @param index the index of the leader card to drop.
+     */
     private void sendLeaderToDrop(int index){
         ResourceManager.playClickSound();
         System.out.println("sendLeaderToDrop");
         gui.getClient().sendMessage(new DropLeaderCardResponseMessage(index));
     }
 
+    /**
+     * Play the selected leader card.
+     * @param index the index of the leader card to drop.
+     */
     private void sendLeaderToPlay(int index){
         ResourceManager.playClickSound();
         System.out.println("sendLeaderToDrop");
         gui.getClient().sendMessage(new PlayLeaderResponseMessage(index));
     }
+
     @Override
     public void setGUI(GUI gui) {
         this.gui = gui;

@@ -13,6 +13,9 @@ import javafx.scene.layout.VBox;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * Controller for the scene showing the player's card stacks.
+ */
 public class CardsProductionController implements SceneController {
     private GUI gui;
     @FXML
@@ -20,6 +23,10 @@ public class CardsProductionController implements SceneController {
     @FXML
     private VBox vbox;
 
+    /**
+     * Display the card stacks.
+     * @param cardStacks the player's card stacks.
+     */
     public void display(List<PlayerCardStack> cardStacks) {
         Platform.runLater(() -> {
             vbox.getChildren().clear();
@@ -39,12 +46,20 @@ public class CardsProductionController implements SceneController {
         });
     };
 
+    /**
+     * Request the activation of some production powers.
+     * @param event the javafx event.
+     */
     @FXML
     void sendActivateRequest(ActionEvent event) {
         ResourceManager.playClickSound();
         gui.getClient().sendMessage(new SelectMoveResponseMessage("ACTIVATE_PRODUCTION"));
     }
 
+    /**
+     * Go back to the main game board scene.
+     * @param event the javafx event.
+     */
     @FXML
     void cancel(ActionEvent event) {
         ResourceManager.playClickSound();

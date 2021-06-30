@@ -4,7 +4,6 @@ import it.polimi.ingsw.model.player.Shelf;
 import it.polimi.ingsw.model.player.Warehouse;
 import it.polimi.ingsw.network.game.SelectMoveResponseMessage;
 import it.polimi.ingsw.network.game.SwitchShelvesResponseMessage;
-import it.polimi.ingsw.utils.GameUtils;
 import it.polimi.ingsw.utils.ResourceManager;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
