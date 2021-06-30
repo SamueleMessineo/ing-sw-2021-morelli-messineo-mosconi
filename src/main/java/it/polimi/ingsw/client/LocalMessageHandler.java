@@ -62,7 +62,6 @@ public class LocalMessageHandler {
         ui.setGameState(GameUtils.readGame(42));
         //ui.setGameState(gameController.getGame());
         ui.displayGameState();
-        GameUtils.debug("sending " + currentTurn.getMoves());
         ui.displayPossibleMoves(currentTurn.getMoves());
 
     }
@@ -80,7 +79,6 @@ public class LocalMessageHandler {
             ui.setGameState(GameUtils.readGame(42));
             ui.displayGameState();
             ui.displayPossibleMoves(currentTurn.getMoves());
-            GameUtils.debug("nextmoves " + currentTurn.getMoves());
         }
     }
 

@@ -255,7 +255,6 @@ public class ClassicGameController {
                 if(!cardsStack.isEmpty()) {
                     DevelopmentCard topCard = cardsStack.peek();
                     if (player.canBuyAndPlaceDevelopmentCard(topCard)) {
-                        GameUtils.debug(topCard.toString());
                         moves.add("BUY_CARD");
                         break;
                     }
@@ -330,11 +329,8 @@ public class ClassicGameController {
      * @param extraOutput the resources the player wants as outputs of extra powers
      */
     public void activateProduction(List<Integer> selectedStacks, ProductionPower basicProduction, List<Integer> extraProductionPowers, List<Resource> extraOutput){
-       GameUtils.debug("in activate production " + selectedStacks );
         if (selectedStacks != null) {
-            GameUtils.debug("in activate production " + selectedStacks );
             List<ProductionPower> powers = game.getCurrentPlayer().possibleProductionPowersToActive();
-            GameUtils.debug("powers: " + powers);
 
             for (Integer index: selectedStacks){
                 ProductionPower productionPower = powers.get(index);
@@ -348,17 +344,14 @@ public class ClassicGameController {
             }
         }
         if (basicProduction != null) {
-            GameUtils.debug("In basic" + basicProduction);
            game.getCurrentPlayer().getPlayerBoard().activateProductionPower(basicProduction);
         }
         if(extraProductionPowers != null && !extraProductionPowers.isEmpty()){
-            GameUtils.debug("in extra");
             int outRes = 0;
             for (Integer extraProductionPower : extraProductionPowers) {
                 movePlayer(game.getCurrentPlayer().getUsername(), 1);
                 System.out.println(extraProductionPowers);
                 ProductionPower productionPower = game.getCurrentPlayer().getPlayerBoard().getExtraProductionPowers().get((Integer) extraProductionPower);
-                GameUtils.debug("extra " + productionPower.toString());
                 productionPower.getOutput().put(extraOutput.get(outRes), 1);
                 productionPower.getOutput().remove(Resource.ANY);
                 productionPower.getOutput().remove(Resource.FAITH);
@@ -391,7 +384,6 @@ public class ClassicGameController {
     public void activatePopeReport() {
         System.out.println(1);
         for (Player player : game.getActivePlayers()) {
-            GameUtils.debug(String.valueOf(player.getFaithTrack().inOnPopeSpace()));
             int popeLevel = player.getFaithTrack().inOnPopeSpace();
             // for each player, if the player is on a pope space
             // check if the other players are in that space's area

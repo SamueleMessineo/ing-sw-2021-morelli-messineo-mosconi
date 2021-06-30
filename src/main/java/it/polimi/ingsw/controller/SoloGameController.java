@@ -131,7 +131,6 @@ public class SoloGameController extends ClassicGameController {
         super.activatePopeReport();
         FaithTrack currentPlayerFaithTrack = game.getCurrentPlayer().getFaithTrack();
         if(currentPlayerFaithTrack.inOnPopeSpace()!= -1){
-            GameUtils.debug("check " + (currentPlayerFaithTrack.inOnPopeSpace()-1) );
             if(game.getLorenzoIlMagnifico().getFaithTrack().isInPopeFavorByLevel(currentPlayerFaithTrack.inOnPopeSpace())){
                 game.getLorenzoIlMagnifico().getFaithTrack().getPopesFavorTiles().get(currentPlayerFaithTrack.inOnPopeSpace()-1).setState(PopesFavorTileState.ACTIVE);
             } else  game.getLorenzoIlMagnifico().getFaithTrack().getPopesFavorTiles().get(currentPlayerFaithTrack.inOnPopeSpace()-1).setState(PopesFavorTileState.DISCARDED);

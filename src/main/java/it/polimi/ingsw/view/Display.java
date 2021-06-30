@@ -10,8 +10,15 @@ import java.io.PrintStream;
 import java.util.*;
 import java.util.stream.Collectors;
 
+/**
+ * Display class, used to print infos on the screen, it has statics methods that takes an output on which they have to
+ * print.
+ */
 public class Display {
 
+    /**
+     * Displays a welcome message
+     */
     public static void displayWelcomeMessage(PrintStream output){
         output.println(
                 "+-----------------------------------------------------------------------------------------+\n" +
@@ -34,6 +41,12 @@ public class Display {
                         "+-----------------------------------------------------------------------------------------+");
     }
 
+    /**
+     * Displays the room details.
+     * @param players the list of players.
+     * @param playersNum the number of players.
+     * @param RoomId the id of the room.
+     */
     public static void displayRoomDetails(ArrayList<String> players, int playersNum, int RoomId, PrintStream output) {
         output.println("Game details:");
         output.println("🧑🏻‍💻" + players);
@@ -41,6 +54,10 @@ public class Display {
         output.println("⌘" + RoomId);
     }
 
+    /**
+     * Displays the marble structure.
+     * @param marbleStructure a MarbleStructure
+     */
     public static void displayMarbleStructure(MarbleStructure marbleStructure, PrintStream output){
         String result = "Marble Structure: \n";
         for (int i = 0; i < 3; i++) {
@@ -53,6 +70,11 @@ public class Display {
         output.println(result);
     }
 
+    /**
+     * Displays the marble as a colored dot
+     * @param marble a Marble
+     * @return a colored dot
+     */
     private static String displayMarble(Marble marble){
         switch (marble){
             case BLUE:
@@ -71,6 +93,11 @@ public class Display {
         return "";
     }
 
+    /**
+     * Display the Resource image associated with the resource.
+     * @param resource a Resource.
+     * @return the image associated to the resource.
+     */
     public static String displayResourceType(Resource resource){
         switch (resource){
 
@@ -90,6 +117,10 @@ public class Display {
         return "";
     }
 
+    /**
+     * Displays the game board.
+     * @param market a Market
+     */
     public static void displayGameBoard(Market market, PrintStream output){
         displayMarbleStructure(market.getMarbleStructure(), output);
         output.println("\nCards Market:");
@@ -193,6 +224,10 @@ public class Display {
         }
     }
 
+    /**
+     * Displays the board of a player.
+     * @param player the Player of which the board has to be displayed.
+     */
     public static void displayPlayerBoard(Player player, PrintStream output){
         output.println("🧑🏻‍💻" + player.getUsername() + " playerBoard: ");
         output.println("\n ✝ Faith track positions");
@@ -201,7 +236,6 @@ public class Display {
             PopesFavorTile popesFavorTile = player.getFaithTrack().getPopesFavorTiles().get(i);
             output.print("Pope's favor tile level "+ (i+1) + ": ");
             displayPopeTile(popesFavorTile, output);
-
         }
         output.println("\n 🏦 Storage");
         displayWarehouse(player.getPlayerBoard().getWarehouse(), output);
@@ -216,6 +250,10 @@ public class Display {
         output.println();
     }
 
+    /**
+     * Displays a Warehouse.
+     * @param warehouse a Warehouse
+     */
     private static void displayWarehouse(Warehouse warehouse, PrintStream output){
         output.println("    " + displayResourceType(warehouse.getShelf("top").getResourceType()));
         output.print("   ");
@@ -242,6 +280,10 @@ public class Display {
         }
     }
 
+    /**
+     * Displays a yellow empty box if the Tile is inactive, a green 'tic' if it is active, a red cross if it is inactive.
+     * @param popesFavorTile a PopeFavorTile.
+     */
     private static void displayPopeTile(PopesFavorTile popesFavorTile, PrintStream output){
         switch (popesFavorTile.getState()){
             case INACTIVE:
@@ -257,11 +299,20 @@ public class Display {
         }
     }
 
+    /**
+     * Displays a strongbox.
+     * @param strongbox a Strongbox
+     */
     private static void displayStrongbox(Strongbox strongbox, PrintStream output) {
         Map<Resource, Integer> resources = strongbox.getResources();
         output.println(displayResourceType(Resource.COIN) +": " +resources.get(Resource.COIN) + " " + displayResourceType(Resource.SERVANT) +": " + resources.get(Resource.SERVANT) + " " + displayResourceType(Resource.STONE) +": " + resources.get(Resource.STONE)+ " " + displayResourceType(Resource.SHIELD)+": " + resources.get(Resource.SHIELD));
     }
 
+    /**
+     * Display a colored card.
+     * @param cardType the type of the card.
+     * @return the color of the card, it has to be prepended to the card.
+     */
     public static String paintCard(CardType cardType){
         switch (cardType){
             case GREEN:
@@ -276,6 +327,10 @@ public class Display {
         return "\u001B[0m";
     }
 
+    /**
+     * Displays a resourceMap.
+     * @param resourceMap a Map<Resource, Integer>.
+     */
     public static String displayResourceMap(Map<Resource, Integer> resourceMap) {
         String output = "";
 
@@ -285,6 +340,10 @@ public class Display {
         return output;
     }
 
+    /**
+     * Displays a list of resources.
+     * @param resources a List of resources.
+     */
     public static String displayResourceList(List<Resource> resources){
         String result = "";
         for (Resource r:
@@ -294,6 +353,10 @@ public class Display {
         return result;
     }
 
+    /**
+     * Displays PLayer Leader Cards.
+     * @param player a Player.
+     */
     public static void displayPlayerLeaderCards(Player player, PrintStream output){
         output.println("Not yet used leader cards:");
         if(player.getLeaderCards().size()==0)output.println("\u001B[31m" + "none" + "\u001B[0m" );
@@ -309,6 +372,10 @@ public class Display {
         }
     }
 
+    /**
+     * Displays a single leaderCard.
+     * @param leaderCard a LeaderCard.
+     */
     public static void displayLeader(LeaderCard leaderCard, PrintStream output){
         output.print("\u001B[31m");
         output.print(leaderCard.printResourceRequirements());
@@ -317,6 +384,10 @@ public class Display {
         output.print("\u001B[0m");
     }
 
+    /**
+     * Displays a list of leader cards.
+     * @param leaderCards a list of leader cards.
+     */
     public static void displayLeaderCards(List<LeaderCard> leaderCards, PrintStream output){
         for (LeaderCard leader:
                 leaderCards) {
@@ -326,6 +397,12 @@ public class Display {
         }
     }
 
+    /**
+     * Paints a string.
+     * @param color the color of which the string has to been be painted, can be: GREEN, BLUE, PURPLE, YELLOW or RED.
+     * @param input the input String.
+     * @return the painted String.
+     */
     public static String paint(String color, String input){
         String colorOut = "";
         switch (color){
@@ -351,6 +428,11 @@ public class Display {
         return result;
     }
 
+    /**
+     * Displays a list of shelves.
+     * @param shelvesNames a List of shelves names.
+     * @param warehouse a Warehouse.
+     */
     public static void displayShelves(List<String> shelvesNames, Warehouse warehouse, PrintStream output){
         output.println("\nWAREHOUSE:");
         for(String name: shelvesNames){
