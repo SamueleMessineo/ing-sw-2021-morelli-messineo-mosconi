@@ -2,7 +2,6 @@ package it.polimi.ingsw.view.gui;
 
 import it.polimi.ingsw.model.player.PlayerCardStack;
 import it.polimi.ingsw.model.shared.DevelopmentCard;
-import it.polimi.ingsw.utils.GameUtils;
 import it.polimi.ingsw.utils.ResourceManager;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -12,11 +11,18 @@ import javafx.scene.layout.HBox;
 
 import java.util.List;
 
+/**
+ * The controller for the player's card stacks.
+ */
 public class PlayerCardStacksController implements SceneController {
     private GUI gui;
     @FXML
     private HBox container;
 
+    /**
+     * Displays the card stacks.
+     * @param stacks the player's card stacks.
+     */
     public void load(List<PlayerCardStack> stacks) {
         Platform.runLater(() -> {
             container.getChildren().clear();

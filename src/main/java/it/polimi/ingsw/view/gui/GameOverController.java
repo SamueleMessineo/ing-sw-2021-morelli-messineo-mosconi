@@ -10,6 +10,9 @@ import javafx.scene.text.Text;
 
 import java.util.Map;
 
+/**
+ * The controller for the game over scene.
+ */
 public class GameOverController implements SceneController{
     private GUI gui;
     @FXML
@@ -17,6 +20,11 @@ public class GameOverController implements SceneController{
     @FXML
     private VBox standingContainer;
 
+    /**
+     * Displays the winner and the standings.
+     * @param winner the username of the winner.
+     * @param standing the standings.
+     */
     public void showWinnerAndStanding(String winner, Map<String, Integer> standing){
         Platform.runLater(()->{
             this.winner.setText("The winner is:\n" + winner);
@@ -29,9 +37,12 @@ public class GameOverController implements SceneController{
         });
     }
 
+    /**
+     * Play another game.
+     * @param event the javafx event.
+     */
     @FXML
     void playAgain(ActionEvent event) {
-//        gui.setScene("online-offline");
         ResourceManager.playClickSound();
         try {
             gui.start(gui.getStage());
@@ -40,6 +51,10 @@ public class GameOverController implements SceneController{
         }
     }
 
+    /**
+     * Quits the application.
+     * @param event the javafx event.
+     */
     @FXML
     void quit(ActionEvent event) {
         ResourceManager.playClickSound();
