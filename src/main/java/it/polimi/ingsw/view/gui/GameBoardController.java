@@ -67,10 +67,11 @@ public class GameBoardController implements SceneController {
         Platform.runLater(() -> {
             gameState = game;
             playerInfo.setText(gui.getUsername() + ": " + gameState.getPlayerByUsername(gui.getUsername()).getVP() + " points");
-            if (gui.getUsername().equals(gameState.getCurrentPlayer().getUsername()))
+            if (gui.getUsername().equals(gameState.getCurrentPlayer().getUsername())) {
                 whosPlayingText.setText("It's your turn to play!");
-            else
+            } else {
                 whosPlayingText.setText(gameState.getCurrentPlayer().getUsername() + " is playing. Wait for your turn!");
+            }
             FXMLLoader cardsLoader = new FXMLLoader(
                     getClass().getClassLoader().getResource("scenes/cards-grid.fxml"));
             FXMLLoader marblesLoader = new FXMLLoader(
@@ -288,6 +289,9 @@ public class GameBoardController implements SceneController {
 
                 playerTab.setContent(tabContainer);
                 tabPane.getTabs().add(playerTab);
+
+                if (p.getUsername().equals(game.getPlayers().get(game.getInkwellPlayer()).getUsername()))
+                playerTab.setText("(inkwell) " + p.getUsername() + ": " + p.getVP() + " points");
 
                 this.cardsContainer.setCursor(Cursor.HAND);
                 this.marblesContainer.setCursor(Cursor.HAND);
