@@ -12,10 +12,16 @@ import it.polimi.ingsw.utils.GameUtils;
 
 import java.util.*;
 
+/**
+ * ServerController class, handles the creation of the rooms for the game.
+ */
 public class ServerController {
     private final Server server;
     private int roomId = 999;
 
+    /**
+     * ServerController class constructor
+     */
     public ServerController(Server server) {
         this.server = server;
     }

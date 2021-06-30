@@ -14,15 +14,16 @@ import java.util.Map;
 public class Turn {
     private String currentPlayer;
     private List<String> moves;
-//    private List<Resource> converted = new ArrayList<>();
     private Map<Resource, Integer> converted;
     private int toConvert;
-//    private List<Resource> toConvert = new ArrayList<>();
     private List<Resource> conversionOptions = new ArrayList<>();
     private DevelopmentCard boughtDevelopmentCard;
 
     private boolean alreadyPerformedMove = false;
 
+    /**
+     * Turn class constructor.
+     */
     public Turn(String currentPlayer, List<String> moves) {
         this.currentPlayer = currentPlayer;
         this.moves = moves;
@@ -35,6 +36,10 @@ public class Turn {
         return currentPlayer;
     }
 
+    /**
+     * Sets the current player.
+     * @param currentPlayer the Player that is playing.
+     */
     public void setCurrentPlayer(String currentPlayer) {
         this.currentPlayer = currentPlayer;
     }
@@ -46,6 +51,10 @@ public class Turn {
         return moves;
     }
 
+    /**
+     * Sets the current moves.
+     * @param moves the moves the user can perform.
+     */
     public void setMoves(List<String> moves) {
         this.moves = moves;
     }
@@ -90,21 +99,7 @@ public class Turn {
     public void setToConvert(int toConvert) {
         this.toConvert = toConvert;
     }
-//    public List<Resource> getConverted() {
-//        return converted;
-//    }
-//
-//    public void setConverted(List<Resource> converted) {
-//        this.converted = converted;
-//    }
-//
-//    public List<Resource> getToConvert() {
-//        return toConvert;
-//    }
-//
-//    public void setToConvert(List<Resource> toConvert) {
-//        this.toConvert = toConvert;
-//    }
+
 
     public List<Resource> getConversionOptions() {
         return conversionOptions;

@@ -13,12 +13,13 @@ public class ProductionPower implements Serializable {
     private final Map<Resource, Integer> input;
     private final Map<Resource, Integer> output;
 
+    /**
+     * ProductionPower class constructor.
+     */
     public ProductionPower(Map<Resource, Integer> input, Map<Resource, Integer> output){
         this.input=input;
         this.output=output;
     }
-
-
 
     /**
      * Fetch the resources to pay to activate the production power

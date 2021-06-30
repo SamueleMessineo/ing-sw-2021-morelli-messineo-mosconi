@@ -8,6 +8,7 @@ import it.polimi.ingsw.model.shared.*;
 
 import java.io.PrintStream;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Display {
 
@@ -91,26 +92,105 @@ public class Display {
 
     public static void displayGameBoard(Market market, PrintStream output){
         displayMarbleStructure(market.getMarbleStructure(), output);
-        System.out.println("\nCards Market:\n");
-
-
-        /*
-        for (int i = 0; i < 12; i+=4) {
-            displayCardsLine(market, i, output);
+        output.println("\nCards Market:");
+        for (int row = 0; row < 3; row++) {
+            for (int col = 0; col < 4; col++) {
+                DevelopmentCard card = market.getCardsGrid().get((row * 4) + col).peek();
+                output.print(paintCard(card.getCardType()));
+                output.print("+----------------+ ");
+                output.print("\u001B[0m");
+            }
+            output.print("\n");
+            int costRows = 0;
+            int inputRows = 0;
+            int outputRows = 0;
+            for (int col = 0; col < 4; col++) {
+                DevelopmentCard card = market.getCardsGrid().get((row * 4) + col).peek();
+                int nc = (int)card.getCost().keySet().stream().filter(k -> card.getCost().get(k) > 0).count();
+                if (nc > costRows) costRows = nc;
+                int ni = card.getProductionPower().getInput().keySet().size();
+                if (ni > inputRows) inputRows = ni;
+                int no = card.getProductionPower().getOutput().keySet().size();
+                if (no > outputRows) outputRows = no;
+                // 15
+                output.print(paintCard(card.getCardType()));
+                output.printf("|  Level: %d      | ", card.getLevel());
+                output.print("\u001B[0m");
+            }
+            output.print("\n");
+            for (int cr = -1; cr < costRows; cr++) {
+                for (int col = 0; col < 4; col++) {
+                    DevelopmentCard card = market.getCardsGrid().get((row * 4) + col).peek();
+                    output.print(paintCard(card.getCardType()));
+                    if (cr == -1)
+                        output.printf("|  %-14s| ", "Cost:");
+                    else {
+                        // 15
+                        List<Resource> keys = card.getCost().keySet().stream().filter(k -> card.getCost().get(k) > 0).sorted((o1, o2) -> card.getCost().get(o2) - card.getCost().get(o1)).collect(Collectors.toList());
+                        if (cr < keys.size()) {
+                            output.printf("|    %dx %-9s| ", card.getCost().get(keys.get(cr)), keys.get(cr).name());
+                        } else {
+                            output.print("|                | ");
+                        }
+                    }
+                    output.print("\u001B[0m");
+                }
+                output.print("\n");
+            }
+            for (int ir = -1; ir < inputRows; ir++) {
+                for (int col = 0; col < 4; col++) {
+                    DevelopmentCard card = market.getCardsGrid().get((row * 4) + col).peek();
+                    output.print(paintCard(card.getCardType()));
+                    if (ir == -1)
+                        output.printf("|  %-14s| ", "Input:");
+                    else {
+                        // 15
+                        List<Resource> keys = new ArrayList<>(card.getProductionPower().getInput().keySet());
+                        if (ir < keys.size()) {
+                            output.printf("|    %dx %-9s| ", card.getProductionPower().getInput().get(keys.get(ir)), keys.get(ir).name());
+                        } else {
+                            output.print("|                | ");
+                        }
+                    }
+                    output.print("\u001B[0m");
+                }
+                output.print("\n");
+            }
+            for (int ir = -1; ir < outputRows; ir++) {
+                for (int col = 0; col < 4; col++) {
+                    DevelopmentCard card = market.getCardsGrid().get((row * 4) + col).peek();
+                    output.print(paintCard(card.getCardType()));
+                    if (ir == -1)
+                        output.printf("|  %-14s| ", "Output:");
+                    else {
+                        // 15
+                        List<Resource> keys = new ArrayList<>(card.getProductionPower().getOutput().keySet());
+                        if (ir < keys.size()) {
+                            output.printf("|    %dx %-9s| ", card.getProductionPower().getOutput().get(keys.get(ir)), keys.get(ir).name());
+                        } else {
+                            output.print("|                | ");
+                        }
+                    }
+                    output.print("\u001B[0m");
+                }
+                output.print("\n");
+            }
+            for (int col = 0; col < 4; col++) {
+                DevelopmentCard card = market.getCardsGrid().get((row * 4) + col).peek();
+                // 15
+                output.print(paintCard(card.getCardType()));
+                output.printf("|  %-14s| ", "Score: "+card.getScore());
+                output.print("\u001B[0m");
+            }
+            output.print("\n");
+            for (int col = 0; col < 4; col++) {
+                DevelopmentCard card = market.getCardsGrid().get((row * 4) + col).peek();
+                output.print(paintCard(card.getCardType()));
+                output.print("+----------------+ ");
+                output.print("\u001B[0m");
+            }
+            output.print("\n");
         }
-
-         */
-
-
-
-
-        for (int i = 0; i < 12; i++) {
-            if(market.getCardsGrid().get(i).isEmpty()) System.out.println("Empty Stack");
-            else displayDevelopmentCard(market, i, output);
-        }
-
-
-
     }
 
     public static void displayPlayerBoard(Player player, PrintStream output){
@@ -182,65 +262,6 @@ public class Display {
         output.println(displayResourceType(Resource.COIN) +": " +resources.get(Resource.COIN) + " " + displayResourceType(Resource.SERVANT) +": " + resources.get(Resource.SERVANT) + " " + displayResourceType(Resource.STONE) +": " + resources.get(Resource.STONE)+ " " + displayResourceType(Resource.SHIELD)+": " + resources.get(Resource.SHIELD));
     }
 
-    private static void displayDevelopmentCard(Market market, int i, PrintStream output){
-        output.print(paintCard(market.getCardsGrid().get(i).getType()));
-        output.println(market.getCardsGrid().get(i));
-        output.print("\u001B[0m");
-        output.println("\n");
-    }
-
-    public static String displayCardType(CardType cardType){
-        switch (cardType){
-            case YELLOW:
-                return "🟨";
-            case PURPLE:
-                return "🟪";
-            case BLUE:
-                return "🟦";
-            case GREEN:
-                return "🟩";
-        }
-        return "";
-    }
-
-    private static void displayCardsLine(Market market, int i, PrintStream output){
-        /*
-        displayCardBorder(output);
-        output.println("|" + paintCard(market.getCardsGrid().get(i).getType()) +  normalizeCardField("level: " + market.getCardsGrid().get(i).peek().getLevel()) +"\u001B[0m" + "|" +"           " +"|" + paintCard(market.getCardsGrid().get(i+1).getType()) +  normalizeCardField("level: " + market.getCardsGrid().get(i+1).peek().getLevel()) +"\u001B[0m" + "|" +"           " + "|" +paintCard(market.getCardsGrid().get(i+2).getType()) +  normalizeCardField("level: " + market.getCardsGrid().get(i+2).peek().getLevel()) +"\u001B[0m" +"|" + "           " + "|" +paintCard(market.getCardsGrid().get(i+3).getType()) + normalizeCardField("level: " + market.getCardsGrid().get(i+3).peek().getLevel()) +"\u001B[0m" +"|" + "           ");
-        output.println("|" + paintCard(market.getCardsGrid().get(i).getType()) + normalizeCardField(displayCost(market.getCardsGrid().get(i).peek().getCost()))+"\u001B[0m" +"|" +"           " + "|" + paintCard(market.getCardsGrid().get(i+1).getType()) + normalizeCardField(displayCost(market.getCardsGrid().get(i+1).peek().getCost()))+"\u001B[0m" + "|" +"           " + "|" + paintCard(market.getCardsGrid().get(i+2).getType()) +  normalizeCardField(displayCost(market.getCardsGrid().get(i+2).peek().getCost())) +"\u001B[0m" + "|" +"           " + "|" + paintCard(market.getCardsGrid().get(i+3).getType()) + normalizeCardField(displayCost(market.getCardsGrid().get(i+3).peek().getCost())) +"\u001B[0m" + "|" +"           ");
-        output.println("|" + paintCard(market.getCardsGrid().get(i).getType()) +  normalizeCardField(market.getCardsGrid().get(i).peek().getProductionPower().toString()) +"\u001B[0m" + "|" + "           " +"|" + paintCard(market.getCardsGrid().get(i+1).getType()) +  normalizeCardField(market.getCardsGrid().get(i+1).peek().getProductionPower().toString()) +"\u001B[0m" + "|" + "           " +"|" + paintCard(market.getCardsGrid().get(i+2).getType()) +  normalizeCardField(market.getCardsGrid().get(i+2).peek().getProductionPower().toString()) +"\u001B[0m" +"|" + "           "+"|" +paintCard(market.getCardsGrid().get(i+3).getType()) +  normalizeCardField(market.getCardsGrid().get(i+3).peek().getProductionPower().toString()) + "\u001B[0m" + "|" + "           ");
-        output.println("|" + paintCard(market.getCardsGrid().get(i).getType()) +  normalizeCardField(String.valueOf(market.getCardsGrid().get(i).peek().getScore())) +"\u001B[0m" + "|" +"           " +"|" + paintCard(market.getCardsGrid().get(i+1).getType()) +  normalizeCardField(String.valueOf(market.getCardsGrid().get(i+1).peek().getScore())) +"\u001B[0m" + "|" +"           " + "|" +paintCard(market.getCardsGrid().get(i+2).getType()) +  normalizeCardField(String.valueOf(market.getCardsGrid().get(i+2).peek().getScore())) +"\u001B[0m" +"|" + "           " + "|" +paintCard(market.getCardsGrid().get(i+3).getType()) + normalizeCardField(String.valueOf(market.getCardsGrid().get(i+3).peek().getScore())) +"\u001B[0m" +"|" + "           ");
-        displayCardBorder(output);
-        */
-        output.print("|" + paintCard(market.getCardsGrid().get(i).getType()) +  normalizeCardField("level: " + market.getCardsGrid().get(i).peek().getLevel()+"\u001B[0m" + "|" ) );
-        output.print("|" + paintCard(market.getCardsGrid().get(i+1).getType())+ normalizeCardField("level: " + market.getCardsGrid().get(i+1).peek().getLevel()+"\u001B[0m" + "|" ) );
-        output.print("|" + paintCard(market.getCardsGrid().get(i+2).getType()) +normalizeCardField(  "level: " + market.getCardsGrid().get(i+2).peek().getLevel()+"\u001B[0m" + "|" ) );
-        output.println("|" + paintCard(market.getCardsGrid().get(i+3).getType()) +normalizeCardField(  "level: " + market.getCardsGrid().get(i+3).peek().getLevel()+"\u001B[0m" + "|" ) );
-        output.print("|" + paintCard(market.getCardsGrid().get(i).getType()) + normalizeCardField( displayCost(market.getCardsGrid().get(i).peek().getCost())+"\u001B[0m" + "|")  );
-        output.print("|" + paintCard(market.getCardsGrid().get(i+1).getType()) + normalizeCardField( displayCost(market.getCardsGrid().get(i).peek().getCost())+"\u001B[0m" + "|" ) );
-        output.print("|" + paintCard(market.getCardsGrid().get(i+2).getType()) +  normalizeCardField(displayCost(market.getCardsGrid().get(i+1).peek().getCost())+"\u001B[0m" + "|")   );
-        output.println("|" + paintCard(market.getCardsGrid().get(i+3).getType()) + normalizeCardField( displayCost(market.getCardsGrid().get(i+2).peek().getCost()) +"\u001B[0m" + "|" ) );
-        output.print("|" + paintCard(market.getCardsGrid().get(i).getType()) +  normalizeCardField(market.getCardsGrid().get(i+3).peek().getProductionPower().toString()+"\u001B[0m" + "|")  );
-        output.print("|" + paintCard(market.getCardsGrid().get(i+1).getType()) + normalizeCardField(  market.getCardsGrid().get(i+1).peek().getProductionPower().toString() +"\u001B[0m" + "|" ));
-        output.print("|" + paintCard(market.getCardsGrid().get(i+2).getType()) +  normalizeCardField( market.getCardsGrid().get(i+2).peek().getProductionPower().toString()+"\u001B[0m" + "|" ) );
-        output.println("|" + paintCard(market.getCardsGrid().get(i+3).getType()) +  normalizeCardField(market.getCardsGrid().get(i+3).peek().getProductionPower().toString() +"\u001B[0m" + "|" ));
-        output.print("|" + paintCard(market.getCardsGrid().get(i).getType()) +  normalizeCardField(String.valueOf(market.getCardsGrid().get(i).peek().getScore())+"\u001B[0m" + "|") );
-        output.print("|" + paintCard(market.getCardsGrid().get(i+1).getType()) +  normalizeCardField(String.valueOf(market.getCardsGrid().get(i+1).peek().getScore())+"\u001B[0m" + "|" ) );
-        output.print("|" + paintCard(market.getCardsGrid().get(i+2).getType()) +  normalizeCardField(String.valueOf(market.getCardsGrid().get(i+2).peek().getScore())+"\u001B[0m" + "|" ));
-        output.println("|" + paintCard(market.getCardsGrid().get(i+3).getType()) + normalizeCardField( String.valueOf(market.getCardsGrid().get(i+3).peek().getScore())+"\u001B[0m" + "|" ));
-    }
-
-
-    private static void displayCardBorder(PrintStream output){
-        for (int j = 0; j < 4; j++) {
-            output.print(" ");
-            for (int k = 0; k < 50; k++) {
-                output.print("-");
-            }
-            output.print("           ");
-        }
-        output.println();
-    }
     public static String paintCard(CardType cardType){
         switch (cardType){
             case GREEN:
@@ -303,34 +324,6 @@ public class Display {
             Display.displayLeader(leader, output);
             output.println("\n");
         }
-    }
-
-
-
-    public static String normalizeCardField(String input){
-        //System.out.println(input.length());
-        String result = input;
-        int normalizedSize = 50;
-        for (int i = input.length(); i <= normalizedSize; i++) {
-            result += " ";
-        }
-
-        //System.out.println(result.length());
-        return result;
-    }
-
-    private static String displayCost(Map<Resource, Integer> cost){
-        String result = "cost: ";
-        for (Resource resource:
-             cost.keySet()) {
-            if(cost.get(resource) > 0){
-                result += resource.toString();
-                result += " ";
-                result += cost.get(resource).toString();
-                result += ", ";
-            }
-        }
-        return result;
     }
 
     public static String paint(String color, String input){

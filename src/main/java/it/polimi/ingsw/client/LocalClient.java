@@ -7,6 +7,9 @@ import it.polimi.ingsw.network.Message;
 import it.polimi.ingsw.network.game.GameMessage;
 import it.polimi.ingsw.view.UI;
 
+/**
+ * The Client class, it calls the localMessageHandler.
+ */
 public class LocalClient extends Client {
     private final LocalMessageHandler localMessageHandler;
     private final UI ui;
@@ -17,6 +20,9 @@ public class LocalClient extends Client {
         localMessageHandler = new LocalMessageHandler(ui, gameController);
     }
 
+    /**
+     * If the  username is different from lorenzoIlMagnifico signals to the localMessageHandler to start playing
+     */
     @Override
     public void run() {
         do{
@@ -29,6 +35,10 @@ public class LocalClient extends Client {
         localMessageHandler.startPlaying();
     }
 
+    /**
+     * Calls the accept method of a new message on the localMessageHandler.
+     * @param m the message to send.
+     */
     @Override
     public void sendMessage(Message m) {
         GameMessage gameMessage = (GameMessage)m;

@@ -35,6 +35,9 @@ import javafx.util.Duration;
 import java.io.IOException;
 import java.util.*;
 
+/**
+ * Controller for the main scene of the application.
+ */
 public class GameBoardController implements SceneController {
     private GUI gui;
     private Game gameState;
@@ -63,6 +66,10 @@ public class GameBoardController implements SceneController {
         marblesContainer.setVisible(false);
     }
 
+    /**
+     * Takes the full game state and displays all the info, for all the connected players.
+     * @param game the game state.
+     */
     public void load(Game game) {
         Platform.runLater(() -> {
             gameState = game;
@@ -373,6 +380,11 @@ public class GameBoardController implements SceneController {
         });
     }
 
+    /**
+     * Makes the areas of the board that if clicked allow the player
+     * to make a legal move glow with a yellow color.
+     * @param moves the allowed moves.
+     */
     public void displayPossibleMoves(List<String> moves) {
         Platform.runLater(() -> {
             DropShadow borderGlow = new DropShadow();
@@ -407,32 +419,29 @@ public class GameBoardController implements SceneController {
             warehouseContainer.setEffect(null);
             basicProductionContainer.setEffect(null);
 
-            if (moves.contains("GET_MARBLES")) {
+            if (moves.contains("GET_MARBLES"))
                 marblesContainer.setEffect(borderGlow);
-            }
-            if (moves.contains("BUY_CARD")) {
+            if (moves.contains("BUY_CARD"))
                 cardsContainer.setEffect(borderGlow);
-            }
-            if (moves.contains("DROP_LEADER") || moves.contains("PLAY_LEADER")) {
+            if (moves.contains("DROP_LEADER") || moves.contains("PLAY_LEADER"))
                 leadersContainer.setEffect(borderGlow);
-            }
             if (moves.contains("ACTIVATE_PRODUCTION")) {
-                if (gameState.getPlayerByUsername(gui.getUsername()).canActivateBasicProduction()) {
+                if (gameState.getPlayerByUsername(gui.getUsername()).canActivateBasicProduction())
                     basicProductionContainer.setEffect(borderGlow);
-                }
-                if (gameState.getPlayerByUsername(gui.getUsername()).canActivateProduction()) {
+                if (gameState.getPlayerByUsername(gui.getUsername()).canActivateProduction())
                     cardStacksContainer.setEffect(borderGlow);
-                }
             }
-            if (moves.contains("SWITCH_SHELVES")) {
+            if (moves.contains("SWITCH_SHELVES"))
                 warehouseContainer.setEffect(borderGlow);
-            }
-            if (moves.contains("END_TURN")) {
+            if (moves.contains("END_TURN"))
                 endTurnButton.setDisable(false);
-            }
         });
     }
 
+    /**
+     * Zooms in on the development cards market.
+     * @param event the javafx event.
+     */
     @FXML
     void viewCardMarket(MouseEvent event) {
         ResourceManager.playClickSound();
@@ -440,6 +449,10 @@ public class GameBoardController implements SceneController {
         gui.setScene("cards-market");
     }
 
+    /**
+     * Zooms in on the marbles grid.
+     * @param event the javafx event.
+     */
     @FXML
     void viewMarbles(MouseEvent event) {
         ResourceManager.playClickSound();
@@ -449,6 +462,10 @@ public class GameBoardController implements SceneController {
         gui.setScene("marbles-market");
     }
 
+    /**
+     * Zooms in on the player's leader cards.
+     * @param event the javafx event.
+     */
     @FXML
     void viewLeaders(MouseEvent event) {
         ResourceManager.playClickSound();
@@ -459,6 +476,10 @@ public class GameBoardController implements SceneController {
         gui.setScene("leader-cards");
     }
 
+    /**
+     * Zooms in on the warehouse.
+     * @param event the javafx event.
+     */
     @FXML
     void viewWarehouse(MouseEvent event) {
         ResourceManager.playClickSound();
@@ -466,6 +487,10 @@ public class GameBoardController implements SceneController {
         gui.setScene("warehouse");
     }
 
+    /**
+     * Zooms in on the development card stacks.
+     * @param event the javafx event.
+     */
     @FXML
     void viewCardsAndProductions(MouseEvent event) {
         ResourceManager.playClickSound();
@@ -475,6 +500,10 @@ public class GameBoardController implements SceneController {
         gui.setScene("cards-production");
     }
 
+    /**
+     * Ends the turn for the player.
+     * @param event the javafx event.
+     */
     @FXML
     void endTurn(ActionEvent event) {
         ResourceManager.playClickSound();
@@ -482,11 +511,19 @@ public class GameBoardController implements SceneController {
         if(gameState.getActivePlayers().size()!=1)displayPossibleMoves(new ArrayList<>());
     }
 
+    /**
+     * Toggles the sounds of the application.
+     * @param event the javafx event.
+     */
     @FXML
     void toggleSound(ActionEvent event) {
         ResourceManager.toggleSound();
     }
 
+    /**
+     * Activate cheat message.
+     * @param event the javafx event.
+     */
     @FXML
     void getExtraResources(ActionEvent event) {
         gui.getClient().sendMessage(new GetResourcesCheatMessage());
