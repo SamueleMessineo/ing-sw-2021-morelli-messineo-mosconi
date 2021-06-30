@@ -26,6 +26,9 @@ public class GameMessageHandler {
     private Room room;
     private boolean ready;
 
+    /**
+     * GameMessageHandler class constructor.
+     */
     public GameMessageHandler(ClassicGameController gameController, ClientConnection clientConnection, Room room) {
         this.gameController = gameController;
         this.clientConnection = clientConnection;

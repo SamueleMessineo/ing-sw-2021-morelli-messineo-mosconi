@@ -15,17 +15,26 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * LocalMessageHandler class, it receives messages from localClient and calls the controller methods
+ */
 public class LocalMessageHandler {
     private final UI ui;
     private final ClassicGameController gameController;
     private Player player;
     private Turn currentTurn;
 
+    /**
+     * Local MessageHandler constructor
+     */
     public LocalMessageHandler(UI ui, ClassicGameController gameController) {
         this.ui = ui;
         this.gameController = gameController;
     }
 
+    /**
+     * Sets the player in  the controller and the game state in the ui and ask the user to select the initial leaders.
+     */
     public void startPlaying(){
         gameController.getGame().addPlayer(new Player(ui.getUsername()).getUsername());
         gameController.getGame().setCurrentPlayer(0);
@@ -34,11 +43,19 @@ public class LocalMessageHandler {
         ui.selectLeaderCards(player.getLeaderCards());
     }
 
+    /**
+     * Receives the message containing the leader cards the player selected to drop and tells the controller
+     * to remove these resources to the player leader cards
+     * @param message containing the leader cards the player is dropping
+     */
     public void handle(DropInitialLeaderCardsResponseMessage message){
         gameController.dropInitialLeaderCards(message.getCard1(), message.getCard2(), player.getUsername());
         startTurn();
     }
 
+    /**
+     * Computes player's moves and sends them to the ui, it also saves the game.
+     */
     public void startTurn(){
         currentTurn = new Turn(player.getUsername(), gameController.computeNextPossibleMoves(false));
         GameUtils.writeGame(gameController.getGame(), 42);
@@ -50,6 +67,11 @@ public class LocalMessageHandler {
 
     }
 
+    /**
+     * Computes the next moves and shows them in the ui.
+     * @param alreadyPerformedMoves in order to compute the next moves it needs to know if one of the unique moves
+     *                              has already been performed.
+     */
     private void nextMoves(boolean alreadyPerformedMoves){
         if(!checkGameOver()){
             currentTurn.setAlreadyPerformedMove(alreadyPerformedMoves);
@@ -62,6 +84,10 @@ public class LocalMessageHandler {
         }
     }
 
+    /**
+     * Checks if the game is over, if true shows the winner in the ui and deletes the game.
+     * @return true if the game is over.
+     */
     private boolean checkGameOver(){
         if(gameController.isGameOver()){
             Map<String, Integer> standing = gameController.computeStanding();
@@ -72,6 +98,10 @@ public class LocalMessageHandler {
         } else return false;
     }
 
+    /**
+     * Checks the move the user selected and calls the right method in the ui.
+     * @param message the message containing the move the user selected.
+     */
     public void handle(SelectMoveResponseMessage message){
         System.out.println(message.getMove());
         if(currentTurn.isValidMove(message.getMove(), player.getUsername())){
@@ -104,22 +134,37 @@ public class LocalMessageHandler {
         }
     }
 
+    /**
+     * End the turn, does the LorenzoIlMagnifico move and starts the next turn.
+     */
     private void endTurn(){
         gameController.computeNextPlayer();
         startTurn();
     }
 
+    /**
+     * Calls the drop leader card  method of the controller.
+     * @param message a message containing the leader card the user wants to drop.
+     */
     public void handle(DropLeaderCardResponseMessage message){
         gameController.dropLeader(message.getCard());
         ui.displayString("Your have " +player.getFaithTrack().getPosition() +" faith points");
         nextMoves(currentTurn.hasAlreadyPerformedMove());
     }
 
+    /**
+     * Calls the play leader card  method of the controller.
+     * @param message a message containing the leader card the user wants to play.
+     */
     public void handle(PlayLeaderResponseMessage message){
         gameController.playLeader(message.getCardIndex());
         nextMoves(currentTurn.hasAlreadyPerformedMove());
     }
 
+    /**
+     * Calls the switch shelves  method in the controller.
+     * @param message a message with the name of the shelves the user wants to switch.
+     */
     public void handle(SwitchShelvesResponseMessage message){
         try {
             gameController.switchShelves(message.getShelf1(), message.getShelf2());
@@ -130,6 +175,11 @@ public class LocalMessageHandler {
         }
     }
 
+    /**
+     * Calls the buy development card in the controller  and if the user has to choose  where to place it it asks it in
+     * the ui, else calls the  place card  method  in the controller.
+     * @param message containing the card that the user is buying.
+     */
     public void handle(BuyDevelopmentCardResponseMessage message){
         DevelopmentCard developmentCard = gameController.getBuyableDevelopmentCards().get(message.getSelectedCardIndex());
         List<Integer> stacks = gameController.getStacksToPlaceCard(player, developmentCard);
@@ -143,6 +193,10 @@ public class LocalMessageHandler {
         }
     }
 
+    /**
+     * Converts the white marbles in the  way the user wanted.
+     * @param message a message that contains user converted resources.
+     */
     public void handle(SelectResourceForWhiteMarbleResponseMessage message) {
         Map<Resource, Integer> resourcesConverted = message.getResources();
         int amountConverted = 0;
@@ -165,13 +219,18 @@ public class LocalMessageHandler {
         askToDropResources();
     }
 
+    /**
+     * Asks the user to drop the resources in the ui.
+     */
     private void askToDropResources() {
-        System.out.println("merge resources");
         Map<Resource, Integer> allResources = new HashMap<>(currentTurn.getConverted());
-        System.out.println("ask to drop");
         ui.dropResources(allResources);
     }
 
+    /**
+     * Calls the methods in the controller to sets the resources to the player.
+     * @param message a message containing the resources the player just got.
+     */
     public void handle(SelectMarblesResponseMessage message){
         Map<String, Map<Resource, Integer>> resources = gameController.getMarbles(message.getRowOrColumn(), message.getIndex());
         System.out.println(resources);
@@ -193,6 +252,10 @@ public class LocalMessageHandler {
             askToDropResources();
     }
 
+    /**
+     * Calls the controller methods to put the card on the selected stack.
+     * @param message a message containing the stacks on which the user wants to place the card.
+     */
     public void handle(SelectStackToPlaceCardResponseMessage message){
         if(player.getPlayerBoard().getCardStacks().get(message.getSelectedStackIndex()).canPlaceCard(currentTurn.getBoughtDevelopmentCard())){
            gameController.buyDevelopmentCard(message.getSelectedStackIndex(), currentTurn.getBoughtDevelopmentCard());
@@ -204,13 +267,14 @@ public class LocalMessageHandler {
         }
     }
 
+    /**
+     * Calls the controller methods to drop the resources and move LorenzoIlMagnifico.
+     * @param message containing the resources the player wants to drop.
+     */
     public void handle(DropResourcesResponseMessage message){
         Map<Resource, Integer> resourcesConverted =currentTurn.getConverted();
-        System.out.println(resourcesConverted);
         // check if the selected resources are valid
         try {
-            System.out.println("get reources to drop" + message.getResourcesToDrop());
-            System.out.println("resources converted" + resourcesConverted);
             gameController.dropPlayerResources(resourcesConverted, message.getResourcesToDrop(),
                     player.getUsername());
             nextMoves(true);
@@ -223,6 +287,10 @@ public class LocalMessageHandler {
 
     }
 
+    /**
+     * Calls the activate production method of the controller.
+     * @param message a message containing the index of the stacks on which the player is activating the production.
+     */
     public void handle(ActivateProductionResponseMessage message){
         if(message.getSelectedStacks()!=null || message.getBasicProduction() != null || message.getExtraProductionPowers() != null) {
             gameController.activateProduction(message.getSelectedStacks(), message.getBasicProduction(), message.getExtraProductionPowers(), message.getExtraOutput());
@@ -235,6 +303,10 @@ public class LocalMessageHandler {
         }
     }
 
+    /**
+     * Assign 100 resources of each  type to the player.
+     * @param message signaling the player wants to cheat.
+     */
     public void handle(GetResourcesCheatMessage message) {
         gameController.giveExtraResources();
         nextMoves(currentTurn.hasAlreadyPerformedMove());

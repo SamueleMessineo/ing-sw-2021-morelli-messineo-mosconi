@@ -11,6 +11,9 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 
+/**
+ * The SeverConnection class, it has the sockets to communicate with the Server.
+ */
 public class ServerConnection implements Runnable {
     private final Socket socket;
     private final Client client;
@@ -18,6 +21,9 @@ public class ServerConnection implements Runnable {
     private ObjectOutputStream outputStream;
     private final ClientMessageHandler clientMessageHandler;
 
+    /**
+     * ServerConnection class constructor.
+     */
     public ServerConnection(Socket socket, Client client) {
         this.socket = socket;
         this.client = client;
@@ -31,6 +37,9 @@ public class ServerConnection implements Runnable {
         }
     }
 
+    /**
+     * Waits for messages from the Server.
+     */
     public void waitForMessages() {
         while (true) {
             Message m = receiveMessage();
@@ -42,6 +51,10 @@ public class ServerConnection implements Runnable {
         }
     }
 
+    /**
+     * Gets the next message in the inputStream, if connection is broken signals it to the user and closes the App.
+     * @return the received message.
+     */
     public Message receiveMessage() {
         Message m = null;
         try {
@@ -55,10 +68,18 @@ public class ServerConnection implements Runnable {
         return m;
     }
 
+    /**
+     * Gets the client of the connection.
+     * @return the client associated to that connection.
+     */
     public Client getClient() {
         return client;
     }
 
+    /**
+     * Sends a new message  to the server.
+     * @param m the new message to send to the server.
+     */
     public void sendMessage(Message m) {
         try {
             outputStream.reset();
@@ -69,6 +90,9 @@ public class ServerConnection implements Runnable {
         }
     }
 
+    /**
+     * Closes the socket.
+     */
     public void close() {
         try {
             socket.close();
@@ -77,6 +101,10 @@ public class ServerConnection implements Runnable {
         }
     }
 
+    /**
+     * Checks if the message received is a connection of game message. If is connection sends the pong else forwards
+     * it to the ui.
+     */
     @Override
     public void run() {
         while (true) {
