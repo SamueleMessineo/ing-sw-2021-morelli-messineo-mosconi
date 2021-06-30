@@ -145,25 +145,6 @@ public class SoloGameController extends ClassicGameController {
         }
     }
 
-    /*
-    @Override
-    public void movePlayers(List<Player> players, int positions) {
-        if(!players.isEmpty()){
-            for (int i = 0; i <positions; i++) {
-                // for each dropped resource, move all the other players by one
-                for (Player otherPlayer : players) {
-                    otherPlayer.getFaithTrack().move();
-
-                }
-                game.getLorenzoIlMagnifico().getFaithTrack().move();
-                // and check if the pope favor gets activated
-                for (Player p : game.getPlayers()) {
-                    activatePopeReport();
-                }
-            }
-        }
-    }
-     */
 
     /**
      * Ovverides wuper method by moving LorenzoIlMagnifico when resources are dropped

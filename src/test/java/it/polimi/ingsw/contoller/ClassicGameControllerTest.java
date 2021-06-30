@@ -32,19 +32,26 @@ public class ClassicGameControllerTest {
 
     @Before
     public void setup() throws FileNotFoundException {
-        String path = "/home/samu/IdeaProjects/ing-sw-2021-morelli-messineo-mosconi/src/main/resources/games/0001.ser";
+        game1 = GameUtils.readGame(0001);
+
+        String path = "src/main/resources/testGames/0001.ser";
         try {
             FileInputStream fileIn = new FileInputStream(path);
             ObjectInputStream in = new ObjectInputStream(fileIn);
             game1 = (Game) in.readObject();
             in.close();
             fileIn.close();
+            GameUtils.writeGame(game1, 0001);
         } catch (IOException | ClassNotFoundException i) {
             i.printStackTrace();
         }
+
+
         for(Player p:game1.getPlayers()){
             p.setActive(true);
         }
+
+
         gameController= new ClassicGameController(game1);
     }
 
