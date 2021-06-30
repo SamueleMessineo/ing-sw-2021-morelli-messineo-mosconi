@@ -12,6 +12,9 @@ import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * This class has the socket to connect with a client, it sends messages to the client and receives new messages.
+ */
 public class ClientConnection implements Runnable{
 
     private final Socket socket;
@@ -20,10 +23,12 @@ public class ClientConnection implements Runnable{
     private ObjectOutputStream outputStream;
     private final SetupMessageHandler setupMessageHandler;
     private GameMessageHandler gameMessageHandler;
-    private final Logger logger;
     private boolean receivedPong = false;
     private boolean connected = true;
 
+    /**
+     * ClientConnection constructor.
+     */
     public ClientConnection(Socket socket, Server server) {
         this.socket = socket;
         this.server = server;
@@ -35,11 +40,12 @@ public class ClientConnection implements Runnable{
             e.printStackTrace();
         }
 
-        logger = Logger.getLogger(ClientConnection.class.getName());
-
         this.setupMessageHandler=new SetupMessageHandler(server, this);
     }
 
+    /**
+     * Receives message and depending on  the type forwards it to the right handler.
+     */
     @Override
     public void run() {
         while (true) {
@@ -58,48 +64,50 @@ public class ClientConnection implements Runnable{
         }
     }
 
+    /**
+     * Reads the message in the input stream, if there aren't any pong messages it sets receivedPong as false.
+     * @return the message in the input stream.
+     */
     public Message receiveMessage() {
         Message m = null;
         try {
             m = (Message) inputStream.readObject();
-            //logger.info(m.toString());
         } catch (IOException | ClassNotFoundException e) {
             receivedPong = false;
-            //e.printStackTrace();
         }
         return m;
     }
 
+    /**
+     * Puts m in the output socket.
+     * @param m the new message to send.
+     */
     public void sendMessage(Message m) {
         try {
             outputStream.reset();
             outputStream.writeObject(m);
             outputStream.flush();
-            //logger.warning(m.toString());
         } catch (IOException e) {
             System.out.println("pipe broke so client disconnected, wait for ping to fail");
-//            gameMessageHandler.deactivateConnection(this);
-//            e.printStackTrace();
         }
     }
 
-    public void close() {
-        try {
-            socket.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
+    /**
+     * Sets the gameMessageHandler.
+     * @param gameMessageHandler a gameMessageHandler
+     */
     public void setGameMessageHandler(GameMessageHandler gameMessageHandler) {
         this.gameMessageHandler = gameMessageHandler;
     }
 
+    /**
+     * Checks if the player is still connected with a Ping-Pong protocol.
+     */
     public void checkConnection() {
         while (isConnected()) {
             sendMessage(new PingMessage());
             long start = System.currentTimeMillis();
-            long end = start + 10*1000; // 5 seconds * 1000 ms/sec
+            long end = start + 10*1000; // 10 seconds * 1000 ms/sec
             while (System.currentTimeMillis() < end);
             if (receivedPong) {
                 receivedPong = false;
@@ -111,18 +119,34 @@ public class ClientConnection implements Runnable{
         }
     }
 
+    /**
+     * Gets the gameMessageHandler
+     * @return gameMessageHanndler
+     */
     public GameMessageHandler getGameMessageHandler() {
         return gameMessageHandler;
     }
 
+    /**
+     * True if the player is connected
+     * @return true if the player is connected
+     */
     public boolean isConnected() {
         return connected;
     }
 
+    /**
+     * Sets connected.
+     * @param connected true if the player is connected, false otherwise.
+     */
     public void setConnected(boolean connected) {
         this.connected = connected;
     }
 
+    /**
+     * Gets the server.
+     * @return server.
+     */
     public Server getServer() {
         return this.server;
     }
