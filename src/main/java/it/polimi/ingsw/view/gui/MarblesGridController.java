@@ -13,14 +13,21 @@ import javafx.scene.layout.HBox;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * The controller for the grid of marbles.
+ */
 public class MarblesGridController implements SceneController{
     private GUI gui;
-
     @FXML
     private GridPane grid;
     @FXML
     private HBox extraContainer;
 
+    /**
+     * Fills and displays the marbles grid.
+     * @param marbles the marbles in the grid.
+     * @param extra
+     */
     public void setMarbles(List<Marble> marbles, Marble extra){
         Platform.runLater(() -> {
             grid.getChildren().clear();

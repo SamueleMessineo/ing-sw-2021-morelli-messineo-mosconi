@@ -25,6 +25,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Controller for the scene showing the development cards market.
+ */
 public class CardsMarketController implements SceneController {
     private GUI gui;
     @FXML
@@ -32,11 +35,14 @@ public class CardsMarketController implements SceneController {
     @FXML
     private HBox buttonsContainer;
 
+    /**
+     * Loads and displays the cards grid.
+     * @param cardStacks the
+     */
     public void load(List<MarketCardStack> cardStacks) {
         Platform.runLater(() -> {
             vbox.getChildren().clear();
-            FXMLLoader loader = new FXMLLoader(
-                    getClass().getClassLoader().getResource("scenes/cards-grid.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getClassLoader().getResource("scenes/cards-grid.fxml"));
             GridPane cardsGrid;
             try {
                 cardsGrid = loader.load();
@@ -54,6 +60,10 @@ public class CardsMarketController implements SceneController {
         });
     }
 
+    /**
+     * Goes back to the main game board without buying any card.
+     * @param event the javafx event.
+     */
     @FXML
     void cancel(ActionEvent event) {
         Platform.runLater(() -> {
@@ -68,6 +78,10 @@ public class CardsMarketController implements SceneController {
         this.gui = gui;
     }
 
+    /**
+     * Allows the user to choose one development card to buy.
+     * @param developmentCards the development cards that can be bought.
+     */
     public void allowBuy(List<DevelopmentCard> developmentCards) {
         Platform.runLater(() -> {
             vbox.getChildren().clear();
@@ -102,11 +116,19 @@ public class CardsMarketController implements SceneController {
         });
     }
 
+    /**
+     * Buys the selected development card.
+     * @param cardIndex the index of the development card to buy.
+     */
     public void sendCardToBuy(int cardIndex) {
         ResourceManager.playClickSound();
         gui.getClient().sendMessage(new BuyDevelopmentCardResponseMessage(cardIndex));
     }
 
+    /**
+     * Confirms that the user wants to buy a card.
+     * @param actionEvent the javafx event.
+     */
     public void buyCard(ActionEvent actionEvent) {
         ResourceManager.playClickSound();
         gui.getClient().sendMessage(new SelectMoveResponseMessage("BUY_CARD"));

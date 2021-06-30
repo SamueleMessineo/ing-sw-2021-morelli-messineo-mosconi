@@ -13,11 +13,18 @@ import javafx.scene.layout.GridPane;
 
 import java.util.List;
 
+/**
+ * Controller for the grid of development cards.
+ */
 public class CardsGridController implements SceneController {
     private GUI gui;
     @FXML
     private GridPane grid;
 
+    /**
+     * Fills the grid with the development cards.
+     * @param cardStacks all the card stacks.
+     */
     public void setCards(List<MarketCardStack> cardStacks) {
         Platform.runLater(() -> {
             grid.getChildren().clear();

@@ -6,23 +6,22 @@ import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 
+/**
+ * Controller for the scene that lets the user enter the server details and connect.
+ */
 public class ConnectController implements SceneController {
     private GUI gui;
-
-    @Override
-    public void setGUI(GUI gui) {
-        this.gui = gui;
-    }
-
     @FXML
     private TextField ipInput;
-
     @FXML
     private TextField portInput;
-
     @FXML
     private Text errorMessage;
 
+    /**
+     * Tries to connect to the server.
+     * @param event the javafx event.
+     */
     @FXML
     void connect(ActionEvent event) {
         ResourceManager.playClickSound();
@@ -44,5 +43,10 @@ public class ConnectController implements SceneController {
             System.out.println("CONNECTION FAILED");
             errorMessage.setText("CONNECTION FAILED, try again");
         }
+    }
+
+    @Override
+    public void setGUI(GUI gui) {
+        this.gui = gui;
     }
 }
