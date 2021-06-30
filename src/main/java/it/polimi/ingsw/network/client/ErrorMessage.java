@@ -2,6 +2,9 @@ package it.polimi.ingsw.network.client;
 
 import it.polimi.ingsw.network.ClientMessageHandler;
 
+/**
+ * Message with a String that would be displayed as an error.
+ */
 public class ErrorMessage extends ClientMessage {
 
     private final String body;

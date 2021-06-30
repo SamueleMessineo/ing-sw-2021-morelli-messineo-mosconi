@@ -2,6 +2,9 @@ package it.polimi.ingsw.network.setup;
 
 import it.polimi.ingsw.network.SetupMessageHandler;
 
+/**
+ * Message with the parameters of the private game to join.
+ */
 public class JoinPrivateRoomMessage extends SetupMessage{
 
     private final int roomId;

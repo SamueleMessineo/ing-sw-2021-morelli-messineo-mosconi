@@ -6,6 +6,9 @@ import it.polimi.ingsw.network.ClientMessageHandler;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Message with the leader cards the player can play.
+ */
 public class PlayLeaderRequestMessage extends ClientMessage{
     private final List<LeaderCard> leaderCards;
 

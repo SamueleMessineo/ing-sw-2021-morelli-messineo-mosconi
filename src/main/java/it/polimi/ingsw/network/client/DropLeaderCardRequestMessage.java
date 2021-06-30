@@ -5,6 +5,9 @@ import it.polimi.ingsw.network.ClientMessageHandler;
 
 import java.util.ArrayList;
 
+/**
+ * Message with the players not yet played leader cards.
+ */
 public class DropLeaderCardRequestMessage extends ClientMessage {
     private final ArrayList<LeaderCard> leaderCards;
 

@@ -3,6 +3,9 @@ package it.polimi.ingsw.network.game;
 import it.polimi.ingsw.client.LocalMessageHandler;
 import it.polimi.ingsw.network.GameMessageHandler;
 
+/**
+ * Message with the index of the chosen development card to buy.
+ */
 public class BuyDevelopmentCardResponseMessage extends GameMessage{
     private final int selectedCardIndex;
 

@@ -7,6 +7,9 @@ import it.polimi.ingsw.network.GameMessageHandler;
 
 import java.util.List;
 
+/**
+ * Message with the production power chosen divided in basic, standard and extra.
+ */
 public class ActivateProductionResponseMessage extends GameMessage {
     private final List<Integer> selectedStacks;
     private final ProductionPower basicProduction;

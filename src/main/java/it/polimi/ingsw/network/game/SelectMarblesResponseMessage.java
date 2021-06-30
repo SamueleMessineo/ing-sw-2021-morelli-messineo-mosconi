@@ -3,8 +3,9 @@ package it.polimi.ingsw.network.game;
 import it.polimi.ingsw.client.LocalMessageHandler;
 import it.polimi.ingsw.network.GameMessageHandler;
 
-
-
+/**
+ * Message with the chosen row or column index.
+ */
 public class SelectMarblesResponseMessage extends GameMessage {
     private final String rowOrColumn;
     private int index;

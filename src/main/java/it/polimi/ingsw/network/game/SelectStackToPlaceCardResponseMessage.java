@@ -3,6 +3,9 @@ package it.polimi.ingsw.network.game;
 import it.polimi.ingsw.client.LocalMessageHandler;
 import it.polimi.ingsw.network.GameMessageHandler;
 
+/**
+ * Message with the chosen stack to place the card.
+ */
 public class SelectStackToPlaceCardResponseMessage extends GameMessage{
     private final int selectedStackIndex;
 

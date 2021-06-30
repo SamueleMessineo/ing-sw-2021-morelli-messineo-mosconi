@@ -5,6 +5,9 @@ import it.polimi.ingsw.network.GameMessageHandler;
 
 import java.util.List;
 
+/**
+ * Message with the chosen initial resources.
+ */
 public class SelectInitialResourceResponseMessage extends GameMessage {
 
     private final List<Resource> selectedResources;

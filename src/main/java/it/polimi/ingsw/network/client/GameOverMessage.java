@@ -4,6 +4,9 @@ import it.polimi.ingsw.network.ClientMessageHandler;
 
 import java.util.Map;
 
+/**
+ * Message with the winner and the standing.
+ */
 public class GameOverMessage extends ClientMessage{
     private final String winner;
     private final Map<String, Integer> standing;

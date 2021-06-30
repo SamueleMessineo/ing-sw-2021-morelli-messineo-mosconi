@@ -6,6 +6,9 @@ import it.polimi.ingsw.network.GameMessageHandler;
 
 import java.util.Map;
 
+/**
+ * Message with the chosen resource to convert the white marble.
+ */
 public class SelectResourceForWhiteMarbleResponseMessage extends GameMessage {
 
     private final Map<Resource, Integer> resources;

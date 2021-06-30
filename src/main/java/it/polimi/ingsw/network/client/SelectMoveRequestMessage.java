@@ -6,6 +6,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Message with the moves a the player can perform.
+ */
 public class SelectMoveRequestMessage extends ClientMessage  {
 
     private final List<String> moves;

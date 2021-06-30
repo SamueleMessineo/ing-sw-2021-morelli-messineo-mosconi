@@ -3,6 +3,9 @@ package it.polimi.ingsw.network.game;
 import it.polimi.ingsw.client.LocalMessageHandler;
 import it.polimi.ingsw.network.GameMessageHandler;
 
+/**
+ * Message with the chosen shelves to switch.
+ */
 public class SwitchShelvesResponseMessage extends GameMessage {
     private final String shelf1;
     private final String shelf2;
