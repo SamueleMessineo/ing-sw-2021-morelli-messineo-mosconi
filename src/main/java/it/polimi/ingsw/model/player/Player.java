@@ -316,7 +316,6 @@ public class Player implements Serializable {
         Map<Resource, Integer> allResources = new HashMap<>(playerBoard.getResources());
         ArrayList<ProductionPower> extraProductionPowersToActive=new ArrayList<>();
         if(getPlayerBoard().getExtraProductionPowers() != null){
-            GameUtils.debug("here");
             for (ProductionPower productionPower:
                     getPlayerBoard().getExtraProductionPowers()) {
                 for (Resource resource : productionPower.getInput().keySet()) {
@@ -326,7 +325,6 @@ public class Player implements Serializable {
                 }
             }
         }
-        GameUtils.debug(extraProductionPowersToActive.toString());
         return extraProductionPowersToActive;
     }
 

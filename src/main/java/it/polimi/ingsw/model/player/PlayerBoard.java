@@ -161,9 +161,7 @@ public class PlayerBoard implements Serializable {
      * @param cost a Map<Resource, Integer>.
      */
     public void payResourceCost(Map<Resource, Integer>cost){
-        GameUtils.debug("paying: " + cost);
         if (!canPayResources(cost)) return;
-        GameUtils.debug("can pay");
         for (Resource resource : cost.keySet()) {
             boolean placed = false;
             // try to remove from shelves and extra slots

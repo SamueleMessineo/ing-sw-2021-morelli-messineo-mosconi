@@ -52,7 +52,7 @@ public class CLI implements UI {
                     Integer port = Integer.parseInt(input.nextLine());
                     this.client.connect(server, port);
                     setup();
-                } catch (IOException e) {
+                } catch (IOException | NumberFormatException e) {
                     output.println("Server unavailable :(");
                     output.println("exiting...");
                     System.exit(404);
