@@ -137,4 +137,9 @@ public class ResourceManager {
         powerPane.getChildren().add(singleCardPowerContainer);
         return powerPane;
     }
+
+    public static Image getInkwell() {
+        return new Image(Objects.requireNonNull(GameUtils.class.getClassLoader()
+                .getResourceAsStream("images/punchboard/calamaio.png")));
+    }
 }
