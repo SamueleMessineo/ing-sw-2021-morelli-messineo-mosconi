@@ -20,7 +20,7 @@
     "level": 3,
     "cardType": "GREEN",
     "cost": {
-      "SHIELD": 2,
+      "SHIELD": 5,
       "SERVANT": 2
     },
     "productionPower": {
@@ -631,7 +631,7 @@
       "output": {
         "COIN": 1,
         "SHIELD": 1,
-        "STONE": 2
+        "STONE": 1
       }
     },
     "score": 3
