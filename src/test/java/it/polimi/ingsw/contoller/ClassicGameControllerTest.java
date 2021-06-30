@@ -433,16 +433,19 @@ public class ClassicGameControllerTest {
 
         assertEquals(res,game1.getCurrentPlayer().getPlayerBoard().getResources());
 
-        gameController.playLeader(0);
-        List<Integer> leaderCardIndex=new ArrayList<>();
-        leaderCardIndex.add(0);
-        List<Resource> resOut=new ArrayList<>();
-        resOut.add(Resource.STONE);
-        gameController.activateProduction(null,null,leaderCardIndex,resOut);
+        List<LeaderCard> leaderCards=game1.getCurrentPlayer().getLeaderCards();
+        if(leaderCards.get(0).getEffectScope().equals("Production")) {
+            gameController.playLeader(0);
+            List<Integer> leaderCardIndex = new ArrayList<>();
+            leaderCardIndex.add(0);
+            List<Resource> resOut = new ArrayList<>();
+            resOut.add(Resource.STONE);
+            gameController.activateProduction(null, null, leaderCardIndex, resOut);
 
-        res.put(Resource.STONE, res.get(Resource.STONE)+1);
-        res.put(Resource.COIN, res.get(Resource.COIN)-1);
+            res.put(Resource.STONE, res.get(Resource.STONE) + 1);
+            res.put(Resource.COIN, res.get(Resource.COIN) - 1);
 
-        assertEquals(res,game1.getCurrentPlayer().getPlayerBoard().getResources());
+            assertEquals(res, game1.getCurrentPlayer().getPlayerBoard().getResources());
+        }
     }
 }
