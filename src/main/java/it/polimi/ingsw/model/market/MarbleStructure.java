@@ -12,6 +12,9 @@ public class MarbleStructure implements Serializable {
     private final List<Marble> marbles;
     private Marble extraMarble;
 
+    /**
+     * MarbleStructure class constructor.
+     */
     public MarbleStructure(List<Marble> marbles, Marble extraMarble) {
         this.marbles = marbles;
         this.extraMarble = extraMarble;

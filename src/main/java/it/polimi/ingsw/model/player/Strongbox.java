@@ -13,6 +13,9 @@ import java.util.Map;
 public class Strongbox implements Storage, Serializable {
     private Map<Resource, Integer> resources;
 
+    /**
+     * Strongbox class constructor.
+     */
     public Strongbox(){
         this.resources=new HashMap<Resource, Integer>();
         resources.put(Resource.COIN, 0);

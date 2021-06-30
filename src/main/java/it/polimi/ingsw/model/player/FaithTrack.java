@@ -16,6 +16,9 @@ public class FaithTrack implements Serializable {
     private final ArrayList<PopesFavorTile> popesFavorTiles = new ArrayList<>();
     private final List<Integer> VP = Arrays.asList(0,1,2,4,6,9,12,16,20);
 
+    /**
+     * FaithTrack class constructor.
+     */
     public FaithTrack() {
         this.position = 0;
         this.popesFavorTiles.add(0, new PopesFavorTile(2));

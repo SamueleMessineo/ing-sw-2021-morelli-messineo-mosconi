@@ -22,6 +22,9 @@ public class Market implements Serializable {
      */
     private final List<MarketCardStack> cardsGrid = new ArrayList<>();
 
+    /**
+     * Constructor of Market class.
+     */
     public Market() {
         List<Marble> initialMarbles = new ArrayList<>();
         initialMarbles.add(Marble.RED);
