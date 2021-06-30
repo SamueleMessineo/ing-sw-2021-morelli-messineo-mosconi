@@ -49,14 +49,11 @@ public class SoloGameController extends ClassicGameController {
      */
     @Override
     public boolean isGameOver() {
-
         for (CardType cardType:
                 CardType.values()) {
             if(game.getMarket().getCardsGrid().stream().filter(developmentCards -> (cardType.name().equals(developmentCards.getType().name()))&&(!developmentCards.isEmpty())).count() == 0)return true;
         }
-
         if(game.getLorenzoIlMagnifico().getFaithTrack().getPosition() >= FaithTrack.getMaxposition())return true;
-
 
         return super.isGameOver();
     }
@@ -93,21 +90,12 @@ public class SoloGameController extends ClassicGameController {
         return super.computeWinner();
     }
 
-    /*
-    @Override
-    public void movePlayer(String playerName, int positions) {
-        super.movePlayer(playerName, positions);
-        //activatePopeReport();
-    }
-     */
-
     /**
      * Overrides super method by drawing LorenzoIlMagnifico action
      */
     @Override
     public void computeNextPlayer() {
         SoloActionType soloActionType = game.getSoloActionTypes().pop();
-        System.out.println(soloActionType);
         switch (soloActionType){
             case PLUS_ONE:
                 movePlayer("lorenzoilmagnifico", 1);
@@ -127,11 +115,9 @@ public class SoloGameController extends ClassicGameController {
      */
     @Override
     public void activatePopeReport() {
-        System.out.println(2);
         super.activatePopeReport();
         FaithTrack currentPlayerFaithTrack = game.getCurrentPlayer().getFaithTrack();
         if(currentPlayerFaithTrack.inOnPopeSpace()!= -1){
-            GameUtils.debug("check " + (currentPlayerFaithTrack.inOnPopeSpace()-1) );
             if(game.getLorenzoIlMagnifico().getFaithTrack().isInPopeFavorByLevel(currentPlayerFaithTrack.inOnPopeSpace())){
                 game.getLorenzoIlMagnifico().getFaithTrack().getPopesFavorTiles().get(currentPlayerFaithTrack.inOnPopeSpace()-1).setState(PopesFavorTileState.ACTIVE);
             } else  game.getLorenzoIlMagnifico().getFaithTrack().getPopesFavorTiles().get(currentPlayerFaithTrack.inOnPopeSpace()-1).setState(PopesFavorTileState.DISCARDED);
@@ -144,26 +130,6 @@ public class SoloGameController extends ClassicGameController {
             } else  currentPlayerFaithTrack.getPopesFavorTiles().get(game.getLorenzoIlMagnifico().getFaithTrack().inOnPopeSpace()-1).setState(PopesFavorTileState.DISCARDED);
         }
     }
-
-    /*
-    @Override
-    public void movePlayers(List<Player> players, int positions) {
-        if(!players.isEmpty()){
-            for (int i = 0; i <positions; i++) {
-                // for each dropped resource, move all the other players by one
-                for (Player otherPlayer : players) {
-                    otherPlayer.getFaithTrack().move();
-
-                }
-                game.getLorenzoIlMagnifico().getFaithTrack().move();
-                // and check if the pope favor gets activated
-                for (Player p : game.getPlayers()) {
-                    activatePopeReport();
-                }
-            }
-        }
-    }
-     */
 
     /**
      * Ovverides wuper method by moving LorenzoIlMagnifico when resources are dropped
