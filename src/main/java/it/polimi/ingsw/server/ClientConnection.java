@@ -122,4 +122,8 @@ public class ClientConnection implements Runnable{
     public void setConnected(boolean connected) {
         this.connected = connected;
     }
+
+    public Server getServer() {
+        return this.server;
+    }
 }

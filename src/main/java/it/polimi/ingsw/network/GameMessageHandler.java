@@ -23,7 +23,7 @@ public class GameMessageHandler {
 
     private final ClassicGameController gameController;
     private ClientConnection clientConnection;
-    private final Room room;
+    private Room room;
     private boolean ready;
 
     public GameMessageHandler(ClassicGameController gameController, ClientConnection clientConnection, Room room) {
@@ -359,6 +359,8 @@ public class GameMessageHandler {
             String winner = gameController.computeWinner();
             room.sendAll(new GameOverMessage(winner, standing));
             GameUtils.deleteSavedGame(room.getId());
+            clientConnection.getServer().terminateRoom(room.getId());
+            this.room = null;
         }
     }
 
@@ -386,6 +388,7 @@ public class GameMessageHandler {
      * @param connection the connection to deactivate.
      */
     public void deactivateConnection(ClientConnection connection) {
+        if (room == null) return;
         connection.setConnected(false);
         Player disconnectedPlayer = room.getPlayerFromConnection(connection);
         if(!ready){

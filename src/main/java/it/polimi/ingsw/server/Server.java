@@ -42,6 +42,11 @@ public class Server {
         return rooms;
     }
 
+    public void terminateRoom(int roomID) {
+        System.out.println("Deleting room " + roomID);
+        rooms.remove(roomID);
+    }
+
     public void run() {
         while (true) {
             System.out.println("waiting for client connection...");
