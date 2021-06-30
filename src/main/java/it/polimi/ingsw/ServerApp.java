@@ -4,7 +4,13 @@ import it.polimi.ingsw.server.Server;
 
 import java.io.IOException;
 
+/**
+ * Server executable class.
+ */
 public class ServerApp {
+    /**
+     * Starts the Server.
+     */
     public static void main(String[] args) {
         Server server;
         try {
