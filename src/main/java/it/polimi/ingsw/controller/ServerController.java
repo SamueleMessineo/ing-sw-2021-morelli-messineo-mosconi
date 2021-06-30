@@ -125,6 +125,7 @@ public class ServerController {
             return;
         }
 
+        //case room is full
         if (room.isFull() && room.getGame().getPlayerByUsername(username)==null) {
             clientConnection.sendMessage(new ErrorMessage("room is full"));
             return;
@@ -134,8 +135,6 @@ public class ServerController {
            if(room.getGame().getActivePlayers().stream().noneMatch(player -> player.getUsername().equals(username))){
                room.getGame().getPlayerByUsername(username).setActive(true);
 
-               //clientConnection.setGameMessageHandler((room.getConnections().get(room.getGame().getActivePlayers().indexOf(room.getGame().getPlayerByUsername(username))).getGameMessageHandler()));
-               //clientConnection.getGameMessageHandler().setClientConnection(clientConnection);
                clientConnection.setGameMessageHandler(new GameMessageHandler(room.getGameController(), clientConnection, room));
                room.getConnections().remove(room.getGame().getActivePlayers().indexOf(room.getGame().getPlayerByUsername(username)));
                room.getConnections().add(room.getGame().getActivePlayers().indexOf(room.getGame().getPlayerByUsername(username)), clientConnection);
@@ -150,7 +149,6 @@ public class ServerController {
                else {
                    room.sendAll(new StringMessage(username + " is back in the game!"));
                    room.sendAll(new UpdateGameStateMessage(room.getGame()));
-                   //room.sendAll(new UpdateAndDisplayGameStateMessage(room.getGame()));
                    if(room.isRecreated() ){
                        if( room.getGame().getActivePlayers().size() == room.getNumberOfPlayers()){
                            room.sendAll(new UpdateAndDisplayGameStateMessage(room.getGame()));
