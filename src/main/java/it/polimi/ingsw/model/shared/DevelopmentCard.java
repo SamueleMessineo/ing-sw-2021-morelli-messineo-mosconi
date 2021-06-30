@@ -16,6 +16,9 @@ public class DevelopmentCard implements Serializable {
     private final ProductionPower  productionPower;
     private final int score;
 
+    /**
+     * DevelopmentCard class constructor
+     */
     public DevelopmentCard(int level, CardType cardType, Map<Resource,Integer> cost,
                            ProductionPower productionPower, int score){
         this.level=level;

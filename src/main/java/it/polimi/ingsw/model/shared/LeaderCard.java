@@ -15,6 +15,9 @@ public class LeaderCard implements Serializable {
     private final Resource effectObject;
     private final int cardRequirementsLevel;
 
+    /**
+     * LeaderCard class constructor
+     */
     public LeaderCard(Map<Resource,Integer> resourceRequirements, Map<CardType,Integer> cardRequirements,
                       int score, String effectScope, Resource effectObject, int cardRequirementsLevel) {
     this.resourceRequirements=resourceRequirements;
