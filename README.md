@@ -76,7 +76,7 @@ When everyone has finished their selection the player will be brought to the mai
 <details>
   <summary>Click to expand!</summary>
 
-  <img src[first scene](screenshots/first-scene.png)
+  ![first scene](screenshots/first-scene.png)
 
   ![initial resources](screenshots/initial-resources.png)
 
