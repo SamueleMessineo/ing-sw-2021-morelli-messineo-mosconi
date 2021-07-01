@@ -76,7 +76,40 @@ When everyone has finished their selection the player will be brought to the mai
 
 ## Build
 
+Before building make sure you have at least Java version 11 installed by running this command
+```
+$ java --version
+openjdk 11.x ...
+```
+The maven command line is also required. To run tests and compile the jar files yourself run this command
+```
+$ cd ing-sw-2021-morelli-messineo-mosconi/
+$ mvn package
+...
+```
+The jar files will be created in `./deliverables/JAR/`.
+
+Alternatively you can open the project with IntelliJ IDEA and build it from there.
+
 ## Documentation and Testing
+
+We have acheived the following coverages for the `model` and `controller` packages.
+
+### Model Tests Coverage
+|Element |Class |Method |Line |
+---|---|---|---|
+Market|83%|80%|87%|
+Player|92%|91%|88%|
+Shared|100%|92%|89%|
+Game|100%|90%|91%|
+
+### Controller Tests Coverage
+|Element |Class |Method |Line |
+---|---|---|---|
+ClassicGameController|100%|84%|88%|
+SoloGameController|66%|80%|70%|
+
+In addition, extensive beta testing has been done to test the `view` and `network` packages.
 
 ## Screenshots
 
