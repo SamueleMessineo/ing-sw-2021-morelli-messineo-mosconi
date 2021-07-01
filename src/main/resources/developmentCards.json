@@ -664,10 +664,10 @@
     },
     "productionPower": {
       "input": {
-        "STONE": 1
+        "SERVANT": 1
       },
       "output": {
-        "SERVANT": 1
+        "STONE": 1
       }
     },
     "score": 2
