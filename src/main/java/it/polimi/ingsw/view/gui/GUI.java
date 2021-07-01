@@ -46,6 +46,8 @@ public class GUI extends Application implements UI {
     private Game gameState;
     private String username;
     private Stage popupStage;
+    private boolean playing;
+    private int roomID;
 
     public void setUsername(String username) {
         this.username = username;
@@ -178,7 +180,8 @@ public class GUI extends Application implements UI {
 
     @Override
     public void displayRoomDetails(ArrayList<String> players, int playersNum, int RoomId) {
-        ((RoomDetailsController)controllerMap.get("room-details")).displayDetails(players, playersNum, RoomId);
+        this.roomID = RoomId;
+        ((RoomDetailsController) controllerMap.get("room-details")).displayDetails(players, playersNum, RoomId);
         setScene("room-details");
     }
 
@@ -195,6 +198,10 @@ public class GUI extends Application implements UI {
         });
     }
 
+    /**
+     * Returns the stage for the popup used for error and string messages.
+     * @return the popup stage.
+     */
     public Stage getPopupStage() {
         return popupStage;
     }
@@ -261,6 +268,7 @@ public class GUI extends Application implements UI {
     @Override
     public void setGameState(Game game) {
         gameState = game;
+        playing = game.getCurrentPlayer().getUsername().equals(username);
     }
 
     @Override
@@ -325,10 +333,7 @@ public class GUI extends Application implements UI {
 
     @Override
     public void askUsername() {
-        if(username==null){
-            setScene("offline-info");
-        }
-
+        if(username==null) setScene("offline-info");
     }
 
     @Override
@@ -336,8 +341,15 @@ public class GUI extends Application implements UI {
         return username;
     }
 
+    public boolean isPlaying() {
+        return playing;
+    }
 
-    public Game getGame(){
+    public int getRoomID() {
+        return roomID;
+    }
+
+    public Game getGame() {
         return gameState;
     }
 }

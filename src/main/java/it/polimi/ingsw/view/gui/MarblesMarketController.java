@@ -57,6 +57,7 @@ public class MarblesMarketController implements SceneController{
             vbox.setSpacing(140);
             vbox.setPadding(new Insets(0, 0, 30, 0));
             vbox.getChildren().addAll(marblesGrid, buttonContainer);
+            buttonContainer.getChildren().get(1).setDisable(!gui.isPlaying());
         });
     }
 

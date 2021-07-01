@@ -57,6 +57,7 @@ public class CardsMarketController implements SceneController {
             vbox.setSpacing(160);
             vbox.setPadding(new Insets(0, 0, 30, 0));
             vbox.getChildren().addAll(cardsGrid, buttonsContainer);
+            buttonsContainer.getChildren().get(1).setDisable(!gui.isPlaying());
         });
     }
 

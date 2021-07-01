@@ -40,8 +40,11 @@ public class LeaderCardsController implements SceneController{
         Platform.runLater(() -> {
             System.out.println(type);
             vbox.getChildren().clear();
-            if(type.equals("SHOW"))
+            if(type.equals("SHOW")) {
                 vbox.getChildren().add(buttonContainer);
+                buttonContainer.getChildren().get(1).setDisable(!gui.isPlaying());
+                buttonContainer.getChildren().get(2).setDisable(!gui.isPlaying());
+            }
             HBox leadersContainer = new HBox();
             leadersContainer.setSpacing(50);
             leadersContainer.setPrefWidth(287);
