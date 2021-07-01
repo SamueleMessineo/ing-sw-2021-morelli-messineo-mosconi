@@ -56,6 +56,8 @@ public class GameBoardController implements SceneController {
     private Text whosPlayingText;
     @FXML
     private Tab settingsTab;
+    @FXML
+    private Text roomIdText;
 
     @FXML
     void hide(MouseEvent event) {
@@ -75,6 +77,7 @@ public class GameBoardController implements SceneController {
             } else {
                 whosPlayingText.setText(gameState.getCurrentPlayer().getUsername() + " is playing. Wait for your turn!");
             }
+            roomIdText.setText("Room ID: " + gui.getRoomID());
             FXMLLoader cardsLoader = new FXMLLoader(
                     getClass().getClassLoader().getResource("scenes/cards-grid.fxml"));
             FXMLLoader marblesLoader = new FXMLLoader(

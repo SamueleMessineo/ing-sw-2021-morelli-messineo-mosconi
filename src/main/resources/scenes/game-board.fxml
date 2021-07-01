@@ -158,6 +158,11 @@
                         </ImageView>
                         <VBox alignment="CENTER" prefHeight="690.0" prefWidth="843.0" spacing="40.0">
                            <children>
+                              <Text fx:id="roomIdText" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Room ID:">
+                                 <font>
+                                    <Font name="System Bold" size="13.0" />
+                                 </font>
+                              </Text>
                               <Button mnemonicParsing="false" onAction="#toggleSound" styleClass="flat-button" text="Toggle sound" />
                               <Button mnemonicParsing="false" onAction="#getExtraResources" styleClass="flat-button" text="Extra resources" />
                            </children>
