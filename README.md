@@ -12,7 +12,7 @@ Final project for the Software Engineering course at Polytechnic of Milan, 2021.
 ## Development progress
 | Functionality | Status |
 |--- | --- | 
-|Basic rules|✔|
+|Basic rules|✔️|
 |Complete rules|✔️|
 |Server|✔️|
 |CLI|✔️|
