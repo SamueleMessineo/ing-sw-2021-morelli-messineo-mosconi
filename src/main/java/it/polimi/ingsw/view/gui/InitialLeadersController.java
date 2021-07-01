@@ -17,8 +17,11 @@ import javafx.scene.layout.VBox;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * The controller for the scene that lets the player choose
+ * their initial leader cards.
+ */
 public class InitialLeadersController implements SceneController{
-
     private GUI gui;
     @FXML
     private VBox cardGrid;
@@ -50,6 +53,10 @@ public class InitialLeadersController implements SceneController{
     private int card1 = -1;
     private int card2 = -1;
 
+    /**
+     * Confirms the selected cards.
+     * @param event the javafx event.
+     */
     @FXML
     void confirm(ActionEvent event) {
         ResourceManager.playClickSound();
@@ -64,6 +71,10 @@ public class InitialLeadersController implements SceneController{
         }
     }
 
+    /**
+     * Displays the four cards to choose from.
+     * @param cards the four random leader cards.
+     */
     public void displayGrid(List<LeaderCard> cards){
         Platform.runLater(()->{
             GameUtils.debug(cards.toString());
@@ -95,6 +106,10 @@ public class InitialLeadersController implements SceneController{
         this.gui = gui;
     }
 
+    /**
+     * Selects the top left card.
+     * @param mouseEvent the javafx event.
+     */
     public void selectUpLeft(MouseEvent mouseEvent) {
         Platform.runLater(() -> {
             ResourceManager.playClickSound();
@@ -115,6 +130,10 @@ public class InitialLeadersController implements SceneController{
         });
     }
 
+    /**
+     * Selects the top right card.
+     * @param mouseEvent the javafx event.
+     */
     public void selectUpRight(MouseEvent mouseEvent) {
         Platform.runLater(() -> {
             ResourceManager.playClickSound();
@@ -134,6 +153,10 @@ public class InitialLeadersController implements SceneController{
         });
     }
 
+    /**
+     * Selects the bottom left card.
+     * @param mouseEvent the javafx event.
+     */
     public void selectBottomLeft(MouseEvent mouseEvent) {
         Platform.runLater(() -> {
             ResourceManager.playClickSound();
@@ -153,6 +176,10 @@ public class InitialLeadersController implements SceneController{
         });
     }
 
+    /**
+     * Selects the bottom right card.
+     * @param mouseEvent the javafx event.
+     */
     public void selectBottomRight(MouseEvent mouseEvent) {
         Platform.runLater(() -> {
             ResourceManager.playClickSound();

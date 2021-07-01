@@ -5,6 +5,9 @@ import it.polimi.ingsw.network.ClientMessageHandler;
 
 import java.util.List;
 
+/**
+ * Message with the Stacks on which a card can be placed.
+ */
 public class SelectStackToPlaceCardRequestMessage extends ClientMessage {
     private final List<Integer> stacks;
 

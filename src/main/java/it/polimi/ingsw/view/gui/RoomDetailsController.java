@@ -7,6 +7,9 @@ import javafx.scene.text.Text;
 
 import java.util.List;
 
+/**
+ * The controller for the room details scene.
+ */
 public class RoomDetailsController implements SceneController {
     private GUI gui;
     @FXML
@@ -16,6 +19,12 @@ public class RoomDetailsController implements SceneController {
     @FXML
     private VBox playerList;
 
+    /**
+     * Sets and displays the room details.
+     * @param players the usernames of the players connected to the room.
+     * @param np the total number of required players.
+     * @param rID the room id.
+     */
     public void displayDetails(List<String> players, int np, int rID) {
         Platform.runLater(() -> {
             roomID.setText("Rood ID: " + rID);

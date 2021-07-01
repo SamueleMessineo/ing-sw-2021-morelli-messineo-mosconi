@@ -3,6 +3,9 @@ package it.polimi.ingsw.network.setup;
 import it.polimi.ingsw.network.Message;
 import it.polimi.ingsw.network.SetupMessageHandler;
 
+/**
+ * Message with the parameters of the game to create.
+ */
 public class CreateRoomMessage extends SetupMessage {
 
     private final boolean privateRoom;

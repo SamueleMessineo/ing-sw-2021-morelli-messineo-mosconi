@@ -11,6 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The UI interface, CLI and GUI implements this interface.
+ */
 public interface UI {
 
     /**
@@ -26,6 +29,9 @@ public interface UI {
      */
     void displayRoomDetails(ArrayList<String> players, int playersNum, int RoomId);
 
+    /**
+     * Setups the UI.
+     */
     void setup();
 
     /**

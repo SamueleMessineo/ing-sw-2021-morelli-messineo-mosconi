@@ -18,6 +18,10 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The controller for the scene asking the user which resources to discard
+ * after making a move on the marbles grid.
+ */
 public class DropResourcesController implements SceneController{
     private GUI gui;
     private Map<Resource, Integer> originalResources;
@@ -27,6 +31,10 @@ public class DropResourcesController implements SceneController{
     @FXML
     private HBox resourcesList;
 
+    /**
+     * Display the obtained resources.
+     * @param resources the obtained resources.
+     */
     public void displayResources(Map<Resource, Integer> resources) {
         Platform.runLater(() -> {
             resourcesToKeep = new HashMap<>(resources);
@@ -60,6 +68,11 @@ public class DropResourcesController implements SceneController{
         });
     }
 
+    /**
+     * Increment or decrement the given resource's amount.
+     * @param resource the resource whose amount to update.
+     * @param increment true if the count should be incremented by 1, false otherwise.
+     */
     void updateCount(Resource resource, boolean increment) {
         Platform.runLater(() -> {
             GameUtils.incrementValueInResourceMap(resourcesToKeep, resource, increment ? 1 : -1);
@@ -74,6 +87,10 @@ public class DropResourcesController implements SceneController{
         });
     }
 
+    /**
+     * Confirm the choice of resources to be kept.
+     * @param event the javafx event.
+     */
     @FXML
     void confirmDropSelection(ActionEvent event) {
         ResourceManager.playClickSound();

@@ -79,9 +79,7 @@ public class GameMessageHandler {
                 clientConnection.sendMessage(new StringMessage("Waiting for other players to select their cards"));
                 return;
             }
-
         }
-
         sendStateAndMovesForNextTurn();
     }
 

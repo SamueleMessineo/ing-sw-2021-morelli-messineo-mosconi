@@ -5,6 +5,9 @@ import it.polimi.ingsw.network.ClientMessageHandler;
 
 import java.util.ArrayList;
 
+/**
+ * A Message with the shelves that can be switched.
+ */
 public class SwitchShelvesRequestMessage extends ClientMessage{
     private final ArrayList<String> shelves;
 

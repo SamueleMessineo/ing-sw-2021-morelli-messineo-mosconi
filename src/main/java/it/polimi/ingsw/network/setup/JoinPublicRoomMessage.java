@@ -2,6 +2,9 @@ package it.polimi.ingsw.network.setup;
 
 import it.polimi.ingsw.network.SetupMessageHandler;
 
+/**
+ * Message with the parameters of the public game to join.
+ */
 public class JoinPublicRoomMessage extends SetupMessage{
 
     private final int numberOfPlayers;

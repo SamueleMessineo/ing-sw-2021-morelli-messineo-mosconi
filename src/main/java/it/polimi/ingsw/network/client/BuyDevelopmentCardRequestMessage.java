@@ -5,6 +5,9 @@ import it.polimi.ingsw.network.ClientMessageHandler;
 
 import java.util.List;
 
+/**
+ * Message with the developmentCards that the player can buy.
+ */
 public class BuyDevelopmentCardRequestMessage extends ClientMessage {
     private final List<DevelopmentCard> developmentCards;
 

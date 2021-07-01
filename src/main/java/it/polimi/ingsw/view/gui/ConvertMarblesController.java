@@ -23,6 +23,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * The controller for the scene asking the user how to convert the white marbles
+ * obtained from a move on the grid when he has two active leader cards on the marbles.
+ */
 public class ConvertMarblesController implements SceneController {
     private GUI gui;
     private List<Resource> selectedConversions;
@@ -32,6 +36,11 @@ public class ConvertMarblesController implements SceneController {
     @FXML
     private VBox container;
 
+    /**
+     * Display the choices and ask the user to choose.
+     * @param amount the number of marbles to convert.
+     * @param options the choices of conversion.
+     */
     public void load(int amount, List<Resource> options) {
         Platform.runLater(() -> {
             container.getChildren().clear();
@@ -75,6 +84,11 @@ public class ConvertMarblesController implements SceneController {
         });
     }
 
+    /**
+     * Convert the white marble to the selected resource.
+     * @param number the index of white marble to be converted.
+     * @param option the choice of conversion.
+     */
     void selectResource(int number, Resource option) {
         Platform.runLater(() -> {
             ResourceManager.playClickSound();
@@ -96,6 +110,10 @@ public class ConvertMarblesController implements SceneController {
         });
     }
 
+    /**
+     * Confirm the conversion of the white marbles.
+     * @param event the javafx event.
+     */
     @FXML
     void convert(ActionEvent event) {
         ResourceManager.playClickSound();

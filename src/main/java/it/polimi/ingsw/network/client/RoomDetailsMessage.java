@@ -4,6 +4,9 @@ import it.polimi.ingsw.network.ClientMessageHandler;
 
 import java.util.ArrayList;
 
+/**
+ * Message with the details of the room.
+ */
 public class RoomDetailsMessage extends ClientMessage {
     private final ArrayList<String> players;
     private final int playersNum;

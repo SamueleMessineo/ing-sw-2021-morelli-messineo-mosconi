@@ -13,6 +13,7 @@ import it.polimi.ingsw.view.UI;
 public class LocalClient extends Client {
     private final LocalMessageHandler localMessageHandler;
     private final UI ui;
+
     public LocalClient(UI ui) {
         super(ui);
         this.ui = super.getUi();

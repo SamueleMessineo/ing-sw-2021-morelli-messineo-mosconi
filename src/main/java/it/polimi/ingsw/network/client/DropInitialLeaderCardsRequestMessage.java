@@ -8,6 +8,9 @@ import it.polimi.ingsw.network.game.GameMessage;
 
 import java.util.ArrayList;
 
+/**
+ * Message with the players 4 initial leader cards.
+ */
 public class DropInitialLeaderCardsRequestMessage extends ClientMessage {
     private final ArrayList<LeaderCard> leaderCards;
 

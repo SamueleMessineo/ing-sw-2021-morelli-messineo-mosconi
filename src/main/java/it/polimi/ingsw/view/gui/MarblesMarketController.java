@@ -23,6 +23,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * The controller for the scene showing the marbles grid, and allowing the user to make a move.
+ */
 public class MarblesMarketController implements SceneController{
     private GUI gui;
     @FXML
@@ -30,6 +33,11 @@ public class MarblesMarketController implements SceneController{
     @FXML
     private HBox buttonContainer;
 
+    /**
+     * Display the marbles grid.
+     * @param marbles the marbles grid.
+     * @param extra the extra marble.
+     */
     public void load(List<Marble> marbles, Marble extra) {
         Platform.runLater(() -> {
             FXMLLoader loader = new FXMLLoader(
@@ -52,6 +60,9 @@ public class MarblesMarketController implements SceneController{
         });
     }
 
+    /**
+     * Let the player choose a row or column to shift.
+     */
     public void allowSelect() {
         Platform.runLater(() -> {
             VBox marblesGridContainer = (VBox) vbox.getChildren().get(0);
@@ -59,21 +70,17 @@ public class MarblesMarketController implements SceneController{
             marblesGrid.setPrefSize(360, 260);
             marblesGrid.addColumn(4);
             marblesGrid.addRow(3);
-            Image leftArrowImage = new Image(Objects.requireNonNull(getClass().getClassLoader()
-                            .getResourceAsStream("images/marbles/marbles_arrow_left.png")));
-            Image upArrowImage = new Image(Objects.requireNonNull(getClass().getClassLoader()
-                            .getResourceAsStream("images/marbles/marbles_arrow_up.png")));
             for (int i = 0; i < 3; i++) {
-                ImageView upArrowImageView = viewFromImage(upArrowImage);
+                ImageView upArrowImageView = ResourceManager.getMarblesArrow("up");
                 int finalI = i;
                 upArrowImageView.setOnMouseClicked(mouseEvent -> selectRowOrColumn("COLUMN", finalI+1));
                 marblesGrid.add(upArrowImageView, i, 3);
 
-                ImageView leftArrowImageView = viewFromImage(leftArrowImage);
+                ImageView leftArrowImageView = ResourceManager.getMarblesArrow("left");
                 leftArrowImageView.setOnMouseClicked(mouseEvent -> selectRowOrColumn("ROW", finalI+1));
                 marblesGrid.add(leftArrowImageView, 4, i);
             }
-            ImageView upArrowImageView = viewFromImage(upArrowImage);
+            ImageView upArrowImageView = ResourceManager.getMarblesArrow("up");
             upArrowImageView.setOnMouseClicked(mouseEvent -> selectRowOrColumn("COLUMN", 4));
             marblesGrid.add(upArrowImageView, 3, 3);
             vbox.getChildren().remove(buttonContainer);
@@ -81,29 +88,30 @@ public class MarblesMarketController implements SceneController{
         });
     }
 
-    private ImageView viewFromImage(Image image) {
-        ImageView imageView = new ImageView(image);
-        imageView.setPreserveRatio(true);
-        imageView.setFitHeight(60);
-        imageView.setFitWidth(60);
-        imageView.setCursor(Cursor.HAND);
-        GridPane.setValignment(imageView, VPos.CENTER);
-        GridPane.setHalignment(imageView, HPos.CENTER);
-        return imageView;
-    }
-
+    /**
+     * Select a row of column of marbles.
+     * @param rowOrColumn 'ROW' if the player selected a row, 'COLUMN' otherwise.
+     * @param index the index of the selected row or column.
+     */
     private void selectRowOrColumn(String rowOrColumn, int index) {
         ResourceManager.playClickSound();
-        System.out.println("selected " + rowOrColumn + " number " + index);
         gui.getClient().sendMessage(new SelectMarblesResponseMessage(rowOrColumn, index-1));
     }
 
+    /**
+     * Goes back to the main scene of the game board.
+     * @param event the javafx event.
+     */
     @FXML
     void cancel(ActionEvent event) {
         ResourceManager.playClickSound();
         gui.setScene("game-board");
     }
 
+    /**
+     * Requests to obtain marbles from the grid.
+     * @param event the javafx event.
+     */
     @FXML
     void getMarbles(ActionEvent event) {
         ResourceManager.playClickSound();

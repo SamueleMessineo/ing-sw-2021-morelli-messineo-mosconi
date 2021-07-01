@@ -29,6 +29,9 @@ public class CLI implements UI {
     private Game gameState;
     private Consumer lastFunction;
 
+    /**
+     * CLI class constructor
+     */
     public CLI() {
         input = new Scanner(System.in);
         output= new PrintStream(System.out);
@@ -47,16 +50,9 @@ public class CLI implements UI {
                     String server = input.nextLine();
                     output.println("Write Server Port");
                     Integer port = Integer.parseInt(input.nextLine());
-                    if(server.equals("")){
-                        //this is just for make easy testing by playing on local host
-                        this.client.connect("localhost", 31415);
-                    } else
-                    {
-                        this.client.connect(server, port);
-                    }
-
+                    this.client.connect(server, port);
                     setup();
-                } catch (IOException e) {
+                } catch (IOException | NumberFormatException e) {
                     output.println("Server unavailable :(");
                     output.println("exiting...");
                     System.exit(404);
@@ -74,10 +70,8 @@ public class CLI implements UI {
         askUsername();
         output.println("Do wou want to create a room or join an existing one?");
         int selection = GameUtils.askIntegerInput("1: create\n2: join", 1, 2, output, input);
-
         if (selection == 1) {
             int playersNum = GameUtils.askIntegerInput("How many players is this game for?",1,4, output, input);
-
             boolean privateGame;
             if(playersNum==1){
                 privateGame = true;
@@ -170,6 +164,9 @@ public class CLI implements UI {
 
     }
 
+    /**
+     * Displays the board of a player.
+     */
     private void askToDisplayPlayerBoard(){
         output.println("Enter the username of a player you want to visit");
         output.print("[");
@@ -181,7 +178,6 @@ public class CLI implements UI {
         output.println("]");
         output.print("username: ");
         Player player;
-
             try {
                 do{
                     player = gameState.getPlayerByUsername(input.nextLine());
@@ -196,11 +192,10 @@ public class CLI implements UI {
 
     public void displayPossibleMoves(List<String> moves){
         output.println("Possible moves:");
-        output.println("1. Visit a player");
+        output.println("1. Visit a player"); //User can always perform this move.
         for (int i = 0; i < moves.size(); i++) {
             output.println((i+2)+". " + moves.get(i).toLowerCase());
         }
-
         int selection = GameUtils.askIntegerInput("Select a move", 1, moves.size()+1, output, input);
         if(selection==1){
             sendMove("VISIT_PLAYER");
@@ -209,6 +204,10 @@ public class CLI implements UI {
         else sendMove(moves.get(selection-2));
     }
 
+    /**
+     * Sends the selected move to the server.
+     * @param move a String to send to server.
+     */
     private void sendMove(String move){
         if(move.equals("VISIT_PLAYER"))askToDisplayPlayerBoard();
         else client.sendMessage(new SelectMoveResponseMessage(move));
@@ -220,9 +219,7 @@ public class CLI implements UI {
 
     public void selectMarbles(MarbleStructure marbleStructure){
         Display.displayMarbleStructure(marbleStructure, output);
-
         int selection = GameUtils.askIntegerInput("Do you want to shift a row or a column?\n1.Row\n2.Column", 1,2, output, input);
-
         int selectionIndex;
         if (selection == 1){
             selectionIndex = GameUtils.askIntegerInput("Which row do you want to shift?", 1,3, output, input)-1;
@@ -243,7 +240,6 @@ public class CLI implements UI {
             output.print((i + 1) + ". " + Display.displayResourceType(uniqueResources.get(i)) + " | ");
         }
         output.println((uniqueResources.size() + 1) + ". Confirm");
-
         Map<Resource, Integer> droppedResources = new HashMap<>();
         while (true) {
             // ask the user to select the type of resource to drop
@@ -285,8 +281,6 @@ public class CLI implements UI {
         client.sendMessage(new DropLeaderCardResponseMessage(selection));
     }
 
-
-
     @Override
     public void switchShelves(ArrayList<String> shelves) {
         Display.displayShelves(shelves, gameState.getCurrentPlayer().getPlayerBoard().getWarehouse() , output);
@@ -300,7 +294,6 @@ public class CLI implements UI {
         } while (selection1.equals(selection2));
 
         client.sendMessage(new SwitchShelvesResponseMessage(selection1, selection2));
-
     }
 
     @Override
@@ -314,7 +307,6 @@ public class CLI implements UI {
         List<Integer> extraProductionPowers = new ArrayList<>();
         List<Resource> extraOutputs = new ArrayList<>();
         int size = productionPowers.size();
-
                 if(currentGameState.getCurrentPlayer().canActivateBasicProduction()){
                     indexes.add(0);
                 }
@@ -323,6 +315,7 @@ public class CLI implements UI {
                 }
                 int productionNumber=1;
                 while (!done){
+                    //asks which production power  the user wants to activate until he says he is done
                     System.out.println(gameState.getCurrentPlayer().getPlayerBoard().getResources());
                     output.println(gameState.getCurrentPlayer().possibleProductionPowersToActive());
                     String message;
@@ -331,14 +324,13 @@ public class CLI implements UI {
                         message+="[0 is basic production]";
                     }
                     message+="\n"+ indexes;
-
                     do{
                         selection = GameUtils.askIntegerInput(message,indexes.get(0),size, output, input);
                     } while (!indexes.contains(selection));
-
                     if(indexes.contains(selection)) {
-
+                        //check which type of production power the player is activating
                         if (selection == 0) {
+                            //case basic
                             if (currentGameState.getCurrentPlayer().canActivateBasicProduction()) {
                                 do{
                                     selectedBasicProductionPowers = askBasicProductionPowerIO();
@@ -349,35 +341,36 @@ public class CLI implements UI {
                                 } while (true);
                             } else output.println(Display.paint("RED", "Production power no longer valid"));
                         } else {
+                            //case standard or extra
                             if(currentGameState.getCurrentPlayer().getPlayerBoard().canPayResources(productionPowers.get(selection-1).getInput())){
                                 currentGameState.getCurrentPlayer().getPlayerBoard().payResourceCost(productionPowers.get(selection - 1).getInput());
                                 List<ProductionPower> possibleExtraPowers = gameState.getCurrentPlayer().getPlayerBoard().getExtraProductionPowers();
-                                System.out.println(possibleExtraPowers);
-                                if (possibleExtraPowers!= null && !possibleExtraPowers.isEmpty()
-                                        && productionPowers.get(selection-1).getOutput().containsKey(Resource.ANY)
-                                       /* && selection>productionPowers.size()-possibleExtraPowers.size()*//* possibleExtraPowers.contains(productionPowers.get(selection - 1))*/){
+                                if (possibleExtraPowers!= null && !possibleExtraPowers.isEmpty() && productionPowers.get(selection-1).getOutput().containsKey(Resource.ANY)){
+                                    //case extra
                                     if(possibleExtraPowers.size()!=1 && selection==productionPowers.size())extraProductionPowers.add(1);
                                     else extraProductionPowers.add(0);
-                                    //extraProductionPowers.add(selection - (productionPowers.size()));
                                     extraOutputs.add(askExtraOutput());
                                 } else {
+                                    //case standard
                                     selectedStacks.add(selection - 1);
                                 }
                                 productionNumber++;
                             } else output.println(Display.paint("RED", "Production power no longer valid"));
                         }
                         indexes.remove(selection);
-
                     } else output.println("Selection not valid");
                     if(indexes.size()>0){
                         output.println("Are you done? [y/n]");
                         done = input.nextLine().trim().toLowerCase().startsWith("y");
                     } else done = true;
                 }
-                GameUtils.debug(selectedStacks.toString());
                 client.sendMessage(new ActivateProductionResponseMessage(selectedStacks, selectedBasicProductionPowers, extraProductionPowers, extraOutputs));
     }
 
+    /**
+     * Asks which resource the player wants as an extra production output.
+     * @return the Resource the player wants.
+     */
     private Resource askExtraOutput(){
         Resource resource = Resource.ANY;
         int selection;
@@ -387,12 +380,14 @@ public class CLI implements UI {
         allRes.add(Resource.STONE);
         allRes.add(Resource.COIN);
         selection = GameUtils.askIntegerInput("Which resource do you want in output?\n"+ Display.displayResourceList(allRes), 1, 4, output, input)-1;
-
         resource = allRes.get(selection);
-
         return resource;
     }
 
+    /**
+     * Asks the basic production power the player wants.
+     * @return a new ProductionPower.
+     */
     private ProductionPower askBasicProductionPowerIO(){
         Map<Resource, Integer> resInput = GameUtils.emptyResourceMap();
         Map<Resource, Integer> resOutput = GameUtils.emptyResourceMap();
@@ -413,9 +408,10 @@ public class CLI implements UI {
         resources.add(GameUtils.askIntegerInput("What is the first resource you want to put as input?",1,availableResources.size(), output, input)-1);
         resources.add(GameUtils.askIntegerInput("What is the second resource you want to put as input?",1,availableResources.size(), output, input)-1);
         resources.add(GameUtils.askIntegerInput("What is the resource you want as output?"+"\n" +  Display.displayResourceList(allRes),1,allRes.size(), output, input)-1);
-
+        //add the input
         resInput.put(availableResources.get(resources.get(0)), 1);
         resInput.put(availableResources.get(resources.get(1)), resInput.get(availableResources.get(resources.get(1)))+1);
+        //add the output
         resOutput.put(allRes.get(resources.get(2)), 1);
 
         return new ProductionPower(resInput, resOutput);
@@ -423,7 +419,6 @@ public class CLI implements UI {
 
     @Override
     public void buyDevelopmentCard(List<DevelopmentCard> developmentCards) {
-        System.out.println(developmentCards.size());
         int selection;
         for (DevelopmentCard developmentCard:
              developmentCards) {
@@ -432,7 +427,6 @@ public class CLI implements UI {
         }
         selection = GameUtils.askIntegerInput("Select a card", 1, developmentCards.size(), output, input)-1;
         client.sendMessage(new BuyDevelopmentCardResponseMessage(selection));
-
     }
 
     @Override
@@ -455,6 +449,9 @@ public class CLI implements UI {
         client.sendMessage(new PlayLeaderResponseMessage(selection));
     }
 
+    /**
+     * Displays the winner and the standings
+     */
     public void gameOver(String winner, Map<String, Integer> standing){
         output.println(Display.paint("YELLOW", "Game ended, "+winner+" won the game"));
         output.println(standing);
@@ -467,12 +464,15 @@ public class CLI implements UI {
             try {
                 client.closeConnection();
             } catch (NullPointerException e){
-
+                e.printStackTrace();
             }
             System.exit(0);
         }
     }
 
+    /**
+     * @return username
+     */
     public String getUsername() {
         return username;
     }

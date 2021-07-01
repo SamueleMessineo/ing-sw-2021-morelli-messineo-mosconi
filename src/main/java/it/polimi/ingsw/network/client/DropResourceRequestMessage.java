@@ -6,6 +6,9 @@ import it.polimi.ingsw.network.ClientMessageHandler;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Message with the resources the player just got of which he can drop someone.
+ */
 public class DropResourceRequestMessage extends ClientMessage {
     private final Map<Resource, Integer> resources;
 

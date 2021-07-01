@@ -5,6 +5,9 @@ import it.polimi.ingsw.network.ClientMessageHandler;
 
 import java.util.List;
 
+/**
+ * Message with possible initial resources.
+ */
 public class SelectInitialResourceRequestMessage extends ClientMessage {
 
     private final List<Resource> resources;

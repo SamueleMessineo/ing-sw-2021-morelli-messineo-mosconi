@@ -3,6 +3,9 @@ package it.polimi.ingsw.network.game;
 import it.polimi.ingsw.client.LocalMessageHandler;
 import it.polimi.ingsw.network.GameMessageHandler;
 
+/**
+ * Message with the chosen move.
+ */
 public class SelectMoveResponseMessage extends GameMessage{
     private final String move;
 

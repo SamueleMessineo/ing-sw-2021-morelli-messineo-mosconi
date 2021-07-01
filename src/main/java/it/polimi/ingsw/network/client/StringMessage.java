@@ -2,6 +2,9 @@ package it.polimi.ingsw.network.client;
 
 import it.polimi.ingsw.network.ClientMessageHandler;
 
+/**
+ * A message with a String that has to be displayed to the user.
+ */
 public class StringMessage extends ClientMessage {
     private final String body;
 

@@ -38,7 +38,7 @@ public class ServerController {
         clientConnections.remove(clientConnection);
 
         int currentRoomId = getRoomId();
-
+        while (GameUtils.readGame(currentRoomId)!=null)currentRoomId=getRoomId();//checks if the game does not already exists
         Room room =  new Room(new Game(), numberOfPlayers, privateRoom, clientConnection, currentRoomId);
         room.getGame().addPlayer(username);
 
@@ -117,6 +117,7 @@ public class ServerController {
             return;
         }
 
+        //case room is full
         if (room.isFull() && room.getGame().getPlayerByUsername(username)==null) {
             clientConnection.sendMessage(new ErrorMessage("room is full"));
             return;

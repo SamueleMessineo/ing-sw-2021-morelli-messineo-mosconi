@@ -4,6 +4,9 @@ import it.polimi.ingsw.client.LocalMessageHandler;
 import it.polimi.ingsw.network.GameMessageHandler;
 import it.polimi.ingsw.network.Message;
 
+/**
+ * Message with the chosen initial leader cards to drop.
+ */
 public class DropInitialLeaderCardsResponseMessage extends GameMessage {
     private final int card1;
     private final int card2;

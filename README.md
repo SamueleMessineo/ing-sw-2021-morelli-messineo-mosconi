@@ -1,4 +1,4 @@
-![game banner](./banner.png)
+![game banner](screenshots/banner.png)
 
 Final project for the Software Engineering course at Polytechnic of Milan, 2021.
 
@@ -12,7 +12,7 @@ Final project for the Software Engineering course at Polytechnic of Milan, 2021.
 ## Development progress
 | Functionality | Status |
 |--- | --- | 
-|Basic rules|✔|
+|Basic rules|✔️|
 |Complete rules|✔️|
 |Server|✔️|
 |CLI|✔️|
@@ -40,8 +40,57 @@ At this point the client can be started in two ways:
  
 When playing online the user has to select the server ip address and the port. The port is 31415.
 
-  
+## Play
+Once connected the player can choose to create a new game or join a game that has not yet started.
+
+- **Create game**
+      To create a new game the player must select his username, the number of players for the game and if it is a private game or not. If the game is
+      private only the players with the roomId can join. The roomId is communicated to the game creator once he creates the game.
+   
+- **Join a Private game**
+      To join a private game you have to enter your username and the gameId. The server will check if that username is already taken.
+      
+- **Join a Public game**
+      To join a public game you just have to enter your username (again the server will check if that username is already taken) and the number of players
+      of the game you want to join, if you select 0 you will join a random game.
+      
+- **Reconnect**
+      If your connection went down or the server crashed you can rejoin a game by simply clicking on join a private game and reenter your past username and
+      the roomId.
+
+Once the game starts the player will be asked to select which leader cards to keep and which initial resources he wants to start the game according to the rules of the game.
+When everyone has finished their selection the player will be brought to the main board.
+
+- **Main Board**
+      In the main board the players can see all of their playerboards, the market and all the faith tracks. A player can see other players boards by 
+      tapping on the interested player in the top tab pane in the gui or selecting the "visit a player" move and writing the player's username in the cli.
+      During the player's turn the moves he can perform glows in the gui and are listed in the cli.
+      
+- **Playing with the GUI**
 
 ## Build
 
 ## Documentation and testing
+
+## Screenshots
+
+### GUI
+<details>
+  <summary>Click to expand!</summary>
+
+  ![first scene](screenshots/first-scene.png)
+
+  ![initial resources](screenshots/initial-resources.png)
+
+  ![initial leaders](screenshots/initial-leaders.png)
+
+  ![playing](screenshots/playing.png)
+
+  ![game over](screenshots/game-over.png)
+</details>
+
+### CLI
+<details>
+  <summary>Click to expand!</summary>
+
+</details>

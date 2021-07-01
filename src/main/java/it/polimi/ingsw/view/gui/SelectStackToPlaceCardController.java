@@ -3,7 +3,6 @@ package it.polimi.ingsw.view.gui;
 import it.polimi.ingsw.model.player.PlayerCardStack;
 import it.polimi.ingsw.model.shared.DevelopmentCard;
 import it.polimi.ingsw.network.game.SelectStackToPlaceCardResponseMessage;
-import it.polimi.ingsw.utils.GameUtils;
 import it.polimi.ingsw.utils.ResourceManager;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -13,11 +12,19 @@ import javafx.scene.layout.HBox;
 
 import java.util.List;
 
+/**
+ * The controller for the scene that lets the user choose
+ * which stack to place a newly bought development card on.
+ */
 public class SelectStackToPlaceCardController implements SceneController{
     private GUI gui;
     @FXML
     public HBox stackList;
 
+    /**
+     * Displays the possible stacks.
+     * @param stackIndexes the indexes of the stacks the card could be placed on.
+     */
     public void showStacks(List<Integer> stackIndexes){
         Platform.runLater(() -> {
             stackList.getChildren().clear();
@@ -45,6 +52,10 @@ public class SelectStackToPlaceCardController implements SceneController{
         this.gui = gui;
     }
 
+    /**
+     * Confirms the selection of a stack.
+     * @param index the index of the selected stack.
+     */
     public void sendSelectedStack(int index){
         ResourceManager.playClickSound();
         gui.getClient().sendMessage(new SelectStackToPlaceCardResponseMessage(index));

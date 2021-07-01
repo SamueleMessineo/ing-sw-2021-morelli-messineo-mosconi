@@ -7,19 +7,25 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 
+/**
+ * The controller for the scene where the user has to enter his username
+ * in an offline game.
+ */
 public class OfflineInfoController implements SceneController{
     private GUI gui;
-
     @FXML
     public TextField usernameInput;
     public String username;
-
 
     @Override
     public void setGUI(GUI gui)  {
         this.gui = gui;
     }
 
+    /**
+     * Confirms the username choice.
+     * @param actionEvent the javafx event.
+     */
     public void confirm(ActionEvent actionEvent) {
         ResourceManager.playClickSound();
         Platform.runLater(() -> {
@@ -35,9 +41,5 @@ public class OfflineInfoController implements SceneController{
                gui.setScene("offline-info");
             }
         });
-    }
-
-    public String getUsername() {
-        return username;
     }
 }

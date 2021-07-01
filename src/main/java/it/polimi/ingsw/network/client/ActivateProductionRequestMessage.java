@@ -6,6 +6,9 @@ import it.polimi.ingsw.network.ClientMessageHandler;
 
 import java.util.ArrayList;
 
+/**
+ * Message with the productionPowers the player can activate.
+ */
 public class ActivateProductionRequestMessage extends ClientMessage {
     private final ArrayList<ProductionPower> productionPowers;
 

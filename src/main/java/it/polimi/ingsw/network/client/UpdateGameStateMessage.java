@@ -3,6 +3,9 @@ package it.polimi.ingsw.network.client;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.network.ClientMessageHandler;
 
+/**
+ * Message with the gameState.
+ */
 public class UpdateGameStateMessage extends ClientMessage {
 
     private final Game game;
