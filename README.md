@@ -90,3 +90,7 @@ When everyone has finished their selection the player will be brought to the mai
 </details>
 
 ### CLI
+<details>
+  <summary>Click to expand!</summary>
+
+</details>
