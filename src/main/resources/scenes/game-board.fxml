@@ -164,7 +164,7 @@
                                  </font>
                               </Text>
                               <Button mnemonicParsing="false" onAction="#toggleSound" styleClass="flat-button" text="Toggle sound" />
-                              <Button mnemonicParsing="false" onAction="#getExtraResources" styleClass="flat-button" text="Extra resources" />
+                              <Button mnemonicParsing="false" onAction="#getExtraResources" style="-fx-background-color: transparent; -fx-text-fill: transparent; -fx-padding: 10 20;" text="Extra resources" />
                            </children>
                         </VBox>
                      </children></AnchorPane>
