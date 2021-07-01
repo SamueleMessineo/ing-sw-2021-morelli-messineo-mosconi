@@ -104,6 +104,7 @@ public class WarehouseController implements SceneController{
             warehouseContainer.setSpacing(36);
             warehouseContainer.setAlignment(Pos.CENTER);
             container.getChildren().addAll(warehouseContainer, buttonsContainer);
+            buttonsContainer.getChildren().get(1).setDisable(!gui.isPlaying());
         });
     }
 

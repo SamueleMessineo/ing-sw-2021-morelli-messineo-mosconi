@@ -4,12 +4,16 @@ import it.polimi.ingsw.model.shared.DevelopmentCard;
 import it.polimi.ingsw.model.shared.LeaderCard;
 import it.polimi.ingsw.model.shared.ProductionPower;
 import it.polimi.ingsw.model.shared.Resource;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.CacheHint;
 import javafx.scene.Cursor;
 import javafx.scene.effect.ColorAdjust;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -19,6 +23,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 
@@ -195,5 +200,33 @@ public class ResourceManager {
         GridPane.setValignment(imageView, VPos.CENTER);
         GridPane.setHalignment(imageView, HPos.CENTER);
         return imageView;
+    }
+
+    public static DropShadow getGlowEffect() {
+        DropShadow borderGlow = new DropShadow();
+        borderGlow.setColor(Color.rgb(255, 255, 0, 0.7));
+        borderGlow.setOffsetX(0f);
+        borderGlow.setOffsetY(0f);
+        borderGlow.setHeight(90);
+        borderGlow.setWidth(90);
+        Timeline timeline = new Timeline();
+        timeline.getKeyFrames().setAll(
+                new KeyFrame(Duration.ZERO,
+                        new KeyValue(borderGlow.heightProperty(), 0),
+                        new KeyValue(borderGlow.widthProperty(), 0)
+                ),
+                new KeyFrame(Duration.millis(1000),
+                        new KeyValue(borderGlow.heightProperty(), 40),
+                        new KeyValue(borderGlow.widthProperty(), 40)
+                ),
+                new KeyFrame(Duration.millis(1500),
+                        new KeyValue(borderGlow.heightProperty(), 50),
+                        new KeyValue(borderGlow.widthProperty(), 50)
+                )
+        );
+        timeline.setAutoReverse(true);
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.play();
+        return borderGlow;
     }
 }

@@ -43,6 +43,7 @@ public class CardsProductionController implements SceneController {
             vbox.setSpacing(50);
             ((PlayerCardStacksController)playerCardStacksLoader.getController()).load(cardStacks);
             vbox.getChildren().addAll(cardStacksContainer, buttonsContainer);
+            buttonsContainer.getChildren().get(1).setDisable(!gui.isPlaying());
         });
     };
 

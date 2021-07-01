@@ -8,9 +8,6 @@ import it.polimi.ingsw.network.game.GetResourcesCheatMessage;
 import it.polimi.ingsw.network.game.SelectMoveResponseMessage;
 import it.polimi.ingsw.utils.GameUtils;
 import it.polimi.ingsw.utils.ResourceManager;
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -30,7 +27,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.util.Duration;
 
 import java.io.IOException;
 import java.util.*;
@@ -387,30 +383,7 @@ public class GameBoardController implements SceneController {
      */
     public void displayPossibleMoves(List<String> moves) {
         Platform.runLater(() -> {
-            DropShadow borderGlow = new DropShadow();
-            borderGlow.setColor(Color.rgb(255, 255, 0, 0.7));
-            borderGlow.setOffsetX(0f);
-            borderGlow.setOffsetY(0f);
-            borderGlow.setHeight(90);
-            borderGlow.setWidth(90);
-            Timeline timeline = new Timeline();
-            timeline.getKeyFrames().setAll(
-                    new KeyFrame(Duration.ZERO,
-                            new KeyValue(borderGlow.heightProperty(), 0),
-                            new KeyValue(borderGlow.widthProperty(), 0)
-                    ),
-                    new KeyFrame(Duration.millis(1000),
-                            new KeyValue(borderGlow.heightProperty(), 40),
-                            new KeyValue(borderGlow.widthProperty(), 40)
-                    ),
-                    new KeyFrame(Duration.millis(1500),
-                            new KeyValue(borderGlow.heightProperty(), 50),
-                            new KeyValue(borderGlow.widthProperty(), 50)
-                    )
-            );
-            timeline.setAutoReverse(true);
-            timeline.setCycleCount(Timeline.INDEFINITE);
-            timeline.play();
+            DropShadow borderGlow = ResourceManager.getGlowEffect();
             endTurnButton.setDisable(true);
             marblesContainer.setEffect(null);
             cardsContainer.setEffect(null);
@@ -419,22 +392,24 @@ public class GameBoardController implements SceneController {
             warehouseContainer.setEffect(null);
             basicProductionContainer.setEffect(null);
 
-            if (moves.contains("GET_MARBLES"))
-                marblesContainer.setEffect(borderGlow);
-            if (moves.contains("BUY_CARD"))
-                cardsContainer.setEffect(borderGlow);
-            if (moves.contains("DROP_LEADER") || moves.contains("PLAY_LEADER"))
-                leadersContainer.setEffect(borderGlow);
-            if (moves.contains("ACTIVATE_PRODUCTION")) {
-                if (gameState.getPlayerByUsername(gui.getUsername()).canActivateBasicProduction())
-                    basicProductionContainer.setEffect(borderGlow);
-                if (gameState.getPlayerByUsername(gui.getUsername()).canActivateProduction())
-                    cardStacksContainer.setEffect(borderGlow);
+            if (gui.isPlaying()) {
+                if (moves.contains("GET_MARBLES"))
+                    marblesContainer.setEffect(borderGlow);
+                if (moves.contains("BUY_CARD"))
+                    cardsContainer.setEffect(borderGlow);
+                if (moves.contains("DROP_LEADER") || moves.contains("PLAY_LEADER"))
+                    leadersContainer.setEffect(borderGlow);
+                if (moves.contains("ACTIVATE_PRODUCTION")) {
+                    if (gameState.getPlayerByUsername(gui.getUsername()).canActivateBasicProduction())
+                        basicProductionContainer.setEffect(borderGlow);
+                    if (gameState.getPlayerByUsername(gui.getUsername()).canActivateProduction())
+                        cardStacksContainer.setEffect(borderGlow);
+                }
+                if (moves.contains("SWITCH_SHELVES"))
+                    warehouseContainer.setEffect(borderGlow);
+                if (moves.contains("END_TURN"))
+                    endTurnButton.setDisable(false);
             }
-            if (moves.contains("SWITCH_SHELVES"))
-                warehouseContainer.setEffect(borderGlow);
-            if (moves.contains("END_TURN"))
-                endTurnButton.setDisable(false);
         });
     }
 
