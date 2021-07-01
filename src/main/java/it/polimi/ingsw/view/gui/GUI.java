@@ -84,7 +84,6 @@ public class GUI extends Application implements UI {
         Image logo = new Image(Objects.requireNonNull(getClass().getClassLoader()
                 .getResourceAsStream("images/punchboard/calamaio.png")));
         this.stage.getIcons().add(logo);
-
     }
 
     /**
