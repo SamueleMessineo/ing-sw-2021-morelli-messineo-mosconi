@@ -32,7 +32,6 @@ public class ClassicGameControllerTest {
 
     @Before
     public void setup() throws FileNotFoundException {
-        game1 = GameUtils.readGame(0001);
 
         String path = "src/main/resources/testGames/0001.ser";
         try {
@@ -41,7 +40,6 @@ public class ClassicGameControllerTest {
             game1 = (Game) in.readObject();
             in.close();
             fileIn.close();
-            GameUtils.writeGame(game1, 0001);
         } catch (IOException | ClassNotFoundException i) {
             i.printStackTrace();
         }
