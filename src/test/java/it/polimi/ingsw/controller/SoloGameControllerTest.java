@@ -10,15 +10,19 @@ import org.junit.Test;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Stack;
 
 import static org.junit.Assert.*;
 
 public class SoloGameControllerTest {
     private Game game1;
-    private ClassicGameController gameController;
+    private Game game2;
+    private Game game3;
+    private ClassicGameController game1Controller;
+    ClassicGameController game2Controller;
 
     @Before
     public void setUp() throws Exception {
@@ -32,27 +36,62 @@ public class SoloGameControllerTest {
         } catch (IOException | ClassNotFoundException i) {
             i.printStackTrace();
         }
-        gameController = new SoloGameController(game1);
+        path = "src/main/resources/testGames/007.ser";
+        try {
+            FileInputStream fileIn = new FileInputStream(path);
+            ObjectInputStream in = new ObjectInputStream(fileIn);
+            game2 = (Game) in.readObject();
+            in.close();
+            fileIn.close();
+        } catch (IOException | ClassNotFoundException i) {
+            i.printStackTrace();
+        }
+        game1Controller = new SoloGameController(game1);
+        game2Controller = new SoloGameController(game2);
     }
 
     @Test
     public void isGameOver() {
-        assertFalse(gameController.isGameOver());
+        assertFalse(game1Controller.isGameOver());
+        SoloActionType soloActionTypeGreen = SoloActionType.GREEN;
+
+        for (int i = 0; i < 8; i++) {
+            game1.removeCardsByLorenzo(soloActionTypeGreen);
+        }
+        assertTrue(game1Controller.isGameOver());
+
+       game2Controller.movePlayer("q", 24);
+       assertTrue(game2Controller.isGameOver());
+
     }
 
     @Test
     public void computeStanding() {
+        game2Controller.movePlayer("q", 24);
+        assertTrue(game2Controller.isGameOver());
+        assertTrue(game2Controller.computeStanding().get(game2.getCurrentPlayer().getUsername()) > game2Controller.computeStanding().get(game2.getLorenzoIlMagnifico().getUsername()));
     }
 
     @Test
     public void computeWinner() {
+        SoloActionType soloActionTypeGreen = SoloActionType.GREEN;
+
+        for (int i = 0; i < 8; i++) {
+            game1.removeCardsByLorenzo(soloActionTypeGreen);
+        }
+        assertTrue(game1Controller.isGameOver());
+        assertEquals(game1Controller.computeWinner().trim().toLowerCase(), "lorenzoilmagnifico");
+
+        game2Controller.movePlayer("q", 24);
+        assertTrue(game2Controller.isGameOver());
+        assertEquals(game2Controller.computeWinner().toLowerCase().trim(), "q");
     }
 
     @Test
     public void computeNextPlayer() {
         SoloActionType nextSoloAction = game1.getSoloActionTypes().peek();
         int initialLorenzoPosition = game1.getLorenzoIlMagnifico().getFaithTrack().getPosition();
-        gameController.computeNextPlayer();
+        game1Controller.computeNextPlayer();
         switch (nextSoloAction) {
             case PLUS_ONE:
                 assertEquals(initialLorenzoPosition+1, game1.getLorenzoIlMagnifico().getFaithTrack().getPosition());
@@ -69,7 +108,7 @@ public class SoloGameControllerTest {
     public void activatePopeReport() {
         assertEquals(game1.getPlayerByUsername("p1").getFaithTrack().getPopesFavorTiles().get(0).getState(), PopesFavorTileState.INACTIVE);
         assertEquals(game1.getLorenzoIlMagnifico().getFaithTrack().getPopesFavorTiles().get(0).getState(), PopesFavorTileState.INACTIVE);
-        gameController.movePlayer("p1", 4);
+        game1Controller.movePlayer("p1", 4);
         assertEquals(game1.getPlayerByUsername("p1").getFaithTrack().getPopesFavorTiles().get(0).getState(), PopesFavorTileState.ACTIVE);
         assertEquals(game1.getLorenzoIlMagnifico().getFaithTrack().getPopesFavorTiles().get(0).getState(), PopesFavorTileState.DISCARDED);
     }
@@ -84,7 +123,7 @@ public class SoloGameControllerTest {
         Map<Resource, Integer> resourcesToDrop = new HashMap<>();
         resourcesToDrop.put(Resource.COIN, 2);
 
-        gameController.dropPlayerResources(obtainedResources, resourcesToDrop, "p1");
+        game1Controller.dropPlayerResources(obtainedResources, resourcesToDrop, "p1");
         assertEquals(initialLorenzoPosition+2, game1.getLorenzoIlMagnifico().getFaithTrack().getPosition());
     }
 }

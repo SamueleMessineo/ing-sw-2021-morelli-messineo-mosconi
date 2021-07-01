@@ -36,7 +36,6 @@ public class Strongbox implements Storage, Serializable {
      */
     @Override
     public void addResources(Map<Resource, Integer> res) {
-        GameUtils.debug("adding" + res.toString());
         this.resources.forEach((resource,integer)->
                 this.resources.put(resource,integer + res.get(resource)));
     }

@@ -23,6 +23,7 @@ import java.util.Map;
 public class SoloGameController extends ClassicGameController {
     private final Game game;
 
+
     /**
      * SoloGameController constructor with room as parameter.
      */

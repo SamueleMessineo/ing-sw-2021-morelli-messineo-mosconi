@@ -4,12 +4,11 @@ import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.market.Marble;
 import it.polimi.ingsw.model.market.MarbleStructure;
 import it.polimi.ingsw.model.market.MarketCardStack;
-import it.polimi.ingsw.model.player.Player;
-import it.polimi.ingsw.model.player.PlayerCardStack;
-import it.polimi.ingsw.model.player.Shelf;
-import it.polimi.ingsw.model.player.Warehouse;
+import it.polimi.ingsw.model.player.*;
 import it.polimi.ingsw.model.shared.*;
 import it.polimi.ingsw.utils.GameUtils;
+import it.polimi.ingsw.view.Display;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -447,4 +446,74 @@ public class ClassicGameControllerTest {
             assertEquals(res, game1.getCurrentPlayer().getPlayerBoard().getResources());
         }
     }
+
+    @Test
+    public void movePlayerTest(){
+        int position = game1.getCurrentPlayer().getFaithTrack().getPosition();
+        gameController.movePlayer("p1", 1);
+        assertEquals(game1.getCurrentPlayer().getFaithTrack().getPosition(), position+1);
+    }
+
+    @Test
+    public void activatePopeReportTest(){
+        assertEquals(game1.getCurrentPlayer().getFaithTrack().getPopesFavorTiles().get(0).getState(), PopesFavorTileState.INACTIVE);
+        assertEquals(game1.getPlayers().get(1).getFaithTrack().getPopesFavorTiles().get(0).getState(), PopesFavorTileState.INACTIVE);
+        for (int i = 0; i < 8; i++) {
+            gameController.getGame().getPlayers().get(0).getFaithTrack().move();
+        }
+        assertEquals(game1.getCurrentPlayer().getFaithTrack().inOnPopeSpace(), 1);
+        assertTrue(game1.getCurrentPlayer().getFaithTrack().isInPopeFavorByLevel(1));
+        assertFalse(game1.getPlayers().get(1).getFaithTrack().isInPopeFavorByLevel(1));
+        gameController.activatePopeReport();
+        assertEquals(game1.getCurrentPlayer().getFaithTrack().getPopesFavorTiles().get(0).getState(), PopesFavorTileState.ACTIVE);
+        assertEquals(game1.getPlayers().get(1).getFaithTrack().getPopesFavorTiles().get(0).getState(), PopesFavorTileState.DISCARDED);
+    }
+
+    @Test
+    public void buyDevelopmentCardTest(){
+        DevelopmentCard card =  game1.getMarket().getCardsGrid().get(0).peek();
+        gameController.buyDevelopmentCard(1,card);
+        assertEquals(game1.getCurrentPlayer().getPlayerBoard().getCardStacks().get(1).peek(), card);
+        assertNotEquals(game1.getCurrentPlayer().getPlayerBoard().getCardStacks().get(1).peek(), game1.getMarket().getCardsGrid().get(0).peek());
+    }
+
+    @Test
+    public void playLeaderTest(){
+        gameController.playLeader(0);
+        assertEquals(game1.getCurrentPlayer().getPlayedLeaderCards().get(0).getEffectObject(), Resource.STONE);
+        assertEquals(game1.getCurrentPlayer().getPlayedLeaderCards().get(0).getEffectScope(), "Storage");
+    }
+
+    @Test
+    public void computeStandingTest(){
+        gameController.movePlayer("p1", 24);
+        Map<String, Integer> standing = gameController.computeStanding();
+        assertTrue(standing.get("p1") > standing.get("p2"));
+
+    }
+
+    @Test
+    public void computeWinnerTest(){
+        gameController.movePlayer("p1", 24);
+        assertEquals(gameController.computeWinner(), "p1");
+    }
+
+    @Test
+    public void getStacksToPlaceCardsTest(){
+        assertEquals(gameController.getStacksToPlaceCard(game1.getCurrentPlayer(),game1.getMarket().getCardsGrid().get(11).peek()).size(), 3);
+        gameController.buyDevelopmentCard(0, game1.getMarket().getCardsGrid().get(11).peek());
+        assertEquals(gameController.getStacksToPlaceCard(game1.getCurrentPlayer(),game1.getMarket().getCardsGrid().get(6).peek()).size(), 1);
+        assertEquals(gameController.getStacksToPlaceCard(game1.getCurrentPlayer(),game1.getMarket().getCardsGrid().get(10).peek()).size(), 2);
+        gameController.buyDevelopmentCard(1, game1.getMarket().getCardsGrid().get(10).peek());
+        assertEquals(gameController.getStacksToPlaceCard(game1.getCurrentPlayer(),game1.getMarket().getCardsGrid().get(9).peek()).size(), 1);
+        gameController.buyDevelopmentCard(2, game1.getMarket().getCardsGrid().get(9).peek());
+        assertEquals(gameController.getStacksToPlaceCard(game1.getCurrentPlayer(),game1.getMarket().getCardsGrid().get(11).peek()).size(), 0);
+        assertEquals(gameController.getStacksToPlaceCard(game1.getCurrentPlayer(),game1.getMarket().getCardsGrid().get(0).peek()).size(), 0);
+        gameController.buyDevelopmentCard(1, game1.getMarket().getCardsGrid().get(11).peek());
+        assertEquals(gameController.getStacksToPlaceCard(game1.getCurrentPlayer(),game1.getMarket().getCardsGrid().get(6).peek()).size(), 3);
+        gameController.buyDevelopmentCard(1, game1.getMarket().getCardsGrid().get(6).peek());
+        assertEquals(gameController.getStacksToPlaceCard(game1.getCurrentPlayer(),game1.getMarket().getCardsGrid().get(0).peek()).size(), 1);
+
+    }
+
 }

@@ -20,6 +20,7 @@ import java.util.*;
 public class ClassicGameController {
     private final Game game;
 
+
     public ClassicGameController(Room room) {
         this.game = room.getGame();
     }
