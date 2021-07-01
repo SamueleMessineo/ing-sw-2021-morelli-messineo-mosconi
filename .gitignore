@@ -221,4 +221,5 @@ documentation/
 
 src/main/resources/games/
 
-!deliverables/
+!deliverables/**/*
+deliverables/final/jar/original*
