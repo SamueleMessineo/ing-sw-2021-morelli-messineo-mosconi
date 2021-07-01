@@ -1,0 +1,65 @@
+title Join Private Room Event
+
+participantgroup #fff2e5 <size:20>**Client**</size>
+participant Client
+end
+participantgroup #e5fcff <size:20>**Server**</size>
+participant ClientConnection
+participant JoinPrivateRoomMessage
+participant SetupMessageHandler
+participant ServerController
+participant Room
+participant Game
+participant Server
+end
+activate Server
+activate ServerController
+activate Client
+activate SetupMessageHandler
+activate ClientConnection
+
+loop until login is successful
+
+Client->ClientConnection: JoinPrivateRoomMessage(roomID, username)
+ 
+ClientConnection->JoinPrivateRoomMessage: accept(setupMessageHandler)
+activate JoinPrivateRoomMessage
+
+JoinPrivateRoomMessage->SetupMessageHandler: handle(JoinPrivateRoomMessage)
+deactivate JoinPrivateRoomMessage
+
+SetupMessageHandler->ServerController: addPlayerByRoomId(username, roomID, clientConnection)
+
+ServerController->Server:getRooms.get(roomId)
+
+ServerController<--Server:room
+
+group error [if parameters are invalid]
+
+ServerController--#red>ClientConnection:sendMessage(ErrorMessage("room not found"))
+ServerController--#red>ClientConnection:sendMessage(ErrorMessage("room is full"))
+ServerController--#red>ClientConnection:sendMessage(ErrorMessage("username is taken"))
+ClientConnection--#red>Client: ErrorMessage("...")
+end
+end
+ServerController->Server: getPendingConnections().remove(clientConnection)
+
+ServerController->Room: addConnection(clientConnection)
+activate Room
+
+ServerController->Room: getGame()
+
+ServerController<--Room: game 
+
+ServerController->Game: addPlayer(username)
+activate Game
+
+ServerController->Room: sendAll(RoomDetailsMessage(players, numberOfPlayers, roomID))
+
+loop for each connected player
+
+Room-->ClientConnection: sendMessage(RoomDetailsMessage(players, numberOfPlayers, roomID))
+
+ClientConnection-->Client: RoomDetailsMessage(players, numberOfPlayers, roomID)
+
+end
