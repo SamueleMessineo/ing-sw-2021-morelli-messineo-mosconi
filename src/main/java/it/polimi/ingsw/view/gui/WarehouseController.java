@@ -15,6 +15,7 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Border;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
@@ -128,6 +129,8 @@ public class WarehouseController implements SceneController{
             for (String shelfName : shelves) {
                 shelfContainerMap.get(shelfName).setOnMouseClicked(event -> select(shelfName));
                 shelfContainerMap.get(shelfName).setCursor(Cursor.HAND);
+                shelfContainerMap.get(shelfName).setStyle(
+                        "-fx-border-width: 2; -fx-border-color: black; -fx-border-style: solid inside;");
             }
             container.getChildren().remove(buttonsContainer);
             confirmButton = new Button("Confirm");
@@ -150,11 +153,13 @@ public class WarehouseController implements SceneController{
             ResourceManager.playClickSound();
             if (selected.contains(shelfName)) {
                 selected.remove(shelfName);
-                shelfContainerMap.get(shelfName).setStyle("");
+                shelfContainerMap.get(shelfName).setStyle("-fx-border-color: black;" +
+                        "-fx-border-width: 2; -fx-border-style: solid inside;");
                 confirmButton.setDisable(true);
             } else {
                 if (selected.size() > 1) {
-                    shelfContainerMap.get(selected.get(0)).setStyle("");
+                    shelfContainerMap.get(selected.get(0)).setStyle("-fx-border-color: black;" +
+                            "-fx-border-width: 2; -fx-border-style: solid inside;");
                     selected.remove(0);
                 }
                 selected.add(shelfName);
