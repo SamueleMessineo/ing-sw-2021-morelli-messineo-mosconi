@@ -7,9 +7,15 @@ Final project for the Software Engineering course at Polytechnic of Milan, 2021.
 - **[Samuele Messineo](https://github.com/SamueleMessineo)** - samuele.messineo@mail.polimi.it
 - **[Alberto Mosconi](https://github.com/albertomosconi)** - albertomaria.mosconi@mail.polimi.it
 
-[//]: # (symbols ✔️ ✖️)
+## Table of Contents
+- [Development Progress](#development-progress "Development Progress")
+- [How to Start](#how-to-start "How to Start")
+- [How to Play](#how-to-play "How to Play")
+- [Build](#build "Build")
+- [Documentation and Testing](#documentation-and-testing "Documentation and Testing")
+- [Screenshots](#screenshots "Screenshots")
 
-## Development progress
+## Development Progress
 | Functionality | Status |
 |--- | --- | 
 |Basic rules|✔️|
@@ -23,7 +29,7 @@ Final project for the Software Engineering course at Polytechnic of Milan, 2021.
 |Disconnection resilience|✔️|
 |Parameter editor|✖️|
 
-## How to start
+## How to Start
 This game can be played either online or offline. In order to play online you have to start the server using this command 
 ```
 $ java -jar PSP42-server.jar
@@ -40,7 +46,7 @@ At this point the client can be started in two ways:
  
 When playing online the user has to select the server ip address and the port. The port is 31415.
 
-## Play
+## How to Play
 Once connected the player can choose to create a new game or join a game that has not yet started.
 
 - **Create game**
@@ -70,7 +76,7 @@ When everyone has finished their selection the player will be brought to the mai
 
 ## Build
 
-## Documentation and testing
+## Documentation and Testing
 
 ## Screenshots
 
