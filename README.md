@@ -73,6 +73,8 @@ When everyone has finished their selection the player will be brought to the mai
 ## Documentation and testing
 
 ## Screenshots
+
+### GUI
 <details>
   <summary>Click to expand!</summary>
 
@@ -86,3 +88,5 @@ When everyone has finished their selection the player will be brought to the mai
 
   ![game over](screenshots/game-over.png)
 </details>
+
+### CLI
