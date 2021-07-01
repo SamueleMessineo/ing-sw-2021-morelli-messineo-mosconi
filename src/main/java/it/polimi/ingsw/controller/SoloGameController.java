@@ -49,14 +49,11 @@ public class SoloGameController extends ClassicGameController {
      */
     @Override
     public boolean isGameOver() {
-
         for (CardType cardType:
                 CardType.values()) {
             if(game.getMarket().getCardsGrid().stream().filter(developmentCards -> (cardType.name().equals(developmentCards.getType().name()))&&(!developmentCards.isEmpty())).count() == 0)return true;
         }
-
         if(game.getLorenzoIlMagnifico().getFaithTrack().getPosition() >= FaithTrack.getMaxposition())return true;
-
 
         return super.isGameOver();
     }
@@ -93,21 +90,12 @@ public class SoloGameController extends ClassicGameController {
         return super.computeWinner();
     }
 
-    /*
-    @Override
-    public void movePlayer(String playerName, int positions) {
-        super.movePlayer(playerName, positions);
-        //activatePopeReport();
-    }
-     */
-
     /**
      * Overrides super method by drawing LorenzoIlMagnifico action
      */
     @Override
     public void computeNextPlayer() {
         SoloActionType soloActionType = game.getSoloActionTypes().pop();
-        System.out.println(soloActionType);
         switch (soloActionType){
             case PLUS_ONE:
                 movePlayer("lorenzoilmagnifico", 1);
@@ -123,11 +111,10 @@ public class SoloGameController extends ClassicGameController {
     }
 
     /**
-     * Ovverides super method checking if Lorenzo have to activate Pope report or setting his tile to active/discarded if another player activated Pope Report
+     * Overrides super method checking if Lorenzo have to activate Pope report or setting his tile to active/discarded if another player activated Pope Report
      */
     @Override
     public void activatePopeReport() {
-        System.out.println(2);
         super.activatePopeReport();
         FaithTrack currentPlayerFaithTrack = game.getCurrentPlayer().getFaithTrack();
         if(currentPlayerFaithTrack.inOnPopeSpace()!= -1){
@@ -144,9 +131,8 @@ public class SoloGameController extends ClassicGameController {
         }
     }
 
-
     /**
-     * Ovverides wuper method by moving LorenzoIlMagnifico when resources are dropped
+     * Overrides super method by moving LorenzoIlMagnifico when resources are dropped
      * @param obtainedResources all the resources the player got shifting the marker
      * @param resourcesToDrop the resources the player does not wish to retain
      * @param playerUsername tha player tha selected the resources

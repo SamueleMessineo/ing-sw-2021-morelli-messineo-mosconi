@@ -1,6 +1,5 @@
-package it.polimi.ingsw.contoller;
+package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.controller.ClassicGameController;
 import it.polimi.ingsw.model.Game;
 import it.polimi.ingsw.model.market.Marble;
 import it.polimi.ingsw.model.market.MarbleStructure;
@@ -11,7 +10,6 @@ import it.polimi.ingsw.model.player.Shelf;
 import it.polimi.ingsw.model.player.Warehouse;
 import it.polimi.ingsw.model.shared.*;
 import it.polimi.ingsw.utils.GameUtils;
-import it.polimi.ingsw.view.Display;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -32,7 +30,6 @@ public class ClassicGameControllerTest {
 
     @Before
     public void setup() throws FileNotFoundException {
-
         String path = "src/main/resources/testGames/0001.ser";
         try {
             FileInputStream fileIn = new FileInputStream(path);
@@ -44,12 +41,9 @@ public class ClassicGameControllerTest {
             i.printStackTrace();
         }
 
-
         for(Player p:game1.getPlayers()){
             p.setActive(true);
         }
-
-
         gameController= new ClassicGameController(game1);
     }
 

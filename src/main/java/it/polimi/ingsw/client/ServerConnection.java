@@ -63,7 +63,6 @@ public class ServerConnection implements Runnable {
             ErrorMessage message = new ErrorMessage("Server unavailable :(");
             message.accept(clientMessageHandler);
             System.exit(404);
-           // e.printStackTrace();
         }
         return m;
     }

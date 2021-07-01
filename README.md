@@ -12,7 +12,7 @@ Final project for the Software Engineering course at Polytechnic of Milan, 2021.
 ## Development progress
 | Functionality | Status |
 |--- | --- | 
-|Basic rules|✔|
+|Basic rules|✔️|
 |Complete rules|✔️|
 |Server|✔️|
 |CLI|✔️|
@@ -73,6 +73,8 @@ When everyone has finished their selection the player will be brought to the mai
 ## Documentation and testing
 
 ## Screenshots
+
+### GUI
 <details>
   <summary>Click to expand!</summary>
 
@@ -85,4 +87,10 @@ When everyone has finished their selection the player will be brought to the mai
   ![playing](screenshots/playing.png)
 
   ![game over](screenshots/game-over.png)
+</details>
+
+### CLI
+<details>
+  <summary>Click to expand!</summary>
+
 </details>

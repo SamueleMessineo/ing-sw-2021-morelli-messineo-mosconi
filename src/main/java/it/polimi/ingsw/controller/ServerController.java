@@ -62,9 +62,7 @@ public class ServerController {
             Game game = GameUtils.readGame(roomId);
             if(game!=null && game.getPlayerByUsername(username) != null){
                 //handling server persistence
-                System.out.println("server persistence");
                 ClassicGameController gameController;
-                System.out.println(game.getPlayers());
                 int playerNumber = game.getPlayers().size() ;
                 Room room = new Room(game,playerNumber,true, null, roomId);
                 room.setRecreated(true);
@@ -79,20 +77,16 @@ public class ServerController {
                 clientConnections.remove(clientConnection);
                 room.getConnections().remove(null);
                 for (int i = 0; i < room.getNumberOfPlayers(); i++) {
-                    System.out.println(i);
-                    System.out.println(room.getConnections());
                     if(i!=game.getPlayers().indexOf(game.getPlayerByUsername(username))){
                         room.getConnections().add(i, null);
                     }else {
                         room.getConnections().add(game.getPlayers().indexOf(game.getPlayerByUsername(username)), clientConnection);
                     }
                 }
-                System.out.println(room.getConnections().size());
 
                 clientConnection.setGameMessageHandler(new GameMessageHandler(gameController, clientConnection, room));
                 for (Player player:
                         game.getPlayers()) {
-                    System.out.println(player.getUsername());
                     if(!player.getUsername().equals(username))player.setActive(false);
                     else player.setActive(true);
                 }
@@ -112,14 +106,12 @@ public class ServerController {
                 room.getGameController().computeNextPossibleMoves(false);
                 room.setCurrentTurn(new Turn(game.getCurrentPlayer().getUsername(), room.getGameController().computeNextPossibleMoves(false)));
                 clientConnection.sendMessage(new RoomDetailsMessage(players, room.getNumberOfPlayers(), roomId));
-                //sendRoomDetails(roomId, room);
                 return;
             }
             clientConnection.sendMessage(new ErrorMessage("room not found"));
             return;
         }
         Room room = server.getRooms().get(roomId);
-        //server.getRooms().get(roomId).getGame().getPlayers().stream().anyMatch(player -> player.getUsername().equals(username))
         if (!room.isFull()  && room.getGame().getPlayerByUsername(username)!=null && room.getGame().getPlayerByUsername(username).isActive()) {
             clientConnection.sendMessage(new ErrorMessage("username is taken"));
             return;

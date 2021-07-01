@@ -60,10 +60,8 @@ public class LocalMessageHandler {
         currentTurn = new Turn(player.getUsername(), gameController.computeNextPossibleMoves(false));
         GameUtils.writeGame(gameController.getGame(), 42);
         ui.setGameState(GameUtils.readGame(42));
-        //ui.setGameState(gameController.getGame());
         ui.displayGameState();
         ui.displayPossibleMoves(currentTurn.getMoves());
-
     }
 
     /**
@@ -101,7 +99,6 @@ public class LocalMessageHandler {
      * @param message the message containing the move the user selected.
      */
     public void handle(SelectMoveResponseMessage message){
-        System.out.println(message.getMove());
         if(currentTurn.isValidMove(message.getMove(), player.getUsername())){
             switch (message.getMove()){
                 case("GET_MARBLES"):
@@ -231,7 +228,6 @@ public class LocalMessageHandler {
      */
     public void handle(SelectMarblesResponseMessage message){
         Map<String, Map<Resource, Integer>> resources = gameController.getMarbles(message.getRowOrColumn(), message.getIndex());
-        System.out.println(resources);
 
         currentTurn.setConverted(resources.get("converted"));
         currentTurn.setToConvert(resources.get("toConvert").get(Resource.ANY));
@@ -239,7 +235,6 @@ public class LocalMessageHandler {
 
         if (resources.get("toConvert").containsKey(Resource.ANY) &&
                 resources.get("toConvert").get(Resource.ANY) > 0) {
-            System.out.println("ask for conversion help");
             List<Resource> options = new ArrayList<>(resources.get("conversionOptions").keySet());
             ui.selectResourceForWhiteMarbles(resources.get("toConvert").get(Resource.ANY), options);
             return;
@@ -277,7 +272,6 @@ public class LocalMessageHandler {
                     player.getUsername());
             nextMoves(true);
         } catch (InvalidParameterException e) {
-            System.out.println(e.getMessage());
             ui.displayError("The selected resources are invalid");
             ui.dropResources(currentTurn.getConverted());
             //nextMoves(false);

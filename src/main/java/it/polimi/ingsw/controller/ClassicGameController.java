@@ -39,7 +39,6 @@ public class ClassicGameController {
     private void selectStartingPlayer() {
         Random r = new Random();
         int firstPlayerIndex = r.nextInt(game.getActivePlayers().size());
-        System.out.println("first player index: " + firstPlayerIndex);
         game.setCurrentPlayer(firstPlayerIndex);
         game.setInkwellPlayer(firstPlayerIndex);
     }
@@ -117,7 +116,6 @@ public class ClassicGameController {
         for (Resource effectObject : effectsObjects) {
             convertedMarbles.get("conversionOptions").put(effectObject, 1);
         }
-
         // convert all the marbles
         for (Marble marble : marbles) {
             System.out.println(marble.name());
@@ -125,7 +123,6 @@ public class ClassicGameController {
                 // move the player forward on the track
                 game.getCurrentPlayer().getFaithTrack().move();
                 // check if it landed on a Pope space
-//                tryPopeReport(game.getCurrentPlayer());
                 activatePopeReport();
             } else {
                 String key = "converted";
@@ -163,8 +160,6 @@ public class ClassicGameController {
     public void dropPlayerResources(Map<Resource, Integer> obtainedResources, Map<Resource,
             Integer> resourcesToDrop, String playerUsername) throws InvalidParameterException {
         if (resourcesToDrop == null) throw new InvalidParameterException("array is null");
-        System.out.println(obtainedResources);
-        System.out.println(resourcesToDrop);
         int totalDropped = 0;
         for (Resource r : resourcesToDrop.keySet()) {
             if (!obtainedResources.containsKey(r) ||
@@ -186,9 +181,7 @@ public class ClassicGameController {
         List<Player> other = new ArrayList<>(game.getActivePlayers());
         other.remove(player);
         movePlayers(other, totalDropped);
-
     }
-
 
     /**
      * Moves a list of players of given positions and activates pope report
@@ -201,7 +194,6 @@ public class ClassicGameController {
                 // for each dropped resource, move all the other players by one
                 for (Player otherPlayer : players) {
                     otherPlayer.getFaithTrack().move();
-
                 }
                 // and check if the pope favor gets activated
                 for (Player p : game.getActivePlayers()) {
@@ -209,7 +201,6 @@ public class ClassicGameController {
                 }
             }
         }
-
     }
 
     /**
@@ -241,7 +232,6 @@ public class ClassicGameController {
      * @return the list of the possible moves
      */
     public List<String> computeNextPossibleMoves(boolean alreadyPerformedMove) {
-        System.out.println("computing");
         List<String> moves = new ArrayList<>();
         Player player = game.getCurrentPlayer();
 
@@ -287,7 +277,6 @@ public class ClassicGameController {
             warehouse.canSwitchShelves("bottom", "extra2")
         ) moves.add("SWITCH_SHELVES");
 
-        System.out.println("computed");
         return moves;
     }
 
@@ -298,7 +287,7 @@ public class ClassicGameController {
         List<DevelopmentCard> developmentCards = new ArrayList<>();
 
         for (MarketCardStack cardsStack : game.getMarket().getCardsGrid()) {
-            if(cardsStack.isEmpty())continue;
+            if(cardsStack.isEmpty()) continue;
             DevelopmentCard topCard = cardsStack.peek();
             if (game.getCurrentPlayer().canBuyAndPlaceDevelopmentCard(topCard)) {
                 developmentCards.add(topCard);
@@ -350,7 +339,6 @@ public class ClassicGameController {
             int outRes = 0;
             for (Integer extraProductionPower : extraProductionPowers) {
                 movePlayer(game.getCurrentPlayer().getUsername(), 1);
-                System.out.println(extraProductionPowers);
                 ProductionPower productionPower = game.getCurrentPlayer().getPlayerBoard().getExtraProductionPowers().get((Integer) extraProductionPower);
                 productionPower.getOutput().put(extraOutput.get(outRes), 1);
                 productionPower.getOutput().remove(Resource.ANY);
@@ -370,7 +358,6 @@ public class ClassicGameController {
      * @param positions  the amount of positions to move the player
      */
     public void movePlayer(String playerName, int positions){
-        System.out.println(playerName + " " + positions);
         Player playerToMove = game.getPlayerByUsername(playerName);
         for (int i = 0; i < positions; i++) {
             playerToMove.getFaithTrack().move();
@@ -382,7 +369,6 @@ public class ClassicGameController {
      * Checks if a player is on a pope space, if yes sets all other player's Pope favor tiles to active or discarded
      */
     public void activatePopeReport() {
-        System.out.println(1);
         for (Player player : game.getActivePlayers()) {
             int popeLevel = player.getFaithTrack().inOnPopeSpace();
             // for each player, if the player is on a pope space
@@ -492,18 +478,12 @@ public class ClassicGameController {
     public List<Integer> getStacksToPlaceCard(Player player, DevelopmentCard developmentCard){
         List<Integer> stacks = new ArrayList<>();
         List<PlayerCardStack> allStacks = player.getPlayerBoard().getCardStacks();
-        //System.out.println(allStacks);
         for (int i = 0; i < allStacks.size(); i++) {
             PlayerCardStack cardStack = allStacks.get(i);
-            System.out.println("card stack size" + cardStack.size());
-            System.out.println("can place" + cardStack.canPlaceCard(developmentCard));
             if((developmentCard.getLevel()==0 && cardStack.size()== 0) || cardStack.canPlaceCard(developmentCard)){
-             //   stacks.add(allStacks.indexOf(cardStack));
                 stacks.add(i);
             }
         }
-
-        System.out.println("stack indexes: " + stacks);
         return stacks;
     }
 
