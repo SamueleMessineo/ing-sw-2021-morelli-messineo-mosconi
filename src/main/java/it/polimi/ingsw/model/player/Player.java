@@ -229,7 +229,7 @@ public class Player implements Serializable {
     /**
      * Checks the price of a development card for the player.
      * @param developmentCard the Development card of interest.
-     * @return a Map<Resource, Integer> with the cost of the card.
+     * @return a map <Resource, Integer> with the cost of the card.
      */
     public Map<Resource, Integer> computeDiscountedCost(DevelopmentCard developmentCard){
         Map<Resource, Integer> cost = developmentCard.getCost();

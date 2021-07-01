@@ -91,7 +91,7 @@ public class GameUtils {
 
     /**
      * Increments the resource value of an amount.
-     * @param resourceMap a Map<Resource, Integer>.
+     * @param resourceMap a map <Resource, Integer>.
      * @param resource the resource of which the value is to increment.
      * @param amount how much the value of resource has to be incremented.
      * @return the input map with an incremented value.
