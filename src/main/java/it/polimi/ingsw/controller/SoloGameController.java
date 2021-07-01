@@ -111,7 +111,7 @@ public class SoloGameController extends ClassicGameController {
     }
 
     /**
-     * Ovverides super method checking if Lorenzo have to activate Pope report or setting his tile to active/discarded if another player activated Pope Report
+     * Overrides super method checking if Lorenzo have to activate Pope report or setting his tile to active/discarded if another player activated Pope Report
      */
     @Override
     public void activatePopeReport() {
@@ -132,7 +132,7 @@ public class SoloGameController extends ClassicGameController {
     }
 
     /**
-     * Ovverides wuper method by moving LorenzoIlMagnifico when resources are dropped
+     * Overrides super method by moving LorenzoIlMagnifico when resources are dropped
      * @param obtainedResources all the resources the player got shifting the marker
      * @param resourcesToDrop the resources the player does not wish to retain
      * @param playerUsername tha player tha selected the resources
