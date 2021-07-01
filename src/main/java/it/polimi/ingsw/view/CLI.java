@@ -316,7 +316,7 @@ public class CLI implements UI {
                 int productionNumber=1;
                 while (!done){
                     //asks which production power  the user wants to activate until he says he is done
-                    System.out.println(gameState.getCurrentPlayer().getPlayerBoard().getResources());
+                    output.println(gameState.getCurrentPlayer().getPlayerBoard().getResources());
                     output.println(gameState.getCurrentPlayer().possibleProductionPowersToActive());
                     String message;
                     message ="Select production power N° " +productionNumber+" to activate" ;

@@ -295,7 +295,7 @@ public class Warehouse implements Serializable {
             int resourceAmount = allResources.get(shelfType);
 
             if (resourceAmount < 1 && !shelfName.equals("extra1") && !shelfName.equals("extra2")){
-                GameUtils.debug("return");
+                //GameUtils.debug("return");
                 return;
             }
 

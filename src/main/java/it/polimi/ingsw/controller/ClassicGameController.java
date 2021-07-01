@@ -119,7 +119,6 @@ public class ClassicGameController {
         }
         // convert all the marbles
         for (Marble marble : marbles) {
-            System.out.println(marble.name());
             if (marble == Marble.RED) {
                 // move the player forward on the track
                 game.getCurrentPlayer().getFaithTrack().move();
