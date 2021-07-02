@@ -98,7 +98,7 @@ $ cd ing-sw-2021-morelli-messineo-mosconi/
 $ mvn package
 ...
 ```
-The jar files will be created in `./deliverables/final/JAR/`.
+The jar files will be created in `./deliverables/final/jar/`.
 
 Alternatively you can open the project with IntelliJ IDEA and build it from there.
 
