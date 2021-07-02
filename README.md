@@ -8,14 +8,13 @@ Final project for the Software Engineering course at Polytechnic of Milan, 2021.
 - **[Alberto Mosconi](https://github.com/albertomosconi)** - albertomaria.mosconi@mail.polimi.it
 
 ## Table of Contents
-- [Development Progress](#development-progress "Development Progress")
 - [How to Start](#how-to-start "How to Start")
 - [How to Play](#how-to-play "How to Play")
+- [Development Progress](#development-progress "Development Progress")
+- [Architecture](#architecture "Architecture")
 - [Build](#build "Build")
 - [Documentation and Testing](#documentation-and-testing "Documentation and Testing")
 - [Screenshots](#screenshots "Screenshots")
-
-
 
 ## How to Start
 This game can be played either online or offline. In order to play online you have to start the server using this command 
@@ -61,10 +60,8 @@ When everyone has finished their selection the player will be brought to the mai
       During the player's turn the moves he can perform glows in the gui and are listed in the cli.
       
 - **Playing with the GUI**
-      Every UI element has a move associated. The moves that the current player can perform correspond to the glowing elements. To perform a move the user has to 
-      click on the UI element corresponding to the move and then the UI will zoom on that element and a button with the name of the move will appear. By clicking 
-      on the button the move will start, some moves like buying a card will be automatically performed once the user clicks on the card, or the element of
-      interest, others like activating the productions will need the user to confirm the move after selecting the productions he wants to activate.
+      Every UI element has a move associated. The moves that the current player can perform correspond to the glowing elements. To perform a move the user has to click on the UI element corresponding to the move and then the UI will zoom on that element and a button with the name of the move will appear.  
+      By clicking on the button the move will start, some moves like buying a card will be automatically performed once the user clicks on the card, or the element of interest, others like activating the productions will need the user to confirm the move after selecting the productions he wants to activate.
       
 ## Development Progress
 | Functionality | Status |
@@ -81,11 +78,13 @@ When everyone has finished their selection the player will be brought to the mai
 |Parameter editor|✖️|
 
 ## Architecture
+
 This game has been realized using an MVC arhitecture. Model and controller are kept server-side while the view in user-side and they interact by exchanging messages. Each message is handled in a scalable way by the use of the Visitor pattern.
 
 The server checks if the users are still connected using ping-pong messages, if after sending a ping message the server does not receive a pong message in 10 seconds the user is considered disconnected. Users can reconnect any time to the server.
 
 The server stores all the unfinished games allowing players to resume old games at any time, even if the server rebooted.
+
 ## Build
 
 Before building make sure you have at least Java version 11 installed by running this command
