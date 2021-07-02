@@ -126,99 +126,127 @@ public class Display {
         output.println("\nCards Market:");
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 4; col++) {
-                DevelopmentCard card = market.getCardsGrid().get((row * 4) + col).peek();
-                output.print(paintCard(card.getCardType()));
-                output.print("+----------------+ ");
-                output.print("\u001B[0m");
+                if (market.getCardsGrid().get((row * 4)+col).isEmpty()) {
+                    output.print("+----------------+ ");
+                } else {
+                    DevelopmentCard card = market.getCardsGrid().get((row * 4) + col).peek();
+                    output.print(paintCard(card.getCardType()));
+                    output.print("+----------------+ ");
+                    output.print("\u001B[0m");
+                }
             }
             output.print("\n");
             int costRows = 0;
             int inputRows = 0;
             int outputRows = 0;
             for (int col = 0; col < 4; col++) {
-                DevelopmentCard card = market.getCardsGrid().get((row * 4) + col).peek();
-                int nc = (int)card.getCost().keySet().stream().filter(k -> card.getCost().get(k) > 0).count();
-                if (nc > costRows) costRows = nc;
-                int ni = card.getProductionPower().getInput().keySet().size();
-                if (ni > inputRows) inputRows = ni;
-                int no = card.getProductionPower().getOutput().keySet().size();
-                if (no > outputRows) outputRows = no;
-                // 15
-                output.print(paintCard(card.getCardType()));
-                output.printf("|  Level: %d      | ", card.getLevel());
-                output.print("\u001B[0m");
+                if (market.getCardsGrid().get((row * 4)+col).isEmpty()) {
+                    output.print("|                | ");
+                } else {
+                    DevelopmentCard card = market.getCardsGrid().get((row * 4) + col).peek();
+                    int nc = (int) card.getCost().keySet().stream().filter(k -> card.getCost().get(k) > 0).count();
+                    if (nc > costRows) costRows = nc;
+                    int ni = card.getProductionPower().getInput().keySet().size();
+                    if (ni > inputRows) inputRows = ni;
+                    int no = card.getProductionPower().getOutput().keySet().size();
+                    if (no > outputRows) outputRows = no;
+                    // 15
+                    output.print(paintCard(card.getCardType()));
+                    output.printf("|  Level: %d      | ", card.getLevel());
+                    output.print("\u001B[0m");
+                }
             }
             output.print("\n");
             for (int cr = -1; cr < costRows; cr++) {
                 for (int col = 0; col < 4; col++) {
-                    DevelopmentCard card = market.getCardsGrid().get((row * 4) + col).peek();
-                    output.print(paintCard(card.getCardType()));
-                    if (cr == -1)
-                        output.printf("|  %-14s| ", "Cost:");
-                    else {
-                        // 15
-                        List<Resource> keys = card.getCost().keySet().stream().filter(k -> card.getCost().get(k) > 0).sorted((o1, o2) -> card.getCost().get(o2) - card.getCost().get(o1)).collect(Collectors.toList());
-                        if (cr < keys.size()) {
-                            output.printf("|    %dx %-9s| ", card.getCost().get(keys.get(cr)), keys.get(cr).name());
-                        } else {
-                            output.print("|                | ");
+                    if (market.getCardsGrid().get((row * 4)+col).isEmpty()) {
+                        output.print("|                | ");
+                    } else {
+                        DevelopmentCard card = market.getCardsGrid().get((row * 4) + col).peek();
+                        output.print(paintCard(card.getCardType()));
+                        if (cr == -1)
+                            output.printf("|  %-14s| ", "Cost:");
+                        else {
+                            // 15
+                            List<Resource> keys = card.getCost().keySet().stream().filter(k -> card.getCost().get(k) > 0).sorted((o1, o2) -> card.getCost().get(o2) - card.getCost().get(o1)).collect(Collectors.toList());
+                            if (cr < keys.size()) {
+                                output.printf("|    %dx %-9s| ", card.getCost().get(keys.get(cr)), keys.get(cr).name());
+                            } else {
+                                output.print("|                | ");
+                            }
                         }
+                        output.print("\u001B[0m");
                     }
-                    output.print("\u001B[0m");
                 }
                 output.print("\n");
             }
             for (int ir = -1; ir < inputRows; ir++) {
                 for (int col = 0; col < 4; col++) {
-                    DevelopmentCard card = market.getCardsGrid().get((row * 4) + col).peek();
-                    output.print(paintCard(card.getCardType()));
-                    if (ir == -1)
-                        output.printf("|  %-14s| ", "Input:");
-                    else {
-                        // 15
-                        List<Resource> keys = new ArrayList<>(card.getProductionPower().getInput().keySet());
-                        if (ir < keys.size()) {
-                            output.printf("|    %dx %-9s| ", card.getProductionPower().getInput().get(keys.get(ir)), keys.get(ir).name());
-                        } else {
-                            output.print("|                | ");
+                    if (market.getCardsGrid().get((row * 4)+col).isEmpty()) {
+                        output.print("|                | ");
+                    } else {
+                        DevelopmentCard card = market.getCardsGrid().get((row * 4) + col).peek();
+                        output.print(paintCard(card.getCardType()));
+                        if (ir == -1)
+                            output.printf("|  %-14s| ", "Input:");
+                        else {
+                            // 15
+                            List<Resource> keys = new ArrayList<>(card.getProductionPower().getInput().keySet());
+                            if (ir < keys.size()) {
+                                output.printf("|    %dx %-9s| ", card.getProductionPower().getInput().get(keys.get(ir)), keys.get(ir).name());
+                            } else {
+                                output.print("|                | ");
+                            }
                         }
+                        output.print("\u001B[0m");
                     }
-                    output.print("\u001B[0m");
                 }
                 output.print("\n");
             }
             for (int ir = -1; ir < outputRows; ir++) {
                 for (int col = 0; col < 4; col++) {
-                    DevelopmentCard card = market.getCardsGrid().get((row * 4) + col).peek();
-                    output.print(paintCard(card.getCardType()));
-                    if (ir == -1)
-                        output.printf("|  %-14s| ", "Output:");
-                    else {
-                        // 15
-                        List<Resource> keys = new ArrayList<>(card.getProductionPower().getOutput().keySet());
-                        if (ir < keys.size()) {
-                            output.printf("|    %dx %-9s| ", card.getProductionPower().getOutput().get(keys.get(ir)), keys.get(ir).name());
-                        } else {
-                            output.print("|                | ");
+                    if (market.getCardsGrid().get((row * 4)+col).isEmpty()) {
+                        output.print("|                | ");
+                    } else {
+                        DevelopmentCard card = market.getCardsGrid().get((row * 4) + col).peek();
+                        output.print(paintCard(card.getCardType()));
+                        if (ir == -1)
+                            output.printf("|  %-14s| ", "Output:");
+                        else {
+                            // 15
+                            List<Resource> keys = new ArrayList<>(card.getProductionPower().getOutput().keySet());
+                            if (ir < keys.size()) {
+                                output.printf("|    %dx %-9s| ", card.getProductionPower().getOutput().get(keys.get(ir)), keys.get(ir).name());
+                            } else {
+                                output.print("|                | ");
+                            }
                         }
+                        output.print("\u001B[0m");
                     }
-                    output.print("\u001B[0m");
                 }
                 output.print("\n");
             }
             for (int col = 0; col < 4; col++) {
-                DevelopmentCard card = market.getCardsGrid().get((row * 4) + col).peek();
-                // 15
-                output.print(paintCard(card.getCardType()));
-                output.printf("|  %-14s| ", "Score: "+card.getScore());
-                output.print("\u001B[0m");
+                if (market.getCardsGrid().get((row * 4)+col).isEmpty()) {
+                    output.print("|                | ");
+                } else {
+                    DevelopmentCard card = market.getCardsGrid().get((row * 4) + col).peek();
+                    // 15
+                    output.print(paintCard(card.getCardType()));
+                    output.printf("|  %-14s| ", "Score: " + card.getScore());
+                    output.print("\u001B[0m");
+                }
             }
             output.print("\n");
             for (int col = 0; col < 4; col++) {
-                DevelopmentCard card = market.getCardsGrid().get((row * 4) + col).peek();
-                output.print(paintCard(card.getCardType()));
-                output.print("+----------------+ ");
-                output.print("\u001B[0m");
+                if (market.getCardsGrid().get((row * 4)+col).isEmpty()) {
+                    output.print("+----------------+ ");
+                } else {
+                    DevelopmentCard card = market.getCardsGrid().get((row * 4) + col).peek();
+                    output.print(paintCard(card.getCardType()));
+                    output.print("+----------------+ ");
+                    output.print("\u001B[0m");
+                }
             }
             output.print("\n");
         }
