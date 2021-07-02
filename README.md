@@ -125,19 +125,33 @@ In addition, extensive beta testing has been done to test the `view` and `networ
 <details>
   <summary>Click to expand!</summary>
 
-  ![first scene](screenshots/first-scene.png)
+  ![first scene](screenshots/gui/first-scene.png)
 
-  ![initial resources](screenshots/initial-resources.png)
+  ![initial resources](screenshots/gui/initial-resources.png)
 
-  ![initial leaders](screenshots/initial-leaders.png)
+  ![initial leaders](screenshots/gui/initial-leaders.png)
 
-  ![playing](screenshots/playing.png)
+  ![playing](screenshots/gui/playing.png)
 
-  ![game over](screenshots/game-over.png)
+  ![cards market](screenshots/gui/cards.png)
+
+  ![marbles grid](screenshots/gui/marbles.png)
+
+  ![activate productions](screenshots/gui/productions.png)
+
+  ![game over](screenshots/gui/game-over.png)
 </details>
 
 ### CLI
 <details>
   <summary>Click to expand!</summary>
+
+  ![first scene](screenshots/cli/start-game.png)
+
+  ![cards market](screenshots/cli/cards-market.png)
+
+  ![get marbles](screenshots/cli/get-marbles.png)
+
+  ![activate productions](screenshots/cli/productions.png)
 
 </details>
