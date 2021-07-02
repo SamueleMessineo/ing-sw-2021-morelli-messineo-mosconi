@@ -61,7 +61,11 @@ When everyone has finished their selection the player will be brought to the mai
       During the player's turn the moves he can perform glows in the gui and are listed in the cli.
       
 - **Playing with the GUI**
-
+      Every UI element has a move associated. The moves that the current player can perform correspond to the glowing elements. To perform a move the user has to 
+      click on the UI element corresponding to the move and then the UI will zoom on that element and a button with the name of the move will appear. By clicking 
+      on the button the move will start, some moves like buying a card will be automatically performed once the user clicks on the card, or the element of
+      interest, others like activating the productions will need the user to confirm the move after selecting the productions he wants to activate.
+      
 ## Development Progress
 | Functionality | Status |
 |--- | --- | 
