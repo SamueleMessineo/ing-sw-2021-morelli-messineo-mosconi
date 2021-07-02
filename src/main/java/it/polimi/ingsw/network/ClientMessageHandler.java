@@ -42,8 +42,11 @@ public class ClientMessageHandler {
      */
     public void handle(ErrorMessage message) {
         executor.submit(() -> ui.displayError(message.getBody()));
-        if (latestMessage != null)
-            latestMessage.accept(this);
+        if (latestMessage != null ){
+            if( !message.getBody().contains("disconnected")){
+                latestMessage.accept(this);
+            }
+        }
         else executor.submit(ui::setup);
      }
 

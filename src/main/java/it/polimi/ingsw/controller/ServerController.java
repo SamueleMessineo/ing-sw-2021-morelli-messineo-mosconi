@@ -14,6 +14,7 @@ import java.util.*;
 
 /**
  * ServerController class, handles the creation of the rooms for the game.
+ * Methods are synchronized to handle multiple requests at the same time.
  */
 public class ServerController {
     private final Server server;
@@ -38,7 +39,7 @@ public class ServerController {
         clientConnections.remove(clientConnection);
 
         int currentRoomId = getRoomId();
-        while (GameUtils.readGame(currentRoomId)!=null)currentRoomId=getRoomId();//checks if the game does not already exists
+        while (GameUtils.readGame(currentRoomId)!=null)currentRoomId=getRoomId();//finds the first available roomId
         Room room =  new Room(new Game(), numberOfPlayers, privateRoom, clientConnection, currentRoomId);
         room.getGame().addPlayer(username);
 
@@ -47,6 +48,7 @@ public class ServerController {
         sendRoomDetails(currentRoomId, room);
 
         if (room.isFull()){
+            //if it is a solo game the game can quickly start
             startSoloGame(room);
         }
     }
@@ -59,6 +61,7 @@ public class ServerController {
      */
     public synchronized void addPlayerByRoomId(String username,int roomId, ClientConnection clientConnection){
         if (server.getRooms().get(roomId) == null) {
+            //there is no room in the server with this id, but there can be one on the server disk
             Game game = GameUtils.readGame(roomId);
             if(game!=null && game.getPlayerByUsername(username) != null){
                 //handling server persistence
@@ -77,6 +80,8 @@ public class ServerController {
                 clientConnections.remove(clientConnection);
                 room.getConnections().remove(null);
                 for (int i = 0; i < room.getNumberOfPlayers(); i++) {
+                    //when the room is recreated after the server had  gone down only the connection of the player
+                    //recreating the room is different from null
                     if(i!=game.getPlayers().indexOf(game.getPlayerByUsername(username))){
                         room.getConnections().add(i, null);
                     }else {
@@ -92,6 +97,7 @@ public class ServerController {
                 }
 
                 if (room.getNumberOfPlayers() == game.getActivePlayers().size()){
+                    //if this was game was a soloGame the game  can quickly resume
                     room.setCurrentTurn(new Turn(username, room.getGameController().computeNextPossibleMoves(false)));
                     clientConnection.sendMessage(new UpdateAndDisplayGameStateMessage(game));
                     clientConnection.sendMessage(new SelectMoveRequestMessage(room.getCurrentTurn().getMoves()));
@@ -103,6 +109,7 @@ public class ServerController {
                      game.getActivePlayers()) {
                     players.add(p.getUsername());
                 }
+                //sets the game so that it can resume when every player is connected
                 room.getGameController().computeNextPossibleMoves(false);
                 room.setCurrentTurn(new Turn(game.getCurrentPlayer().getUsername(), room.getGameController().computeNextPossibleMoves(false)));
                 clientConnection.sendMessage(new RoomDetailsMessage(players, room.getNumberOfPlayers(), roomId));
@@ -113,6 +120,7 @@ public class ServerController {
         }
         Room room = server.getRooms().get(roomId);
         if (!room.isFull()  && room.getGame().getPlayerByUsername(username)!=null && room.getGame().getPlayerByUsername(username).isActive()) {
+            //Different players cannot have the same username
             clientConnection.sendMessage(new ErrorMessage("username is taken"));
             return;
         }
@@ -125,31 +133,39 @@ public class ServerController {
         //to handle reconnection
         if(room.isFull() && room.getGame().getPlayerByUsername(username)!=null){
            if(room.getGame().getActivePlayers().stream().noneMatch(player -> player.getUsername().equals(username))){
+               //this player exists in the game but is not active
                room.getGame().getPlayerByUsername(username).setActive(true);
 
                clientConnection.setGameMessageHandler(new GameMessageHandler(room.getGameController(), clientConnection, room));
+               //replace his old connection with the new one
                room.getConnections().remove(room.getGame().getActivePlayers().indexOf(room.getGame().getPlayerByUsername(username)));
                room.getConnections().add(room.getGame().getActivePlayers().indexOf(room.getGame().getPlayerByUsername(username)), clientConnection);
                List<ClientConnection> clientConnections=server.getPendingConnections();
                clientConnections.remove(clientConnection);
                if(room.getGame().getPlayerByUsername(username).getLeaderCards().size()<=2){
+                   //the disconnection happened when the game was already started
                    clientConnection.getGameMessageHandler().setReady(true);
                }
                if(!clientConnection.getGameMessageHandler().isReady()){
+                   //the disconnection happened in initial selections phase
                    clientConnection.getGameMessageHandler().initialSelections();
                }
                else {
                    room.sendAll(new StringMessage(username + " is back in the game!"));
                    room.sendAll(new UpdateGameStateMessage(room.getGame()));
                    if(room.isRecreated() ){
+                       //the player is reconnecting after the sever went down
                        if( room.getGame().getActivePlayers().size() == room.getNumberOfPlayers()){
+                           //if this was the last player missing everyone is brought to the main board
                            room.sendAll(new UpdateAndDisplayGameStateMessage(room.getGame()));
+                           //current player can start his turn
                            room.getConnections().get(room.getGame().getPlayers().indexOf(room.getGame().getCurrentPlayer())).sendMessage(new SelectMoveRequestMessage(room.getCurrentTurn().getMoves()));
                            room.setRecreated(false);
                        }
                     } else clientConnection.sendMessage(new UpdateAndDisplayGameStateMessage(room.getGame()));
 
                    if(room.getGame().getActivePlayers().size()==1){
+                       //if it was a solo game the player can quickly resume the game
                        room.setCurrentTurn(new Turn(username, room.getGameController().computeNextPossibleMoves(false)));
                        room.sendAll(new SelectMoveRequestMessage(room.getCurrentTurn().getMoves()));
                    }
@@ -162,6 +178,7 @@ public class ServerController {
                return;
            }
         }
+        //standard case: it is a new game, there is  still place and the username was not already taken
         room.getGame().addPlayer(username);
         List<ClientConnection> clientConnections=server.getPendingConnections();
         clientConnections.remove(clientConnection);
@@ -183,6 +200,7 @@ public class ServerController {
         List<Room> rooms = new ArrayList<>(server.getRooms().values());
 
         if (numberOfPlayers == 0) {
+            //if the user sent 0 as number of players he will be added to a random room
             Random r = new Random();
             numberOfPlayers = r.nextInt(4)+1;
         }
@@ -191,11 +209,13 @@ public class ServerController {
             int finalNumberOfPlayers = numberOfPlayers;
             room = rooms.stream().filter(room1 -> room1.getNumberOfPlayers() == finalNumberOfPlayers && !room1.isPrivate()).findAny().orElseThrow();
         } catch (NoSuchElementException e) {
+            //if there is no room with the specified number of player a new room is created
             createRoom(false, username, numberOfPlayers, clientConnection);
             return;
         }
 
         if(room.getGame().getActivePlayers().stream().anyMatch(player -> player.getUsername().equals(username))){
+            //different players in the same room cannot have the same username
             clientConnection.sendMessage(new ErrorMessage("username is taken"));
             return;
         }
@@ -208,6 +228,7 @@ public class ServerController {
         int currentRoomId = -1;
         for (Map.Entry<Integer, Room> entry: server.getRooms().entrySet())
         {
+            //find on the server the id of the newly created room
             if (room.equals(entry.getValue())) {
                 currentRoomId = entry.getKey();
             }

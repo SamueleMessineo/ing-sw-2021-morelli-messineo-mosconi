@@ -300,6 +300,8 @@ public class GameMessageHandler {
         List<Integer> stacks = gameController.getStacksToPlaceCard(room.getGame().getCurrentPlayer(), developmentCard);
         room.getCurrentTurn().setBoughtDevelopmentCard(developmentCard);
         if(stacks.size()==1 || gameController.getGame().getCurrentPlayer().getPlayerBoard().getCardStacks().get(stacks.get(0)).isEmpty()){
+            //if the card can be placed on only one stack or there is no difference on  placing tha card on a stack or the other
+            //the card will be automatically placed
             gameController.buyDevelopmentCard(stacks.get(0),developmentCard);
             room.getCurrentTurn().setAlreadyPerformedMove(true);
             sendNextMoves();
@@ -345,17 +347,20 @@ public class GameMessageHandler {
      * moves to the next player.
      */
     private void sendStateAndMovesForNextTurn(){
-        ClientConnection currentPlayer = room.getConnections().get(room.getGame().getActivePlayers().indexOf(
+        ClientConnection currentPlayer = room.getConnections().get(room.getGame().getPlayers().indexOf(
                 room.getGame().getCurrentPlayer()));
         GameUtils.debug(room.getPlayerFromConnection(currentPlayer).getUsername());
+        //saves the game
         GameUtils.writeGame(gameController.getGame(), room.getId());
         room.sendAll(new UpdateAndDisplayGameStateMessage(room.getGame()));
 
-        if(!gameController.isGameOver() || (room.getGame().getActivePlayers().indexOf(room.getPlayerFromConnection(currentPlayer)) != room.getGame().getInkwellPlayer())){
+        if(!gameController.isGameOver() || (room.getGame().getPlayers().indexOf(room.getPlayerFromConnection(currentPlayer)) != room.getGame().getInkwellPlayer())){
+            //the game is either not ended or is in the last turn
             room.setCurrentTurn(new Turn(room.getPlayerFromConnection(currentPlayer).getUsername(), gameController.computeNextPossibleMoves(false)));
             SelectMoveRequestMessage selectMoveRequestMessage = new SelectMoveRequestMessage(room.getCurrentTurn().getMoves());
             currentPlayer.sendMessage(selectMoveRequestMessage);
         } else {
+            //game ended, send the standing and the winner and deletes the game and the room
             Map<String, Integer> standing = gameController.computeStanding();
             String winner = gameController.computeWinner();
             room.sendAll(new GameOverMessage(winner, standing));
@@ -393,6 +398,7 @@ public class GameMessageHandler {
         connection.setConnected(false);
         Player disconnectedPlayer = room.getPlayerFromConnection(connection);
         if(!ready){
+            //the game has not started yet
             disconnectedPlayer.setActive(false);
             room.sendAll(new StringMessage(disconnectedPlayer.getUsername() + " disconnected"));
             return;
@@ -406,7 +412,7 @@ public class GameMessageHandler {
 
         disconnectedPlayer.setActive(false);
 
-        System.out.println("players" + gameController.getGame().getActivePlayers() + "conncetions" + room.getConnections().size());
+        System.out.println("players" + gameController.getGame().getActivePlayers() + " connections" + room.getConnections().size());
 
     }
 

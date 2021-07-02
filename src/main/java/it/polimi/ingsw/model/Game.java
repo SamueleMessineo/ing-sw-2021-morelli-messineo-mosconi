@@ -227,8 +227,10 @@ public class Game implements Serializable{
             MarketCardStack stack = market.getCardsGrid().get(i);
             if(!stack.isEmpty()){
                 if( stack.getType().name().equals(soloActionType.name())){
+                    //removes first of the two cards
                     stack.pop();
                     if(!stack.isEmpty()){
+                        //if the stack is not empty removes the second of the two cards
                         stack.pop();
                     }
                     return;

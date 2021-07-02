@@ -61,60 +61,86 @@ public class Turn {
     /**
      * @param move the move a player wants to make
      * @param username the player name
-     * @return true if the player is the current player and can permorm the move
+     * @return true if the player is the current player and can perform the move
      */
     public boolean isValidMove(String move, String username){
         return moves.contains(move) && currentPlayer.equals(username);
     }
 
 
+    /**
+     * Sets already performed move
+     * @param alreadyPerformedMove true if the player has already done one of  the unique moves of the turn
+     */
     public void setAlreadyPerformedMove(boolean alreadyPerformedMove) {
         this.alreadyPerformedMove = alreadyPerformedMove;
     }
 
     /**
-     * Checks if a the current player has already performed one of the unique moves
-     * @return true if the player has performed one move between activating production, buying a card and getting marbles
+     * Checks if a the current player has already performed one of the unique moves.
+     * @return true if the player has performed one move between activating production, buying a card and getting marbles.
      */
     public boolean hasAlreadyPerformedMove() {
         return alreadyPerformedMove;
     }
 
     /**
-     * @return the resources obtained by the player this turn by switching a row or column of marble structure
+     * @return the resources obtained by the player this turn by switching a row or column of marble structure.
      */
     public Map<Resource, Integer> getConverted() {
         return converted;
     }
 
+    /**
+     * Sets the coverted marbles in this turn.
+     * @param converted a map with the converted marbles.
+     */
     public void setConverted(Map<Resource, Integer> converted) {
         this.converted = converted;
     }
 
+    /**
+     * Gets the number of marbles  to convert in this turn.
+     * @return the number of marbles  to convert in this turn.
+     */
     public int getToConvert() {
         return toConvert;
     }
 
+    /**
+     * Sets to marbles  to convert.
+     * @param toConvert the marbles to convert.
+     */
     public void setToConvert(int toConvert) {
         this.toConvert = toConvert;
     }
 
-
+    /**
+     * Gets the conversion options.
+     * @return a list of Resources.
+     */
     public List<Resource> getConversionOptions() {
         return conversionOptions;
     }
 
+    /**
+     * Sets the conversion  options.
+     */
     public void setConversionOptions(List<Resource> conversionOptions) {
         this.conversionOptions = conversionOptions;
     }
 
     /**
-     * @return the development card the player bought this turn
+     * @return the development card the player bought this turn.
      */
     public DevelopmentCard getBoughtDevelopmentCard() {
         return boughtDevelopmentCard;
     }
 
+    /**
+     * Sets the development card bought in this turn.
+     * @param boughtDevelopmentCard the development card bought in this turn.
+     */
     public void setBoughtDevelopmentCard(DevelopmentCard boughtDevelopmentCard) {
         this.boughtDevelopmentCard = boughtDevelopmentCard;
     }

@@ -251,6 +251,7 @@ public class Player implements Serializable {
         Map<Resource, Integer> allResources = new HashMap<>(playerBoard.getResources());
         allResources = GameUtils.sumResourcesMaps(allResources, GameUtils.emptyResourceMap());
         for (PlayerCardStack cardStack : playerBoard.getCardStacks()) {
+            //checks if one  of the standard production powers can  be activated
             if (!cardStack.empty()) {
                 DevelopmentCard topCard = cardStack.peek();
                 boolean canActivateCard = true;
@@ -268,6 +269,7 @@ public class Player implements Serializable {
         }
 
         if(!getPlayerBoard().getExtraProductionPowers().isEmpty()){
+            //checks if one of the  extra production powers can be activated
             for (ProductionPower productionPower:
                     getPlayerBoard().getExtraProductionPowers()) {
                 boolean canActivatePower = true;

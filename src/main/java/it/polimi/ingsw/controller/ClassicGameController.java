@@ -79,6 +79,7 @@ public class ClassicGameController {
     public boolean isGameOver() {
         for (Player player:
                 game.getActivePlayers()) {
+            //checks if a player is at the end of the track or if the sum of all the cards on each stack on his board equals to 7
             if ((player.getFaithTrack().getPosition() >= FaithTrack.getMaxposition())||
                         player.getPlayerBoard().getCardStacks().get(0).size()+player.getPlayerBoard().getCardStacks().get(1).size()+player.getPlayerBoard().getCardStacks().get(2).size() >= 7)return true;
         }
@@ -89,9 +90,12 @@ public class ClassicGameController {
      * sets the next player as current player
      */
     public void computeNextPlayer(){
-        int nextPlayer = (game.getActivePlayers().indexOf(game.getCurrentPlayer()) + 1) % game.getActivePlayers().size();
+        if (game.getActivePlayers().size() == 0) return;
+        int nextPlayer = (game.getPlayers().indexOf(game.getCurrentPlayer()) + 1) % game.getPlayers().size();
         game.setCurrentPlayer(nextPlayer);
-        if (!game.getActivePlayers().get(nextPlayer).isActive()) computeNextPlayer();
+        System.out.println("next player" + nextPlayer + game.getCurrentPlayer());
+        //recursion while an active player is found
+        if (!game.getPlayers().get(nextPlayer).isActive()) computeNextPlayer();
     }
 
     /**
@@ -115,6 +119,7 @@ public class ClassicGameController {
         convertedMarbles.put("conversionOptions", new HashMap<>());
         List<Resource> effectsObjects = game.getCurrentPlayer().hasActiveEffectOn("Marbles");
         for (Resource effectObject : effectsObjects) {
+            //checks if there are leaders  with marble power
             convertedMarbles.get("conversionOptions").put(effectObject, 1);
         }
         // convert all the marbles
@@ -236,6 +241,7 @@ public class ClassicGameController {
         Player player = game.getCurrentPlayer();
 
         if(!alreadyPerformedMove){
+            //the  player still has not performed one of the mandatory moves
             moves.add("GET_MARBLES");
             if (player.canActivateBasicProduction() || player.canActivateProduction()) {
                 moves.add("ACTIVATE_PRODUCTION");
@@ -266,6 +272,7 @@ public class ClassicGameController {
         }
 
         Warehouse warehouse = player.getPlayerBoard().getWarehouse();
+        //checks if there is at least one other admissible shelves configuration
         if( warehouse.canSwitchShelves("top",    "middle") ||
             warehouse.canSwitchShelves("top",    "bottom") ||
             warehouse.canSwitchShelves("top",    "extra1") ||
@@ -338,12 +345,15 @@ public class ClassicGameController {
         if(extraProductionPowers != null && !extraProductionPowers.isEmpty()){
             int outRes = 0;
             for (Integer extraProductionPower : extraProductionPowers) {
+                //in the extra production powers there is always a faith point
                 movePlayer(game.getCurrentPlayer().getUsername(), 1);
                 ProductionPower productionPower = game.getCurrentPlayer().getPlayerBoard().getExtraProductionPowers().get((Integer) extraProductionPower);
+                //build the production power as indicated by the player
                 productionPower.getOutput().put(extraOutput.get(outRes), 1);
                 productionPower.getOutput().remove(Resource.ANY);
                 productionPower.getOutput().remove(Resource.FAITH);
                 game.getCurrentPlayer().getPlayerBoard().activateProductionPower(productionPower);
+                //restore the original production power
                 productionPower.getOutput().remove(extraOutput.get(outRes),1);
                 productionPower.getOutput().put(Resource.ANY, 1);
                 productionPower.getOutput().put(Resource.FAITH, 1);
@@ -440,6 +450,7 @@ public class ClassicGameController {
     public Map<String, Integer> computeStanding() {
         Map<String, Integer> standing = new LinkedHashMap<>();
         List<Player> standingList = new ArrayList<>(game.getActivePlayers());
+        //sort the list by vp
         standingList.sort((o1, o2) -> o2.getVP() - o1.getVP());
 
         int points;

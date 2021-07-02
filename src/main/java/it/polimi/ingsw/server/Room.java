@@ -108,7 +108,7 @@ public class Room {
      * @return the Player associated to clientConnection.
      */
     public Player getPlayerFromConnection(ClientConnection clientConnection){
-        return getGame().getActivePlayers().get(getConnections().indexOf(clientConnection));
+        return getGame().getPlayers().get(getConnections().indexOf(clientConnection));
     }
 
     /**
