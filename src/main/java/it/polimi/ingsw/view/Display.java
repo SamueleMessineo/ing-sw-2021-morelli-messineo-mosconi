@@ -368,14 +368,16 @@ public class Display {
 
     /**
      * Displays the given leader cards in a grid of a certain row length.
+     *
      * @param leaderCards the cards to display.
-     * @param rowLength the length of the row of the grid.
-     * @param output the print stream.
+     * @param rowLength   the length of the row of the grid.
+     * @param output      the print stream.
      */
     public static void displayLeaderCards(List<LeaderCard> leaderCards, int rowLength, PrintStream output) {
+        if (leaderCards.size() == 0) return;
         output.print("\u001B[31m");
         if (rowLength > leaderCards.size()) rowLength = leaderCards.size();
-        int colLength = (int)Math.ceil(leaderCards.size()/rowLength);
+        int colLength = (int) Math.ceil(leaderCards.size() / rowLength);
         for (int row = 0; row < colLength; row++) {
             int costRows = 0;
             for (int col = 0; col < rowLength; col++) {
@@ -387,7 +389,7 @@ public class Display {
                     nc = (int) card.getResourceRequirements().keySet().stream().filter(r -> card.getResourceRequirements().get(r) > 0).count();
                 }
                 if (nc > costRows) costRows = nc;
-                output.print("+-------"+((row * 2) + col+1)+"--------+ ");
+                output.print("+-------" + ((row * 2) + col + 1) + "--------+ ");
             }
             output.print("\n");
             for (int cr = -1; cr < costRows; cr++) {
@@ -417,7 +419,7 @@ public class Display {
             }
             for (int col = 0; col < rowLength; col++) {
                 LeaderCard card = leaderCards.get((row * rowLength) + col);
-                output.printf("|  %-14s| ", "Score: "+card.getScore());
+                output.printf("|  %-14s| ", "Score: " + card.getScore());
             }
             output.print("\n");
             for (int col = 0; col < rowLength; col++) {
