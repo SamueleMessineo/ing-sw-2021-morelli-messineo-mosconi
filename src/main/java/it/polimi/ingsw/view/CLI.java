@@ -157,8 +157,8 @@ public class CLI implements UI {
            for (Player player:
                 gameState.getActivePlayers()) {
                    Display.displayPlayerBoard(gameState.getPlayerByUsername(player.getUsername()), output);
-               if(gameState.getActivePlayers().get(gameState.getInkwellPlayer()).getUsername().equals(player.getUsername()))output.println("Inkwell");
-                   output.println("Wait your turn");
+               if(gameState.getPlayers().get(gameState.getInkwellPlayer()).getUsername().equals(player.getUsername()))output.println("Inkwell");
+               output.println("Wait your turn");
            }
        } else Display.displayPlayerBoard(gameState.getPlayerByUsername(username), output);
 
