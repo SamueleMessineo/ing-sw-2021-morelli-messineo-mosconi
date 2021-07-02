@@ -137,7 +137,8 @@ public class CLI implements UI {
 
     @Override
     public void selectLeaderCards(ArrayList<LeaderCard> leaderCards) {
-       Display.displayLeaderCards(leaderCards, output);
+        output.println("Choose two leader cards to discard:");
+        Display.displayLeaderCards(leaderCards,2, output);
         int selection1;
         int selection2;
         do {
@@ -147,7 +148,6 @@ public class CLI implements UI {
         } while (selection1 == selection2);
 
         client.sendMessage(new DropInitialLeaderCardsResponseMessage(selection1, selection2));
-
     }
 
     @Override
@@ -183,7 +183,7 @@ public class CLI implements UI {
                     player = gameState.getPlayerByUsername(input.nextLine());
                 } while (player==null);
                 if(player.getUsername().equals(username))Display.displayPlayerLeaderCards(player, output);
-                else if (player != gameState.getLorenzoIlMagnifico())Display.displayLeaderCards(player.getPlayedLeaderCards(), output);
+                else if (player != gameState.getLorenzoIlMagnifico())Display.displayLeaderCards(player.getPlayedLeaderCards(),2, output);
                 Display.displayPlayerBoard(player, output);
             } catch (NoSuchElementException e) {
                 output.println("Username not found");
@@ -276,7 +276,7 @@ public class CLI implements UI {
 
     @Override
     public void discardLeaderCard(ArrayList<LeaderCard> cards) {
-        Display.displayLeaderCards(cards, output);
+        Display.displayLeaderCards(cards, 2, output);
         int selection = GameUtils.askIntegerInput("Select the card number", 1, cards.size(), output, input)-1;
         client.sendMessage(new DropLeaderCardResponseMessage(selection));
     }
@@ -444,7 +444,7 @@ public class CLI implements UI {
 
     @Override
     public void playLeader(List<LeaderCard> leaderCards) {
-        Display.displayLeaderCards(leaderCards, output);
+        Display.displayLeaderCards(leaderCards, 2, output);
         int selection = GameUtils.askIntegerInput("Select the card number", 1, leaderCards.size(), output, input)-1;
         client.sendMessage(new PlayLeaderResponseMessage(selection));
     }

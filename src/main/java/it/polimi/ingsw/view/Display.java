@@ -360,41 +360,90 @@ public class Display {
     public static void displayPlayerLeaderCards(Player player, PrintStream output){
         output.println("Not yet used leader cards:");
         if(player.getLeaderCards().size()==0)output.println("\u001B[31m" + "none" + "\u001B[0m" );
-        for (LeaderCard leader:
-             player.getLeaderCards()) {
-            displayLeader(leader, output);
-        }
+        else displayLeaderCards(player.getLeaderCards(), 2, output);
         output.println("Played leader cards:");
         if(player.getPlayedLeaderCards().size()==0)output.println("\u001B[31m" + "none" + "\u001B[0m" );
-        for (LeaderCard leader:
-                player.getPlayedLeaderCards()) {
-            displayLeader(leader, output);
-        }
+        else displayLeaderCards(player.getPlayedLeaderCards(), 2, output);
     }
 
     /**
-     * Displays a single leaderCard.
-     * @param leaderCard a LeaderCard.
+     * Displays the given leader cards in a grid of a certain row length.
+     * @param leaderCards the cards to display.
+     * @param rowLength the length of the row of the grid.
+     * @param output the print stream.
      */
-    public static void displayLeader(LeaderCard leaderCard, PrintStream output){
+    public static void displayLeaderCards(List<LeaderCard> leaderCards, int rowLength, PrintStream output) {
         output.print("\u001B[31m");
-        output.print(leaderCard.printResourceRequirements());
-        output.print(leaderCard.printCardRequirements());
-        output.print("Score: " + leaderCard.getScore() + "\n" + "Effect: " +leaderCard.getEffectScope() + " " +leaderCard.getEffectObject() + "\n");
-        output.print("\u001B[0m");
-    }
-
-    /**
-     * Displays a list of leader cards.
-     * @param leaderCards a list of leader cards.
-     */
-    public static void displayLeaderCards(List<LeaderCard> leaderCards, PrintStream output){
-        for (LeaderCard leader:
-                leaderCards) {
-            output.println("card number "+(leaderCards.indexOf(leader)+1));
-            Display.displayLeader(leader, output);
-            output.println("\n");
+        if (rowLength > leaderCards.size()) rowLength = leaderCards.size();
+        int colLength = (int)Math.ceil(leaderCards.size()/rowLength);
+        for (int row = 0; row < colLength; row++) {
+            int costRows = 0;
+            for (int col = 0; col < rowLength; col++) {
+                LeaderCard card = leaderCards.get((row * rowLength) + col);
+                int nc;
+                if (card.getCardRequirements() != null) {
+                    nc = (int) card.getCardRequirements().keySet().stream().filter(c -> card.getCardRequirements().get(c) > 0).count();
+                } else {
+                    nc = (int) card.getResourceRequirements().keySet().stream().filter(r -> card.getResourceRequirements().get(r) > 0).count();
+                }
+                if (nc > costRows) costRows = nc;
+                output.print("+-------"+((row * 2) + col+1)+"--------+ ");
+            }
+            output.print("\n");
+            for (int cr = -1; cr < costRows; cr++) {
+                for (int col = 0; col < rowLength; col++) {
+                    LeaderCard card = leaderCards.get((row * rowLength) + col);
+                    if (cr == -1)
+                        output.printf("|  %-14s| ", "Required:");
+                    else {
+                        if (card.getCardRequirements() != null) {
+                            List<CardType> keys = card.getCardRequirements().keySet().stream().filter(k -> card.getCardRequirements().get(k) > 0).collect(Collectors.toList());
+                            if (cr < keys.size()) {
+                                output.printf("|    %dx %-9s| ", card.getCardRequirements().get(keys.get(cr)), keys.get(cr).name());
+                            } else {
+                                output.print("|                | ");
+                            }
+                        } else {
+                            List<Resource> keys = card.getResourceRequirements().keySet().stream().filter(k -> card.getResourceRequirements().get(k) > 0).collect(Collectors.toList());
+                            if (cr < keys.size()) {
+                                output.printf("|    %dx %-9s| ", card.getResourceRequirements().get(keys.get(cr)), keys.get(cr).name());
+                            } else {
+                                output.print("|                | ");
+                            }
+                        }
+                    }
+                }
+                output.print("\n");
+            }
+            for (int col = 0; col < rowLength; col++) {
+                LeaderCard card = leaderCards.get((row * rowLength) + col);
+                output.printf("|  %-14s| ", "Score: "+card.getScore());
+            }
+            output.print("\n");
+            for (int col = 0; col < rowLength; col++) {
+                output.printf("|  %-14s| ", "Scope: ");
+            }
+            output.print("\n");
+            for (int col = 0; col < rowLength; col++) {
+                LeaderCard card = leaderCards.get((row * rowLength) + col);
+                output.printf("|    %-12s| ", card.getEffectScope());
+            }
+            output.print("\n");
+            for (int col = 0; col < rowLength; col++) {
+                output.printf("|  %-14s| ", "Object: ");
+            }
+            output.print("\n");
+            for (int col = 0; col < rowLength; col++) {
+                LeaderCard card = leaderCards.get((row * rowLength) + col);
+                output.printf("|    %-12s| ", card.getEffectObject().name());
+            }
+            output.print("\n");
+            for (int col = 0; col < rowLength; col++) {
+                output.print("+----------------+ ");
+            }
+            output.print("\n");
         }
+        output.print("\u001B[0m");
     }
 
     /**
