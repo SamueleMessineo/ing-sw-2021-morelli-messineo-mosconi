@@ -354,7 +354,8 @@ public class GameMessageHandler {
         GameUtils.writeGame(gameController.getGame(), room.getId());
         room.sendAll(new UpdateAndDisplayGameStateMessage(room.getGame()));
 
-        if(!gameController.isGameOver() || (room.getGame().getPlayers().indexOf(room.getPlayerFromConnection(currentPlayer)) != room.getGame().getInkwellPlayer())){
+        if(!gameController.isGameOver() ||
+                (room.getGame().getPlayers().get(room.getGame().getInkwellPlayer()).isActive() &&room.getGame().getPlayers().indexOf(room.getPlayerFromConnection(currentPlayer)) != room.getGame().getInkwellPlayer())){
             //the game is either not ended or is in the last turn
             room.setCurrentTurn(new Turn(room.getPlayerFromConnection(currentPlayer).getUsername(), gameController.computeNextPossibleMoves(false)));
             SelectMoveRequestMessage selectMoveRequestMessage = new SelectMoveRequestMessage(room.getCurrentTurn().getMoves());
