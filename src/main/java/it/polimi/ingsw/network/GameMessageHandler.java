@@ -238,7 +238,7 @@ public class GameMessageHandler {
         }
         Turn currentTurn = room.getCurrentTurn();
         List<Resource> conversionOptions= currentTurn.getConversionOptions();
-        if(!resourcesConverted.keySet().containsAll(conversionOptions)
+        if(!conversionOptions.containsAll(resourcesConverted.keySet())
                 || amountConverted != currentTurn.getToConvert()){
             clientConnection.sendMessage(new ErrorMessage("Invalid conversion, try again!"));
             return;
