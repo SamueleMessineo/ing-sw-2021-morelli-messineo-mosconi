@@ -51,13 +51,13 @@ Once connected the player can choose to create a new game or join a game that ha
       If your connection went down or the server crashed you can rejoin a game by simply clicking on join a private game and reenter your past username and
       the roomId.
 
-Once the game starts the player will be asked to select which leader cards to keep and which initial resources he wants to start the game according to the rules of the game.
-When everyone has finished their selection the player will be brought to the main board.
+Once the game starts all the players will be asked to drop 2 leader cards and some players also to select which initial resources they want to start the game with, according to the rules of the game.
+When everyone has finished their selection the players will be brought to the main board.
 
 - **Main Board**
       In the main board the players can see all of their playerboards, the market and all the faith tracks. A player can see other players boards by 
       tapping on the interested player in the top tab pane in the gui or selecting the "visit a player" move and writing the player's username in the cli.
-      During the player's turn the moves he can perform glows in the gui and are listed in the cli.
+      During the player's turn the moves he can perform glow in the gui and are listed in the cli.
       
 - **Playing with the GUI**
       Every UI element has a move associated. The moves that the current player can perform correspond to the glowing elements. To perform a move the user has to click on the UI element corresponding to the move and then the UI will zoom on that element and a button with the name of the move will appear.  
@@ -98,7 +98,7 @@ $ cd ing-sw-2021-morelli-messineo-mosconi/
 $ mvn package
 ...
 ```
-The jar files will be created in `./deliverables/JAR/`.
+The jar files will be created in `./deliverables/final/JAR/`.
 
 Alternatively you can open the project with IntelliJ IDEA and build it from there.
 
