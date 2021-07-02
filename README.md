@@ -15,19 +15,7 @@ Final project for the Software Engineering course at Polytechnic of Milan, 2021.
 - [Documentation and Testing](#documentation-and-testing "Documentation and Testing")
 - [Screenshots](#screenshots "Screenshots")
 
-## Development Progress
-| Functionality | Status |
-|--- | --- | 
-|Basic rules|✔️|
-|Complete rules|✔️|
-|Server|✔️|
-|CLI|✔️|
-|GUI|✔️|
-|Persistence|✔️|
-|Offline games|✔️|
-|Multiple games|✔️|
-|Disconnection resilience|✔️|
-|Parameter editor|✖️|
+
 
 ## How to Start
 This game can be played either online or offline. In order to play online you have to start the server using this command 
@@ -74,6 +62,26 @@ When everyone has finished their selection the player will be brought to the mai
       
 - **Playing with the GUI**
 
+## Development Progress
+| Functionality | Status |
+|--- | --- | 
+|Basic rules|✔️|
+|Complete rules|✔️|
+|Server|✔️|
+|CLI|✔️|
+|GUI|✔️|
+|Persistence|✔️|
+|Offline games|✔️|
+|Multiple games|✔️|
+|Disconnection resilience|✔️|
+|Parameter editor|✖️|
+
+## Architecture
+This game has been realized using an MVC arhitecture. Model and controller are kept server-side while the view in user-side and they interact by exchanging messages. Each message is handled in a scalable way by the use of the Visitor pattern.
+
+The server checks if the users are still connected using ping-pong messages, if after sending a ping message the server does not receive a pong message in 10 seconds the user is considered disconnected. Users can reconnect any time to the server.
+
+The server stores all the unfinished games allowing players to resume old games at any time, even if the server rebooted.
 ## Build
 
 Before building make sure you have at least Java version 11 installed by running this command
