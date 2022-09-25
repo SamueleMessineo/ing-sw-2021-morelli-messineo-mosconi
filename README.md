@@ -2,6 +2,10 @@
 
 Final project for the Software Engineering course at Polytechnic of Milan, 2021.
 
+Teacher: Pierluigi San Pietro
+
+Final Score: 30/30 
+
 ## Group PSP42
 - **[Bruno Morelli](https://github.com/BrunoMor99)** - bruno.morelli@mail.polimi.it
 - **[Samuele Messineo](https://github.com/SamueleMessineo)** - samuele.messineo@mail.polimi.it
